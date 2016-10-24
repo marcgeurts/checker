@@ -336,14 +336,14 @@ class Command implements CommandInterface
         try {
             $result = $action->run($this, $context);
 
-            if (! $result instanceof ResultInterface) {
+            if (!$result instanceof ResultInterface) {
                 throw new ActionInvalidResultException($action->getName());
             }
         } catch (RuntimeException $e) {
             $result = Result::error($this, $context, $action, $e->getMessage());
         }
 
-        if (! $result->isSuccess() && ! $this->isBlockingAction($action)) {
+        if (!$result->isSuccess() && !$this->isBlockingAction($action)) {
             $result = Result::warning(
                 $result->getCommand(),
                 $result->getContext(),

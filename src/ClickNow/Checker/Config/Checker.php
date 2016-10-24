@@ -118,7 +118,7 @@ class Checker
     {
         $message = $this->container->getParameter('message');
 
-        if (! is_array($message) || ! array_key_exists($resource, $message)) {
+        if (!is_array($message) || !array_key_exists($resource, $message)) {
             return null;
         }
 

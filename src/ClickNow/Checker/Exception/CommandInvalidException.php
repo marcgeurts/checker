@@ -12,7 +12,7 @@ class CommandInvalidException extends CommandException
      */
     public function __construct($commandName, $message = null)
     {
-        if (! $message) {
+        if (!$message) {
             $message = sprintf('Command `%s` must implement CommandInterface.', $commandName);
         }
 

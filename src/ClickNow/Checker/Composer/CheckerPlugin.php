@@ -71,7 +71,7 @@ class CheckerPlugin implements PluginInterface, EventSubscriberInterface
         $operation = $event->getOperation();
         $package = $operation->getPackage();
 
-        if (! $this->isThisPackage($package)) {
+        if (!$this->isThisPackage($package)) {
             return;
         }
 
@@ -89,7 +89,7 @@ class CheckerPlugin implements PluginInterface, EventSubscriberInterface
         $operation = $event->getOperation();
         $package = $operation->getTargetPackage();
 
-        if (! $this->isThisPackage($package)) {
+        if (!$this->isThisPackage($package)) {
             return;
         }
 
@@ -107,7 +107,7 @@ class CheckerPlugin implements PluginInterface, EventSubscriberInterface
         $operation = $event->getOperation();
         $package = $operation->getPackage();
 
-        if (! $this->isThisPackage($package)) {
+        if (!$this->isThisPackage($package)) {
             return;
         }
 
@@ -155,7 +155,7 @@ class CheckerPlugin implements PluginInterface, EventSubscriberInterface
 
         $process->run();
 
-        if (! $process->isSuccessful()) {
+        if (!$process->isSuccessful()) {
             $this->io->write(sprintf(
                 '<fg=red>%s</fg=red>',
                 'Checker has not been installed in git hooks! Did you specify the correct git-dir?'

@@ -55,7 +55,7 @@ class ConsoleIO extends SymfonyStyle implements IOInterface
      */
     public function log($message)
     {
-        if (! $this->isVeryVerbose() || ! $message) {
+        if (!$this->isVeryVerbose() || !$message) {
             return;
         }
 
@@ -74,7 +74,7 @@ class ConsoleIO extends SymfonyStyle implements IOInterface
      */
     public function readCommandInput($handle)
     {
-        if (! is_resource($handle)) {
+        if (!is_resource($handle)) {
             throw new InvalidArgumentException(sprintf(
                 'Expected a resource stream for reading the commandline input. Got `%s`.',
                 gettype($handle)
@@ -86,12 +86,12 @@ class ConsoleIO extends SymfonyStyle implements IOInterface
         }
 
         $input = '';
-        while (! feof($handle)) {
+        while (!feof($handle)) {
             $input .= fread($handle, 1024);
         }
 
         // When the input only consist of white space characters, we assume that there is no input.
-        $this->stdin = ! preg_match('/^([\s]*)$/m', $input) ? $input : '';
+        $this->stdin = !preg_match('/^([\s]*)$/m', $input) ? $input : '';
 
         return $this->stdin;
     }

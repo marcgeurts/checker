@@ -97,7 +97,7 @@ class Git
     {
         $files = new FilesCollection($diff->getFiles());
         $files = $files->filter(function (File $file) {
-            return ! $file->isDeletion();
+            return !$file->isDeletion();
         });
 
         return $files->map(function (File $file) {

@@ -86,13 +86,13 @@ class RunCommand extends SymfonyCommand
      */
     private function getCommand($name)
     {
-        if (! $this->commandsCollection->containsKey($name)) {
+        if (!$this->commandsCollection->containsKey($name)) {
             throw new CommandNotFoundException($name);
         }
 
         $command = $this->commandsCollection->get($name);
 
-        if (! $command instanceof CommandInterface) {
+        if (!$command instanceof CommandInterface) {
             throw new CommandInvalidException($name);
         }
 
@@ -110,19 +110,19 @@ class RunCommand extends SymfonyCommand
     {
         $config = [];
 
-        if (! is_null($input->getOption('process-timeout'))) {
+        if (!is_null($input->getOption('process-timeout'))) {
             $config['process_timeout'] = (float) $input->getOption('process-timeout');
         }
 
-        if (! is_null($input->getOption('stop-on-failure'))) {
+        if (!is_null($input->getOption('stop-on-failure'))) {
             $config['stop_on_failure'] = (bool) $input->getOption('stop-on-failure');
         }
 
-        if (! is_null($input->getOption('ignore-unstaged-changes'))) {
+        if (!is_null($input->getOption('ignore-unstaged-changes'))) {
             $config['ignore_unstaged_changes'] = (bool) $input->getOption('ignore-unstaged-changes');
         }
 
-        if (! is_null($input->getOption('skip-success-output'))) {
+        if (!is_null($input->getOption('skip-success-output'))) {
             $config['skip_success_output'] = (bool) $input->getOption('skip-success-output');
         }
 

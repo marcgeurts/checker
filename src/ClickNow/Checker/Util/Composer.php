@@ -65,10 +65,10 @@ class Composer
     public static function ensureProjectBinDirInSystemPath($binDir)
     {
         $binDir = realpath($binDir);
-        $pathStr = (! isset($_SERVER['PATH']) && isset($_SERVER['Path'])) ? 'Path' : 'PATH';
+        $pathStr = (!isset($_SERVER['PATH']) && isset($_SERVER['Path'])) ? 'Path' : 'PATH';
 
-        if (! is_dir($binDir) ||
-            ! isset($_SERVER[$pathStr]) ||
+        if (!is_dir($binDir) ||
+            !isset($_SERVER[$pathStr]) ||
             preg_match('{(^|'.PATH_SEPARATOR.')'.preg_quote($binDir).'($|'.PATH_SEPARATOR.')}', $_SERVER[$pathStr])
         ) {
             return;

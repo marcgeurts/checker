@@ -131,7 +131,7 @@ class PathsHelper extends Helper
     public function getGitDir()
     {
         $gitDir = $this->checker->getGitDir();
-        if (! $this->filesystem->exists($gitDir)) {
+        if (!$this->filesystem->exists($gitDir)) {
             throw new DirectoryNotFoundException($gitDir, sprintf(
                 'The configured GIT directory `%s` could not be found.',
                 $gitDir
@@ -183,7 +183,7 @@ class PathsHelper extends Helper
     public function getBinDir()
     {
         $binDir = $this->checker->getBinDir();
-        if (! $this->filesystem->exists($binDir)) {
+        if (!$this->filesystem->exists($binDir)) {
             throw new DirectoryNotFoundException($binDir, sprintf(
                 'The configured BIN directory `%s` could not be found.',
                 $binDir
@@ -269,7 +269,7 @@ class PathsHelper extends Helper
      */
     public function getPathWithTrailingSlash($path)
     {
-        if (! $path) {
+        if (!$path) {
             return $path;
         }
 

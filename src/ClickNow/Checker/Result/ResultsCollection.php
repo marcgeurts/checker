@@ -13,7 +13,7 @@ class ResultsCollection extends ArrayCollection
      */
     public function isSuccessfully()
     {
-        return ! ($this->filterByError()->count() > 0 || $this->filterByWarning()->count() > 0);
+        return !($this->filterByError()->count() > 0 || $this->filterByWarning()->count() > 0);
     }
 
     /**

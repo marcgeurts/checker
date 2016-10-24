@@ -19,7 +19,7 @@ class DirectoryNotFoundException extends RuntimeException
     {
         $this->directory = $directory;
 
-        if (! $message) {
+        if (!$message) {
             $message = sprintf('Directory `%s` was not found.', $directory);
         }
 

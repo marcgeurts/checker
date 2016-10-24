@@ -97,7 +97,7 @@ abstract class AbstractCompilerPass implements CompilerPassInterface
 
         foreach ($tasks as $name => $config) {
             // Checks if there is a task service with this identifier
-            if (! array_key_exists($name, $services)) {
+            if (!array_key_exists($name, $services)) {
                 throw new TaskNotFoundException($name);
             }
 
@@ -166,7 +166,7 @@ abstract class AbstractCompilerPass implements CompilerPassInterface
             $id = 'command.'.$name;
 
             // Checks if there is a command service with this identifier
-            if (! $this->container->hasDefinition($id)) {
+            if (!$this->container->hasDefinition($id)) {
                 throw new CommandNotFoundException($name);
             }
 

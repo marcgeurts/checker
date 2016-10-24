@@ -84,7 +84,7 @@ class UninstallCommand extends Command
      */
     private function removeGitHook($hookPath)
     {
-        if (! $this->filesystem->exists($hookPath)) {
+        if (!$this->filesystem->exists($hookPath)) {
             return;
         }
 
@@ -99,7 +99,7 @@ class UninstallCommand extends Command
      */
     private function restoreGitHook($hookPath)
     {
-        if (! $this->filesystem->exists($hookPath.'.checker')) {
+        if (!$this->filesystem->exists($hookPath.'.checker')) {
             return;
         }
 

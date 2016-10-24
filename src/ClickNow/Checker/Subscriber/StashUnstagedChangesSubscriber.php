@@ -67,12 +67,12 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
      */
     public function saveStash(RunnerEvent $event)
     {
-        if (! $this->isStashEnabled($event->getContext())) {
+        if (!$this->isStashEnabled($event->getContext())) {
             return;
         }
 
         $pending = $this->repository->getWorkingCopy()->getDiffPending();
-        if (! count($pending->getFiles())) {
+        if (!count($pending->getFiles())) {
             return;
         }
 
@@ -96,7 +96,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
      */
     public function popStash()
     {
-        if (! $this->stashIsApplied) {
+        if (!$this->stashIsApplied) {
             return;
         }
 
@@ -137,7 +137,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         $subscriber = $this;
 
         register_shutdown_function(function () use ($subscriber) {
-            if (! error_get_last()) {
+            if (!error_get_last()) {
                 return;
             }
             $subscriber->popStash();

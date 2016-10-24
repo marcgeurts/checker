@@ -108,7 +108,7 @@ class Application extends SymfonyConsole
     {
         $command = $this->getContainer()->get(sprintf('hook.%s', $hook));
 
-        if (! $command instanceof CommandInterface) {
+        if (!$command instanceof CommandInterface) {
             throw new CommandInvalidException($hook);
         }
 
@@ -222,7 +222,7 @@ class Application extends SymfonyConsole
 
         // use path from composer
         $package = $this->getComposerHelper()->getRootPackage();
-        if (! is_null($package)) {
+        if (!is_null($package)) {
             $extra = $package->getExtra();
 
             if (isset($extra['checker']['config'])) {
@@ -238,7 +238,7 @@ class Application extends SymfonyConsole
 
         // Make sure to set the full path when it is declared relative
         // This will fix some issues in windows.
-        if (! $this->filesystem->isAbsolutePath($defaultPath)) {
+        if (!$this->filesystem->isAbsolutePath($defaultPath)) {
             $defaultPath = getcwd().DIRECTORY_SEPARATOR.$defaultPath;
         }
 

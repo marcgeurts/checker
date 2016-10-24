@@ -28,7 +28,7 @@ class ArgumentsCollection extends ArrayCollection
      */
     public function addOptionalArgument($argument, $value)
     {
-        if (! $value) {
+        if (!$value) {
             return;
         }
 
@@ -43,7 +43,7 @@ class ArgumentsCollection extends ArrayCollection
      */
     public function addOptionalArgumentWithSeparatedValue($argument, $value)
     {
-        if (! $value) {
+        if (!$value) {
             return;
         }
 
@@ -60,7 +60,7 @@ class ArgumentsCollection extends ArrayCollection
      */
     public function addOptionalCommaSeparatedArgument($argument, array $values, $delimiter = ',')
     {
-        if (! count($values)) {
+        if (!count($values)) {
             return;
         }
 
@@ -102,7 +102,7 @@ class ArgumentsCollection extends ArrayCollection
      */
     public function addSeparatedArgumentArray($argument, array $values)
     {
-        if (! count($values)) {
+        if (!count($values)) {
             return;
         }
 
@@ -123,7 +123,7 @@ class ArgumentsCollection extends ArrayCollection
      */
     public function addRequiredArgument($argument, $value)
     {
-        if (! $value) {
+        if (!$value) {
             throw new InvalidArgumentException(sprintf(
                 'The argument `%s` is required.',
                 $argument
@@ -158,7 +158,7 @@ class ArgumentsCollection extends ArrayCollection
             $paths[] = $file->getPathname();
         }
 
-        if (! count($paths)) {
+        if (!count($paths)) {
             return;
         }
 

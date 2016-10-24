@@ -106,7 +106,7 @@ class InstallCommand extends Command
     {
         $gitHooksDir = $this->paths()->getGitHooksDir();
 
-        if (! $this->filesystem->exists($gitHooksDir)) {
+        if (!$this->filesystem->exists($gitHooksDir)) {
             $this->filesystem->mkdir($gitHooksDir);
             $this->io->note(sprintf('Created git hooks folder at: `%s`.', $gitHooksDir));
         }
@@ -142,7 +142,7 @@ class InstallCommand extends Command
             $hookTemplate = $customHooksPath.$hook;
         }
 
-        if (! $this->filesystem->exists($hookTemplate)) {
+        if (!$this->filesystem->exists($hookTemplate)) {
             throw new FileNotFoundException(sprintf(
                 'Could not find hook template for `%s` at `%s`.',
                 $hook,
@@ -160,7 +160,7 @@ class InstallCommand extends Command
      */
     private function backupGitHook($hookPath)
     {
-        if (! $this->filesystem->exists($hookPath)) {
+        if (!$this->filesystem->exists($hookPath)) {
             return;
         }
 

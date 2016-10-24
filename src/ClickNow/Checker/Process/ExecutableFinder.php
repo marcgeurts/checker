@@ -43,7 +43,7 @@ class ExecutableFinder
     {
         // Search executable
         $executable = $this->executableFinder->find($command, null, [$this->binDir]);
-        if (! $executable) {
+        if (!$executable) {
             throw new ExecutableNotFoundException($command);
         }
 

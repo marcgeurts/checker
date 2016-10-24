@@ -12,7 +12,7 @@ class ActionInvalidResultException extends ActionException
      */
     public function __construct($actionName, $message = null)
     {
-        if (! $message) {
+        if (!$message) {
             $message = sprintf('Action `%s`  did not return a Result.', $actionName);
         }
 

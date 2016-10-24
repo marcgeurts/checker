@@ -23,7 +23,7 @@ class ExtensionCompilerPass extends AbstractCompilerPass
 
         foreach ($extensions as $extensionClass) {
             // Checks if the class exists
-            if (! class_exists($extensionClass)) {
+            if (!class_exists($extensionClass)) {
                 throw new ExtensionNotFoundException($extensionClass);
             }
 
@@ -37,7 +37,7 @@ class ExtensionCompilerPass extends AbstractCompilerPass
             }
 
             // Checks if the class implements the ExtensionInterface
-            if (! $extension instanceof ExtensionInterface) {
+            if (!$extension instanceof ExtensionInterface) {
                 throw new ExtensionInvalidException($extensionClass);
             }
 
