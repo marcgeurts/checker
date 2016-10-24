@@ -1,0 +1,30 @@
+#!/bin/sh
+
+#
+# Run the hook command.
+# $(GENERATED_MESSAGE)
+#
+
+# Fetch the GIT diff and format it as command input:
+DIFF=$(git diff -r -p -m -M --full-index --staged | cat)
+
+# Run Checker
+vagrant ssh --command '$(which sh)' << COMMANDS
+
+  # Transfer the DIFF
+  DIFF=\$(cat <<- '__CHECKER_DIFF_HEREDOC__'
+    ${DIFF}
+    __CHECKER_DIFF_HEREDOC__
+  )
+
+  printf "%s\n" "\${DIFF}" | exec $(HOOK_COMMAND) '--ansi'
+COMMANDS
+
+# Validate exit code of above command
+RC=$?
+if [ "$RC" != 0 ]; then
+  exit $RC;
+fi
+
+# Clean exit:
+exit 0;

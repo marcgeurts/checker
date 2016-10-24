@@ -1,0 +1,22 @@
+services:
+  io:
+    alias: io.console
+
+  io.null:
+    class: ClickNow\Checker\IO\NullIO
+    public: false
+
+  io.console:
+    class: ClickNow\Checker\IO\ConsoleIO
+    lazy: true
+    arguments:
+      - '@console.input'
+      - '@console.output'
+
+  console.input:
+    class: Symfony\Component\Console\Input\ArgvInput
+    synthetic: true
+
+  console.output:
+    class: Symfony\Component\Console\Output\ConsoleOutput
+    synthetic: true

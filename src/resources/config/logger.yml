@@ -1,0 +1,10 @@
+services:
+  logger:
+    class: Monolog\Logger
+    arguments:
+      - 'Checker'
+      - ['@logger.handler.nullhandler']
+
+  logger.handler.nullhandler:
+    class: Monolog\Handler\NullHandler
+    public: false

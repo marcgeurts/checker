@@ -1,0 +1,16 @@
+services:
+  process.arguments_collection:
+    class: ClickNow\Checker\Process\ArgumentsCollection
+
+  process.process_builder:
+    class: ClickNow\Checker\Process\ProcessBuilder
+    arguments:
+      - '@process.executable_finder'
+      - '@process_builder'
+      - '@io'
+
+  process.executable_finder:
+    class: ClickNow\Checker\Process\ExecutableFinder
+    arguments:
+      - '%bin_dir%'
+      - '@executable_finder'

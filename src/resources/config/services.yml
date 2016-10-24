@@ -1,0 +1,28 @@
+services:
+  checker:
+    class: ClickNow\Checker\Config\Checker
+    arguments:
+      - '@service_container'
+
+  commands_collection:
+    class: ClickNow\Checker\Command\CommandsCollection
+
+  event_dispatcher:
+    class: Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
+    arguments:
+      - '@service_container'
+
+  executable_finder:
+    class: Symfony\Component\Process\ExecutableFinder
+
+  filesystem:
+    class: Symfony\Component\Filesystem\Filesystem
+
+  git.repository:
+    class: Gitonomy\Git\Repository
+    arguments:
+      - '%git_dir%'
+      - { logger: '@logger' }
+
+  process_builder:
+    class: Symfony\Component\Process\ProcessBuilder

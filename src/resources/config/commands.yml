@@ -1,0 +1,21 @@
+services:
+  command.run:
+    class: ClickNow\Checker\Console\Command\RunCommand
+    arguments:
+      - '@commands_collection'
+      - '@util.git'
+
+  command.git.install:
+    class: ClickNow\Checker\Console\Command\Git\InstallCommand
+    arguments:
+      - '@checker'
+      - '@filesystem'
+      - '@io'
+      - '@process_builder'
+
+  command.git.uninstall:
+    class: ClickNow\Checker\Console\Command\Git\UninstallCommand
+    arguments:
+      - '@checker'
+      - '@filesystem'
+      - '@io'

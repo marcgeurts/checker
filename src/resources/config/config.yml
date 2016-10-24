@@ -1,0 +1,11 @@
+imports:
+  - { resource: 'commands.yml' }
+  - { resource: 'formatters.yml' }
+  - { resource: 'helpers.yml' }
+  - { resource: 'io.yml' }
+  - { resource: 'logger.yml' }
+  - { resource: 'parameters.yml' }
+  - { resource: 'process.yml' }
+  - { resource: 'services.yml' }
+  - { resource: 'subscribers.yml' }
+  - { resource: 'util.yml' }

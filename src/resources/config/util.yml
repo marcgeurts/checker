@@ -1,0 +1,11 @@
+services:
+  util.composer:
+    class: ClickNow\Checker\Util\Composer
+
+  util.files_collection:
+    class: ClickNow\Checker\Util\FilesCollection
+
+  util.git:
+    class: ClickNow\Checker\Util\Git
+    arguments:
+      - '@git.repository'
