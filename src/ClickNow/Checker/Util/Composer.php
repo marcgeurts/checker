@@ -38,7 +38,7 @@ class Composer
      *
      * @throws \ClickNow\Checker\Exception\RuntimeException
      *
-     * @return \Composer\Package\PackageInterface
+     * @return \Composer\Package\RootPackageInterface
      */
     public static function loadRootPackage(Config $config)
     {
