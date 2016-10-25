@@ -19,7 +19,7 @@ class FileNotFoundException extends RuntimeException
     {
         $this->path = $path;
 
-        if (!$message) {
+        if ($message === null) {
             $message = sprintf('File `%s` was not found.', $path);
         }
 

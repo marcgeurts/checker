@@ -12,7 +12,7 @@ class ExtensionNotFoundException extends ExtensionException
      */
     public function __construct($extensionClass, $message = null)
     {
-        if (!$message) {
+        if ($message === null) {
             $message = sprintf('Extension `%s` was not found.', $extensionClass);
         }
 

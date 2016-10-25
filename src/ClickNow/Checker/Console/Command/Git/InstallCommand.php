@@ -214,7 +214,7 @@ class InstallCommand extends Command
         ]);
 
         $configFile = $this->useExoticConfigFile();
-        if ($configFile) {
+        if ($configFile !== null) {
             $this->processBuilder->add(sprintf('--config=%s', $configFile));
         }
 

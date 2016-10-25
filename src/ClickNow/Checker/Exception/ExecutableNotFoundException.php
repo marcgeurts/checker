@@ -19,7 +19,7 @@ class ExecutableNotFoundException extends RuntimeException
     {
         $this->executable = $executable;
 
-        if (!$message) {
+        if ($message === null) {
             $message = sprintf('Executable `%s` was not found.', $executable);
         }
 

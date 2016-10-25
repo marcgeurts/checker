@@ -87,7 +87,7 @@ class ReportSubscriber implements EventSubscriberInterface
     private function reportSuccess($message, ResultsCollection $warnings)
     {
         $successMessage = $this->paths->getMessage($message);
-        if ($successMessage) {
+        if ($successMessage !== null) {
             $this->io->text(sprintf('<fg=green>%s</fg=green>', $successMessage));
         }
 
@@ -117,7 +117,7 @@ class ReportSubscriber implements EventSubscriberInterface
     private function reportError($message, ResultsCollection $errors, ResultsCollection $warnings)
     {
         $errorMessage = $this->paths->getMessage($message);
-        if ($errorMessage) {
+        if ($errorMessage !== null) {
             $this->io->text(sprintf('<fg=red>%s</fg=red>', $errorMessage));
         }
 

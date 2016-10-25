@@ -25,7 +25,7 @@ abstract class AbstractCompilerPass implements CompilerPassInterface
     /**
      * @var array
      */
-    protected static $tasks;
+    protected static $tasks = [];
 
     /**
      * Process container builder to run.
@@ -120,7 +120,7 @@ abstract class AbstractCompilerPass implements CompilerPassInterface
      */
     private function getTasksServices()
     {
-        if (self::$tasks) {
+        if (!empty(self::$tasks)) {
             return self::$tasks;
         }
 
