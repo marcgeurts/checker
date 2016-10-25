@@ -11,6 +11,7 @@ use Composer\Package\PackageInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\ScriptEvents;
 use Symfony\Component\Process\ExecutableFinder;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
 
 class CheckerPlugin implements PluginInterface, EventSubscriberInterface
@@ -159,8 +160,18 @@ class CheckerPlugin implements PluginInterface, EventSubscriberInterface
         $finder = new ExecutableFinder();
         $executable = $finder->find('checker', null, [$config->get('bin-dir')]);
         $builder = new ProcessBuilder([$executable, $command, '--no-interaction']);
-        $process = $builder->getProcess();
+        $this->runProcess($builder->getProcess());
+    }
 
+    /**
+     * Run process.
+     *
+     * @param \Symfony\Component\Process\Process $process
+     *
+     * @return void
+     */
+    private function runProcess(Process $process)
+    {
         if ($this->io->isVeryVerbose()) {
             $this->io->write('Running process: '.$process->getCommandLine());
         }
