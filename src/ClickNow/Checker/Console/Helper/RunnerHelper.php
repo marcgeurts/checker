@@ -21,7 +21,7 @@ class RunnerHelper extends Helper
     /**
      * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
      */
-    private $eventDispatcher;
+    private $dispatcher;
 
     /**
      * @var \ClickNow\Checker\IO\IOInterface
@@ -31,12 +31,12 @@ class RunnerHelper extends Helper
     /**
      * Runner helper.
      *
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
      * @param \ClickNow\Checker\IO\IOInterface                            $io
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher, IOInterface $io)
+    public function __construct(EventDispatcherInterface $dispatcher, IOInterface $io)
     {
-        $this->eventDispatcher = $eventDispatcher;
+        $this->dispatcher = $dispatcher;
         $this->io = $io;
     }
 
@@ -49,10 +49,7 @@ class RunnerHelper extends Helper
      */
     public function run(ContextInterface $context)
     {
-        $this->io->title(sprintf(
-            'Checker is analyzing your code by action `%s`!',
-            $context->getCommand()->getName()
-        ));
+        $this->io->title(sprintf('Checker is analyzing your code by action `%s`!', $context->getCommand()->getName()));
 
         $results = new ResultsCollection();
         $actions = $context->getCommand()->getActionsToRun($context);
@@ -63,10 +60,7 @@ class RunnerHelper extends Helper
             return;
         }
 
-        $this->eventDispatcher->dispatch(
-            RunnerEvent::RUNNER_RUN,
-            new RunnerEvent($context, $actions, $results)
-        );
+        $this->dispatcher->dispatch(RunnerEvent::RUNNER_RUN, new RunnerEvent($context, $actions, $results));
 
         foreach ($actions as $action) {
             $result = $this->runAction($context, $action);
@@ -77,18 +71,12 @@ class RunnerHelper extends Helper
         }
 
         if ($results->isFailed()) {
-            $this->eventDispatcher->dispatch(
-                RunnerEvent::RUNNER_FAILED,
-                new RunnerEvent($context, $actions, $results)
-            );
+            $this->dispatcher->dispatch(RunnerEvent::RUNNER_FAILED, new RunnerEvent($context, $actions, $results));
 
             return self::CODE_ERROR;
         }
 
-        $this->eventDispatcher->dispatch(
-            RunnerEvent::RUNNER_SUCCESSFULLY,
-            new RunnerEvent($context, $actions, $results)
-        );
+        $this->dispatcher->dispatch(RunnerEvent::RUNNER_SUCCESSFULLY, new RunnerEvent($context, $actions, $results));
 
         return self::CODE_SUCCESS;
     }
@@ -104,27 +92,16 @@ class RunnerHelper extends Helper
     private function runAction(ContextInterface $context, ActionInterface $action)
     {
         $this->io->log(sprintf('Checker running action `%s`.', $action->getName()));
-
-        $this->eventDispatcher->dispatch(
-            ActionEvent::ACTION_RUN,
-            new ActionEvent($context, $action)
-        );
-
+        $this->dispatcher->dispatch(ActionEvent::ACTION_RUN, new ActionEvent($context, $action));
         $result = $context->getCommand()->runAction($context, $action);
 
         if (!$result->isSuccess()) {
-            $this->eventDispatcher->dispatch(
-                ActionEvent::ACTION_FAILED,
-                new ActionEvent($context, $action, $result)
-            );
+            $this->dispatcher->dispatch(ActionEvent::ACTION_FAILED, new ActionEvent($context, $action, $result));
 
             return $result;
         }
 
-        $this->eventDispatcher->dispatch(
-            ActionEvent::ACTION_SUCCESSFULLY,
-            new ActionEvent($context, $action, $result)
-        );
+        $this->dispatcher->dispatch(ActionEvent::ACTION_SUCCESSFULLY, new ActionEvent($context, $action, $result));
 
         return $result;
     }
