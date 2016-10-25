@@ -4,7 +4,7 @@ namespace ClickNow\Checker\Console;
 
 use ClickNow\Checker\Command\CommandInterface;
 use ClickNow\Checker\Composer\ComposerUtil;
-use ClickNow\Checker\Config\ContainerFactory;
+use ClickNow\Checker\Config\ContainerUtil;
 use ClickNow\Checker\Console\Command\Git\HookCommand;
 use ClickNow\Checker\Console\Helper\ComposerHelper;
 use ClickNow\Checker\Exception\CommandInvalidException;
@@ -186,7 +186,7 @@ class Application extends SymfonyConsole
         $configPath = $input->getParameterOption(['--config', '-c']);
 
         // Build the service container
-        $this->container = ContainerFactory::buildFromConfigPath($configPath, $defaultConfigPath);
+        $this->container = ContainerUtil::buildFromConfigPath($configPath, $defaultConfigPath);
 
         /** @var \Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher $eventDispatcher */
         $eventDispatcher = $this->container->get('event_dispatcher');
