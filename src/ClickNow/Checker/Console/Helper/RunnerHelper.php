@@ -71,7 +71,7 @@ class RunnerHelper extends Helper
         foreach ($actions as $action) {
             $result = $this->runAction($context, $action);
             $results->add($result);
-            if ($result->isError() && $context->getCommand()->stopOnFailure()) {
+            if ($result->isError() && $context->getCommand()->shouldStopOnFailure()) {
                 break;
             }
         }

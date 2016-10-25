@@ -41,11 +41,11 @@ interface CommandInterface extends ActionInterface
     public function getProcessTimeout();
 
     /**
-     * Stop command in case of failure?
+     * Should stop running command on failure?
      *
      * @return bool
      */
-    public function stopOnFailure();
+    public function shouldStopOnFailure();
 
     /**
      * Ignore unstaged changes for this command?

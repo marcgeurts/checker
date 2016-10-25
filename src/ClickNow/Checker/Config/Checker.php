@@ -62,11 +62,11 @@ class Checker
     }
 
     /**
-     * Stop on failure?
+     * Should stop on failure?
      *
      * @return bool
      */
-    public function stopOnFailure()
+    public function shouldStopOnFailure()
     {
         return (bool) $this->container->getParameter('stop_on_failure');
     }

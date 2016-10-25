@@ -143,7 +143,7 @@ class Command implements CommandInterface
         $resolver = new OptionsResolver();
         $resolver->setDefaults(array_merge([
             'process_timeout'         => $this->checker->getProcessTimeout(),
-            'stop_on_failure'         => $this->checker->stopOnFailure(),
+            'stop_on_failure'         => $this->checker->shouldStopOnFailure(),
             'ignore_unstaged_changes' => $this->checker->ignoreUnstagedChanges(),
             'skip_success_output'     => $this->checker->skipSuccessOutput(),
             'message'                 => [],
@@ -169,11 +169,11 @@ class Command implements CommandInterface
     }
 
     /**
-     * Stop command in case of failure?
+     * Should stop running command on failure?
      *
      * @return bool
      */
-    public function stopOnFailure()
+    public function shouldStopOnFailure()
     {
         return $this->options['stop_on_failure'];
     }
@@ -309,7 +309,7 @@ class Command implements CommandInterface
         foreach ($actions as $action) {
             $result = $this->runAction($context, $action);
             $results->add($result);
-            if ($result->isError() && $this->stopOnFailure()) {
+            if ($result->isError() && $this->shouldStopOnFailure()) {
                 break;
             }
         }
