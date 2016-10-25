@@ -144,7 +144,7 @@ class Command implements CommandInterface
         $resolver->setDefaults(array_merge([
             'process_timeout'         => $this->checker->getProcessTimeout(),
             'stop_on_failure'         => $this->checker->shouldStopOnFailure(),
-            'ignore_unstaged_changes' => $this->checker->ignoreUnstagedChanges(),
+            'ignore_unstaged_changes' => $this->checker->shouldIgnoreUnstagedChanges(),
             'skip_success_output'     => $this->checker->skipSuccessOutput(),
             'message'                 => [],
             'can_run_in'              => true,
@@ -179,11 +179,11 @@ class Command implements CommandInterface
     }
 
     /**
-     * Ignore unstaged changes for this command?
+     * Should ignore unstaged changes for this command?
      *
      * @return bool
      */
-    public function ignoreUnstagedChanges()
+    public function shouldIgnoreUnstagedChanges()
     {
         return $this->options['ignore_unstaged_changes'];
     }

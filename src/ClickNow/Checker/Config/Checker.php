@@ -82,11 +82,11 @@ class Checker
     }
 
     /**
-     * Ignore unstaged changes?
+     * Should ignore unstaged changes?
      *
      * @return bool
      */
-    public function ignoreUnstagedChanges()
+    public function shouldIgnoreUnstagedChanges()
     {
         return (bool) $this->container->getParameter('ignore_unstaged_changes');
     }

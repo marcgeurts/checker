@@ -48,11 +48,11 @@ interface CommandInterface extends ActionInterface
     public function shouldStopOnFailure();
 
     /**
-     * Ignore unstaged changes for this command?
+     * Should ignore unstaged changes for this command?
      *
      * @return bool
      */
-    public function ignoreUnstagedChanges();
+    public function shouldIgnoreUnstagedChanges();
 
     /**
      * Skip success output for this command?
