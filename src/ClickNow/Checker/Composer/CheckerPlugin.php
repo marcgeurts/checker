@@ -49,7 +49,7 @@ class CheckerPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * Get subscribed events.
      *
-     * @return array<string,string>
+     * @return array<*,string>
      */
     public static function getSubscribedEvents()
     {

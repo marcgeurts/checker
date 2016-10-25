@@ -48,7 +48,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
     /**
      * Get subscribed events.
      *
-     * @return array<string,array<string|int>>
+     * @return array<*,array<string|int>>
      */
     public static function getSubscribedEvents()
     {
