@@ -1,11 +1,19 @@
 services:
-  command.run:
+  console.input:
+    class: Symfony\Component\Console\Input\ArgvInput
+    synthetic: true
+
+  console.output:
+    class: Symfony\Component\Console\Output\ConsoleOutput
+    synthetic: true
+
+  console.command.run:
     class: ClickNow\Checker\Console\Command\RunCommand
     arguments:
       - '@commands_collection'
       - '@util.git'
 
-  command.git.install:
+  console.command.git.install:
     class: ClickNow\Checker\Console\Command\Git\InstallCommand
     arguments:
       - '@checker'
@@ -13,9 +21,10 @@ services:
       - '@io'
       - '@process_builder'
 
-  command.git.uninstall:
+  console.command.git.uninstall:
     class: ClickNow\Checker\Console\Command\Git\UninstallCommand
     arguments:
       - '@checker'
       - '@filesystem'
       - '@io'
+

@@ -18,11 +18,11 @@ services:
   filesystem:
     class: Symfony\Component\Filesystem\Filesystem
 
+  process_builder:
+    class: Symfony\Component\Process\ProcessBuilder
+
   git.repository:
     class: Gitonomy\Git\Repository
     arguments:
       - '%git_dir%'
       - { logger: '@logger' }
-
-  process_builder:
-    class: Symfony\Component\Process\ProcessBuilder

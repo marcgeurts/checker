@@ -1,7 +1,4 @@
 services:
-  util.composer:
-    class: ClickNow\Checker\Util\Composer
-
   util.files_collection:
     class: ClickNow\Checker\Util\FilesCollection
 

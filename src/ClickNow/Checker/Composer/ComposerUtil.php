@@ -1,6 +1,6 @@
 <?php
 
-namespace ClickNow\Checker\Util;
+namespace ClickNow\Checker\Composer;
 
 use ClickNow\Checker\Exception\RuntimeException;
 use Composer\Config;
@@ -11,7 +11,7 @@ use Composer\Package\Loader\RootPackageLoader;
 use Composer\Repository\RepositoryFactory;
 use Exception;
 
-class Composer
+class ComposerUtil
 {
     /**
      * Load composer config.
@@ -23,36 +23,33 @@ class Composer
     public static function loadConfig()
     {
         try {
-            $config = Factory::createConfig();
+            return Factory::createConfig();
         } catch (Exception $e) {
             throw new RuntimeException($e->getMessage());
         }
-
-        return $config;
     }
 
     /**
-     * Load composer root package.
+     * Load composer package.
      *
      * @param \Composer\Config $config
      *
      * @throws \ClickNow\Checker\Exception\RuntimeException
      *
-     * @return \Composer\Package\RootPackageInterface
+     * @return \Composer\Package\PackageInterface
      */
-    public static function loadRootPackage(Config $config)
+    public static function loadPackage(Config $config)
     {
         try {
             $loader = new JsonLoader(new RootPackageLoader(
                 RepositoryFactory::manager(new NullIO(), $config),
                 $config
             ));
-            $package = $loader->load(getcwd().DIRECTORY_SEPARATOR.'composer.json');
+
+            return $loader->load(getcwd().DIRECTORY_SEPARATOR.'composer.json');
         } catch (Exception $e) {
             throw new RuntimeException($e->getMessage());
         }
-
-        return $package;
     }
 
     /**
@@ -66,17 +63,18 @@ class Composer
      */
     public static function ensureProjectBinDirInSystemPath($binDir)
     {
-        $binDir = realpath($binDir);
+        $absoluteBinDir = realpath($binDir);
         $pathStr = (!isset($_SERVER['PATH']) && isset($_SERVER['Path'])) ? 'Path' : 'PATH';
+        $match = preg_match(
+            '{(^|'.PATH_SEPARATOR.')'.preg_quote($absoluteBinDir).'($|'.PATH_SEPARATOR.')}',
+            $_SERVER[$pathStr]
+        );
 
-        if (!is_dir($binDir) ||
-            !isset($_SERVER[$pathStr]) ||
-            preg_match('{(^|'.PATH_SEPARATOR.')'.preg_quote($binDir).'($|'.PATH_SEPARATOR.')}', $_SERVER[$pathStr])
-        ) {
+        if (!is_dir($absoluteBinDir) || !isset($_SERVER[$pathStr]) || $match) {
             return;
         }
 
-        $_SERVER[$pathStr] = $binDir.PATH_SEPARATOR.getenv($pathStr);
+        $_SERVER[$pathStr] = $absoluteBinDir.PATH_SEPARATOR.getenv($pathStr);
         putenv($pathStr.'='.$_SERVER[$pathStr]);
     }
 }

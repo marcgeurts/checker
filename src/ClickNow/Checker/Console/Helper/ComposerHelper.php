@@ -3,7 +3,7 @@
 namespace ClickNow\Checker\Console\Helper;
 
 use Composer\Config;
-use Composer\Package\RootPackageInterface;
+use Composer\Package\PackageInterface;
 use Symfony\Component\Console\Helper\Helper;
 
 class ComposerHelper extends Helper
@@ -16,20 +16,20 @@ class ComposerHelper extends Helper
     private $config;
 
     /**
-     * @var \Composer\Package\RootPackageInterface|null
+     * @var \Composer\Package\PackageInterface|null
      */
-    private $rootPackage;
+    private $package;
 
     /**
      * Composer helper.
      *
-     * @param \Composer\Config|null                       $config
-     * @param \Composer\Package\RootPackageInterface|null $rootPackage
+     * @param \Composer\Config|null                   $config
+     * @param \Composer\Package\PackageInterface|null $package
      */
-    public function __construct(Config $config = null, RootPackageInterface $rootPackage = null)
+    public function __construct(Config $config = null, PackageInterface $package = null)
     {
         $this->config = $config;
-        $this->rootPackage = $rootPackage;
+        $this->package = $package;
     }
 
     /**
@@ -53,23 +53,23 @@ class ComposerHelper extends Helper
     }
 
     /**
-     * Get root package.
+     * Get package.
      *
-     * @return \Composer\Package\RootPackageInterface|null
+     * @return \Composer\Package\PackageInterface|null
      */
-    public function getRootPackage()
+    public function getPackage()
     {
-        return $this->rootPackage;
+        return $this->package;
     }
 
     /**
-     * Has root package?
+     * Has package?
      *
      * @return bool
      */
-    public function hasRootPackage()
+    public function hasPackage()
     {
-        return $this->rootPackage !== null;
+        return $this->package !== null;
     }
 
     /**

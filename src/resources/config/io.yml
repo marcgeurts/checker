@@ -12,11 +12,3 @@ services:
     arguments:
       - '@console.input'
       - '@console.output'
-
-  console.input:
-    class: Symfony\Component\Console\Input\ArgvInput
-    synthetic: true
-
-  console.output:
-    class: Symfony\Component\Console\Output\ConsoleOutput
-    synthetic: true

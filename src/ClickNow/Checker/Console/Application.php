@@ -3,12 +3,12 @@
 namespace ClickNow\Checker\Console;
 
 use ClickNow\Checker\Command\CommandInterface;
+use ClickNow\Checker\Composer\ComposerUtil;
 use ClickNow\Checker\Config\ContainerFactory;
 use ClickNow\Checker\Console\Command\Git\HookCommand;
 use ClickNow\Checker\Console\Helper\ComposerHelper;
 use ClickNow\Checker\Exception\CommandInvalidException;
 use ClickNow\Checker\Exception\RuntimeException;
-use ClickNow\Checker\Util\Composer;
 use ClickNow\Checker\Util\Git;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -84,9 +84,9 @@ class Application extends SymfonyConsole
         $container = $this->getContainer();
 
         $commands = parent::getDefaultCommands();
-        array_push($commands, $container->get('command.run'));
-        array_push($commands, $container->get('command.git.install'));
-        array_push($commands, $container->get('command.git.uninstall'));
+        array_push($commands, $container->get('console.command.run'));
+        array_push($commands, $container->get('console.command.git.install'));
+        array_push($commands, $container->get('console.command.git.uninstall'));
 
         /** @var \ClickNow\Checker\Util\Git $git */
         $git = $container->get('util.git');
@@ -207,15 +207,15 @@ class Application extends SymfonyConsole
         }
 
         try {
-            $config = Composer::loadConfig();
-            Composer::ensureProjectBinDirInSystemPath($config->get('bin-dir'));
-            $rootPackage = Composer::loadRootPackage($config);
+            $config = ComposerUtil::loadConfig();
+            ComposerUtil::ensureProjectBinDirInSystemPath($config->get('bin-dir'));
+            $package = ComposerUtil::loadPackage($config);
         } catch (RuntimeException $e) {
             $config = null;
-            $rootPackage = null;
+            $package = null;
         }
 
-        $this->composerHelper = new ComposerHelper($config, $rootPackage);
+        $this->composerHelper = new ComposerHelper($config, $package);
 
         return $this->composerHelper;
     }
@@ -234,7 +234,7 @@ class Application extends SymfonyConsole
         $defaultPath = getcwd().DIRECTORY_SEPARATOR.self::APP_CONFIG_FILE;
 
         // use path from composer
-        $package = $this->getComposerHelper()->getRootPackage();
+        $package = $this->getComposerHelper()->getPackage();
         if (!is_null($package)) {
             $extra = $package->getExtra();
 
