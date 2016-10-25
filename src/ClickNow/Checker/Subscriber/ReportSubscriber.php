@@ -65,7 +65,7 @@ class ReportSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($command->skipSuccessOutput()) {
+        if ($command->isSkipSuccessOutput()) {
             $this->reportWarning($warning);
 
             return;

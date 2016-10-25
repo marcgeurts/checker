@@ -55,11 +55,11 @@ interface CommandInterface extends ActionInterface
     public function shouldIgnoreUnstagedChanges();
 
     /**
-     * Skip success output for this command?
+     * It is to skip the success output for this command?
      *
      * @return bool
      */
-    public function skipSuccessOutput();
+    public function isSkipSuccessOutput();
 
     /**
      * Get message by resource for this command.

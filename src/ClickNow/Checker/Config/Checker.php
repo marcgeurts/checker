@@ -72,11 +72,11 @@ class Checker
     }
 
     /**
-     * Skip success output?
+     * It is to skip the success output?
      *
      * @return bool
      */
-    public function skipSuccessOutput()
+    public function isSkipSuccessOutput()
     {
         return (bool) $this->container->getParameter('skip_success_output');
     }

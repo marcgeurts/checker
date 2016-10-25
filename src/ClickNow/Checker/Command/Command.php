@@ -145,7 +145,7 @@ class Command implements CommandInterface
             'process_timeout'         => $this->checker->getProcessTimeout(),
             'stop_on_failure'         => $this->checker->shouldStopOnFailure(),
             'ignore_unstaged_changes' => $this->checker->shouldIgnoreUnstagedChanges(),
-            'skip_success_output'     => $this->checker->skipSuccessOutput(),
+            'skip_success_output'     => $this->checker->isSkipSuccessOutput(),
             'message'                 => [],
             'can_run_in'              => true,
         ], $this->options));
@@ -189,11 +189,11 @@ class Command implements CommandInterface
     }
 
     /**
-     * Skip success output for this command?
+     * It is to skip the success output for this command?
      *
      * @return bool
      */
-    public function skipSuccessOutput()
+    public function isSkipSuccessOutput()
     {
         return $this->options['skip_success_output'];
     }
