@@ -27,6 +27,8 @@ interface IOInterface extends OutputInterface, StyleInterface
      * Log.
      *
      * @param string $message
+     *
+     * @return void
      */
     public function log($message);
 }

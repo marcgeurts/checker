@@ -34,7 +34,7 @@ class Result implements ResultInterface
     private $action;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     private $message;
 
@@ -45,7 +45,7 @@ class Result implements ResultInterface
      * @param \ClickNow\Checker\Command\CommandInterface $command
      * @param \ClickNow\Checker\Context\ContextInterface $context
      * @param \ClickNow\Checker\Action\ActionInterface   $action
-     * @param string|null                                $message
+     * @param null|string                                $message
      */
     private function __construct(
         $status,
@@ -170,7 +170,7 @@ class Result implements ResultInterface
     /**
      * Get message.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getMessage()
     {

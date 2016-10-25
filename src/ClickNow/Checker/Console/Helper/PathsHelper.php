@@ -86,9 +86,9 @@ class PathsHelper extends Helper
     /**
      * Get message by resource.
      *
-     * @param string|null $resource
+     * @param null|string $resource
      *
-     * @return string|null
+     * @return null|string
      */
     public function getMessage($resource)
     {
@@ -250,11 +250,11 @@ class PathsHelper extends Helper
      */
     public function getAbsolutePath($path)
     {
-        $path = trim($path);
-        $realpath = realpath($path);
+        $pathTrimmed = trim($path);
+        $realpath = realpath($pathTrimmed);
 
         if ($realpath === false) {
-            throw new FileNotFoundException($path);
+            throw new FileNotFoundException($pathTrimmed);
         }
 
         return $realpath;

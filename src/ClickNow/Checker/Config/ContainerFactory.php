@@ -18,8 +18,8 @@ final class ContainerFactory
     /**
      * Create container builder from config path.
      *
-     * @param string $configPath
-     * @param string $defaultConfigPath
+     * @param bool|string $configPath
+     * @param string      $defaultConfigPath
      *
      * @return \Symfony\Component\DependencyInjection\ContainerBuilder
      */
@@ -45,6 +45,8 @@ final class ContainerFactory
         $filesystem = new Filesystem();
         if ($filesystem->exists($configPath)) {
             $loader->load($configPath);
+        } elseif ($filesystem->exists($defaultConfigPath)) {
+            $loader->load($defaultConfigPath);
         }
 
         // Set parameter default config path

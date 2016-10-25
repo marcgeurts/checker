@@ -2,6 +2,7 @@
 
 namespace ClickNow\Checker\Subscriber;
 
+use ClickNow\Checker\Command\CommandInterface;
 use ClickNow\Checker\Console\Helper\PathsHelper;
 use ClickNow\Checker\Event\RunnerEvent;
 use ClickNow\Checker\IO\IOInterface;
@@ -35,7 +36,7 @@ class ReportSubscriber implements EventSubscriberInterface
     /**
      * Get subscribed events.
      *
-     * @return array
+     * @return array<string, string>
      */
     public static function getSubscribedEvents()
     {
@@ -57,11 +58,7 @@ class ReportSubscriber implements EventSubscriberInterface
         $warning = $results->filterByWarning();
 
         if ($results->isFailed()) {
-            $this->reportError(
-                $command->getMessage('failed'),
-                $results->filterByError(),
-                $warning
-            );
+            $this->reportError($command, $results->filterByError(), $warning);
 
             return;
         }
@@ -72,21 +69,18 @@ class ReportSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->reportSuccess(
-            $command->getMessage('successfully'),
-            $warning
-        );
+        $this->reportSuccess($command, $warning);
     }
 
     /**
      * Report success.
      *
-     * @param string|null                                $message
+     * @param \ClickNow\Checker\Command\CommandInterface $command
      * @param \ClickNow\Checker\Result\ResultsCollection $warnings
      */
-    private function reportSuccess($message, ResultsCollection $warnings)
+    private function reportSuccess(CommandInterface $command, ResultsCollection $warnings)
     {
-        $successMessage = $this->paths->getMessage($message);
+        $successMessage = $this->paths->getMessage($command->getMessage('successfully'));
         if ($successMessage !== null) {
             $this->io->text(sprintf('<fg=green>%s</fg=green>', $successMessage));
         }
@@ -110,13 +104,13 @@ class ReportSubscriber implements EventSubscriberInterface
     /**
      * Report error.
      *
-     * @param string|null                                $message
+     * @param \ClickNow\Checker\Command\CommandInterface $command
      * @param \ClickNow\Checker\Result\ResultsCollection $errors
      * @param \ClickNow\Checker\Result\ResultsCollection $warnings
      */
-    private function reportError($message, ResultsCollection $errors, ResultsCollection $warnings)
+    private function reportError(CommandInterface $command, ResultsCollection $errors, ResultsCollection $warnings)
     {
-        $errorMessage = $this->paths->getMessage($message);
+        $errorMessage = $this->paths->getMessage($command->getMessage('failed'));
         if ($errorMessage !== null) {
             $this->io->text(sprintf('<fg=red>%s</fg=red>', $errorMessage));
         }

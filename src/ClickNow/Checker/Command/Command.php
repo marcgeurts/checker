@@ -157,7 +157,7 @@ class Command implements CommandInterface
     /**
      * Get process timeout for this command.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getProcessTimeout()
     {
@@ -199,7 +199,7 @@ class Command implements CommandInterface
      *
      * @param string $resource
      *
-     * @return string|null
+     * @return null|string
      */
     public function getMessage($resource)
     {
@@ -295,7 +295,7 @@ class Command implements CommandInterface
      * @param \ClickNow\Checker\Command\CommandInterface $command
      * @param \ClickNow\Checker\Context\ContextInterface $context
      *
-     * @return \ClickNow\Checker\Result\ResultsCollection
+     * @return \ClickNow\Checker\Result\ResultInterface
      */
     public function run(CommandInterface $command, ContextInterface $context)
     {

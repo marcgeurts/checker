@@ -40,6 +40,8 @@ abstract class AbstractCompilerPass implements CompilerPassInterface
 
     /**
      * Run.
+     *
+     * @return void
      */
     abstract protected function run();
 
@@ -72,9 +74,9 @@ abstract class AbstractCompilerPass implements CompilerPassInterface
      */
     protected function addTasks(Definition $definition, array $tasks)
     {
-        $tasks = $this->parseTasks($tasks);
+        $parsedTasks = $this->parseTasks($tasks);
 
-        foreach ($tasks as $id => $config) {
+        foreach ($parsedTasks as $id => $config) {
             $definition->addMethodCall('addAction', [new Reference($id), (array) $config]);
         }
     }

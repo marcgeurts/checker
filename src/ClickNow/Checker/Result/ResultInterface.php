@@ -35,7 +35,7 @@ interface ResultInterface
     /**
      * Get message.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getMessage();
 

@@ -24,7 +24,7 @@ class ActionEvent extends Event
     private $action;
 
     /**
-     * @var \ClickNow\Checker\Result\ResultInterface
+     * @var \ClickNow\Checker\Result\ResultInterface|null
      */
     private $result;
 
@@ -65,7 +65,7 @@ class ActionEvent extends Event
     /**
      * Get result.
      *
-     * @return \ClickNow\Checker\Result\ResultInterface
+     * @return \ClickNow\Checker\Result\ResultInterface|null
      */
     public function getResult()
     {

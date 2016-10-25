@@ -66,7 +66,7 @@ class ConsoleIO extends SymfonyStyle implements IOInterface
     /**
      * Read command input.
      *
-     * @param resource $handle
+     * @param string $handle
      *
      * @throws \ClickNow\Checker\Exception\InvalidArgumentException
      *

@@ -11,6 +11,8 @@ interface TaskInterface extends ActionInterface
      * Merge default config.
      *
      * @param array $config
+     *
+     * @return void
      */
     public function mergeDefaultConfig(array $config);
 

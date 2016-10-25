@@ -19,6 +19,8 @@ interface CommandInterface extends ActionInterface
      *
      * @param \ClickNow\Checker\Action\ActionInterface $action
      * @param array                                    $config
+     *
+     * @return void
      */
     public function addAction(ActionInterface $action, array $config);
 
@@ -26,13 +28,15 @@ interface CommandInterface extends ActionInterface
      * Set config for this command.
      *
      * @param array $config
+     *
+     * @return void
      */
     public function setConfig(array $config);
 
     /**
      * Get process timeout for this command.
      *
-     * @return float|null
+     * @return null|float
      */
     public function getProcessTimeout();
 
@@ -62,7 +66,7 @@ interface CommandInterface extends ActionInterface
      *
      * @param string $resource
      *
-     * @return string|null
+     * @return null|string
      */
     public function getMessage($resource);
 

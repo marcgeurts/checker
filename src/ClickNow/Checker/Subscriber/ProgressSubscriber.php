@@ -33,7 +33,7 @@ class ProgressSubscriber implements EventSubscriberInterface
     /**
      * Get subscribed events.
      *
-     * @return array
+     * @return array<string, string>
      */
     public static function getSubscribedEvents()
     {

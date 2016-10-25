@@ -94,7 +94,7 @@ class Checker
     /**
      * Get process timeout.
      *
-     * @return float
+     * @return null|float
      */
     public function getProcessTimeout()
     {
@@ -112,7 +112,7 @@ class Checker
      *
      * @param string $resource
      *
-     * @return string|null
+     * @return null|string
      */
     public function getMessage($resource)
     {
