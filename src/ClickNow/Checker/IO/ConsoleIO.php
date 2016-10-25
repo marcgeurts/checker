@@ -12,12 +12,12 @@ class ConsoleIO extends SymfonyStyle implements IOInterface
     /**
      * @var \Symfony\Component\Console\Input\InputInterface
      */
-    private $input;
+    private $consoleInput;
 
     /**
      * @var \Symfony\Component\Console\Output\OutputInterface
      */
-    private $output;
+    private $consoleOutput;
 
     /**
      * @var string
@@ -34,8 +34,8 @@ class ConsoleIO extends SymfonyStyle implements IOInterface
     {
         parent::__construct($input, $output);
 
-        $this->input = $input;
-        $this->output = $output;
+        $this->consoleInput = $input;
+        $this->consoleOutput = $output;
     }
 
     /**
@@ -45,7 +45,7 @@ class ConsoleIO extends SymfonyStyle implements IOInterface
      */
     public function isInteractive()
     {
-        return $this->input->isInteractive();
+        return $this->consoleInput->isInteractive();
     }
 
     /**
