@@ -231,7 +231,7 @@ class Application extends SymfonyConsole
         }
 
         // use path with dist
-        $distPath = (strpos($defaultPath, -5) !== '.dist') ? $defaultPath.'.dist' : $defaultPath;
+        $distPath = (substr($defaultPath, -5) !== '.dist') ? $defaultPath.'.dist' : $defaultPath;
         if ($this->filesystem->exists($distPath)) {
             $defaultPath = $distPath;
         }
