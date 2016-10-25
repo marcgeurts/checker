@@ -96,10 +96,7 @@ class Command implements CommandInterface
     {
         $name = $action->getName();
 
-        if ($this->actions->contains($action) ||
-            array_key_exists($name, $this->actionsMetadata) ||
-            array_key_exists($name, $this->actionsConfig)
-        ) {
+        if ($this->hasAction($action)) {
             throw new ActionAlreadyRegisteredException($name);
         }
 
@@ -109,6 +106,21 @@ class Command implements CommandInterface
         $this->actionsMetadata[$name] = $this->parseActionMetadata($metadata);
         $this->actionsConfig[$name] = (array) $config;
         $this->actions->add($action);
+    }
+
+    /**
+     * Has action?
+     *
+     * @param \ClickNow\Checker\Action\ActionInterface $action
+     *
+     * @return bool
+     */
+    public function hasAction(ActionInterface $action)
+    {
+        $metadata = array_key_exists($action->getName(), $this->actionsMetadata);
+        $config = array_key_exists($action->getName(), $this->actionsConfig);
+
+        return $this->actions->contains($action) || $metadata || $config;
     }
 
     /**
@@ -189,7 +201,7 @@ class Command implements CommandInterface
     }
 
     /**
-     * It is to skip the success output for this command?
+     * Skip success output for this command?
      *
      * @return bool
      */
