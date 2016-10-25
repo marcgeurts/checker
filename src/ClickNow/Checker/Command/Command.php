@@ -89,6 +89,8 @@ class Command implements CommandInterface
      * @param array                                    $config
      *
      * @throws \ClickNow\Checker\Exception\ActionAlreadyRegisteredException
+     *
+     * @return void
      */
     public function addAction(ActionInterface $action, array $config)
     {
@@ -133,6 +135,8 @@ class Command implements CommandInterface
      * Set config for this command.
      *
      * @param array $config
+     *
+     * @return void
      */
     public function setConfig(array $config)
     {

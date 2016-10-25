@@ -33,7 +33,7 @@ class ProgressSubscriber implements EventSubscriberInterface
     /**
      * Get subscribed events.
      *
-     * @return array<string, string>
+     * @return array<string,string>
      */
     public static function getSubscribedEvents()
     {
@@ -49,6 +49,8 @@ class ProgressSubscriber implements EventSubscriberInterface
      * Start progress.
      *
      * @param \ClickNow\Checker\Event\RunnerEvent $event
+     *
+     * @return void
      */
     public function startProgress(RunnerEvent $event)
     {
@@ -57,6 +59,8 @@ class ProgressSubscriber implements EventSubscriberInterface
 
     /**
      * Advance progress.
+     *
+     * @return void
      */
     public function advanceProgress()
     {
@@ -65,6 +69,8 @@ class ProgressSubscriber implements EventSubscriberInterface
 
     /**
      * Finish progress.
+     *
+     * @return void
      */
     public function finishProgress()
     {

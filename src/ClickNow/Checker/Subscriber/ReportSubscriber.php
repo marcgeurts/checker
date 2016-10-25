@@ -36,7 +36,7 @@ class ReportSubscriber implements EventSubscriberInterface
     /**
      * Get subscribed events.
      *
-     * @return array<string, string>
+     * @return array<string,string>
      */
     public static function getSubscribedEvents()
     {
@@ -50,6 +50,8 @@ class ReportSubscriber implements EventSubscriberInterface
      * On report.
      *
      * @param \ClickNow\Checker\Event\RunnerEvent $event
+     *
+     * @return void
      */
     public function onReport(RunnerEvent $event)
     {
@@ -77,6 +79,8 @@ class ReportSubscriber implements EventSubscriberInterface
      *
      * @param \ClickNow\Checker\Command\CommandInterface $command
      * @param \ClickNow\Checker\Result\ResultsCollection $warnings
+     *
+     * @return void
      */
     private function reportSuccess(CommandInterface $command, ResultsCollection $warnings)
     {
@@ -92,6 +96,8 @@ class ReportSubscriber implements EventSubscriberInterface
      * Report warning.
      *
      * @param \ClickNow\Checker\Result\ResultsCollection $warnings
+     *
+     * @return void
      */
     private function reportWarning(ResultsCollection $warnings)
     {
@@ -107,6 +113,8 @@ class ReportSubscriber implements EventSubscriberInterface
      * @param \ClickNow\Checker\Command\CommandInterface $command
      * @param \ClickNow\Checker\Result\ResultsCollection $errors
      * @param \ClickNow\Checker\Result\ResultsCollection $warnings
+     *
+     * @return void
      */
     private function reportError(CommandInterface $command, ResultsCollection $errors, ResultsCollection $warnings)
     {

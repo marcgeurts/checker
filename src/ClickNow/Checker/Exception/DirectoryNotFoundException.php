@@ -18,12 +18,13 @@ class DirectoryNotFoundException extends RuntimeException
     public function __construct($directory, $message = null)
     {
         $this->directory = $directory;
+        $msg = $message;
 
-        if ($message === null) {
-            $message = sprintf('Directory `%s` was not found.', $directory);
+        if ($msg === null) {
+            $msg = sprintf('Directory `%s` was not found.', $directory);
         }
 
-        parent::__construct($message);
+        parent::__construct($msg);
     }
 
     /**

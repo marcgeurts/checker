@@ -12,10 +12,12 @@ class CommandNotFoundException extends CommandException
      */
     public function __construct($commandName, $message = null)
     {
-        if ($message === null) {
-            $message = sprintf('Command `%s` was not found.', $commandName);
+        $msg = $message;
+
+        if ($msg === null) {
+            $msg = sprintf('Command `%s` was not found.', $commandName);
         }
 
-        parent::__construct($commandName, $message);
+        parent::__construct($commandName, $msg);
     }
 }

@@ -10,6 +10,8 @@ class CommandCompilerPass extends AbstractCompilerPass
      * Configure commands to run.
      *
      * @throws \ClickNow\Checker\Exception\CommandInvalidException
+     *
+     * @return void
      */
     public function run()
     {

@@ -12,10 +12,12 @@ class ExtensionAlreadyRegisteredException extends ExtensionException
      */
     public function __construct($extensionClass, $message = null)
     {
-        if ($message === null) {
-            $message = sprintf('Extension `%s` already registered.', $extensionClass);
+        $msg = $message;
+
+        if ($msg === null) {
+            $msg = sprintf('Extension `%s` already registered.', $extensionClass);
         }
 
-        parent::__construct($extensionClass, $message);
+        parent::__construct($extensionClass, $msg);
     }
 }

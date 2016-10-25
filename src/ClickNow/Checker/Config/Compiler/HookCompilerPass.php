@@ -8,6 +8,8 @@ class HookCompilerPass extends AbstractCompilerPass
 {
     /**
      * Configure hooks to run.
+     *
+     * @return void
      */
     public function run()
     {

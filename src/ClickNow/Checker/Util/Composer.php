@@ -61,6 +61,8 @@ class Composer
      * we'll have to ensure that the bin path is always prefixed.
      *
      * @param string $binDir
+     *
+     * @return void
      */
     public static function ensureProjectBinDirInSystemPath($binDir)
     {

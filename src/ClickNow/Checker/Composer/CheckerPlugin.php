@@ -37,6 +37,8 @@ class CheckerPlugin implements PluginInterface, EventSubscriberInterface
      *
      * @param \Composer\Composer       $composer
      * @param \Composer\IO\IOInterface $io
+     *
+     * @return void
      */
     public function activate(Composer $composer, IOInterface $io)
     {
@@ -47,7 +49,7 @@ class CheckerPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * Get subscribed events.
      *
-     * @return array<string>
+     * @return array<string,string>
      */
     public static function getSubscribedEvents()
     {
@@ -64,6 +66,8 @@ class CheckerPlugin implements PluginInterface, EventSubscriberInterface
      * Post package install.
      *
      * @param \Composer\Installer\PackageEvent $event
+     *
+     * @return void
      */
     public function postPackageInstall(PackageEvent $event)
     {
@@ -82,6 +86,8 @@ class CheckerPlugin implements PluginInterface, EventSubscriberInterface
      * Post package update.
      *
      * @param \Composer\Installer\PackageEvent $event
+     *
+     * @return void
      */
     public function postPackageUpdate(PackageEvent $event)
     {
@@ -100,6 +106,8 @@ class CheckerPlugin implements PluginInterface, EventSubscriberInterface
      * Pre package uninstall.
      *
      * @param \Composer\Installer\PackageEvent $event
+     *
+     * @return void
      */
     public function prePackageUninstall(PackageEvent $event)
     {
@@ -116,6 +124,8 @@ class CheckerPlugin implements PluginInterface, EventSubscriberInterface
 
     /**
      * Run scheduled tasks.
+     *
+     * @return void
      */
     public function runScheduledTasks()
     {
@@ -140,6 +150,8 @@ class CheckerPlugin implements PluginInterface, EventSubscriberInterface
      * Run command.
      *
      * @param string $command
+     *
+     * @return void
      */
     private function runCommand($command)
     {

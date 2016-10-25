@@ -31,6 +31,8 @@ abstract class AbstractCompilerPass implements CompilerPassInterface
      * Process container builder to run.
      *
      * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     *
+     * @return void
      */
     public function process(ContainerBuilder $container)
     {
@@ -71,6 +73,8 @@ abstract class AbstractCompilerPass implements CompilerPassInterface
      *
      * @param \Symfony\Component\DependencyInjection\Definition $definition
      * @param array                                             $tasks
+     *
+     * @return void
      */
     protected function addTasks(Definition $definition, array $tasks)
     {
@@ -159,6 +163,8 @@ abstract class AbstractCompilerPass implements CompilerPassInterface
      *
      * @throws \ClickNow\Checker\Exception\CommandNotFoundException
      * @throws \ClickNow\Checker\Exception\CommandAlreadyRegisteredException
+     *
+     * @return void
      */
     protected function addCommands(Definition $definition, array $commands)
     {

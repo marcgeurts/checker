@@ -39,6 +39,8 @@ class HookCommand extends SymfonyCommand
 
     /**
      * Configure.
+     *
+     * @return void
      */
     protected function configure()
     {

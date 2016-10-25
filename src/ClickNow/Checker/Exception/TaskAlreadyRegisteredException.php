@@ -12,10 +12,12 @@ class TaskAlreadyRegisteredException extends TaskException
      */
     public function __construct($taskName, $message = null)
     {
-        if ($message === null) {
-            $message = sprintf('Task `%s` already registered.', $taskName);
+        $msg = $message;
+
+        if ($msg === null) {
+            $msg = sprintf('Task `%s` already registered.', $taskName);
         }
 
-        parent::__construct($taskName, $message);
+        parent::__construct($taskName, $msg);
     }
 }

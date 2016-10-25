@@ -52,6 +52,8 @@ class ConsoleIO extends SymfonyStyle implements IOInterface
      * Log.
      *
      * @param string $message
+     *
+     * @return void
      */
     public function log($message)
     {

@@ -12,10 +12,12 @@ class TaskNotFoundException extends TaskException
      */
     public function __construct($taskName, $message = null)
     {
-        if ($message === null) {
-            $message = sprintf('Task `%s` was not found.', $taskName);
+        $msg = $message;
+
+        if ($msg === null) {
+            $msg = sprintf('Task `%s` was not found.', $taskName);
         }
 
-        parent::__construct($taskName, $message);
+        parent::__construct($taskName, $msg);
     }
 }

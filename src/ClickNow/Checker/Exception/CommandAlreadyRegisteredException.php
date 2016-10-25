@@ -12,10 +12,12 @@ class CommandAlreadyRegisteredException extends CommandException
      */
     public function __construct($commandName, $message = null)
     {
-        if ($message === null) {
-            $message = sprintf('Command `%s` already registered.', $commandName);
+        $msg = $message;
+
+        if ($msg === null) {
+            $msg = sprintf('Command `%s` already registered.', $commandName);
         }
 
-        parent::__construct($commandName, $message);
+        parent::__construct($commandName, $msg);
     }
 }

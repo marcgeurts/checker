@@ -6,7 +6,7 @@ use ClickNow\Checker\Action\ActionInterface;
 use ClickNow\Checker\Command\CommandInterface;
 use ClickNow\Checker\Context\ContextInterface;
 
-class Result implements ResultInterface
+final class Result implements ResultInterface
 {
     const SKIPPED = -1;
     const SUCCESS = 0;

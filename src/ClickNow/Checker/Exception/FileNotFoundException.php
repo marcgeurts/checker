@@ -18,12 +18,13 @@ class FileNotFoundException extends RuntimeException
     public function __construct($path, $message = null)
     {
         $this->path = $path;
+        $msg = $message;
 
-        if ($message === null) {
-            $message = sprintf('File `%s` was not found.', $path);
+        if ($msg === null) {
+            $msg = sprintf('File `%s` was not found.', $path);
         }
 
-        parent::__construct($message);
+        parent::__construct($msg);
     }
 
     /**

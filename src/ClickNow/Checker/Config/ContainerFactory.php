@@ -43,7 +43,7 @@ final class ContainerFactory
 
         // Load checker.yml
         $filesystem = new Filesystem();
-        if ($filesystem->exists($configPath)) {
+        if (is_string($configPath) && $filesystem->exists($configPath)) {
             $loader->load($configPath);
         } elseif ($filesystem->exists($defaultConfigPath)) {
             $loader->load($defaultConfigPath);

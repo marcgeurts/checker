@@ -7,7 +7,7 @@ use Symfony\Component\Process\Process;
 interface ProcessFormatterInterface
 {
     /**
-     * Format.
+     * This method will format the output of a Process object to a string.
      *
      * @param \Symfony\Component\Process\Process $process
      *

@@ -65,6 +65,8 @@ class InstallCommand extends Command
 
     /**
      * Configure.
+     *
+     * @return void
      */
     protected function configure()
     {
@@ -157,6 +159,8 @@ class InstallCommand extends Command
      * Backup git hook.
      *
      * @param string $hookPath
+     *
+     * @return void
      */
     private function backupGitHook($hookPath)
     {
@@ -180,6 +184,8 @@ class InstallCommand extends Command
      * @param string $hook
      * @param string $hookPath
      * @param string $hookTemplate
+     *
+     * @return void
      */
     private function createGitHook($hook, $hookPath, $hookTemplate)
     {

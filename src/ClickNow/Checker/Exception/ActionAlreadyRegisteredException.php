@@ -12,10 +12,12 @@ class ActionAlreadyRegisteredException extends ActionException
      */
     public function __construct($actionName, $message = null)
     {
-        if ($message === null) {
-            $message = sprintf('Action `%s` already registered.', $actionName);
+        $msg = $message;
+
+        if ($msg === null) {
+            $msg = sprintf('Action `%s` already registered.', $actionName);
         }
 
-        parent::__construct($actionName, $message);
+        parent::__construct($actionName, $msg);
     }
 }

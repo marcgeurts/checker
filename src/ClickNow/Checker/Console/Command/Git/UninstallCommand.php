@@ -45,6 +45,8 @@ class UninstallCommand extends Command
 
     /**
      * Configure.
+     *
+     * @return void
      */
     protected function configure()
     {
@@ -81,6 +83,8 @@ class UninstallCommand extends Command
      * Remove git hook.
      *
      * @param string $hookPath
+     *
+     * @return void
      */
     private function removeGitHook($hookPath)
     {
@@ -96,6 +100,8 @@ class UninstallCommand extends Command
      * Restore git hook.
      *
      * @param string $hookPath
+     *
+     * @return void
      */
     private function restoreGitHook($hookPath)
     {

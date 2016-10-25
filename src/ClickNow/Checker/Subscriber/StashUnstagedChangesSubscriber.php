@@ -64,6 +64,8 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
      * Save stash.
      *
      * @param \ClickNow\Checker\Event\RunnerEvent $event
+     *
+     * @return void
      */
     public function saveStash(RunnerEvent $event)
     {
@@ -93,6 +95,8 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
      * Pop stash.
      *
      * @throws \ClickNow\Checker\Exception\RuntimeException
+     *
+     * @return void
      */
     public function popStash()
     {
@@ -127,6 +131,8 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
 
     /**
      * Register shutdown handler.
+     *
+     * @return void
      */
     private function registerShutdownHandler()
     {

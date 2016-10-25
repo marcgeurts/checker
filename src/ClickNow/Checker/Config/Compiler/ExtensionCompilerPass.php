@@ -15,6 +15,8 @@ class ExtensionCompilerPass extends AbstractCompilerPass
      * @throws \ClickNow\Checker\Exception\ExtensionNotFoundException
      * @throws \ClickNow\Checker\Exception\ExtensionAlreadyRegisteredException
      * @throws \ClickNow\Checker\Exception\ExtensionInvalidException
+     *
+     * @return void
      */
     protected function run()
     {

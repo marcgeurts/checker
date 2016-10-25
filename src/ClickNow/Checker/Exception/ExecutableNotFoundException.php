@@ -18,12 +18,13 @@ class ExecutableNotFoundException extends RuntimeException
     public function __construct($executable, $message = null)
     {
         $this->executable = $executable;
+        $msg = $message;
 
-        if ($message === null) {
-            $message = sprintf('Executable `%s` was not found.', $executable);
+        if ($msg === null) {
+            $msg = sprintf('Executable `%s` was not found.', $executable);
         }
 
-        parent::__construct($message);
+        parent::__construct($msg);
     }
 
     /**

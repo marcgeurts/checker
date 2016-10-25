@@ -6,6 +6,8 @@ class TaskCompilerPass extends AbstractCompilerPass
 {
     /**
      * Configure tasks to run.
+     *
+     * @return void
      */
     public function run()
     {

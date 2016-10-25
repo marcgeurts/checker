@@ -42,6 +42,8 @@ class RunCommand extends SymfonyCommand
 
     /**
      * Configure.
+     *
+     * @return void
      */
     protected function configure()
     {

@@ -25,6 +25,8 @@ class ArgumentsCollection extends ArrayCollection
      *
      * @param string $argument
      * @param string $value
+     *
+     * @return void
      */
     public function addOptionalArgument($argument, $value)
     {
@@ -40,6 +42,8 @@ class ArgumentsCollection extends ArrayCollection
      *
      * @param string $argument
      * @param string $value
+     *
+     * @return void
      */
     public function addOptionalArgumentWithSeparatedValue($argument, $value)
     {
@@ -57,6 +61,8 @@ class ArgumentsCollection extends ArrayCollection
      * @param string $argument
      * @param array  $values
      * @param string $delimiter
+     *
+     * @return void
      */
     public function addOptionalCommaSeparatedArgument($argument, array $values, $delimiter = ',')
     {
@@ -72,6 +78,8 @@ class ArgumentsCollection extends ArrayCollection
      *
      * @param string $argument
      * @param array  $values
+     *
+     * @return void
      */
     public function addArgumentArray($argument, array $values)
     {
@@ -85,6 +93,8 @@ class ArgumentsCollection extends ArrayCollection
      *
      * @param string $argument
      * @param array  $values
+     *
+     * @return void
      */
     public function addArgumentArrayWithSeparatedValue($argument, array $values)
     {
@@ -99,6 +109,8 @@ class ArgumentsCollection extends ArrayCollection
      *
      * @param string $argument
      * @param array  $values
+     *
+     * @return void
      */
     public function addSeparatedArgumentArray($argument, array $values)
     {
@@ -120,6 +132,8 @@ class ArgumentsCollection extends ArrayCollection
      * @param string $value
      *
      * @throws \ClickNow\Checker\Exception\InvalidArgumentException
+     *
+     * @return void
      */
     public function addRequiredArgument($argument, $value)
     {
@@ -137,6 +151,8 @@ class ArgumentsCollection extends ArrayCollection
      * Add files.
      *
      * @param \ClickNow\Checker\Util\FilesCollection|\SplFileInfo[] $files
+     *
+     * @return void
      */
     public function addFiles(FilesCollection $files)
     {
@@ -149,6 +165,8 @@ class ArgumentsCollection extends ArrayCollection
      * Add comma separated files.
      *
      * @param \ClickNow\Checker\Util\FilesCollection|\SplFileInfo[] $files
+     *
+     * @return void
      */
     public function addCommaSeparatedFiles(FilesCollection $files)
     {

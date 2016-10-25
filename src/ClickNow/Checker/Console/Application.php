@@ -146,6 +146,8 @@ class Application extends SymfonyConsole
      *
      * @param \Symfony\Component\Console\Input\InputInterface   $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
+     *
+     * @return void
      */
     protected function configureIO(InputInterface $input, OutputInterface $output)
     {
