@@ -150,36 +150,24 @@ class ArgumentsCollection extends ArrayCollection
     /**
      * Add files.
      *
-     * @param \ClickNow\Checker\Util\FilesCollection|\SplFileInfo[] $files
+     * @param \ClickNow\Checker\Util\FilesCollection $files
      *
      * @return void
      */
     public function addFiles(FilesCollection $files)
     {
-        foreach ($files as $file) {
-            $this->add($file->getPathname());
-        }
+        $this->addArgumentArray('%s', $files->getAllPaths());
     }
 
     /**
      * Add comma separated files.
      *
-     * @param \ClickNow\Checker\Util\FilesCollection|\SplFileInfo[] $files
+     * @param \ClickNow\Checker\Util\FilesCollection $files
      *
      * @return void
      */
     public function addCommaSeparatedFiles(FilesCollection $files)
     {
-        $paths = [];
-
-        foreach ($files as $file) {
-            $paths[] = $file->getPathname();
-        }
-
-        if (!count($paths)) {
-            return;
-        }
-
-        $this->add(implode(',', $paths));
+        $this->addOptionalCommaSeparatedArgument('%s', $files->getAllPaths());
     }
 }

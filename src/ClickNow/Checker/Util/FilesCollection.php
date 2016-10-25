@@ -123,7 +123,7 @@ class FilesCollection extends ArrayCollection
      *
      * @return \ClickNow\Checker\Util\FilesCollection
      */
-    public function filter(Closure $closure)
+    public function filterByClosure(Closure $closure)
     {
         return new self(iterator_to_array(
             new CustomFilterIterator($this->getIterator(), [$closure])
@@ -146,5 +146,17 @@ class FilesCollection extends ArrayCollection
         return $this->filter(function (SplFileInfo $file) use ($allowedFiles) {
             return in_array($file->getPathname(), $allowedFiles);
         });
+    }
+
+    /**
+     * Get all paths.
+     *
+     * @return array
+     */
+    public function getAllPaths()
+    {
+        return $this->map(function (SplFileInfo $file) {
+            return $file->getPathname();
+        })->toArray();
     }
 }
