@@ -84,12 +84,15 @@ class Application extends SymfonyConsole
         $container = $this->getContainer();
 
         $commands = parent::getDefaultCommands();
-        $commands[] = $container->get('command.run');
-        $commands[] = $container->get('command.git.install');
-        $commands[] = $container->get('command.git.uninstall');
+        array_push($commands, $container->get('command.run'));
+        array_push($commands, $container->get('command.git.install'));
+        array_push($commands, $container->get('command.git.uninstall'));
+
+        /** @var \ClickNow\Checker\Util\Git $git */
+        $git = $container->get('util.git');
 
         foreach (Git::$hooks as $hook) {
-            $commands[] = new HookCommand($this->getHookCommand($hook), $container->get('util.git'));
+            array_push($commands, new HookCommand($this->getHookCommand($hook), $git));
         }
 
         return $commands;
@@ -126,8 +129,14 @@ class Application extends SymfonyConsole
 
         $helperSet = parent::getDefaultHelperSet();
         $helperSet->set($this->getComposerHelper());
-        $helperSet->set($container->get('helper.paths'));
-        $helperSet->set($container->get('helper.runner'));
+
+        /** @var \ClickNow\Checker\Console\Helper\PathsHelper $paths */
+        $paths = $container->get('helper.paths');
+        $helperSet->set($paths);
+
+        /** @var \ClickNow\Checker\Console\Helper\RunnerHelper $runner */
+        $runner = $container->get('helper.runner');
+        $helperSet->set($runner);
 
         return $helperSet;
     }
@@ -177,7 +186,10 @@ class Application extends SymfonyConsole
 
         // Build the service container
         $this->container = ContainerFactory::buildFromConfigPath($configPath, $defaultConfigPath);
-        $this->setDispatcher($this->container->get('event_dispatcher'));
+
+        /** @var \Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher $eventDispatcher */
+        $eventDispatcher = $this->container->get('event_dispatcher');
+        $this->setDispatcher($eventDispatcher);
 
         return $this->container;
     }
