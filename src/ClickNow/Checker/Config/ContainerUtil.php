@@ -6,6 +6,7 @@ use ClickNow\Checker\Config\Compiler\CommandCompilerPass;
 use ClickNow\Checker\Config\Compiler\ExtensionCompilerPass;
 use ClickNow\Checker\Config\Compiler\HookCompilerPass;
 use ClickNow\Checker\Config\Compiler\TaskCompilerPass;
+use ClickNow\Checker\Console\Config;
 use Symfony\Bridge\ProxyManager\LazyProxy\Instantiator\RuntimeInstantiator;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -18,12 +19,11 @@ class ContainerUtil
     /**
      * Create container builder from config path.
      *
-     * @param bool|string $configPath
-     * @param string      $defaultConfigPath
+     * @param \ClickNow\Checker\Console\Config $config
      *
      * @return \Symfony\Component\DependencyInjection\ContainerBuilder
      */
-    public static function buildFromConfigPath($configPath, $defaultConfigPath)
+    public static function buildFromConfig(Config $config)
     {
         $container = new ContainerBuilder();
         $container->setProxyInstantiator(new RuntimeInstantiator());
@@ -42,15 +42,14 @@ class ContainerUtil
         $loader->load('config.yml');
 
         // Load checker.yml
+        $configPath = $config->getPath();
         $filesystem = new Filesystem();
-        if (is_string($configPath) && $filesystem->exists($configPath)) {
+        if ($filesystem->exists($configPath)) {
             $loader->load($configPath);
-        } elseif ($filesystem->exists($defaultConfigPath)) {
-            $loader->load($defaultConfigPath);
         }
 
         // Set parameter default config path
-        $container->setParameter('default_config_path', $defaultConfigPath);
+        $container->setParameter('default_config_path', $config->getDefaultPath());
 
         // Compile config to make sure that
         // 1. Extensions were registered
