@@ -15,8 +15,6 @@ class ExtensionCompilerPass extends AbstractCompilerPass
      * Configure extensions to run.
      *
      * @throws \ClickNow\Checker\Exception\ExtensionNotFoundException
-     * @throws \ClickNow\Checker\Exception\ExtensionAlreadyRegisteredException
-     * @throws \ClickNow\Checker\Exception\ExtensionInvalidException
      *
      * @return void
      */
@@ -25,6 +23,11 @@ class ExtensionCompilerPass extends AbstractCompilerPass
         $extensions = (array) $this->container->getParameter('extensions');
 
         foreach ($extensions as $extensionClass) {
+            // Checks if the class exists
+            if (!class_exists($extensionClass)) {
+                throw new ExtensionNotFoundException($extensionClass);
+            }
+
             $this->loadExtensionClass($extensionClass);
         }
     }
@@ -34,21 +37,17 @@ class ExtensionCompilerPass extends AbstractCompilerPass
      *
      * @param string $extensionClass
      *
+     * @throws \ClickNow\Checker\Exception\ExtensionAlreadyRegisteredException
+     * @throws \ClickNow\Checker\Exception\ExtensionInvalidException
+     *
      * @return void
      */
     private function loadExtensionClass($extensionClass)
     {
-        // Checks if the class exists
-        if (!class_exists($extensionClass)) {
-            throw new ExtensionNotFoundException($extensionClass);
-        }
-
-        // Instance extension class
         $extension = new $extensionClass();
-        $name = get_class($extension);
 
         // Checks if the class has already been registered
-        if (array_key_exists($name, $this->extensionsRegistered)) {
+        if (array_key_exists($extensionClass, $this->extensionsRegistered)) {
             throw new ExtensionAlreadyRegisteredException($extensionClass);
         }
 
@@ -57,7 +56,7 @@ class ExtensionCompilerPass extends AbstractCompilerPass
             throw new ExtensionInvalidException($extensionClass);
         }
 
-        $this->extensionsRegistered[$name] = $extension;
+        $this->extensionsRegistered[$extensionClass] = $extension;
         $extension->load($this->container);
     }
 }
