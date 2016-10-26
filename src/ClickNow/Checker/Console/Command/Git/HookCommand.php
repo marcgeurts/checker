@@ -89,16 +89,11 @@ class HookCommand extends SymfonyCommand
             $config['process_timeout'] = (float) $input->getOption('process-timeout');
         }
 
-        if (!is_null($input->getOption('stop-on-failure'))) {
-            $config['stop_on_failure'] = (bool) $input->getOption('stop-on-failure');
-        }
-
-        if (!is_null($input->getOption('ignore-unstaged-changes'))) {
-            $config['ignore_unstaged_changes'] = (bool) $input->getOption('ignore-unstaged-changes');
-        }
-
-        if (!is_null($input->getOption('skip-success-output'))) {
-            $config['skip_success_output'] = (bool) $input->getOption('skip-success-output');
+        $options = ['stop-on-failure', 'ignore-unstaged-changes', 'skip-success-output'];
+        foreach ($options as $option) {
+            if (!is_null($input->getOption($option))) {
+                $config[str_replace('-', '_', $option)] = (bool) $input->getOption($option);
+            }
         }
 
         return $config;
