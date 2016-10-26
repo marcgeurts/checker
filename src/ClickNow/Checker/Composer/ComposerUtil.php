@@ -64,7 +64,7 @@ class ComposerUtil
     public static function ensureProjectBinDirInSystemPath($binDir)
     {
         $absoluteBinDir = realpath($binDir);
-        $pathStr = (!isset($_SERVER['PATH']) && isset($_SERVER['Path'])) ? 'Path' : 'PATH';
+        $pathStr = self::getPathStr();
         $match = preg_match(
             '{(^|'.PATH_SEPARATOR.')'.preg_quote($absoluteBinDir).'($|'.PATH_SEPARATOR.')}',
             $_SERVER[$pathStr]
@@ -76,5 +76,15 @@ class ComposerUtil
 
         $_SERVER[$pathStr] = $absoluteBinDir.PATH_SEPARATOR.getenv($pathStr);
         putenv($pathStr.'='.$_SERVER[$pathStr]);
+    }
+
+    /**
+     * Get path str.
+     *
+     * @return string
+     */
+    public static function getPathStr()
+    {
+        return (!isset($_SERVER['PATH']) && isset($_SERVER['Path'])) ? 'Path' : 'PATH';
     }
 }

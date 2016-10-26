@@ -58,8 +58,6 @@ class RunnerHelper extends Helper
             return $this->io->note('No actions available.');
         }
 
-        $this->dispatcher->dispatch(RunnerEvent::RUNNER_RUN, new RunnerEvent($context, $actions));
-
         $results = $this->runActions($context, $actions);
 
         if ($results->isFailed()) {
@@ -83,6 +81,8 @@ class RunnerHelper extends Helper
      */
     private function runActions(ContextInterface $context, ActionsCollection $actions)
     {
+        $this->dispatcher->dispatch(RunnerEvent::RUNNER_RUN, new RunnerEvent($context, $actions));
+
         $results = new ResultsCollection();
 
         foreach ($actions as $action) {
