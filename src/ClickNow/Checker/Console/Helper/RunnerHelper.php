@@ -54,24 +54,23 @@ class RunnerHelper extends Helper
 
         $actions = $context->getCommand()->getActionsToRun($context);
 
-        if (!$actions->isEmpty()) {
-            $this->dispatcher->dispatch(RunnerEvent::RUNNER_RUN, new RunnerEvent($context, $actions));
-
-            $results = $this->runActions($context, $actions);
-            $event = new RunnerEvent($context, $actions, $results);
-
-            if ($results->isFailed()) {
-                $this->dispatcher->dispatch(RunnerEvent::RUNNER_FAILED, $event);
-
-                return self::CODE_ERROR;
-            }
-
-            $this->dispatcher->dispatch(RunnerEvent::RUNNER_SUCCESSFULLY, $event);
-
-            return self::CODE_SUCCESS;
+        if ($actions->isEmpty()) {
+            return $this->io->note('No actions available.');
         }
 
-        $this->io->note('No actions available.');
+        $this->dispatcher->dispatch(RunnerEvent::RUNNER_RUN, new RunnerEvent($context, $actions));
+
+        $results = $this->runActions($context, $actions);
+
+        if ($results->isFailed()) {
+            $this->dispatcher->dispatch(RunnerEvent::RUNNER_FAILED, new RunnerEvent($context, $actions, $results));
+
+            return self::CODE_ERROR;
+        }
+
+        $this->dispatcher->dispatch(RunnerEvent::RUNNER_SUCCESSFULLY, new RunnerEvent($context, $actions, $results));
+
+        return self::CODE_SUCCESS;
     }
 
     /**
