@@ -201,7 +201,7 @@ class Command implements CommandInterface
     }
 
     /**
-     * Skip success output for this command?
+     * It is to skip the success output for this command?
      *
      * @return bool
      */
