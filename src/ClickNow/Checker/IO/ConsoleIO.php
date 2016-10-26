@@ -68,13 +68,31 @@ class ConsoleIO extends SymfonyStyle implements IOInterface
     /**
      * Read command input.
      *
-     * @param string $handle
-     *
-     * @throws \ClickNow\Checker\Exception\InvalidArgumentException
+     * @param mixed $handle
      *
      * @return string
      */
     public function readCommandInput($handle)
+    {
+        $resource = $this->validateResource($handle);
+
+        if ($this->stdin === null && ftell($resource) === 0) {
+            $this->stdin = $this->prepareCommandInput($resource);
+        }
+
+        return $this->stdin;
+    }
+
+    /**
+     * Validate resource.
+     *
+     * @param mixed $handle
+     *
+     * @throws \ClickNow\Checker\Exception\InvalidArgumentException
+     *
+     * @return resource
+     */
+    private function validateResource($handle)
     {
         if (!is_resource($handle)) {
             throw new InvalidArgumentException(sprintf(
@@ -83,18 +101,24 @@ class ConsoleIO extends SymfonyStyle implements IOInterface
             ));
         }
 
-        if ($this->stdin !== null || ftell($handle) !== 0) {
-            return $this->stdin;
-        }
+        return $handle;
+    }
 
+    /**
+     * Prepare command input.
+     *
+     * @param resource $handle
+     *
+     * @return string
+     */
+    private function prepareCommandInput($handle)
+    {
         $input = '';
         while (!feof($handle)) {
             $input .= fread($handle, 1024);
         }
 
         // When the input only consist of white space characters, we assume that there is no input.
-        $this->stdin = !preg_match('/^([\s]*)$/m', $input) ? $input : '';
-
-        return $this->stdin;
+        return !preg_match('/^([\s]*)$/m', $input) ? $input : '';
     }
 }

@@ -74,16 +74,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         }
 
         $pending = $this->repository->getWorkingCopy()->getDiffPending();
-        if (!count($pending->getFiles())) {
-            return;
-        }
-
-        try {
-            $this->io->note('Detected unstaged changes... Stashing them!');
-            $this->repository->run('stash', ['save', '--quiet', '--keep-index', uniqid('checker')]);
-        } catch (Exception $e) {
-            $this->io->warning(sprintf('Failed stashing changes: %s', $e->getMessage()));
-
+        if (!count($pending->getFiles()) || !$this->runSaveStash()) {
             return;
         }
 
@@ -104,16 +95,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
             return;
         }
 
-        try {
-            $this->io->note('Reapplying unstaged changes from stash.');
-            $this->repository->run('stash', ['pop', '--quiet']);
-        } catch (Exception $e) {
-            throw new RuntimeException(sprintf(
-                'The stashed changes could not be applied. Please run `git stash pop` manually! More info: %s',
-                $e->__toString()
-            ), 0, $e);
-        }
-
+        $this->runPopStash();
         $this->stashIsApplied = false;
     }
 
@@ -127,6 +109,43 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
     private function isStashEnabled(ContextInterface $context)
     {
         return $context->getCommand()->shouldIgnoreUnstagedChanges();
+    }
+
+    /**
+     * Run save stash.
+     *
+     * @return bool
+     */
+    private function runSaveStash()
+    {
+        try {
+            $this->io->note('Detected unstaged changes... Stashing them!');
+            $this->repository->run('stash', ['save', '--quiet', '--keep-index', uniqid('checker')]);
+        } catch (Exception $e) {
+            $this->io->warning(sprintf('Failed stashing changes: %s', $e->getMessage()));
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Run pop stash.
+     *
+     * @return void
+     */
+    private function runPopStash()
+    {
+        try {
+            $this->io->note('Reapplying unstaged changes from stash.');
+            $this->repository->run('stash', ['pop', '--quiet']);
+        } catch (Exception $e) {
+            throw new RuntimeException(sprintf(
+                'The stashed changes could not be applied. Please run `git stash pop` manually! More info: %s',
+                $e->__toString()
+            ), 0, $e);
+        }
     }
 
     /**
