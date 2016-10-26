@@ -3,6 +3,7 @@
 namespace ClickNow\Checker\Console\Helper;
 
 use ClickNow\Checker\Action\ActionInterface;
+use ClickNow\Checker\Action\ActionsCollection;
 use ClickNow\Checker\Context\ContextInterface;
 use ClickNow\Checker\Event\ActionEvent;
 use ClickNow\Checker\Event\RunnerEvent;
@@ -49,9 +50,11 @@ class RunnerHelper extends Helper
      */
     public function run(ContextInterface $context)
     {
-        $this->io->title(sprintf('Checker is analyzing your code by action `%s`!', $context->getCommand()->getName()));
+        $this->io->title(sprintf(
+            'Checker is analyzing your code by action `%s`!',
+            $context->getCommand()->getName()
+        ));
 
-        $results = new ResultsCollection();
         $actions = $context->getCommand()->getActionsToRun($context);
 
         if ($actions->isEmpty()) {
@@ -60,15 +63,8 @@ class RunnerHelper extends Helper
             return;
         }
 
+        $results = $this->runActions($context, $actions);
         $this->dispatcher->dispatch(RunnerEvent::RUNNER_RUN, new RunnerEvent($context, $actions, $results));
-
-        foreach ($actions as $action) {
-            $result = $this->runAction($context, $action);
-            $results->add($result);
-            if ($result->isError() && $context->getCommand()->shouldStopOnFailure()) {
-                break;
-            }
-        }
 
         if ($results->isFailed()) {
             $this->dispatcher->dispatch(RunnerEvent::RUNNER_FAILED, new RunnerEvent($context, $actions, $results));
@@ -82,6 +78,29 @@ class RunnerHelper extends Helper
     }
 
     /**
+     * Run actions by command.
+     *
+     * @param \ClickNow\Checker\Context\ContextInterface $context
+     * @param \ClickNow\Checker\Action\ActionsCollection $actions
+     *
+     * @return \ClickNow\Checker\Result\ResultsCollection
+     */
+    private function runActions(ContextInterface $context, ActionsCollection $actions)
+    {
+        $results = new ResultsCollection();
+
+        foreach ($actions as $action) {
+            $result = $this->runAction($context, $action);
+            $results->add($result);
+            if ($result->isError() && $context->getCommand()->shouldStopOnFailure()) {
+                break;
+            }
+        }
+
+        return $results;
+    }
+
+    /**
      * Run actions by command and dispatch their respective events.
      *
      * @param \ClickNow\Checker\Context\ContextInterface $context
@@ -92,7 +111,9 @@ class RunnerHelper extends Helper
     private function runAction(ContextInterface $context, ActionInterface $action)
     {
         $this->io->log(sprintf('Checker running action `%s`.', $action->getName()));
+
         $this->dispatcher->dispatch(ActionEvent::ACTION_RUN, new ActionEvent($context, $action));
+
         $result = $context->getCommand()->runAction($context, $action);
 
         if (!$result->isSuccess()) {
