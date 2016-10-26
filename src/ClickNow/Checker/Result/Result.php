@@ -6,7 +6,7 @@ use ClickNow\Checker\Action\ActionInterface;
 use ClickNow\Checker\Command\CommandInterface;
 use ClickNow\Checker\Context\ContextInterface;
 
-final class Result implements ResultInterface
+class Result implements ResultInterface
 {
     const SKIPPED = -1;
     const SUCCESS = 0;
@@ -47,7 +47,7 @@ final class Result implements ResultInterface
      * @param \ClickNow\Checker\Action\ActionInterface   $action
      * @param null|string                                $message
      */
-    private function __construct(
+    public function __construct(
         $status,
         CommandInterface $command,
         ContextInterface $context,
@@ -70,8 +70,11 @@ final class Result implements ResultInterface
      *
      * @return \ClickNow\Checker\Result\ResultInterface
      */
-    public static function skipped(CommandInterface $command, ContextInterface $context, ActionInterface $action)
-    {
+    public static function skipped(
+        CommandInterface $command,
+        ContextInterface $context,
+        ActionInterface $action
+    ) {
         return new self(self::SKIPPED, $command, $context, $action);
     }
 
@@ -84,8 +87,11 @@ final class Result implements ResultInterface
      *
      * @return \ClickNow\Checker\Result\ResultInterface
      */
-    public static function success(CommandInterface $command, ContextInterface $context, ActionInterface $action)
-    {
+    public static function success(
+        CommandInterface $command,
+        ContextInterface $context,
+        ActionInterface $action
+    ) {
         return new self(self::SUCCESS, $command, $context, $action);
     }
 

@@ -326,17 +326,30 @@ class Command implements CommandInterface
             }
         }
 
-        if ($results->isSuccessfully()) {
-            return Result::success($command, $context, $this);
-        }
-
+        $status = $this->getResultStatusFromResults($results);
         $message = implode(PHP_EOL, $results->getAllMessages());
 
-        if ($results->isFailed()) {
-            return Result::error($command, $context, $this, $message);
+        return new Result($status, $command, $context, $this, $message);
+    }
+
+    /**
+     * Get result status from results.
+     *
+     * @param \ClickNow\Checker\Result\ResultsCollection $results
+     *
+     * @return int
+     */
+    private function getResultStatusFromResults(ResultsCollection $results)
+    {
+        if ($results->isSuccessfully()) {
+            return Result::SUCCESS;
         }
 
-        return Result::warning($command, $context, $this, $message);
+        if ($results->isFailed()) {
+            return Result::ERROR;
+        }
+
+        return Result::WARNING;
     }
 
     /**

@@ -87,25 +87,52 @@ class Config
     {
         $defaultPath = getcwd().DIRECTORY_SEPARATOR.self::CONFIG_FILE;
 
-        // use path from composer
         if (!is_null($this->package)) {
-            $extra = $this->package->getExtra();
-
-            if (isset($extra['checker']['config'])) {
-                $defaultPath = $extra['checker']['config'];
-            }
+            $defaultPath = $this->useConfigPathFromComposer($this->package, $defaultPath);
         }
 
-        // use path with dist
-        $distPath = (substr($defaultPath, -5) !== '.dist') ? $defaultPath.'.dist' : $defaultPath;
-        if ($this->filesystem->exists($distPath)) {
-            $defaultPath = $distPath;
-        }
+        $defaultPath = $this->useConfigFileWithDistSupport($defaultPath);
 
         // Make sure to set the full path when it is declared relative
         // This will fix some issues in windows.
         if (!$this->filesystem->isAbsolutePath($defaultPath)) {
             $defaultPath = getcwd().DIRECTORY_SEPARATOR.$defaultPath;
+        }
+
+        return $defaultPath;
+    }
+
+    /**
+     * Use config path from composer.
+     *
+     * @param \Composer\Package\PackageInterface $package
+     * @param string                             $defaultPath
+     *
+     * @return string
+     */
+    private function useConfigPathFromComposer(PackageInterface $package, $defaultPath)
+    {
+        $extra = $package->getExtra();
+
+        if (isset($extra['checker']['config'])) {
+            return (string) $extra['checker']['config'];
+        }
+
+        return $defaultPath;
+    }
+
+    /**
+     * Use config file with dist support.
+     *
+     * @param string $defaultPath
+     *
+     * @return string
+     */
+    private function useConfigFileWithDistSupport($defaultPath)
+    {
+        $distPath = (substr($defaultPath, -5) !== '.dist') ? $defaultPath.'.dist' : $defaultPath;
+        if ($this->filesystem->exists($distPath)) {
+            return $distPath;
         }
 
         return $defaultPath;
