@@ -7,24 +7,6 @@ services:
     class: Symfony\Component\Console\Output\ConsoleOutput
     synthetic: true
 
-  console.command.run:
-    class: ClickNow\Checker\Console\Command\RunCommand
-    arguments:
-      - '@commands_collection'
-      - '@util.git'
-
-  console.command.git.install:
-    class: ClickNow\Checker\Console\Command\Git\InstallCommand
-    arguments:
-      - '@checker'
-      - '@filesystem'
-      - '@io'
-      - '@process_builder'
-
-  console.command.git.uninstall:
-    class: ClickNow\Checker\Console\Command\Git\UninstallCommand
-    arguments:
-      - '@checker'
-      - '@filesystem'
-      - '@io'
-
+  console.config:
+    class: ClickNow\Checker\Console\Config
+    synthetic: true

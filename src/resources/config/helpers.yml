@@ -5,7 +5,7 @@ services:
       - '@checker'
       - '@filesystem'
       - '@process.executable_finder'
-      - '%default_config_path%'
+      - '@console.config'
 
   helper.runner:
     class: ClickNow\Checker\Console\Helper\RunnerHelper

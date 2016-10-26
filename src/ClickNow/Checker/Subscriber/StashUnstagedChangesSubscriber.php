@@ -74,12 +74,11 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         }
 
         $pending = $this->repository->getWorkingCopy()->getDiffPending();
-        if (!count($pending->getFiles()) || !$this->runSaveStash()) {
+        if (!count($pending->getFiles())) {
             return;
         }
 
-        $this->stashIsApplied = true;
-        $this->registerShutdownHandler();
+        $this->runSaveStash();
     }
 
     /**
@@ -114,7 +113,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
     /**
      * Run save stash.
      *
-     * @return bool
+     * @return void
      */
     private function runSaveStash()
     {
@@ -124,10 +123,11 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
         } catch (Exception $e) {
             $this->io->warning(sprintf('Failed stashing changes: %s', $e->getMessage()));
 
-            return false;
+            return;
         }
 
-        return true;
+        $this->stashIsApplied = true;
+        $this->registerShutdownHandler();
     }
 
     /**

@@ -4,7 +4,7 @@ namespace ClickNow\Checker\Console;
 
 use ClickNow\Checker\Command\CommandInterface;
 use ClickNow\Checker\Composer\ComposerUtil;
-use ClickNow\Checker\Config\ContainerUtil;
+use ClickNow\Checker\Config\ContainerFactory;
 use ClickNow\Checker\Console\Command\Git\HookCommand;
 use ClickNow\Checker\Console\Helper\ComposerHelper;
 use ClickNow\Checker\Exception\CommandInvalidException;
@@ -76,9 +76,9 @@ class Application extends SymfonyConsole
     protected function getDefaultCommands()
     {
         $commands = parent::getDefaultCommands();
-        array_push($commands, $this->container->get('console.command.run'));
-        array_push($commands, $this->container->get('console.command.git.install'));
-        array_push($commands, $this->container->get('console.command.git.uninstall'));
+        array_push($commands, $this->container->get('command.run'));
+        array_push($commands, $this->container->get('command.git.install'));
+        array_push($commands, $this->container->get('command.git.uninstall'));
 
         /** @var \ClickNow\Checker\Util\Git $git */
         $git = $this->container->get('util.git');
@@ -183,7 +183,8 @@ class Application extends SymfonyConsole
      */
     private function initializeContainer()
     {
-        $container = ContainerUtil::buildFromConfig($this->config);
+        $container = ContainerFactory::create($this->config->getPath());
+        $container->set('console.config', $this->config);
 
         /** @var \Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher $eventDispatcher */
         $eventDispatcher = $container->get('event_dispatcher');

@@ -1,4 +1,5 @@
 imports:
+  - { resource: 'commands.yml' }
   - { resource: 'console.yml' }
   - { resource: 'formatters.yml' }
   - { resource: 'helpers.yml' }
