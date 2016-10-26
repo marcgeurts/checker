@@ -24,19 +24,22 @@ class RunnerEvent extends Event
     private $actions;
 
     /**
-     * @var \ClickNow\Checker\Result\ResultsCollection
+     * @var \ClickNow\Checker\Result\ResultsCollection|null
      */
     private $results;
 
     /**
      * Runner event.
      *
-     * @param \ClickNow\Checker\Context\ContextInterface $context
-     * @param \ClickNow\Checker\Action\ActionsCollection $actions
-     * @param \ClickNow\Checker\Result\ResultsCollection $results
+     * @param \ClickNow\Checker\Context\ContextInterface      $context
+     * @param \ClickNow\Checker\Action\ActionsCollection      $actions
+     * @param \ClickNow\Checker\Result\ResultsCollection|null $results
      */
-    public function __construct(ContextInterface $context, ActionsCollection $actions, ResultsCollection $results)
-    {
+    public function __construct(
+        ContextInterface $context,
+        ActionsCollection $actions,
+        ResultsCollection $results = null
+    ) {
         $this->context = $context;
         $this->actions = $actions;
         $this->results = $results;
@@ -65,7 +68,7 @@ class RunnerEvent extends Event
     /**
      * Get results collection.
      *
-     * @return \ClickNow\Checker\Result\ResultsCollection
+     * @return \ClickNow\Checker\Result\ResultsCollection|null
      */
     public function getResults()
     {
