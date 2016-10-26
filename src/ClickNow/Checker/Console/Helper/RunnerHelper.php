@@ -50,10 +50,7 @@ class RunnerHelper extends Helper
      */
     public function run(ContextInterface $context)
     {
-        $this->io->title(sprintf(
-            'Checker is analyzing your code by action `%s`!',
-            $context->getCommand()->getName()
-        ));
+        $this->io->title(sprintf('Checker is analyzing your code by action `%s`!', $context->getCommand()->getName()));
 
         $actions = $context->getCommand()->getActionsToRun($context);
 
@@ -63,8 +60,9 @@ class RunnerHelper extends Helper
             return;
         }
 
+        $this->dispatcher->dispatch(RunnerEvent::RUNNER_RUN, new RunnerEvent($context, $actions));
+
         $results = $this->runActions($context, $actions);
-        $this->dispatcher->dispatch(RunnerEvent::RUNNER_RUN, new RunnerEvent($context, $actions, $results));
 
         if ($results->isFailed()) {
             $this->dispatcher->dispatch(RunnerEvent::RUNNER_FAILED, new RunnerEvent($context, $actions, $results));
