@@ -68,7 +68,7 @@ class Git
     /**
      * Get changed files.
      *
-     * @param $rawDiff
+     * @param string $rawDiff
      *
      * @return \ClickNow\Checker\Util\FilesCollection
      */
