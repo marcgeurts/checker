@@ -9,6 +9,8 @@ use ClickNow\Checker\Extension\ExtensionInterface;
 
 class ExtensionCompilerPass extends AbstractCompilerPass
 {
+    private $extensionsRegistered = [];
+
     /**
      * Configure extensions to run.
      *
@@ -21,30 +23,41 @@ class ExtensionCompilerPass extends AbstractCompilerPass
     protected function run()
     {
         $extensions = (array) $this->container->getParameter('extensions');
-        $extensionsRegistered = [];
 
         foreach ($extensions as $extensionClass) {
-            // Checks if the class exists
-            if (!class_exists($extensionClass)) {
-                throw new ExtensionNotFoundException($extensionClass);
-            }
-
-            // Instance extension class
-            $extension = new $extensionClass();
-            $name = get_class($extension);
-
-            // Checks if the class has already been registered
-            if (array_key_exists($name, $extensionsRegistered)) {
-                throw new ExtensionAlreadyRegisteredException($extensionClass);
-            }
-
-            // Checks if the class implements the ExtensionInterface
-            if (!$extension instanceof ExtensionInterface) {
-                throw new ExtensionInvalidException($extensionClass);
-            }
-
-            $extensionsRegistered[$name] = $extension;
-            $extension->load($this->container);
+            $this->loadExtensionClass($extensionClass);
         }
+    }
+
+    /**
+     * Load extension class.
+     *
+     * @param string $extensionClass
+     *
+     * @return void
+     */
+    private function loadExtensionClass($extensionClass)
+    {
+        // Checks if the class exists
+        if (!class_exists($extensionClass)) {
+            throw new ExtensionNotFoundException($extensionClass);
+        }
+
+        // Instance extension class
+        $extension = new $extensionClass();
+        $name = get_class($extension);
+
+        // Checks if the class has already been registered
+        if (array_key_exists($name, $this->extensionsRegistered)) {
+            throw new ExtensionAlreadyRegisteredException($extensionClass);
+        }
+
+        // Checks if the class implements the ExtensionInterface
+        if (!$extension instanceof ExtensionInterface) {
+            throw new ExtensionInvalidException($extensionClass);
+        }
+
+        $this->extensionsRegistered[$name] = $extension;
+        $extension->load($this->container);
     }
 }
