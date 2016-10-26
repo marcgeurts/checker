@@ -25,7 +25,7 @@ abstract class AbstractCompilerPass implements CompilerPassInterface
     /**
      * @var array
      */
-    protected static $tasks = [];
+    private static $tasks = [];
 
     /**
      * Process container builder to run.
@@ -37,35 +37,35 @@ abstract class AbstractCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $this->container = $container;
-        $this->run();
+        $this->configure();
     }
 
     /**
-     * Run.
+     * Configure.
      *
      * @return void
      */
-    abstract protected function run();
+    abstract protected function configure();
 
     /**
-     * Checks whether the service exists if not create the same.
+     * Register command definition.
      *
-     * @param string $serviceId
-     * @param string $serviceName
+     * @param string $id
+     * @param string $name
      *
      * @return \Symfony\Component\DependencyInjection\Definition
      */
-    protected function registerService($serviceId, $serviceName)
+    protected function registerCommand($id, $name)
     {
         // Checks if there is already a service with this identifier
-        if ($this->container->hasDefinition($serviceId)) {
-            return $this->container->findDefinition($serviceId);
+        if ($this->container->hasDefinition($id)) {
+            return $this->container->findDefinition($id);
         }
 
         // Register service
-        return $this->container->register($serviceId, Command::class)
+        return $this->container->register($id, Command::class)
             ->addArgument(new Reference('checker'))
-            ->addArgument($serviceName);
+            ->addArgument($name);
     }
 
     /**
@@ -97,11 +97,11 @@ abstract class AbstractCompilerPass implements CompilerPassInterface
      */
     protected function parseTasks(array $tasks)
     {
-        $parsed = [];
         $services = $this->getTasksServices();
         $configured = [];
+        $parsed = [];
 
-        foreach ($tasks as $name => $config) {
+        array_walk($tasks, function ($config, $name) use ($services, &$configured, &$parsed) {
             // Checks if there is a task service with this identifier
             if (!array_key_exists($name, $services)) {
                 throw new TaskNotFoundException($name);
@@ -112,9 +112,9 @@ abstract class AbstractCompilerPass implements CompilerPassInterface
                 throw new TaskAlreadyRegisteredException($name);
             }
 
-            $parsed[$services[$name]] = $config;
             $configured[$name] = $config;
-        }
+            $parsed[$services[$name]] = $config;
+        });
 
         return $parsed;
     }
@@ -124,7 +124,7 @@ abstract class AbstractCompilerPass implements CompilerPassInterface
      *
      * @return array
      */
-    private function getTasksServices()
+    protected function getTasksServices()
     {
         if (!empty(self::$tasks)) {
             return self::$tasks;

@@ -7,30 +7,40 @@ use ClickNow\Checker\Util\Git;
 class HookCompilerPass extends AbstractCompilerPass
 {
     /**
-     * Configure hooks to run.
+     * Configure hooks.
      *
      * @return void
      */
-    public function run()
+    protected function configure()
     {
         $hooks = (array) $this->container->getParameter('hooks');
 
-        foreach (Git::$hooks as $name) {
-            $config = isset($hooks[$name]) ? (array) $hooks[$name] : [];
-
-            // The hook service
-            $hook = $this->registerService('hook.'.$name, $name);
-
-            // Add tasks
-            $this->addTasks($hook, isset($config['tasks']) ? (array) $config['tasks'] : []);
-
-            // Add commands
-            $this->addCommands($hook, isset($config['commands']) ? (array) $config['commands'] : []);
-
-            // Set config
-            unset($config['tasks'], $config['commands']);
-
-            $hook->addMethodCall('setConfig', [$config]);
+        foreach (Git::$hooks as $hook) {
+            $this->addHook($hook, isset($hooks[$hook]) ? (array) $hooks[$hook] : []);
         }
+    }
+
+    /**
+     * Add hook.
+     *
+     * @param string $hook
+     * @param array  $config
+     *
+     * @return void
+     */
+    private function addHook($hook, array $config = [])
+    {
+        // The hook definition
+        $definition = $this->registerCommand('hook.'.$hook, $hook);
+
+        // Add tasks
+        $this->addTasks($definition, isset($config['tasks']) ? (array) $config['tasks'] : []);
+
+        // Add commands
+        $this->addCommands($definition, isset($config['commands']) ? (array) $config['commands'] : []);
+
+        // Set config
+        unset($config['tasks'], $config['commands']);
+        $definition->addMethodCall('setConfig', [$config]);
     }
 }

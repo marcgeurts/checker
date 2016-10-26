@@ -9,54 +9,57 @@ use ClickNow\Checker\Extension\ExtensionInterface;
 
 class ExtensionCompilerPass extends AbstractCompilerPass
 {
-    private $extensionsRegistered = [];
+    /**
+     * @var array
+     */
+    private $registered = [];
 
     /**
-     * Configure extensions to run.
+     * Configure extensions.
      *
      * @throws \ClickNow\Checker\Exception\ExtensionNotFoundException
      *
      * @return void
      */
-    protected function run()
+    protected function configure()
     {
         $extensions = (array) $this->container->getParameter('extensions');
 
-        foreach ($extensions as $extensionClass) {
+        foreach ($extensions as $extension) {
             // Checks if the class exists
-            if (!class_exists($extensionClass)) {
-                throw new ExtensionNotFoundException($extensionClass);
+            if (!class_exists($extension)) {
+                throw new ExtensionNotFoundException($extension);
             }
 
-            $this->loadExtensionClass($extensionClass);
+            $this->loadExtension(new $extension());
         }
     }
 
     /**
-     * Load extension class.
+     * Load extension.
      *
-     * @param string $extensionClass
+     * @param object $extension
      *
      * @throws \ClickNow\Checker\Exception\ExtensionAlreadyRegisteredException
      * @throws \ClickNow\Checker\Exception\ExtensionInvalidException
      *
      * @return void
      */
-    private function loadExtensionClass($extensionClass)
+    private function loadExtension($extension)
     {
-        $extension = new $extensionClass();
+        $name = get_class($extension);
 
         // Checks if the class has already been registered
-        if (array_key_exists($extensionClass, $this->extensionsRegistered)) {
-            throw new ExtensionAlreadyRegisteredException($extensionClass);
+        if (array_key_exists($name, $this->registered)) {
+            throw new ExtensionAlreadyRegisteredException($name);
         }
 
         // Checks if the class implements the ExtensionInterface
         if (!$extension instanceof ExtensionInterface) {
-            throw new ExtensionInvalidException($extensionClass);
+            throw new ExtensionInvalidException($name);
         }
 
-        $this->extensionsRegistered[$extensionClass] = $extension;
+        $this->registered[$name] = $extension;
         $extension->load($this->container);
     }
 }
