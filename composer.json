@@ -69,7 +69,7 @@
     "sort-packages": true
   },
   "extra": {
-    "class": "ClickNow\\Checker\\Composer\\CheckerPlugin"
+    "class": "ClickNow\\Checker\\Composer\\Plugin"
   },
   "bin": [
     "bin/checker"
