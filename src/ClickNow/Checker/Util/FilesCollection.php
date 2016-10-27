@@ -131,6 +131,16 @@ class FilesCollection extends ArrayCollection
     }
 
     /**
+     * Get iterator.
+     *
+     * @return \Iterator
+     */
+    public function getIterator()
+    {
+        return parent::getIterator();
+    }
+
+    /**
      * Filter by file list.
      *
      * @param \Traversable $fileList
