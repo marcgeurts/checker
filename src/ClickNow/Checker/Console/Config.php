@@ -36,6 +36,7 @@ class Config
     {
         $this->filesystem = $filesystem;
         $this->package = $package;
+        $this->defaultPath = $this->initializeDefaultPath();
     }
 
     /**
@@ -74,10 +75,16 @@ class Config
      */
     public function getDefaultPath()
     {
-        if ($this->defaultPath) {
-            return $this->defaultPath;
-        }
+        return $this->defaultPath;
+    }
 
+    /**
+     * Initialize default path.
+     *
+     * @return string
+     */
+    private function initializeDefaultPath()
+    {
         $defaultPath = getcwd().DIRECTORY_SEPARATOR.self::CONFIG_FILE;
 
         if (!is_null($this->package)) {
@@ -92,9 +99,7 @@ class Config
             $defaultPath = getcwd().DIRECTORY_SEPARATOR.$defaultPath;
         }
 
-        $this->defaultPath = $defaultPath;
-
-        return $this->defaultPath;
+        return $defaultPath;
     }
 
     /**
