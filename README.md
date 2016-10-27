@@ -7,7 +7,7 @@
 [![Latest Stable Version](https://img.shields.io/packagist/v/cknow/checker.svg)](https://packagist.org/packages/cknow/checker)
 [![License](https://img.shields.io/packagist/l/cknow/checker.svg)](https://packagist.org/packages/cknow/checker)
 
-**This project is inspired in [GrumPHP](https://github.com./phpro/grumphp)!!!**
+> **Note:** This project is inspired in [GrumPHP](https://github.com./phpro/grumphp)!!!
 
 I developed this project inspired in GrumPHP because I felt lack of power create and execute commands with their own tasks, not to mention that you can use the Checker and configure any git gain, not just pre-commit and commit-msg.
 
