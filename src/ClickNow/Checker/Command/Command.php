@@ -372,8 +372,21 @@ class Command implements CommandInterface
             $result = Result::error($this, $context, $action, $e->getMessage());
         }
 
+        return $this->parseActionResult($action, $result);
+    }
+
+    /**
+     * Parse action result.
+     *
+     * @param \ClickNow\Checker\Action\ActionInterface $action
+     * @param \ClickNow\Checker\Result\ResultInterface $result
+     *
+     * @return \ClickNow\Checker\Result\ResultInterface
+     */
+    private function parseActionResult(ActionInterface $action, ResultInterface $result)
+    {
         if (!$result->isSuccess() && !$this->isBlockingAction($action)) {
-            $result = Result::warning(
+            return Result::warning(
                 $result->getCommand(),
                 $result->getContext(),
                 $result->getAction(),
