@@ -129,16 +129,13 @@ class InstallCommand extends Command
     {
         $resourceHooksPath = $this->paths()->getGitHookTemplatesDir().$this->checker->getHooksPreset();
         $resourceHooksPath = $this->paths()->getPathWithTrailingSlash($resourceHooksPath);
-        $customHooksPath = $this->paths()->getPathWithTrailingSlash($this->checker->getHooksDir());
         $hookTemplate = $resourceHooksPath.'all';
 
         if ($this->filesystem->exists($resourceHooksPath.$hook)) {
             $hookTemplate = $resourceHooksPath.$hook;
         }
 
-        if ($customHooksPath) {
-            $hookTemplate = $this->getCustomHookTemplate($customHooksPath, $hook, $hookTemplate);
-        }
+        $hookTemplate = $this->getCustomHookTemplate($hook, $hookTemplate);
 
         if (!$this->filesystem->exists($hookTemplate)) {
             throw new FileNotFoundException(
@@ -152,14 +149,19 @@ class InstallCommand extends Command
     /**
      * Get custom hook template.
      *
-     * @param string $customHooksPath
      * @param string $hook
      * @param string $defaultTemplate
      *
      * @return string
      */
-    private function getCustomHookTemplate($customHooksPath, $hook, $defaultTemplate)
+    private function getCustomHookTemplate($hook, $defaultTemplate)
     {
+        $customHooksPath = $this->paths()->getPathWithTrailingSlash($this->checker->getHooksDir());
+
+        if (!$customHooksPath) {
+            return $defaultTemplate;
+        }
+
         if ($this->filesystem->exists($customHooksPath.$hook)) {
             return $customHooksPath.$hook;
         }
