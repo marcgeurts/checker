@@ -36,7 +36,6 @@ class Config
     {
         $this->filesystem = $filesystem;
         $this->package = $package;
-        $this->defaultPath = $this->initializeDefaultPath();
     }
 
     /**
@@ -51,7 +50,7 @@ class Config
             'c',
             InputOption::VALUE_OPTIONAL,
             'Path to config',
-            $this->defaultPath
+            $this->getDefaultPath()
         );
     }
 
@@ -65,7 +64,7 @@ class Config
         $input = new ArgvInput();
         $option = $input->getParameterOption(['--config', '-c']);
 
-        return $option ?: $this->defaultPath;
+        return $option ?: $this->getDefaultPath();
     }
 
     /**
@@ -75,16 +74,10 @@ class Config
      */
     public function getDefaultPath()
     {
-        return $this->defaultPath;
-    }
+        if ($this->defaultPath) {
+            return $this->defaultPath;
+        }
 
-    /**
-     * Initialize default path.
-     *
-     * @return string
-     */
-    private function initializeDefaultPath()
-    {
         $defaultPath = getcwd().DIRECTORY_SEPARATOR.self::CONFIG_FILE;
 
         if (!is_null($this->package)) {
@@ -99,7 +92,9 @@ class Config
             $defaultPath = getcwd().DIRECTORY_SEPARATOR.$defaultPath;
         }
 
-        return $defaultPath;
+        $this->defaultPath = $defaultPath;
+
+        return $this->defaultPath;
     }
 
     /**
