@@ -108,7 +108,7 @@ class Application extends SymfonyConsole
     protected function getDefaultHelperSet()
     {
         $helperSet = parent::getDefaultHelperSet();
-        $helperSet->set($this->composerHelper);
+        $helperSet->set($this->getComposerHelper());
 
         /** @var \ClickNow\Checker\Console\Helper\PathsHelper $paths */
         $paths = $this->getContainer()->get('helper.paths');
