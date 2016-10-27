@@ -160,7 +160,6 @@ class Application extends SymfonyConsole
             ComposerUtil::ensureProjectBinDirInSystemPath($config->get('bin-dir'));
             $package = ComposerUtil::loadPackage($config);
         } catch (RuntimeException $e) {
-            $config = null;
             $package = null;
         }
 
