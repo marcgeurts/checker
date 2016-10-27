@@ -1,6 +1,6 @@
 <?php
 
-namespace ClickNow\Checker\Composer;
+namespace ClickNow\Checker\Util;
 
 use ClickNow\Checker\Exception\RuntimeException;
 use Composer\Config;

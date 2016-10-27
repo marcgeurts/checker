@@ -3,12 +3,12 @@
 namespace ClickNow\Checker\Console;
 
 use ClickNow\Checker\Command\CommandInterface;
-use ClickNow\Checker\Composer\ComposerUtil;
 use ClickNow\Checker\Config\ContainerFactory;
 use ClickNow\Checker\Console\Command\Git\HookCommand;
 use ClickNow\Checker\Console\Helper\ComposerHelper;
 use ClickNow\Checker\Exception\CommandInvalidException;
 use ClickNow\Checker\Exception\RuntimeException;
+use ClickNow\Checker\Util\ComposerUtil;
 use ClickNow\Checker\Util\Git;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
