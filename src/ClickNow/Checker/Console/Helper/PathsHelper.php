@@ -133,10 +133,10 @@ class PathsHelper extends Helper
     {
         $gitDir = $this->checker->getGitDir();
         if (!$this->filesystem->exists($gitDir)) {
-            throw new DirectoryNotFoundException($gitDir, sprintf(
-                'The configured GIT directory `%s` could not be found.',
-                $gitDir
-            ));
+            throw new DirectoryNotFoundException(
+                $gitDir,
+                sprintf('The configured GIT directory `%s` could not be found.', $gitDir)
+            );
         }
 
         return $this->getRelativePath($gitDir);
@@ -185,10 +185,10 @@ class PathsHelper extends Helper
     {
         $binDir = $this->checker->getBinDir();
         if (!$this->filesystem->exists($binDir)) {
-            throw new DirectoryNotFoundException($binDir, sprintf(
-                'The configured BIN directory `%s` could not be found.',
-                $binDir
-            ));
+            throw new DirectoryNotFoundException(
+                $binDir,
+                sprintf('The configured BIN directory `%s` could not be found.', $binDir)
+            );
         }
 
         return $this->getRelativePath($binDir);

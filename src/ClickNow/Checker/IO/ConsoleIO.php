@@ -95,10 +95,9 @@ class ConsoleIO extends SymfonyStyle implements IOInterface
     private function validateResource($handle)
     {
         if (!is_resource($handle)) {
-            throw new InvalidArgumentException(sprintf(
-                'Expected a resource stream for reading the commandline input. Got `%s`.',
-                gettype($handle)
-            ));
+            throw new InvalidArgumentException(
+                sprintf('Expected a resource stream for reading the commandline input. Got `%s`.', gettype($handle))
+            );
         }
 
         return $handle;

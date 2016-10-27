@@ -138,10 +138,7 @@ class ArgumentsCollection extends ArrayCollection
     public function addRequiredArgument($argument, $value)
     {
         if (!$value) {
-            throw new InvalidArgumentException(sprintf(
-                'The argument `%s` is required.',
-                $argument
-            ));
+            throw new InvalidArgumentException(sprintf('The argument `%s` is required.', $argument));
         }
 
         $this->add(sprintf($argument, $value));

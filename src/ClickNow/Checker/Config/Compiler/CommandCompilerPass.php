@@ -43,10 +43,10 @@ class CommandCompilerPass extends AbstractCompilerPass
     {
         // Check if name of a command is the same as the name of a task
         if (array_key_exists($command, $this->getTasksServices())) {
-            throw new CommandInvalidException($command, sprintf(
-                'The name of a command `%s` can not be the same as the name of a task.',
-                $command
-            ));
+            throw new CommandInvalidException(
+                $command,
+                sprintf('The name of a command `%s` can not be the same as the name of a task.', $command)
+            );
         }
 
         // The command definition

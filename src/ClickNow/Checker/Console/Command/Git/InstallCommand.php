@@ -141,11 +141,9 @@ class InstallCommand extends Command
         }
 
         if (!$this->filesystem->exists($hookTemplate)) {
-            throw new FileNotFoundException(sprintf(
-                'Could not find hook template for `%s` at `%s`.',
-                $hook,
-                $hookTemplate
-            ));
+            throw new FileNotFoundException(
+                sprintf('Could not find hook template for `%s` at `%s`.', $hook, $hookTemplate)
+            );
         }
 
         return $hookTemplate;
