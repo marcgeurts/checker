@@ -267,10 +267,16 @@ class Command extends AbstractCommandRunner
      *
      * @param \ClickNow\Checker\Action\ActionInterface $action
      *
+     * @throws \ClickNow\Checker\Exception\ActionNotFoundException
+     *
      * @return array
      */
     public function getActionConfig(ActionInterface $action)
     {
+        if (!$this->hasAction($action)) {
+            throw new ActionNotFoundException($action->getName());
+        }
+
         return (array) $this->actionsConfig[$action->getName()];
     }
 
