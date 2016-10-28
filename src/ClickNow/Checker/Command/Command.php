@@ -29,17 +29,17 @@ class Command extends AbstractCommandRunner
     /**
      * @var array
      */
-    private $actionsMetadata;
+    private $actionsMetadata = [];
 
     /**
      * @var array
      */
-    private $actionsConfig;
+    private $actionsConfig = [];
 
     /**
      * @var array
      */
-    private $options;
+    private $options = [];
 
     /**
      * Command.
@@ -52,9 +52,7 @@ class Command extends AbstractCommandRunner
         $this->checker = $checker;
         $this->name = $name;
         $this->actions = new ActionsCollection();
-        $this->actionsMetadata = [];
-        $this->actionsConfig = [];
-        $this->options = [];
+        $this->setConfig([]);
     }
 
     /**
@@ -87,7 +85,7 @@ class Command extends AbstractCommandRunner
      *
      * @return void
      */
-    public function addAction(ActionInterface $action, array $config)
+    public function addAction(ActionInterface $action, array $config = [])
     {
         $name = $action->getName();
 
@@ -125,7 +123,7 @@ class Command extends AbstractCommandRunner
      *
      * @return array
      */
-    private function parseActionMetadata(array $metadata)
+    private function parseActionMetadata(array $metadata = [])
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -145,7 +143,7 @@ class Command extends AbstractCommandRunner
      *
      * @return void
      */
-    public function setConfig(array $config)
+    public function setConfig(array $config = [])
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults(array_merge([
@@ -156,7 +154,7 @@ class Command extends AbstractCommandRunner
             'message'                 => [],
             'can_run_in'              => true,
         ], $this->options));
-        $resolver->setAllowedTypes('process_timeout', ['float', 'null']);
+        $resolver->setAllowedTypes('process_timeout', ['float', 'integer', 'null']);
         $resolver->setAllowedTypes('stop_on_failure', ['bool']);
         $resolver->setAllowedTypes('ignore_unstaged_changes', ['bool']);
         $resolver->setAllowedTypes('skip_success_output', ['bool']);
