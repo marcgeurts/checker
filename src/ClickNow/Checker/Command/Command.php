@@ -7,6 +7,7 @@ use ClickNow\Checker\Action\ActionsCollection;
 use ClickNow\Checker\Config\Checker;
 use ClickNow\Checker\Context\ContextInterface;
 use ClickNow\Checker\Exception\ActionAlreadyRegisteredException;
+use ClickNow\Checker\Exception\ActionNotFoundException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class Command extends AbstractCommandRunner
@@ -224,10 +225,16 @@ class Command extends AbstractCommandRunner
      *
      * @param \ClickNow\Checker\Action\ActionInterface $action
      *
+     * @throws \ClickNow\Checker\Exception\ActionNotFoundException
+     *
      * @return array
      */
     public function getActionMetadata(ActionInterface $action)
     {
+        if (!$this->hasAction($action)) {
+            throw new ActionNotFoundException($action->getName());
+        }
+
         return (array) $this->actionsMetadata[$action->getName()];
     }
 
