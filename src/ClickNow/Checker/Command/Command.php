@@ -53,7 +53,7 @@ class Command extends AbstractCommandRunner
         $this->checker = $checker;
         $this->name = $name;
         $this->actions = new ActionsCollection();
-        $this->setConfig([]);
+        $this->setConfig();
     }
 
     /**
