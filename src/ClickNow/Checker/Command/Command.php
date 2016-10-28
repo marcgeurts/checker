@@ -221,6 +221,25 @@ class Command extends AbstractCommandRunner
     }
 
     /**
+     * This command can run in context?
+     *
+     * @param \ClickNow\Checker\Command\CommandInterface $command
+     * @param \ClickNow\Checker\Context\ContextInterface $context
+     *
+     * @return bool
+     */
+    public function canRunInContext(CommandInterface $command, ContextInterface $context)
+    {
+        $option = $this->options['can_run_in'];
+
+        if (is_array($option)) {
+            return in_array($context->getCommand()->getName(), $option) || in_array($command->getName(), $option);
+        }
+
+        return (bool) $option;
+    }
+
+    /**
      * Get metadata by action for this command.
      *
      * @param \ClickNow\Checker\Action\ActionInterface $action
@@ -290,24 +309,5 @@ class Command extends AbstractCommandRunner
     public function getActionsToRun(ContextInterface $context)
     {
         return $this->actions->filterByContext($this, $context)->sortByPriority($this);
-    }
-
-    /**
-     * This command can run in context?
-     *
-     * @param \ClickNow\Checker\Command\CommandInterface $command
-     * @param \ClickNow\Checker\Context\ContextInterface $context
-     *
-     * @return bool
-     */
-    public function canRunInContext(CommandInterface $command, ContextInterface $context)
-    {
-        $option = $this->options['can_run_in'];
-
-        if (is_array($option)) {
-            return in_array($context->getCommand()->getName(), $option) || in_array($command->getName(), $option);
-        }
-
-        return (bool) $option;
     }
 }
