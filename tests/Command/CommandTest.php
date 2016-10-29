@@ -19,11 +19,11 @@ class CommandTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $checker = m::mock('ClickNow\Checker\Config\Checker');
-        $checker->shouldReceive('getProcessTimeout')->andReturn(30);
-        $checker->shouldReceive('shouldStopOnFailure')->andReturn(true);
-        $checker->shouldReceive('shouldIgnoreUnstagedChanges')->andReturn(true);
-        $checker->shouldReceive('isSkipSuccessOutput')->andReturn(true);
-        $checker->shouldReceive('getMessage')->andReturn('bar');
+        $checker->shouldReceive('getProcessTimeout')->andReturn(null);
+        $checker->shouldReceive('shouldStopOnFailure')->andReturn(false);
+        $checker->shouldReceive('shouldIgnoreUnstagedChanges')->andReturn(false);
+        $checker->shouldReceive('isSkipSuccessOutput')->andReturn(false);
+        $checker->shouldReceive('getMessage')->andReturn(null);
 
         $this->command = new Command($checker, 'foo');
 
@@ -44,7 +44,7 @@ class CommandTest extends PHPUnit_Framework_TestCase
     public function testAddAction()
     {
         $this->assertEmpty($this->command->getActions());
-        $this->command->addAction($this->action, []);
+        $this->command->addAction($this->action);
 
         $actions = $this->command->getActions();
         $this->assertInstanceOf(ActionsCollection::class, $actions);
@@ -58,43 +58,62 @@ class CommandTest extends PHPUnit_Framework_TestCase
      */
     public function testAddActionThrowsWhenActionHasAlreadyBeenAdded()
     {
-        $this->command->addAction($this->action, []);
-        $this->command->addAction($this->action, []);
+        $this->command->addAction($this->action);
+        $this->command->addAction($this->action);
     }
 
-    public function testDefaultConfig()
+    public function testConfigProcessTimeout()
     {
-        $this->assertEquals(30, $this->command->getProcessTimeout());
-        $this->assertTrue($this->command->shouldStopOnFailure());
-        $this->assertTrue($this->command->shouldIgnoreUnstagedChanges());
-        $this->assertTrue($this->command->isSkipSuccessOutput());
-        $this->assertEquals('bar', $this->command->getMessage('foo'));
-        $this->assertTrue($this->command->canRunInContext(
-            m::mock('ClickNow\Checker\Command\CommandInterface'),
-            m::mock('ClickNow\Checker\Context\ContextInterface')
-        ));
-    }
+        $this->assertNull($this->command->getProcessTimeout());
 
-    public function testOverrideDefaultConfig()
-    {
-        $this->command->setConfig([
-            'process_timeout'         => 60,
-            'stop_on_failure'         => false,
-            'ignore_unstaged_changes' => false,
-            'skip_success_output'     => false,
-            'message'                 => ['foo' => 'foo'],
-            'can_run_in'              => false,
-        ]);
-
+        $this->command->setConfig(['process_timeout' => 60]);
         $this->assertEquals(60, $this->command->getProcessTimeout());
+
+        $this->command->setConfig(['process_timeout' => 90.5]);
+        $this->assertEquals(90.5, $this->command->getProcessTimeout());
+    }
+
+    public function testConfigStopOnFailure()
+    {
         $this->assertFalse($this->command->shouldStopOnFailure());
+
+        $this->command->setConfig(['stop_on_failure' => true]);
+        $this->assertTrue($this->command->shouldStopOnFailure());
+    }
+
+    public function testConfigIgnoreUnstagedChanges()
+    {
         $this->assertFalse($this->command->shouldIgnoreUnstagedChanges());
+
+        $this->command->setConfig(['ignore_unstaged_changes' => true]);
+        $this->assertTrue($this->command->shouldIgnoreUnstagedChanges());
+    }
+
+    public function testConfigSkipSuccessOutput()
+    {
         $this->assertFalse($this->command->isSkipSuccessOutput());
+
+        $this->command->setConfig(['skip_success_output' => true]);
+        $this->assertTrue($this->command->isSkipSuccessOutput());
+    }
+
+    public function testConfigMessage()
+    {
+        $this->assertNull($this->command->getMessage('foo'));
+
+        $this->command->setConfig(['message' => ['foo' => 'foo']]);
         $this->assertEquals('foo', $this->command->getMessage('foo'));
-        $this->assertFalse($this->command->canRunInContext(
-            m::mock('ClickNow\Checker\Command\CommandInterface'),
-            m::mock('ClickNow\Checker\Context\ContextInterface')
-        ));
+    }
+
+    public function testConfigCanRunInContext()
+    {
+        $command = m::mock('ClickNow\Checker\Command\CommandInterface');
+        $context = m::mock('ClickNow\Checker\Context\ContextInterface');
+
+        $this->assertTrue($this->command->canRunInContext($command, $context));
+
+        $this->command->setConfig(['can_run_in' => false]);
+        $this->assertFalse($this->command->canRunInContext($command, $context));
     }
 
     public function testIfCommandCanRunInContext()
@@ -117,7 +136,7 @@ class CommandTest extends PHPUnit_Framework_TestCase
 
     public function testDefaultActionMetadata()
     {
-        $this->command->addAction($this->action, []);
+        $this->command->addAction($this->action);
         $metadata = $this->command->getActionMetadata($this->action);
 
         $this->assertCount(2, $metadata);
@@ -128,16 +147,21 @@ class CommandTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->command->isBlockingAction($this->action));
     }
 
-    public function testOverrideDefaultActionMetadata()
+    public function testPriorityActionMetadata()
+    {
+        $this->command->addAction($this->action, ['metadata' => ['priority' => 100]]);
+        $metadata = $this->command->getActionMetadata($this->action);
+
+        $this->assertEquals(['priority' => 100, 'blocking' => true], $metadata);
+        $this->assertEquals(100, $this->command->getPriorityAction($this->action));
+    }
+
+    public function testBlockingActionMetadata()
     {
         $this->command->addAction($this->action, ['metadata' => ['blocking' => false]]);
         $metadata = $this->command->getActionMetadata($this->action);
 
-        $this->assertCount(2, $metadata);
-        $this->assertArrayHasKey('priority', $metadata);
-        $this->assertArrayHasKey('blocking', $metadata);
         $this->assertEquals(['priority' => 0, 'blocking' => false], $metadata);
-        $this->assertEquals(0, $this->command->getPriorityAction($this->action));
         $this->assertFalse($this->command->isBlockingAction($this->action));
     }
 
@@ -200,38 +224,4 @@ class CommandTest extends PHPUnit_Framework_TestCase
         $this->assertSame($action1, $actions[0]);
         $this->assertSame($action3, $actions[1]);
     }
-
-    /*public function testRun()
-    {
-        $resultSuccess = m::mock('ClickNow\Checker\Result\ResultInterface');
-        $resultSuccess->shouldReceive('isSuccess')->andReturn(true);
-        $resultSuccess->shouldReceive('isError')->andReturn(false);
-
-        $resultError = m::mock('ClickNow\Checker\Result\ResultInterface');
-        $resultError->shouldReceive('isSuccess')->andReturn(false);
-        $resultError->shouldReceive('isError')->andReturn(true);
-
-        $action1 = m::mock('ClickNow\Checker\Action\ActionInterface');
-        $action1->shouldReceive('getName')->andReturn('action1');
-        $action1->shouldReceive('canRunInContext')->once()->andReturn(true);
-        $action1->shouldReceive('run')->once()->andReturn($resultSuccess);
-        $this->command->addAction($action1);
-
-        $action2 = m::mock('ClickNow\Checker\Action\ActionInterface');
-        $action2->shouldReceive('getName')->andReturn('action2');
-        $action2->shouldReceive('canRunInContext')->andReturn(true);
-        $action2->shouldReceive('run')->once()->andReturn($resultError);
-        $this->command->addAction($action2);
-
-        $action3 = m::mock('ClickNow\Checker\Action\ActionInterface');
-        $action3->shouldReceive('getName')->andReturn('action3');
-        $action3->shouldReceive('canRunInContext')->andReturn(true);
-        $action3->shouldReceive('run')->once()->andReturn($resultError);
-        $this->command->addAction($action3);
-
-        $command = m::mock('ClickNow\Checker\Command\CommandInterface');
-        $context = m::mock('ClickNow\Checker\Context\ContextInterface');
-
-        $this->command->run($command, $context);
-    }*/
 }
