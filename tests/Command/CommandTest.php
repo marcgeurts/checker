@@ -41,11 +41,16 @@ class CommandTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('foo', $this->command->getName());
     }
 
+    public function testEmptyActions()
+    {
+        $actions = $this->command->getActions();
+        $this->assertEmpty($actions);
+        $this->assertInstanceOf(ActionsCollection::class, $actions);
+    }
+
     public function testAddAction()
     {
-        $this->assertEmpty($this->command->getActions());
         $this->command->addAction($this->action);
-
         $actions = $this->command->getActions();
         $this->assertInstanceOf(ActionsCollection::class, $actions);
         $this->assertCount(1, $actions);
