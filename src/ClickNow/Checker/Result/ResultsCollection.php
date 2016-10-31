@@ -81,8 +81,8 @@ class ResultsCollection extends ArrayCollection
      */
     public function getAllMessages()
     {
-        return $this->map(function (ResultInterface $result) {
+        return array_filter($this->map(function (ResultInterface $result) {
             return $result->getMessage();
-        })->toArray();
+        })->toArray());
     }
 }
