@@ -34,7 +34,8 @@ abstract class AbstractCommandRunner implements CommandInterface
         }
 
         $status = $this->getResultStatusFromResults($results);
-        $message = implode(PHP_EOL, $results->getAllMessages());
+        $messages = $results->getAllMessages();
+        $message = empty($messages) ? null : implode(PHP_EOL, $messages);
 
         return new Result($status, $command, $context, $this, $message);
     }
