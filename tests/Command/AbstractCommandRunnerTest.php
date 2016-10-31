@@ -6,7 +6,7 @@ use Mockery as m;
 
 class AbstractCommandRunnerTest extends PHPUnit_Framework_TestCase
 {
-    public function tearDown()
+    protected function tearDown()
     {
         m::close();
     }
@@ -113,7 +113,7 @@ class AbstractCommandRunnerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Action `action1` did not return a Result.'.PHP_EOL.'ERROR', $result->getMessage());
     }
 
-    public function getRunners(array $config = [], $numberOfActions = 2, array $configActions = [])
+    protected function getRunners(array $config = [], $numberOfActions = 2, array $configActions = [])
     {
         $checker = m::mock('ClickNow\Checker\Config\Checker');
         $checker->shouldReceive('getProcessTimeout')->andReturnNull();

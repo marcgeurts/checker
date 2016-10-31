@@ -6,6 +6,11 @@ use Mockery as m;
 
 class CommandTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @var \ClickNow\Checker\Command\Command;
+     */
+    protected $command;
+
     protected function setUp()
     {
         $checker = m::mock('ClickNow\Checker\Config\Checker');
@@ -18,7 +23,7 @@ class CommandTest extends PHPUnit_Framework_TestCase
         $this->command = new Command($checker, 'foo');
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         m::close();
     }
