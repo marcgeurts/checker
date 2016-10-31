@@ -116,11 +116,11 @@ class AbstractCommandRunnerTest extends PHPUnit_Framework_TestCase
     protected function getRunners(array $config = [], $numberOfActions = 2, array $configActions = [])
     {
         $checker = m::mock('ClickNow\Checker\Config\Checker');
-        $checker->shouldReceive('getProcessTimeout')->andReturnNull();
-        $checker->shouldReceive('shouldStopOnFailure')->andReturn(false);
-        $checker->shouldReceive('shouldIgnoreUnstagedChanges')->andReturn(false);
-        $checker->shouldReceive('isSkipSuccessOutput')->andReturn(false);
-        $checker->shouldReceive('getMessage')->andReturnNull();
+        $checker->shouldReceive('getProcessTimeout')->zeroOrMoreTimes()->andReturnNull();
+        $checker->shouldReceive('shouldStopOnFailure')->zeroOrMoreTimes()->andReturn(false);
+        $checker->shouldReceive('shouldIgnoreUnstagedChanges')->zeroOrMoreTimes()->andReturn(false);
+        $checker->shouldReceive('isSkipSuccessOutput')->zeroOrMoreTimes()->andReturn(false);
+        $checker->shouldReceive('getMessage')->zeroOrMoreTimes()->andReturnNull();
 
         $command = new Command($checker, 'foo');
         $command->setConfig($config);
@@ -130,7 +130,7 @@ class AbstractCommandRunnerTest extends PHPUnit_Framework_TestCase
 
         for ($c = 0; $c < $numberOfActions; $c++) {
             $action = m::mock('ClickNow\Checker\Action\ActionInterface');
-            $action->shouldReceive('getName')->andReturn('action'.($c + 1));
+            $action->shouldReceive('getName')->zeroOrMoreTimes()->andReturn('action'.($c + 1));
             $action->shouldReceive('canRunInContext')->once()->andReturn(true)->byDefault();
             $action->shouldReceive('run')->once()->andReturn(Result::success($command, $context, $action))->byDefault();
             $command->addAction($action, isset($configActions[$c]) ? $configActions[$c] : []);

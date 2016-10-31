@@ -14,11 +14,11 @@ class CommandTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $checker = m::mock('ClickNow\Checker\Config\Checker');
-        $checker->shouldReceive('getProcessTimeout')->andReturn(null);
-        $checker->shouldReceive('shouldStopOnFailure')->andReturn(false);
-        $checker->shouldReceive('shouldIgnoreUnstagedChanges')->andReturn(false);
-        $checker->shouldReceive('isSkipSuccessOutput')->andReturn(false);
-        $checker->shouldReceive('getMessage')->andReturn(null);
+        $checker->shouldReceive('getProcessTimeout')->zeroOrMoreTimes()->andReturn(null);
+        $checker->shouldReceive('shouldStopOnFailure')->zeroOrMoreTimes()->andReturn(false);
+        $checker->shouldReceive('shouldIgnoreUnstagedChanges')->zeroOrMoreTimes()->andReturn(false);
+        $checker->shouldReceive('isSkipSuccessOutput')->zeroOrMoreTimes()->andReturn(false);
+        $checker->shouldReceive('getMessage')->zeroOrMoreTimes()->andReturn(null);
 
         $this->command = new Command($checker, 'foo');
     }
@@ -36,8 +36,8 @@ class CommandTest extends PHPUnit_Framework_TestCase
     public function testEmptyActions()
     {
         $actions = $this->command->getActions();
-        $this->assertEmpty($actions);
         $this->assertInstanceOf(ActionsCollection::class, $actions);
+        $this->assertEmpty($actions);
     }
 
     public function testAddAction()
@@ -139,6 +139,7 @@ class CommandTest extends PHPUnit_Framework_TestCase
         $this->command->addAction($action);
         $metadata = $this->command->getActionMetadata($action);
 
+        $this->assertInternalType('array', $metadata);
         $this->assertCount(2, $metadata);
         $this->assertArrayHasKey('priority', $metadata);
         $this->assertArrayHasKey('blocking', $metadata);
@@ -153,6 +154,7 @@ class CommandTest extends PHPUnit_Framework_TestCase
         $this->command->addAction($action, ['metadata' => ['priority' => 100]]);
         $metadata = $this->command->getActionMetadata($action);
 
+        $this->assertInternalType('array', $metadata);
         $this->assertEquals(['priority' => 100, 'blocking' => true], $metadata);
         $this->assertEquals(100, $this->command->getPriorityAction($action));
     }
@@ -163,6 +165,7 @@ class CommandTest extends PHPUnit_Framework_TestCase
         $this->command->addAction($action, ['metadata' => ['blocking' => false]]);
         $metadata = $this->command->getActionMetadata($action);
 
+        $this->assertInternalType('array', $metadata);
         $this->assertEquals(['priority' => 0, 'blocking' => false], $metadata);
         $this->assertFalse($this->command->isBlockingAction($action));
     }
@@ -181,6 +184,8 @@ class CommandTest extends PHPUnit_Framework_TestCase
         $action = $this->getAction();
         $this->command->addAction($action);
         $config = $this->command->getActionConfig($action);
+
+        $this->assertInternalType('array', $config);
         $this->assertEmpty($config);
     }
 
@@ -189,6 +194,8 @@ class CommandTest extends PHPUnit_Framework_TestCase
         $action = $this->getAction();
         $this->command->addAction($action, ['foo' => 'bar']);
         $config = $this->command->getActionConfig($action);
+
+        $this->assertInternalType('array', $config);
         $this->assertEquals(['foo' => 'bar'], $config);
     }
 
@@ -204,17 +211,17 @@ class CommandTest extends PHPUnit_Framework_TestCase
     public function testActionsToRun()
     {
         $action1 = m::mock('ClickNow\Checker\Action\ActionInterface');
-        $action1->shouldReceive('getName')->andReturn('action1');
+        $action1->shouldReceive('getName')->zeroOrMoreTimes()->andReturn('action1');
         $action1->shouldReceive('canRunInContext')->once()->andReturn(true);
         $this->command->addAction($action1);
 
         $action2 = m::mock('ClickNow\Checker\Action\ActionInterface');
-        $action2->shouldReceive('getName')->andReturn('action2');
+        $action2->shouldReceive('getName')->zeroOrMoreTimes()->andReturn('action2');
         $action2->shouldReceive('canRunInContext')->once()->andReturn(false);
         $this->command->addAction($action2);
 
         $action3 = m::mock('ClickNow\Checker\Action\ActionInterface');
-        $action3->shouldReceive('getName')->andReturn('action3');
+        $action3->shouldReceive('getName')->zeroOrMoreTimes()->andReturn('action3');
         $action3->shouldReceive('canRunInContext')->once()->andReturn(true);
         $this->command->addAction($action3);
 
@@ -232,7 +239,7 @@ class CommandTest extends PHPUnit_Framework_TestCase
     protected function getAction()
     {
         $action = m::mock('ClickNow\Checker\Action\ActionInterface');
-        $action->shouldReceive('getName')->andReturn('bar');
+        $action->shouldReceive('getName')->zeroOrMoreTimes()->andReturn('bar');
 
         return $action;
     }
