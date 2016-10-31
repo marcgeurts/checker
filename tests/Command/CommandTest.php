@@ -6,16 +6,6 @@ use Mockery as m;
 
 class CommandTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @var \ClickNow\Checker\Command\Command
-     */
-    protected $command;
-
-    /**
-     * @var \Mockery\MockInterface
-     */
-    protected $action;
-
     protected function setUp()
     {
         $checker = m::mock('ClickNow\Checker\Config\Checker');
@@ -26,9 +16,6 @@ class CommandTest extends PHPUnit_Framework_TestCase
         $checker->shouldReceive('getMessage')->andReturn(null);
 
         $this->command = new Command($checker, 'foo');
-
-        $this->action = m::mock('ClickNow\Checker\Action\ActionInterface');
-        $this->action->shouldReceive('getName')->andReturn('bar');
     }
 
     public function tearDown()
@@ -50,11 +37,12 @@ class CommandTest extends PHPUnit_Framework_TestCase
 
     public function testAddAction()
     {
-        $this->command->addAction($this->action);
+        $action = $this->getAction();
+        $this->command->addAction($action);
         $actions = $this->command->getActions();
         $this->assertInstanceOf(ActionsCollection::class, $actions);
         $this->assertCount(1, $actions);
-        $this->assertSame($this->action, $actions->first());
+        $this->assertSame($action, $actions->first());
     }
 
     /**
@@ -63,8 +51,9 @@ class CommandTest extends PHPUnit_Framework_TestCase
      */
     public function testAddActionThrowsWhenActionHasAlreadyBeenAdded()
     {
-        $this->command->addAction($this->action);
-        $this->command->addAction($this->action);
+        $action = $this->getAction();
+        $this->command->addAction($action);
+        $this->command->addAction($action);
     }
 
     public function testConfigProcessTimeout()
@@ -124,10 +113,10 @@ class CommandTest extends PHPUnit_Framework_TestCase
     public function testIfCommandCanRunInContext()
     {
         $command = m::mock('ClickNow\Checker\Command\CommandInterface');
-        $command->shouldReceive('getName')->andReturn('bar');
+        $command->shouldReceive('getName')->twice()->andReturn('bar');
 
         $context = m::mock('ClickNow\Checker\Context\ContextInterface');
-        $context->shouldReceive('getCommand')->andReturn($this->command);
+        $context->shouldReceive('getCommand')->times(3)->andReturn($this->command);
 
         $this->command->setConfig(['can_run_in' => ['bar']]);
         $this->assertTrue($this->command->canRunInContext($command, $context));
@@ -141,33 +130,36 @@ class CommandTest extends PHPUnit_Framework_TestCase
 
     public function testDefaultActionMetadata()
     {
-        $this->command->addAction($this->action);
-        $metadata = $this->command->getActionMetadata($this->action);
+        $action = $this->getAction();
+        $this->command->addAction($action);
+        $metadata = $this->command->getActionMetadata($action);
 
         $this->assertCount(2, $metadata);
         $this->assertArrayHasKey('priority', $metadata);
         $this->assertArrayHasKey('blocking', $metadata);
         $this->assertEquals(['priority' => 0, 'blocking' => true], $metadata);
-        $this->assertEquals(0, $this->command->getPriorityAction($this->action));
-        $this->assertTrue($this->command->isBlockingAction($this->action));
+        $this->assertEquals(0, $this->command->getPriorityAction($action));
+        $this->assertTrue($this->command->isBlockingAction($action));
     }
 
     public function testPriorityActionMetadata()
     {
-        $this->command->addAction($this->action, ['metadata' => ['priority' => 100]]);
-        $metadata = $this->command->getActionMetadata($this->action);
+        $action = $this->getAction();
+        $this->command->addAction($action, ['metadata' => ['priority' => 100]]);
+        $metadata = $this->command->getActionMetadata($action);
 
         $this->assertEquals(['priority' => 100, 'blocking' => true], $metadata);
-        $this->assertEquals(100, $this->command->getPriorityAction($this->action));
+        $this->assertEquals(100, $this->command->getPriorityAction($action));
     }
 
     public function testBlockingActionMetadata()
     {
-        $this->command->addAction($this->action, ['metadata' => ['blocking' => false]]);
-        $metadata = $this->command->getActionMetadata($this->action);
+        $action = $this->getAction();
+        $this->command->addAction($action, ['metadata' => ['blocking' => false]]);
+        $metadata = $this->command->getActionMetadata($action);
 
         $this->assertEquals(['priority' => 0, 'blocking' => false], $metadata);
-        $this->assertFalse($this->command->isBlockingAction($this->action));
+        $this->assertFalse($this->command->isBlockingAction($action));
     }
 
     /**
@@ -176,20 +168,22 @@ class CommandTest extends PHPUnit_Framework_TestCase
      */
     public function testNotFoundActionMetadata()
     {
-        $this->command->getActionMetadata($this->action);
+        $this->command->getActionMetadata($this->getAction());
     }
 
     public function testEmptyActionConfig()
     {
-        $this->command->addAction($this->action);
-        $config = $this->command->getActionConfig($this->action);
+        $action = $this->getAction();
+        $this->command->addAction($action);
+        $config = $this->command->getActionConfig($action);
         $this->assertEmpty($config);
     }
 
     public function testActionConfig()
     {
-        $this->command->addAction($this->action, ['foo' => 'bar']);
-        $config = $this->command->getActionConfig($this->action);
+        $action = $this->getAction();
+        $this->command->addAction($action, ['foo' => 'bar']);
+        $config = $this->command->getActionConfig($action);
         $this->assertEquals(['foo' => 'bar'], $config);
     }
 
@@ -199,7 +193,7 @@ class CommandTest extends PHPUnit_Framework_TestCase
      */
     public function testNotFoundActionConfig()
     {
-        $this->command->getActionConfig($this->action);
+        $this->command->getActionConfig($this->getAction());
     }
 
     public function testActionsToRun()
@@ -228,5 +222,13 @@ class CommandTest extends PHPUnit_Framework_TestCase
         $actions = $result->toArray();
         $this->assertSame($action1, $actions[0]);
         $this->assertSame($action3, $actions[1]);
+    }
+
+    protected function getAction()
+    {
+        $action = m::mock('ClickNow\Checker\Action\ActionInterface');
+        $action->shouldReceive('getName')->andReturn('bar');
+
+        return $action;
     }
 }
