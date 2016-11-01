@@ -1,9 +1,12 @@
 <?php
 
-use ClickNow\Checker\Action\ActionsCollection;
+namespace ClickNow\Checker\Action;
+
+use ClickNow\Checker\Command\CommandInterface;
+use ClickNow\Checker\Context\ContextInterface;
 use Mockery as m;
 
-class ActionsCollectionTest extends PHPUnit_Framework_TestCase
+class ActionsCollectionTest extends \PHPUnit_Framework_TestCase
 {
     protected function tearDown()
     {
@@ -12,11 +15,11 @@ class ActionsCollectionTest extends PHPUnit_Framework_TestCase
 
     public function testSortOnPriority()
     {
-        $action1 = m::mock('ClickNow\Checker\Action\ActionInterface');
-        $action2 = m::mock('ClickNow\Checker\Action\ActionInterface');
-        $action3 = m::mock('ClickNow\Checker\Action\ActionInterface');
+        $action1 = m::mock(ActionInterface::class);
+        $action2 = m::mock(ActionInterface::class);
+        $action3 = m::mock(ActionInterface::class);
 
-        $command = m::mock('ClickNow\Checker\Command\CommandInterface');
+        $command = m::mock(CommandInterface::class);
         $command->shouldReceive('getPriorityAction')->once()->with($action1)->andReturn(100);
         $command->shouldReceive('getPriorityAction')->once()->with($action2)->andReturn(200);
         $command->shouldReceive('getPriorityAction')->once()->with($action3)->andReturn(100);
@@ -34,14 +37,14 @@ class ActionsCollectionTest extends PHPUnit_Framework_TestCase
 
     public function testFilterByContext()
     {
-        $action1 = m::mock('ClickNow\Checker\Action\ActionInterface');
-        $action2 = m::mock('ClickNow\Checker\Action\ActionInterface');
+        $action1 = m::mock(ActionInterface::class);
+        $action2 = m::mock(ActionInterface::class);
 
         $action1->shouldReceive('canRunInContext')->once()->andReturn(true);
         $action2->shouldReceive('canRunInContext')->once()->andReturn(false);
 
-        $command = m::mock('ClickNow\Checker\Command\CommandInterface');
-        $context = m::mock('ClickNow\Checker\Context\ContextInterface');
+        $command = m::mock(CommandInterface::class);
+        $context = m::mock(ContextInterface::class);
 
         $actionsCollection = new ActionsCollection([$action1, $action2]);
         $result = $actionsCollection->filterByContext($command, $context);

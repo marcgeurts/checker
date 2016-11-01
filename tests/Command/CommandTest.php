@@ -1,10 +1,14 @@
 <?php
 
+namespace ClickNow\Checker\Command;
+
+use ClickNow\Checker\Action\ActionInterface;
 use ClickNow\Checker\Action\ActionsCollection;
-use ClickNow\Checker\Command\Command;
+use ClickNow\Checker\Config\Checker;
+use ClickNow\Checker\Context\ContextInterface;
 use Mockery as m;
 
-class CommandTest extends PHPUnit_Framework_TestCase
+class CommandTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \ClickNow\Checker\Command\Command;
@@ -13,7 +17,7 @@ class CommandTest extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $checker = m::mock('ClickNow\Checker\Config\Checker');
+        $checker = m::mock(Checker::class);
         $checker->shouldReceive('getProcessTimeout')->zeroOrMoreTimes()->andReturn(null);
         $checker->shouldReceive('shouldStopOnFailure')->zeroOrMoreTimes()->andReturn(false);
         $checker->shouldReceive('shouldIgnoreUnstagedChanges')->zeroOrMoreTimes()->andReturn(false);
@@ -106,8 +110,8 @@ class CommandTest extends PHPUnit_Framework_TestCase
 
     public function testConfigCanRunInContext()
     {
-        $command = m::mock('ClickNow\Checker\Command\CommandInterface');
-        $context = m::mock('ClickNow\Checker\Context\ContextInterface');
+        $command = m::mock(CommandInterface::class);
+        $context = m::mock(ContextInterface::class);
 
         $this->assertTrue($this->command->canRunInContext($command, $context));
 
@@ -117,10 +121,10 @@ class CommandTest extends PHPUnit_Framework_TestCase
 
     public function testIfCommandCanRunInContext()
     {
-        $command = m::mock('ClickNow\Checker\Command\CommandInterface');
+        $command = m::mock(CommandInterface::class);
         $command->shouldReceive('getName')->twice()->andReturn('bar');
 
-        $context = m::mock('ClickNow\Checker\Context\ContextInterface');
+        $context = m::mock(ContextInterface::class);
         $context->shouldReceive('getCommand')->times(3)->andReturn($this->command);
 
         $this->command->setConfig(['can_run_in' => ['bar']]);
@@ -210,22 +214,22 @@ class CommandTest extends PHPUnit_Framework_TestCase
 
     public function testActionsToRun()
     {
-        $action1 = m::mock('ClickNow\Checker\Action\ActionInterface');
+        $action1 = m::mock(ActionInterface::class);
         $action1->shouldReceive('getName')->zeroOrMoreTimes()->andReturn('action1');
         $action1->shouldReceive('canRunInContext')->once()->andReturn(true);
         $this->command->addAction($action1);
 
-        $action2 = m::mock('ClickNow\Checker\Action\ActionInterface');
+        $action2 = m::mock(ActionInterface::class);
         $action2->shouldReceive('getName')->zeroOrMoreTimes()->andReturn('action2');
         $action2->shouldReceive('canRunInContext')->once()->andReturn(false);
         $this->command->addAction($action2);
 
-        $action3 = m::mock('ClickNow\Checker\Action\ActionInterface');
+        $action3 = m::mock(ActionInterface::class);
         $action3->shouldReceive('getName')->zeroOrMoreTimes()->andReturn('action3');
         $action3->shouldReceive('canRunInContext')->once()->andReturn(true);
         $this->command->addAction($action3);
 
-        $context = m::mock('ClickNow\Checker\Context\ContextInterface');
+        $context = m::mock(ContextInterface::class);
 
         $result = $this->command->getActionsToRun($context);
         $this->assertInstanceOf(ActionsCollection::class, $result);
@@ -238,7 +242,7 @@ class CommandTest extends PHPUnit_Framework_TestCase
 
     protected function getAction()
     {
-        $action = m::mock('ClickNow\Checker\Action\ActionInterface');
+        $action = m::mock(ActionInterface::class);
         $action->shouldReceive('getName')->zeroOrMoreTimes()->andReturn('bar');
 
         return $action;
