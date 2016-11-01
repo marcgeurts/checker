@@ -64,7 +64,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     public function testPostPackageInstallEnabledWithVeryVerboseAndSuccessfully()
     {
-        file_put_contents($this->tempDir.'/checker.bat', '');
+        //file_put_contents($this->tempDir.'/checker.bat', '');
 
         $io = m::mock(IOInterface::class);
         $io->shouldReceive('isVeryVerbose')->once()->andReturn(true);
@@ -79,7 +79,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     public function testPostPackageInstallEnabledWithoutVeryVerboseAndSuccessfully()
     {
-        file_put_contents($this->tempDir.'/checker.bat', '');
+        //file_put_contents($this->tempDir.'/checker.bat', '');
 
         $io = m::mock(IOInterface::class);
         $io->shouldReceive('isVeryVerbose')->once()->andReturn(false);
@@ -94,7 +94,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     public function testPostPackageInstallEnabledWithVeryVerboseAndFail()
     {
-        file_put_contents($this->tempDir.'/checker.bat', '');
+        //file_put_contents($this->tempDir.'/checker.bat', '');
 
         $io = m::mock(IOInterface::class);
         $io->shouldReceive('isVeryVerbose')->once()->andReturn(true);
@@ -109,7 +109,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     public function testPostPackageInstallEnabledWithoutVeryVerboseAndFail()
     {
-        file_put_contents($this->tempDir.'/checker.bat', '');
+        //file_put_contents($this->tempDir.'/checker.bat', '');
 
         $io = m::mock(IOInterface::class);
         $io->shouldReceive('isVeryVerbose')->once()->andReturn(false);
@@ -134,7 +134,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     public function testPostPackageUpdateEnabledWithVeryVerboseAndSuccessfully()
     {
-        file_put_contents($this->tempDir.'/checker.bat', '');
+        //file_put_contents($this->tempDir.'/checker.bat', '');
 
         $io = m::mock(IOInterface::class);
         $io->shouldReceive('isVeryVerbose')->once()->andReturn(true);
@@ -149,7 +149,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     public function testPostPackageUpdateEnabledWithoutVeryVerboseAndSuccessfully()
     {
-        file_put_contents($this->tempDir.'/checker.bat', '');
+        //file_put_contents($this->tempDir.'/checker.bat', '');
 
         $io = m::mock(IOInterface::class);
         $io->shouldReceive('isVeryVerbose')->once()->andReturn(false);
@@ -164,7 +164,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     public function testPostPackageUpdateEnabledWithVeryVerboseAndFail()
     {
-        file_put_contents($this->tempDir.'/checker.bat', '');
+        //file_put_contents($this->tempDir.'/checker.bat', '');
 
         $io = m::mock(IOInterface::class);
         $io->shouldReceive('isVeryVerbose')->once()->andReturn(true);
@@ -179,7 +179,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     public function testPostPackageUpdateEnabledWithoutVeryVerboseAndFail()
     {
-        file_put_contents($this->tempDir.'/checker.bat', '');
+        //file_put_contents($this->tempDir.'/checker.bat', '');
 
         $io = m::mock(IOInterface::class);
         $io->shouldReceive('isVeryVerbose')->once()->andReturn(false);
@@ -204,7 +204,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     public function testPrePackageUninstallEnabledWithVeryVerboseAndSuccessfully()
     {
-        file_put_contents($this->tempDir.'/checker.bat', '');
+        //file_put_contents($this->tempDir.'/checker.bat', '');
 
         $io = m::mock(IOInterface::class);
         $io->shouldReceive('isVeryVerbose')->once()->andReturn(true);
@@ -218,7 +218,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     public function testPrePackageUninstallEnabledWithoutVeryVerboseAndSuccessfully()
     {
-        file_put_contents($this->tempDir.'/checker.bat', '');
+        //file_put_contents($this->tempDir.'/checker.bat', '');
 
         $io = m::mock(IOInterface::class);
         $io->shouldReceive('isVeryVerbose')->once()->andReturn(false);
@@ -232,7 +232,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     public function testPrePackageUninstallEnabledWithVeryVerboseAndFail()
     {
-        file_put_contents($this->tempDir.'/checker.bat', '');
+        //file_put_contents($this->tempDir.'/checker.bat', '');
 
         $io = m::mock(IOInterface::class);
         $io->shouldReceive('isVeryVerbose')->once()->andReturn(true);
@@ -246,7 +246,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     public function testPrePackageUninstallEnabledWithoutVeryVerboseAndFail()
     {
-        file_put_contents($this->tempDir.'/checker.bat', '');
+        //file_put_contents($this->tempDir.'/checker.bat', '');
 
         $io = m::mock(IOInterface::class);
         $io->shouldReceive('isVeryVerbose')->once()->andReturn(false);
