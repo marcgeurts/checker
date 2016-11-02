@@ -64,7 +64,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     public function testPostPackageInstallEnabledWithVeryVerboseAndSuccessfully()
     {
-        file_put_contents($this->tempDir.'/checker.bat', 'echo 0');
+        file_put_contents($this->tempDir.'/checker.bat', 'exit /b 0');
 
         $io = m::mock(IOInterface::class);
         $io->shouldReceive('isVeryVerbose')->once()->andReturn(true);
@@ -94,7 +94,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     public function testPostPackageInstallEnabledWithVeryVerboseAndFail()
     {
-        file_put_contents($this->tempDir.'/checker.bat', '@ECHO OFF'.PHP_EOL.'exit /b 1');
+        file_put_contents($this->tempDir.'/checker.bat', 'exit /b 1');
 
         $io = m::mock(IOInterface::class);
         $io->shouldReceive('isVeryVerbose')->once()->andReturn(true);
