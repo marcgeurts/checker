@@ -29,11 +29,11 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->tempDir = dirname(__DIR__.'/tmp/checker');
+        $this->tempDir = dirname(__DIR__ . '/tmp2/checker');
 
         $filesystem = new Filesystem();
-        $filesystem->copy(__DIR__.'/tmp/checker', __DIR__.'/../../vendor/bin/checker');
-        $filesystem->copy(__DIR__.'/tmp/checker.bat', __DIR__.'/../../vendor/bin/checker.bat');
+        $filesystem->copy(__DIR__ . '/tmp2/checker', __DIR__.'/../../vendor/bin/checker');
+        $filesystem->copy(__DIR__ . '/tmp2/checker.bat', __DIR__.'/../../vendor/bin/checker.bat');
 
         $this->plugin = new Plugin();
     }
@@ -100,8 +100,8 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
         //echo is_file(dirname(__DIR__.'/tmp/checker.sh'). '/checker.sh');
 
-        echo is_file(dirname(__DIR__.'\tmp\checker.bat'). '\checker.bat');
-        if(@is_executable(dirname(__DIR__.'\tmp\checker.bat'). '\checker.bat'))
+        echo is_file(dirname(__DIR__ . '\tmp2\checker.bat'). '\checker.bat');
+        if(@is_executable(dirname(__DIR__ . '\tmp2\checker.bat'). '\checker.bat'))
         {
             echo "aaaaaaaaaaaaaaaaaaaaaaaaa";
         }
@@ -110,8 +110,8 @@ class PluginTest extends \PHPUnit_Framework_TestCase
             echo "bbbbbbbbbbbbbbbbbbbbbb";
         }
 
-        echo is_file(dirname(__DIR__.'/tmp/checker'). '/checker');
-        if(@is_executable(dirname(__DIR__.'/tmp/checker'). '/checker'))
+        echo is_file(dirname(__DIR__ . '/tmp2/checker'). '/checker');
+        if(@is_executable(dirname(__DIR__ . '/tmp2/checker'). '/checker'))
         {
             echo "aaaaaaaaaaaaaaaaaaaaaaaaa";
         }
@@ -120,8 +120,8 @@ class PluginTest extends \PHPUnit_Framework_TestCase
             echo "bbbbbbbbbbbbbbbbbbbbbb";
         }
 
-        echo is_file(dirname(__DIR__.'/tmp/checker.sh'). '/checker.sh');
-        if(@is_executable(dirname(__DIR__.'/tmp/checker.sh'). '/checker.sh'))
+        echo is_file(dirname(__DIR__ . '/tmp2/checker.sh'). '/checker.sh');
+        if(@is_executable(dirname(__DIR__ . '/tmp2/checker.sh'). '/checker.sh'))
         {
             echo "aaaaaaaaaaaaaaaaaaaaaaaaa";
         }
@@ -144,8 +144,8 @@ class PluginTest extends \PHPUnit_Framework_TestCase
         var_dump($info->isExecutable());
 
 
-        echo is_file(dirname(__DIR__.'/tmp/checker.exe'). '/checker.exe');
-        if(@is_executable(dirname(__DIR__.'/tmp/checker.exe'). '/checker.exe'))
+        echo is_file(dirname(__DIR__ . '/tmp2/checker.exe'). '/checker.exe');
+        if(@is_executable(dirname(__DIR__ . '/tmp2/checker.exe'). '/checker.exe'))
         {
             echo "aaaaaaaaaaaaaaaaaaaaaaaaa";
         }

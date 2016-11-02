@@ -2,4 +2,4 @@
 *.png binary
 *.sh eol=lf
 *.bat eol=crlf
-*exe binary
+*.exe binary
