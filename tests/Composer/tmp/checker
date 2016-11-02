@@ -1,4 +1,1 @@
-#!/usr/bin/env php
-<?php
-
-exit(0);
+#!/usr/bin/env sh

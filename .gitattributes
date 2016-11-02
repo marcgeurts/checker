@@ -1,4 +1,5 @@
 * text=auto eol=lf
-*.png  binary
+*.png binary
 *.sh eol=lf
 *.bat eol=crlf
+*exe binary

@@ -32,7 +32,8 @@ class PluginTest extends \PHPUnit_Framework_TestCase
         $this->tempDir = dirname(__DIR__.'/tmp/checker');
 
         $filesystem = new Filesystem();
-        $filesystem->mkdir($this->tempDir);
+        $filesystem->copy(__DIR__.'/tmp/checker', __DIR__.'/../../vendor/bin/checker');
+        $filesystem->copy(__DIR__.'/tmp/checker.bat', __DIR__.'/../../vendor/bin/checker.bat');
 
         $this->plugin = new Plugin();
     }
@@ -129,8 +130,8 @@ class PluginTest extends \PHPUnit_Framework_TestCase
             echo "bbbbbbbbbbbbbbbbbbbbbb";
         }
 
-        echo is_file(dirname(__DIR__.'/../../vendor/bin/composer'). '/composer');
-        if(@is_executable(dirname(__DIR__.'/../../vendor/bin/composer'). '/composer'))
+        echo is_file(dirname(__DIR__.'/../../vendor/bin/checker'). '/checker');
+        if(@is_executable(dirname(__DIR__.'/../../vendor/bin/checker'). '/checker'))
         {
             echo "aaaaaaaaaaaaaaaaaaaaaaaaa";
         }
@@ -139,7 +140,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
             echo "bbbbbbbbbbbbbbbbbbbbbb";
         }
 
-        $info = new \SplFileInfo(dirname(__DIR__.'/../../vendor/bin/composer'). '/composer');
+        $info = new \SplFileInfo(dirname(__DIR__.'/../../vendor/bin/checker'). '/checker');
         var_dump($info->isExecutable());
 
 
