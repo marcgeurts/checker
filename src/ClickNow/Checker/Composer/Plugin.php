@@ -160,6 +160,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $finder = new ExecutableFinder();
         $executable = $finder->find('checker', null, [$config->get('bin-dir')]);
         $builder = new ProcessBuilder([$executable, $command, '--no-interaction']);
+        echo $builder->getProcess();
         $this->runProcess($builder->getProcess());
     }
 
