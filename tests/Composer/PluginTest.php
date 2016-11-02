@@ -29,10 +29,10 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->tempDir = __DIR__.'/tmp';
+        $this->tempDir = dirname(__DIR__.'/tmp/checker');
 
-        //$filesystem = new Filesystem();
-       // $filesystem->mkdir($this->tempDir);
+        $filesystem = new Filesystem();
+        $filesystem->mkdir($this->tempDir);
 
         $this->plugin = new Plugin();
     }
@@ -41,6 +41,11 @@ class PluginTest extends \PHPUnit_Framework_TestCase
     {
         //$filesystem = new Filesystem();
         //$filesystem->remove($this->tempDir);
+
+        if ($this->path) {
+            // Restore path if it was changed.
+            putenv('PATH='.$this->path);
+        }
 
         m::close();
     }
@@ -62,6 +67,14 @@ class PluginTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(5, Plugin::getSubscribedEvents());
     }
 
+
+    private $path;
+    private function setPath($path)
+    {
+        $this->path = getenv('PATH');
+        putenv('PATH='.$path);
+    }
+
     public function testPostPackageInstallEnabledWithVeryVerboseAndSuccessfully()
     {
         //file_put_contents($this->tempDir.'/checker', '#!/usr/bin/env php');
@@ -69,7 +82,9 @@ class PluginTest extends \PHPUnit_Framework_TestCase
         echo 'e1='.is_executable($this->tempDir.'/checker').PHP_EOL;
         echo 'e2='.is_executable($this->tempDir.'/checker.bat').PHP_EOL;
 */
-        echo $this->tempDir;
+        $this->setPath($this->tempDir);
+        echo basename(PHP_BINARY, '\\' === DIRECTORY_SEPARATOR ? '.exe' : '');
+
 
         $io = m::mock(IOInterface::class);
         $io->shouldReceive('isVeryVerbose')->once()->andReturn(true);
