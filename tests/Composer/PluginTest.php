@@ -77,13 +77,34 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     public function testPostPackageInstallEnabledWithVeryVerboseAndSuccessfully()
     {
+        if (ini_get('open_basedir')) {
+            echo "éee";
+            $this->markTestSkipped('Cannot test when open_basedir is set');
+        }
+
+
+        $this->setPath(dirname(PHP_BINARY));
+        $finder = basename(PHP_BINARY, '\\' === DIRECTORY_SEPARATOR ? '.exe' : '');
+
+        if(is_executable(dirname(PHP_BINARY). '/php'))
+        {
+            echo "aaaaaaaaaaaaaaaaaaaaaaaaa";
+        }
+
+
+
         //file_put_contents($this->tempDir.'/checker', '#!/usr/bin/env php');
         /*file_put_contents($this->tempDir.'/checker.bat', 'exit /b 0');
         echo 'e1='.is_executable($this->tempDir.'/checker').PHP_EOL;
         echo 'e2='.is_executable($this->tempDir.'/checker.bat').PHP_EOL;
 */
-        $this->setPath($this->tempDir);
-        echo basename(PHP_BINARY, '\\' === DIRECTORY_SEPARATOR ? '.exe' : '');
+        //$this->setPath($this->tempDir);
+        /*echo ;
+
+        if(is_executable(__DIR__. '\..\..\vendor\bin\phpunit'))
+        {
+            echo "éee";
+        }*/
 
 
         $io = m::mock(IOInterface::class);
