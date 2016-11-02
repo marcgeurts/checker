@@ -31,16 +31,16 @@ class PluginTest extends \PHPUnit_Framework_TestCase
     {
         $this->tempDir = __DIR__.'/tmp';
 
-        $filesystem = new Filesystem();
-        $filesystem->mkdir($this->tempDir);
+        //$filesystem = new Filesystem();
+       // $filesystem->mkdir($this->tempDir);
 
         $this->plugin = new Plugin();
     }
 
     protected function tearDown()
     {
-        $filesystem = new Filesystem();
-        $filesystem->remove($this->tempDir);
+        //$filesystem = new Filesystem();
+        //$filesystem->remove($this->tempDir);
 
         m::close();
     }
@@ -64,10 +64,12 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     public function testPostPackageInstallEnabledWithVeryVerboseAndSuccessfully()
     {
-        file_put_contents($this->tempDir.'/checker', '#!/usr/bin/env php');
-        file_put_contents($this->tempDir.'/checker.bat', 'exit /b 0');
+        //file_put_contents($this->tempDir.'/checker', '#!/usr/bin/env php');
+        /*file_put_contents($this->tempDir.'/checker.bat', 'exit /b 0');
         echo 'e1='.is_executable($this->tempDir.'/checker').PHP_EOL;
         echo 'e2='.is_executable($this->tempDir.'/checker.bat').PHP_EOL;
+*/
+        echo $this->tempDir;
 
         $io = m::mock(IOInterface::class);
         $io->shouldReceive('isVeryVerbose')->once()->andReturn(true);
