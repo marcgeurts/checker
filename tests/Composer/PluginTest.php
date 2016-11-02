@@ -64,11 +64,10 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     public function testPostPackageInstallEnabledWithVeryVerboseAndSuccessfully()
     {
-        file_put_contents($this->tempDir.'/checker', 'exit /b 0');
+        file_put_contents($this->tempDir.'/checker', '#!/usr/bin/env php');
         file_put_contents($this->tempDir.'/checker.bat', 'exit /b 0');
-        echo file_get_contents($this->tempDir.'/checker.bat').PHP_EOL;
-        echo DIRECTORY_SEPARATOR.PHP_EOL;
-        echo getenv('PATHEXT').PHP_EOL;
+        echo 'e1='.is_executable($this->tempDir.'/checker').PHP_EOL;
+        echo 'e2='.is_executable($this->tempDir.'/checker.bat').PHP_EOL;
 
         $io = m::mock(IOInterface::class);
         $io->shouldReceive('isVeryVerbose')->once()->andReturn(true);
