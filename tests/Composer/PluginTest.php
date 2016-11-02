@@ -79,7 +79,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     public function testPostPackageInstallEnabledWithoutVeryVerboseAndSuccessfully()
     {
-        file_put_contents($this->tempDir.'/checker.bat', '@ECHO OFF'.PHP_EOL.'exit /b 0');
+        file_put_contents($this->tempDir.'/checker.bat', 'echo 0');
 
         $io = m::mock(IOInterface::class);
         $io->shouldReceive('isVeryVerbose')->once()->andReturn(false);
