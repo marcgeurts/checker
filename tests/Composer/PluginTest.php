@@ -83,12 +83,74 @@ class PluginTest extends \PHPUnit_Framework_TestCase
         }
 
 
-        $this->setPath(dirname(PHP_BINARY));
+        /*$this->setPath(dirname(PHP_BINARY));
         $finder = basename(PHP_BINARY, '\\' === DIRECTORY_SEPARATOR ? '.exe' : '');
 
         if(is_executable(dirname(PHP_BINARY). '/php'))
         {
             echo "aaaaaaaaaaaaaaaaaaaaaaaaa";
+        }*/
+
+
+        //clearstatcache();
+
+    //    $this->setPath(dirname(__DIR__.'/../../bin/checker'));
+        //$finder = basename(PHP_BINARY, '\\' === DIRECTORY_SEPARATOR ? '.exe' : '');
+
+        //echo is_file(dirname(__DIR__.'/tmp/checker.sh'). '/checker.sh');
+
+        echo is_file(dirname(__DIR__.'\tmp\checker.bat'). '\checker.bat');
+        if(@is_executable(dirname(__DIR__.'\tmp\checker.bat'). '\checker.bat'))
+        {
+            echo "aaaaaaaaaaaaaaaaaaaaaaaaa";
+        }
+        else
+        {
+            echo "bbbbbbbbbbbbbbbbbbbbbb";
+        }
+
+        echo is_file(dirname(__DIR__.'/tmp/checker'). '/checker');
+        if(@is_executable(dirname(__DIR__.'/tmp/checker'). '/checker'))
+        {
+            echo "aaaaaaaaaaaaaaaaaaaaaaaaa";
+        }
+        else
+        {
+            echo "bbbbbbbbbbbbbbbbbbbbbb";
+        }
+
+        echo is_file(dirname(__DIR__.'/tmp/checker.sh'). '/checker.sh');
+        if(@is_executable(dirname(__DIR__.'/tmp/checker.sh'). '/checker.sh'))
+        {
+            echo "aaaaaaaaaaaaaaaaaaaaaaaaa";
+        }
+        else
+        {
+            echo "bbbbbbbbbbbbbbbbbbbbbb";
+        }
+
+        echo is_file(dirname(__DIR__.'/../../vendor/bin/composer'). '/composer');
+        if(@is_executable(dirname(__DIR__.'/../../vendor/bin/composer'). '/composer'))
+        {
+            echo "aaaaaaaaaaaaaaaaaaaaaaaaa";
+        }
+        else
+        {
+            echo "bbbbbbbbbbbbbbbbbbbbbb";
+        }
+
+        $info = new \SplFileInfo(dirname(__DIR__.'/../../vendor/bin/composer'). '/composer');
+        var_dump($info->isExecutable());
+
+
+        echo is_file(dirname(__DIR__.'/tmp/checker.exe'). '/checker.exe');
+        if(@is_executable(dirname(__DIR__.'/tmp/checker.exe'). '/checker.exe'))
+        {
+            echo "aaaaaaaaaaaaaaaaaaaaaaaaa";
+        }
+        else
+        {
+            echo "bbbbbbbbbbbbbbbbbbbbbb";
         }
 
 
