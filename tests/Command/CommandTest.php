@@ -6,6 +6,8 @@ use ClickNow\Checker\Action\ActionInterface;
 use ClickNow\Checker\Action\ActionsCollection;
 use ClickNow\Checker\Config\Checker;
 use ClickNow\Checker\Context\ContextInterface;
+use ClickNow\Checker\Exception\ActionAlreadyRegisteredException;
+use ClickNow\Checker\Exception\ActionNotFoundException;
 use Mockery as m;
 
 class CommandTest extends \PHPUnit_Framework_TestCase
@@ -46,7 +48,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 
     public function testAddAction()
     {
-        $action = $this->getAction();
+        $action = $this->createAction();
         $this->command->addAction($action);
         $actions = $this->command->getActions();
         $this->assertInstanceOf(ActionsCollection::class, $actions);
@@ -54,13 +56,11 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($action, $actions->first());
     }
 
-    /**
-     * @expectedException \ClickNow\Checker\Exception\ActionAlreadyRegisteredException
-     * @expectedExceptionMessage Action `bar` already registered.
-     */
     public function testAddActionThrowsWhenActionHasAlreadyBeenAdded()
     {
-        $action = $this->getAction();
+        $this->setExpectedException(ActionAlreadyRegisteredException::class, 'Action `bar` already registered.');
+
+        $action = $this->createAction();
         $this->command->addAction($action);
         $this->command->addAction($action);
     }
@@ -139,7 +139,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 
     public function testDefaultActionMetadata()
     {
-        $action = $this->getAction();
+        $action = $this->createAction();
         $this->command->addAction($action);
         $metadata = $this->command->getActionMetadata($action);
 
@@ -154,7 +154,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 
     public function testPriorityActionMetadata()
     {
-        $action = $this->getAction();
+        $action = $this->createAction();
         $this->command->addAction($action, ['metadata' => ['priority' => 100]]);
         $metadata = $this->command->getActionMetadata($action);
 
@@ -165,7 +165,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 
     public function testBlockingActionMetadata()
     {
-        $action = $this->getAction();
+        $action = $this->createAction();
         $this->command->addAction($action, ['metadata' => ['blocking' => false]]);
         $metadata = $this->command->getActionMetadata($action);
 
@@ -174,18 +174,16 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->command->isBlockingAction($action));
     }
 
-    /**
-     * @expectedException \ClickNow\Checker\Exception\ActionNotFoundException
-     * @expectedExceptionMessage Action `bar` was not found.
-     */
     public function testNotFoundActionMetadata()
     {
-        $this->command->getActionMetadata($this->getAction());
+        $this->setExpectedException(ActionNotFoundException::class, 'Action `bar` was not found.');
+
+        $this->command->getActionMetadata($this->createAction());
     }
 
     public function testEmptyActionConfig()
     {
-        $action = $this->getAction();
+        $action = $this->createAction();
         $this->command->addAction($action);
         $config = $this->command->getActionConfig($action);
 
@@ -195,7 +193,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 
     public function testActionConfig()
     {
-        $action = $this->getAction();
+        $action = $this->createAction();
         $this->command->addAction($action, ['foo' => 'bar']);
         $config = $this->command->getActionConfig($action);
 
@@ -203,13 +201,11 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(['foo' => 'bar'], $config);
     }
 
-    /**
-     * @expectedException \ClickNow\Checker\Exception\ActionNotFoundException
-     * @expectedExceptionMessage Action `bar` was not found.
-     */
     public function testNotFoundActionConfig()
     {
-        $this->command->getActionConfig($this->getAction());
+        $this->setExpectedException(ActionNotFoundException::class, 'Action `bar` was not found.');
+
+        $this->command->getActionConfig($this->createAction());
     }
 
     public function testActionsToRun()
@@ -240,7 +236,10 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($action3, $actions[1]);
     }
 
-    protected function getAction()
+    /**
+     * @return \ClickNow\Checker\Action\ActionInterface|\Mockery\MockInterface
+     */
+    protected function createAction()
     {
         $action = m::mock(ActionInterface::class);
         $action->shouldReceive('getName')->zeroOrMoreTimes()->andReturn('bar');
