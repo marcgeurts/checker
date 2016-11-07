@@ -3,6 +3,7 @@
 namespace ClickNow\Checker\Command;
 
 use ClickNow\Checker\Action\ActionInterface;
+use ClickNow\Checker\Action\ActionsCollection;
 use ClickNow\Checker\Context\ContextInterface;
 use ClickNow\Checker\Exception\ActionInvalidResultException;
 use ClickNow\Checker\Exception\RuntimeException;
@@ -13,7 +14,7 @@ use ClickNow\Checker\Result\ResultsCollection;
 abstract class AbstractCommandRunner implements CommandInterface
 {
     /**
-     * Run this command.
+     * Run.
      *
      * @param \ClickNow\Checker\Command\CommandInterface $command
      * @param \ClickNow\Checker\Context\ContextInterface $context
@@ -23,6 +24,29 @@ abstract class AbstractCommandRunner implements CommandInterface
     public function run(CommandInterface $command, ContextInterface $context)
     {
         $actions = $this->getActionsToRun($context);
+
+        if ($actions->isEmpty()) {
+            return Result::success($command, $context, $this);
+        }
+
+        $results = $this->runActions($context, $actions);
+        $status = $this->getResultStatusFromResults($results);
+        $messages = $results->getAllMessages();
+        $message = empty($messages) ? null : implode(PHP_EOL, $messages);
+
+        return new Result($status, $command, $context, $this, $message);
+    }
+
+    /**
+     * Run actions.
+     *
+     * @param \ClickNow\Checker\Context\ContextInterface $context
+     * @param \ClickNow\Checker\Action\ActionsCollection $actions
+     *
+     * @return \ClickNow\Checker\Result\ResultsCollection
+     */
+    private function runActions(ContextInterface $context, ActionsCollection $actions)
+    {
         $results = new ResultsCollection();
 
         foreach ($actions as $action) {
@@ -33,11 +57,7 @@ abstract class AbstractCommandRunner implements CommandInterface
             }
         }
 
-        $status = $this->getResultStatusFromResults($results);
-        $messages = $results->getAllMessages();
-        $message = empty($messages) ? null : implode(PHP_EOL, $messages);
-
-        return new Result($status, $command, $context, $this, $message);
+        return $results;
     }
 
     /**
@@ -61,7 +81,7 @@ abstract class AbstractCommandRunner implements CommandInterface
     }
 
     /**
-     * Run by action for this command.
+     * Run action.
      *
      * @param \ClickNow\Checker\Context\ContextInterface $context
      * @param \ClickNow\Checker\Action\ActionInterface   $action

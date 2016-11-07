@@ -34,7 +34,13 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         m::close();
     }
 
-    public function testNameOfCommand()
+    public function testConstruct()
+    {
+        $this->assertInstanceOf(CommandInterface::class, $this->command);
+        $this->assertInstanceOf(AbstractCommandRunner::class, $this->command);
+    }
+
+    public function testName()
     {
         $this->assertEquals('foo', $this->command->getName());
     }
