@@ -10,7 +10,7 @@ use SplPriorityQueue;
 class ActionsCollection extends ArrayCollection
 {
     /**
-     * Filter actions by context.
+     * Filter by context.
      *
      * @param \ClickNow\Checker\Command\CommandInterface $command
      * @param \ClickNow\Checker\Context\ContextInterface $context
@@ -25,7 +25,7 @@ class ActionsCollection extends ArrayCollection
     }
 
     /**
-     * Sort actions by priority.
+     * Sort by priority.
      *
      * @param \ClickNow\Checker\Command\CommandInterface $command
      *
@@ -37,7 +37,7 @@ class ActionsCollection extends ArrayCollection
         $stableSortIndex = PHP_INT_MAX;
 
         foreach ($this->getIterator() as $action) {
-            $priorityQueue->insert($action, [$command->getPriorityAction($action), $stableSortIndex--]);
+            $priorityQueue->insert($action, [$command->getActionPriority($action), $stableSortIndex--]);
         }
 
         return new self(array_values(iterator_to_array($priorityQueue)));

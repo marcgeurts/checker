@@ -10,6 +10,10 @@ use ClickNow\Checker\Result\Result;
 use ClickNow\Checker\Result\ResultInterface;
 use Mockery as m;
 
+/**
+ * @group command
+ * @covers \ClickNow\Checker\Command\AbstractCommandRunner
+ */
 class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -25,11 +29,10 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $checker = m::mock(Checker::class);
-        $checker->shouldReceive('getProcessTimeout')->zeroOrMoreTimes()->andReturnNull();
-        $checker->shouldReceive('shouldStopOnFailure')->zeroOrMoreTimes()->andReturn(false);
-        $checker->shouldReceive('shouldIgnoreUnstagedChanges')->zeroOrMoreTimes()->andReturn(false);
-        $checker->shouldReceive('isSkipSuccessOutput')->zeroOrMoreTimes()->andReturn(false);
-        $checker->shouldReceive('getMessage')->zeroOrMoreTimes()->andReturnNull();
+        $checker->shouldReceive('getProcessTimeout')->atLeast()->once()->andReturnNull();
+        $checker->shouldReceive('isStopOnFailure')->atLeast()->once()->andReturn(false);
+        $checker->shouldReceive('isIgnoreUnstagedChanges')->atLeast()->once()->andReturn(false);
+        $checker->shouldReceive('isSkipSuccessOutput')->atLeast()->once()->andReturn(false);
 
         $this->command = new Command($checker, 'foo');
         $this->context = m::mock(ContextInterface::class);
@@ -55,8 +58,8 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testReturnSuccess()
     {
-        $this->command->addAction($this->createAction('action1'));
-        $this->command->addAction($this->createAction('action2'));
+        $this->command->addAction($this->mockAction('action1'));
+        $this->command->addAction($this->mockAction('action2'));
 
         $result = $this->command->run($this->command, $this->context);
         $this->assertInstanceOf(ResultInterface::class, $result);
@@ -66,8 +69,8 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testReturnAError()
     {
-        $action1 = $this->createAction('action1');
-        $action2 = $this->createAction('action2');
+        $action1 = $this->mockAction('action1');
+        $action2 = $this->mockAction('action2');
 
         $action1->shouldReceive('run')->once()->andReturn(
             Result::error($this->command, $this->context, $action1, 'ERROR')
@@ -84,8 +87,8 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testReturnAWarning()
     {
-        $action1 = $this->createAction('action1');
-        $action2 = $this->createAction('action2');
+        $action1 = $this->mockAction('action1');
+        $action2 = $this->mockAction('action2');
 
         $action1->shouldReceive('run')->once()->andReturn(
             Result::warning($this->command, $this->context, $action1, 'WARNING')
@@ -102,8 +105,8 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testReturnSomeErrors()
     {
-        $action1 = $this->createAction('action1');
-        $action2 = $this->createAction('action2');
+        $action1 = $this->mockAction('action1');
+        $action2 = $this->mockAction('action2');
 
         $action1->shouldReceive('run')->once()->andReturn(
             Result::error($this->command, $this->context, $action1, 'ERROR1')
@@ -124,8 +127,8 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testReturnSomeWarnings()
     {
-        $action1 = $this->createAction('action1');
-        $action2 = $this->createAction('action2');
+        $action1 = $this->mockAction('action1');
+        $action2 = $this->mockAction('action2');
 
         $action1->shouldReceive('run')->once()->andReturn(
             Result::warning($this->command, $this->context, $action1, 'WARNING1')
@@ -146,8 +149,8 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testReturnSomeErrorsAndWarnings()
     {
-        $action1 = $this->createAction('action1');
-        $action2 = $this->createAction('action2');
+        $action1 = $this->mockAction('action1');
+        $action2 = $this->mockAction('action2');
 
         $action1->shouldReceive('run')->once()->andReturn(
             Result::warning($this->command, $this->context, $action1, 'ERROR')
@@ -170,8 +173,8 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
     {
         $this->command->setConfig(['stop_on_failure' => true]);
 
-        $action1 = $this->createAction('action1');
-        $action2 = $this->createAction('action2');
+        $action1 = $this->mockAction('action1');
+        $action2 = $this->mockAction('action2');
 
         $action1->shouldReceive('run')->once()->andReturn(
             Result::error($this->command, $this->context, $action1, 'ERROR')
@@ -192,8 +195,8 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
     {
         $this->command->setConfig(['stop_on_failure' => true]);
 
-        $action1 = $this->createAction('action1');
-        $action2 = $this->createAction('action2');
+        $action1 = $this->mockAction('action1');
+        $action2 = $this->mockAction('action2');
 
         $action1->shouldReceive('run')->once()->andReturn(
             Result::error($this->command, $this->context, $action1, 'ERROR')
@@ -214,8 +217,8 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testValidatesTheReturnTypeOfAction()
     {
-        $action1 = $this->createAction('action1');
-        $action2 = $this->createAction('action2');
+        $action1 = $this->mockAction('action1');
+        $action2 = $this->mockAction('action2');
 
         $action1->shouldReceive('run')->once()->andReturnNull();
         $action2->shouldReceive('run')->once()->andThrow(RuntimeException::class, 'ERROR');
@@ -232,10 +235,10 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
     /**
      * @return \ClickNow\Checker\Action\ActionInterface|\Mockery\MockInterface
      */
-    protected function createAction($name)
+    protected function mockAction($name)
     {
         $action = m::mock(ActionInterface::class);
-        $action->shouldReceive('getName')->zeroOrMoreTimes()->andReturn($name);
+        $action->shouldReceive('getName')->atLeast()->once()->andReturn($name);
         $action->shouldReceive('canRunInContext')->once()->andReturn(true)->byDefault();
         $action->shouldReceive('run')->once()->andReturn(
             Result::success($this->command, $this->context, $action)

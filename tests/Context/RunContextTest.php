@@ -6,6 +6,10 @@ use ClickNow\Checker\Command\CommandInterface;
 use ClickNow\Checker\Util\FilesCollection;
 use Mockery as m;
 
+/**
+ * @group context
+ * @covers \ClickNow\Checker\Context\RunContext
+ */
 class RunContextTest extends \PHPUnit_Framework_TestCase
 {
     /**

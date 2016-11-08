@@ -8,14 +8,14 @@ use ClickNow\Checker\Context\ContextInterface;
 interface CommandInterface extends ActionInterface
 {
     /**
-     * Get actions of this command.
+     * Get actions.
      *
      * @return \ClickNow\Checker\Action\ActionsCollection
      */
     public function getActions();
 
     /**
-     * Add action in this command.
+     * Add action.
      *
      * @param \ClickNow\Checker\Action\ActionInterface $action
      * @param array                                    $config
@@ -25,7 +25,7 @@ interface CommandInterface extends ActionInterface
     public function addAction(ActionInterface $action, array $config);
 
     /**
-     * Set config for this command.
+     * Set config.
      *
      * @param array $config
      *
@@ -34,35 +34,35 @@ interface CommandInterface extends ActionInterface
     public function setConfig(array $config);
 
     /**
-     * Get process timeout for this command.
+     * Get process timeout.
      *
      * @return null|float
      */
     public function getProcessTimeout();
 
     /**
-     * Should stop running command on failure?
+     * Is stop on failure?
      *
      * @return bool
      */
-    public function shouldStopOnFailure();
+    public function isStopOnFailure();
 
     /**
-     * Should ignore unstaged changes for this command?
+     * Is ignore unstaged changes?
      *
      * @return bool
      */
-    public function shouldIgnoreUnstagedChanges();
+    public function isIgnoreUnstagedChanges();
 
     /**
-     * It is to skip the success output for this command?
+     * Is skip success output?
      *
      * @return bool
      */
     public function isSkipSuccessOutput();
 
     /**
-     * Get message by resource for this command.
+     * Get message.
      *
      * @param string $resource
      *
@@ -71,7 +71,7 @@ interface CommandInterface extends ActionInterface
     public function getMessage($resource);
 
     /**
-     * Get metadata by action for this command.
+     * Get action metadata.
      *
      * @param \ClickNow\Checker\Action\ActionInterface $action
      *
@@ -80,25 +80,25 @@ interface CommandInterface extends ActionInterface
     public function getActionMetadata(ActionInterface $action);
 
     /**
-     * Get priority by action for this command.
+     * Get action priority.
      *
      * @param \ClickNow\Checker\Action\ActionInterface $action
      *
      * @return int
      */
-    public function getPriorityAction(ActionInterface $action);
+    public function getActionPriority(ActionInterface $action);
 
     /**
-     * Is blocking action for this command?
+     * Is action blocking?
      *
      * @param \ClickNow\Checker\Action\ActionInterface $action
      *
      * @return bool
      */
-    public function isBlockingAction(ActionInterface $action);
+    public function isActionBlocking(ActionInterface $action);
 
     /**
-     * Get config by action for this command.
+     * Get action config.
      *
      * @param \ClickNow\Checker\Action\ActionInterface $action
      *
@@ -107,7 +107,7 @@ interface CommandInterface extends ActionInterface
     public function getActionConfig(ActionInterface $action);
 
     /**
-     * Get actions to run for this command.
+     * Get actions to run.
      *
      * @param \ClickNow\Checker\Context\ContextInterface $context
      *
@@ -116,7 +116,7 @@ interface CommandInterface extends ActionInterface
     public function getActionsToRun(ContextInterface $context);
 
     /**
-     * Run by action for this command.
+     * Run action.
      *
      * @param \ClickNow\Checker\Context\ContextInterface $context
      * @param \ClickNow\Checker\Action\ActionInterface   $action

@@ -57,7 +57,7 @@ class Command extends AbstractCommandRunner
     }
 
     /**
-     * Get command name.
+     * Get name.
      *
      * @return string
      */
@@ -67,7 +67,7 @@ class Command extends AbstractCommandRunner
     }
 
     /**
-     * Get actions for this command.
+     * Get actions.
      *
      * @return \ClickNow\Checker\Action\ActionsCollection
      */
@@ -77,7 +77,7 @@ class Command extends AbstractCommandRunner
     }
 
     /**
-     * Add action for this command.
+     * Add action.
      *
      * @param \ClickNow\Checker\Action\ActionInterface $action
      * @param array                                    $config
@@ -118,7 +118,7 @@ class Command extends AbstractCommandRunner
     }
 
     /**
-     * Parse metadata by action for this command.
+     * Parse action metadata.
      *
      * @param array $metadata
      *
@@ -138,7 +138,7 @@ class Command extends AbstractCommandRunner
     }
 
     /**
-     * Set config for this command.
+     * Set config.
      *
      * @param array $config
      *
@@ -149,8 +149,8 @@ class Command extends AbstractCommandRunner
         $resolver = new OptionsResolver();
         $resolver->setDefaults(array_merge([
             'process_timeout'         => $this->checker->getProcessTimeout(),
-            'stop_on_failure'         => $this->checker->shouldStopOnFailure(),
-            'ignore_unstaged_changes' => $this->checker->shouldIgnoreUnstagedChanges(),
+            'stop_on_failure'         => $this->checker->isStopOnFailure(),
+            'ignore_unstaged_changes' => $this->checker->isIgnoreUnstagedChanges(),
             'skip_success_output'     => $this->checker->isSkipSuccessOutput(),
             'message'                 => [],
             'can_run_in'              => true,
@@ -165,7 +165,7 @@ class Command extends AbstractCommandRunner
     }
 
     /**
-     * Get process timeout for this command.
+     * Get process timeout.
      *
      * @return null|float
      */
@@ -175,27 +175,27 @@ class Command extends AbstractCommandRunner
     }
 
     /**
-     * Should stop running command on failure?
+     * Is stop on failure?
      *
      * @return bool
      */
-    public function shouldStopOnFailure()
+    public function isStopOnFailure()
     {
         return $this->options['stop_on_failure'];
     }
 
     /**
-     * Should ignore unstaged changes for this command?
+     * Is ignore unstaged changes?
      *
      * @return bool
      */
-    public function shouldIgnoreUnstagedChanges()
+    public function isIgnoreUnstagedChanges()
     {
         return $this->options['ignore_unstaged_changes'];
     }
 
     /**
-     * It is to skip the success output for this command?
+     * Is skip success output?
      *
      * @return bool
      */
@@ -205,7 +205,7 @@ class Command extends AbstractCommandRunner
     }
 
     /**
-     * Get message by resource for this command.
+     * Get message.
      *
      * @param string $resource
      *
@@ -221,7 +221,7 @@ class Command extends AbstractCommandRunner
     }
 
     /**
-     * This command can run in context?
+     * Can run in context?
      *
      * @param \ClickNow\Checker\Command\CommandInterface $command
      * @param \ClickNow\Checker\Context\ContextInterface $context
@@ -240,7 +240,7 @@ class Command extends AbstractCommandRunner
     }
 
     /**
-     * Get metadata by action for this command.
+     * Get action metadata.
      *
      * @param \ClickNow\Checker\Action\ActionInterface $action
      *
@@ -258,31 +258,31 @@ class Command extends AbstractCommandRunner
     }
 
     /**
-     * Get priority by action for this command.
+     * Get action priority.
      *
      * @param \ClickNow\Checker\Action\ActionInterface $action
      *
      * @return int
      */
-    public function getPriorityAction(ActionInterface $action)
+    public function getActionPriority(ActionInterface $action)
     {
         return (int) $this->getActionMetadata($action)['priority'];
     }
 
     /**
-     * Is blocking action for this command?
+     * Is action blocking?
      *
      * @param \ClickNow\Checker\Action\ActionInterface $action
      *
      * @return bool
      */
-    public function isBlockingAction(ActionInterface $action)
+    public function isActionBlocking(ActionInterface $action)
     {
         return (bool) $this->getActionMetadata($action)['blocking'];
     }
 
     /**
-     * Get config by action for this command.
+     * Get action config.
      *
      * @param \ClickNow\Checker\Action\ActionInterface $action
      *
@@ -300,7 +300,7 @@ class Command extends AbstractCommandRunner
     }
 
     /**
-     * Get actions to run for this command.
+     * Get actions to run.
      *
      * @param \ClickNow\Checker\Context\ContextInterface $context
      *

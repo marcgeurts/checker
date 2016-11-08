@@ -56,7 +56,7 @@ class RunnerEvent extends Event
     }
 
     /**
-     * Get actions collection.
+     * Get actions.
      *
      * @return \ClickNow\Checker\Action\ActionsCollection
      */
@@ -66,7 +66,7 @@ class RunnerEvent extends Event
     }
 
     /**
-     * Get results collection.
+     * Get results.
      *
      * @return \ClickNow\Checker\Result\ResultsCollection|null
      */

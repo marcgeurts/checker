@@ -10,6 +10,10 @@ use ClickNow\Checker\Exception\ActionAlreadyRegisteredException;
 use ClickNow\Checker\Exception\ActionNotFoundException;
 use Mockery as m;
 
+/**
+ * @group command
+ * @covers \ClickNow\Checker\Command\Command
+ */
 class CommandTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -20,11 +24,11 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $checker = m::mock(Checker::class);
-        $checker->shouldReceive('getProcessTimeout')->zeroOrMoreTimes()->andReturn(null);
-        $checker->shouldReceive('shouldStopOnFailure')->zeroOrMoreTimes()->andReturn(false);
-        $checker->shouldReceive('shouldIgnoreUnstagedChanges')->zeroOrMoreTimes()->andReturn(false);
-        $checker->shouldReceive('isSkipSuccessOutput')->zeroOrMoreTimes()->andReturn(false);
-        $checker->shouldReceive('getMessage')->zeroOrMoreTimes()->andReturn(null);
+        $checker->shouldReceive('getProcessTimeout')->atLeast()->once()->andReturn(null);
+        $checker->shouldReceive('isStopOnFailure')->atLeast()->once()->andReturn(false);
+        $checker->shouldReceive('isIgnoreUnstagedChanges')->atLeast()->once()->andReturn(false);
+        $checker->shouldReceive('isSkipSuccessOutput')->atLeast()->once()->andReturn(false);
+        $checker->shouldReceive('getMessage')->atMost()->once()->andReturn(null);
 
         $this->command = new Command($checker, 'foo');
     }
@@ -40,12 +44,12 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(AbstractCommandRunner::class, $this->command);
     }
 
-    public function testName()
+    public function testGetName()
     {
         $this->assertEquals('foo', $this->command->getName());
     }
 
-    public function testEmptyActions()
+    public function testGetActionsIsEmpty()
     {
         $actions = $this->command->getActions();
         $this->assertInstanceOf(ActionsCollection::class, $actions);
@@ -54,7 +58,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 
     public function testAddAction()
     {
-        $action = $this->createAction();
+        $action = $this->mockAction();
         $this->command->addAction($action);
         $actions = $this->command->getActions();
         $this->assertInstanceOf(ActionsCollection::class, $actions);
@@ -66,66 +70,90 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException(ActionAlreadyRegisteredException::class, 'Action `bar` already registered.');
 
-        $action = $this->createAction();
+        $action = $this->mockAction();
         $this->command->addAction($action);
         $this->command->addAction($action);
     }
 
-    public function testConfigProcessTimeout()
+    public function testGetProcessTimeout()
     {
         $this->assertNull($this->command->getProcessTimeout());
+    }
 
+    public function testSetProcessTimeoutToInteger()
+    {
         $this->command->setConfig(['process_timeout' => 60]);
         $this->assertEquals(60, $this->command->getProcessTimeout());
+    }
 
+    public function testSetProcessTimeoutToFloat()
+    {
         $this->command->setConfig(['process_timeout' => 90.5]);
         $this->assertEquals(90.5, $this->command->getProcessTimeout());
     }
 
-    public function testConfigStopOnFailure()
+    public function testStopOnFailureIsFalse()
     {
-        $this->assertFalse($this->command->shouldStopOnFailure());
+        $this->assertFalse($this->command->isStopOnFailure());
+    }
 
+    public function testStopOnFailureIsTrue()
+    {
         $this->command->setConfig(['stop_on_failure' => true]);
-        $this->assertTrue($this->command->shouldStopOnFailure());
+        $this->assertTrue($this->command->isStopOnFailure());
     }
 
-    public function testConfigIgnoreUnstagedChanges()
+    public function testIgnoreUnstagedChangesIsFalse()
     {
-        $this->assertFalse($this->command->shouldIgnoreUnstagedChanges());
-
-        $this->command->setConfig(['ignore_unstaged_changes' => true]);
-        $this->assertTrue($this->command->shouldIgnoreUnstagedChanges());
+        $this->assertFalse($this->command->isIgnoreUnstagedChanges());
     }
 
-    public function testConfigSkipSuccessOutput()
+    public function testIgnoreUnstagedChangesIsTrue()
+    {
+        $this->command->setConfig(['ignore_unstaged_changes' => true]);
+        $this->assertTrue($this->command->isIgnoreUnstagedChanges());
+    }
+
+    public function testSkipSuccessOutputIsFalse()
     {
         $this->assertFalse($this->command->isSkipSuccessOutput());
+    }
 
+    public function testSkipSuccessOutputIsTrue()
+    {
         $this->command->setConfig(['skip_success_output' => true]);
         $this->assertTrue($this->command->isSkipSuccessOutput());
     }
 
-    public function testConfigMessage()
+    public function testGetMessage()
     {
         $this->assertNull($this->command->getMessage('foo'));
+    }
 
+    public function testSetMessage()
+    {
         $this->command->setConfig(['message' => ['foo' => 'foo']]);
         $this->assertEquals('foo', $this->command->getMessage('foo'));
     }
 
-    public function testConfigCanRunInContext()
+    public function testCanRunInContextIsTrue()
     {
         $command = m::mock(CommandInterface::class);
         $context = m::mock(ContextInterface::class);
 
         $this->assertTrue($this->command->canRunInContext($command, $context));
+    }
+
+    public function testCanRunInContextIsFalse()
+    {
+        $command = m::mock(CommandInterface::class);
+        $context = m::mock(ContextInterface::class);
 
         $this->command->setConfig(['can_run_in' => false]);
         $this->assertFalse($this->command->canRunInContext($command, $context));
     }
 
-    public function testIfCommandCanRunInContext()
+    public function testCanRunInContextByArray()
     {
         $command = m::mock(CommandInterface::class);
         $command->shouldReceive('getName')->twice()->andReturn('bar');
@@ -143,9 +171,9 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->command->canRunInContext($command, $context));
     }
 
-    public function testDefaultActionMetadata()
+    public function testGetActionMetadataDefault()
     {
-        $action = $this->createAction();
+        $action = $this->mockAction();
         $this->command->addAction($action);
         $metadata = $this->command->getActionMetadata($action);
 
@@ -154,52 +182,50 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('priority', $metadata);
         $this->assertArrayHasKey('blocking', $metadata);
         $this->assertEquals(['priority' => 0, 'blocking' => true], $metadata);
-        $this->assertEquals(0, $this->command->getPriorityAction($action));
-        $this->assertTrue($this->command->isBlockingAction($action));
+        $this->assertEquals(0, $this->command->getActionPriority($action));
+        $this->assertTrue($this->command->isActionBlocking($action));
     }
 
-    public function testPriorityActionMetadata()
+    public function testGetActionMetadataNotFound()
     {
-        $action = $this->createAction();
+        $this->setExpectedException(ActionNotFoundException::class, 'Action `bar` was not found.');
+
+        $this->command->getActionMetadata($this->mockAction());
+    }
+
+    public function testSetActionMetadataPriority()
+    {
+        $action = $this->mockAction();
         $this->command->addAction($action, ['metadata' => ['priority' => 100]]);
         $metadata = $this->command->getActionMetadata($action);
 
         $this->assertInternalType('array', $metadata);
+        $this->assertCount(2, $metadata);
+        $this->assertArrayHasKey('priority', $metadata);
+        $this->assertArrayHasKey('blocking', $metadata);
         $this->assertEquals(['priority' => 100, 'blocking' => true], $metadata);
-        $this->assertEquals(100, $this->command->getPriorityAction($action));
+        $this->assertEquals(100, $this->command->getActionPriority($action));
+        $this->assertTrue($this->command->isActionBlocking($action));
     }
 
-    public function testBlockingActionMetadata()
+    public function testSetActionMetadataBlocking()
     {
-        $action = $this->createAction();
+        $action = $this->mockAction();
         $this->command->addAction($action, ['metadata' => ['blocking' => false]]);
         $metadata = $this->command->getActionMetadata($action);
 
         $this->assertInternalType('array', $metadata);
+        $this->assertCount(2, $metadata);
+        $this->assertArrayHasKey('priority', $metadata);
+        $this->assertArrayHasKey('blocking', $metadata);
         $this->assertEquals(['priority' => 0, 'blocking' => false], $metadata);
-        $this->assertFalse($this->command->isBlockingAction($action));
+        $this->assertEquals(0, $this->command->getActionPriority($action));
+        $this->assertFalse($this->command->isActionBlocking($action));
     }
 
-    public function testNotFoundActionMetadata()
+    public function testGetActionConfig()
     {
-        $this->setExpectedException(ActionNotFoundException::class, 'Action `bar` was not found.');
-
-        $this->command->getActionMetadata($this->createAction());
-    }
-
-    public function testEmptyActionConfig()
-    {
-        $action = $this->createAction();
-        $this->command->addAction($action);
-        $config = $this->command->getActionConfig($action);
-
-        $this->assertInternalType('array', $config);
-        $this->assertEmpty($config);
-    }
-
-    public function testActionConfig()
-    {
-        $action = $this->createAction();
+        $action = $this->mockAction();
         $this->command->addAction($action, ['foo' => 'bar']);
         $config = $this->command->getActionConfig($action);
 
@@ -207,27 +233,37 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(['foo' => 'bar'], $config);
     }
 
-    public function testNotFoundActionConfig()
+    public function testGetActionConfigEmpty()
+    {
+        $action = $this->mockAction();
+        $this->command->addAction($action);
+        $config = $this->command->getActionConfig($action);
+
+        $this->assertInternalType('array', $config);
+        $this->assertEmpty($config);
+    }
+
+    public function testGetActionConfigNotFound()
     {
         $this->setExpectedException(ActionNotFoundException::class, 'Action `bar` was not found.');
 
-        $this->command->getActionConfig($this->createAction());
+        $this->command->getActionConfig($this->mockAction());
     }
 
-    public function testActionsToRun()
+    public function testGetActionsToRun()
     {
         $action1 = m::mock(ActionInterface::class);
-        $action1->shouldReceive('getName')->zeroOrMoreTimes()->andReturn('action1');
+        $action1->shouldReceive('getName')->atLeast()->once()->andReturn('action1');
         $action1->shouldReceive('canRunInContext')->once()->andReturn(true);
         $this->command->addAction($action1);
 
         $action2 = m::mock(ActionInterface::class);
-        $action2->shouldReceive('getName')->zeroOrMoreTimes()->andReturn('action2');
+        $action2->shouldReceive('getName')->atLeast()->once()->andReturn('action2');
         $action2->shouldReceive('canRunInContext')->once()->andReturn(false);
         $this->command->addAction($action2);
 
         $action3 = m::mock(ActionInterface::class);
-        $action3->shouldReceive('getName')->zeroOrMoreTimes()->andReturn('action3');
+        $action3->shouldReceive('getName')->atLeast()->once()->andReturn('action3');
         $action3->shouldReceive('canRunInContext')->once()->andReturn(true);
         $this->command->addAction($action3);
 
@@ -245,10 +281,10 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     /**
      * @return \ClickNow\Checker\Action\ActionInterface|\Mockery\MockInterface
      */
-    protected function createAction()
+    protected function mockAction()
     {
         $action = m::mock(ActionInterface::class);
-        $action->shouldReceive('getName')->zeroOrMoreTimes()->andReturn('bar');
+        $action->shouldReceive('getName')->atLeast()->once()->andReturn('bar');
 
         return $action;
     }

@@ -6,6 +6,10 @@ use ClickNow\Checker\Command\CommandInterface;
 use ClickNow\Checker\Context\ContextInterface;
 use Mockery as m;
 
+/**
+ * @group action
+ * @covers \ClickNow\Checker\Action\ActionsCollection
+ */
 class ActionsCollectionTest extends \PHPUnit_Framework_TestCase
 {
     protected function tearDown()
@@ -20,9 +24,9 @@ class ActionsCollectionTest extends \PHPUnit_Framework_TestCase
         $action3 = m::mock(ActionInterface::class);
 
         $command = m::mock(CommandInterface::class);
-        $command->shouldReceive('getPriorityAction')->once()->with($action1)->andReturn(100);
-        $command->shouldReceive('getPriorityAction')->once()->with($action2)->andReturn(200);
-        $command->shouldReceive('getPriorityAction')->once()->with($action3)->andReturn(100);
+        $command->shouldReceive('getActionPriority')->once()->with($action1)->andReturn(100);
+        $command->shouldReceive('getActionPriority')->once()->with($action2)->andReturn(200);
+        $command->shouldReceive('getActionPriority')->once()->with($action3)->andReturn(100);
 
         $actionsCollection = new ActionsCollection([$action1, $action2, $action3]);
         $result = $actionsCollection->sortByPriority($command);

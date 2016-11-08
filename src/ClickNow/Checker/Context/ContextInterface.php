@@ -12,7 +12,7 @@ interface ContextInterface
     public function getCommand();
 
     /**
-     * Get files collection.
+     * Get files.
      *
      * @return \ClickNow\Checker\Util\FilesCollection
      */

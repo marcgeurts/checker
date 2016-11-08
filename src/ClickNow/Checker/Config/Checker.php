@@ -62,11 +62,11 @@ class Checker
     }
 
     /**
-     * Should stop on failure?
+     * Is stop on failure?
      *
      * @return bool
      */
-    public function shouldStopOnFailure()
+    public function isStopOnFailure()
     {
         return (bool) $this->container->getParameter('stop_on_failure');
     }
@@ -82,11 +82,11 @@ class Checker
     }
 
     /**
-     * Should ignore unstaged changes?
+     * Is ignore unstaged changes?
      *
      * @return bool
      */
-    public function shouldIgnoreUnstagedChanges()
+    public function isIgnoreUnstagedChanges()
     {
         return (bool) $this->container->getParameter('ignore_unstaged_changes');
     }

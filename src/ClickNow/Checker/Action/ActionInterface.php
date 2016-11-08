@@ -8,14 +8,14 @@ use ClickNow\Checker\Context\ContextInterface;
 interface ActionInterface
 {
     /**
-     * Get action name.
+     * Get name.
      *
      * @return string
      */
     public function getName();
 
     /**
-     * This action can run in context?
+     * Can run in context?
      *
      * @param \ClickNow\Checker\Command\CommandInterface $command
      * @param \ClickNow\Checker\Context\ContextInterface $context
@@ -25,7 +25,7 @@ interface ActionInterface
     public function canRunInContext(CommandInterface $command, ContextInterface $context);
 
     /**
-     * Run this action.
+     * Run.
      *
      * @param \ClickNow\Checker\Command\CommandInterface $command
      * @param \ClickNow\Checker\Context\ContextInterface $context

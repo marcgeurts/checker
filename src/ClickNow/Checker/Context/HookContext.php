@@ -40,7 +40,7 @@ class HookContext implements ContextInterface
     }
 
     /**
-     * Get files collection.
+     * Get files.
      *
      * @return \ClickNow\Checker\Util\FilesCollection
      */

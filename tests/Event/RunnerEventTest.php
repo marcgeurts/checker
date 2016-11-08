@@ -8,6 +8,10 @@ use ClickNow\Checker\Result\ResultsCollection;
 use Mockery as m;
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * @group event
+ * @covers \ClickNow\Checker\Event\RunnerEvent
+ */
 class RunnerEventTest extends \PHPUnit_Framework_TestCase
 {
     /**

@@ -258,7 +258,7 @@ class InstallCommand extends Command
                 return $this->paths()->getRelativeProjectPath($configPath);
             }
         } catch (FileNotFoundException $e) {
-            // no config file should be set.
+            // no config file
         }
 
         return null;

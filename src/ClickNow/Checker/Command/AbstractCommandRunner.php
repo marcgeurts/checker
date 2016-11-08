@@ -52,7 +52,7 @@ abstract class AbstractCommandRunner implements CommandInterface
         foreach ($actions as $action) {
             $result = $this->runAction($context, $action);
             $results->add($result);
-            if ($result->isError() && $this->shouldStopOnFailure()) {
+            if ($result->isError() && $this->isStopOnFailure()) {
                 break;
             }
         }
@@ -113,7 +113,7 @@ abstract class AbstractCommandRunner implements CommandInterface
      */
     private function parseActionResult(ActionInterface $action, ResultInterface $result)
     {
-        if (!$result->isSuccess() && !$this->isBlockingAction($action)) {
+        if (!$result->isSuccess() && !$this->isActionBlocking($action)) {
             return Result::warning(
                 $result->getCommand(),
                 $result->getContext(),
