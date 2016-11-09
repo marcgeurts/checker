@@ -17,7 +17,7 @@ use Mockery as m;
 class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \ClickNow\Checker\Command\Command;
+     * @var \ClickNow\Checker\Command\Command
      */
     protected $command;
 

@@ -13,16 +13,25 @@ use Mockery as m;
 class HookContextTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @var \ClickNow\Checker\Command\CommandInterface|\Mockery\MockInterface
+     */
+    protected $command;
+
+    /**
+     * @var \ClickNow\Checker\Util\FilesCollection|\Mockery\MockInterface
+     */
+    protected $files;
+
+    /**
      * @var \ClickNow\Checker\Context\HookContext
      */
     protected $hookContext;
 
     protected function setUp()
     {
-        $command = m::mock(CommandInterface::class);
-        $files = m::mock(FilesCollection::class);
-
-        $this->hookContext = new HookContext($command, $files);
+        $this->command = m::mock(CommandInterface::class);
+        $this->files = m::mock(FilesCollection::class);
+        $this->hookContext = new HookContext($this->command, $this->files);
     }
 
     protected function tearDown()
@@ -37,11 +46,17 @@ class HookContextTest extends \PHPUnit_Framework_TestCase
 
     public function testGetCommand()
     {
-        $this->assertInstanceOf(CommandInterface::class, $this->hookContext->getCommand());
+        $command = $this->hookContext->getCommand();
+
+        $this->assertInstanceOf(CommandInterface::class, $command);
+        $this->assertSame($this->command, $command);
     }
 
     public function testGetFiles()
     {
-        $this->assertInstanceOf(FilesCollection::class, $this->hookContext->getFiles());
+        $files = $this->hookContext->getFiles();
+
+        $this->assertInstanceOf(FilesCollection::class, $files);
+        $this->assertSame($this->files, $files);
     }
 }

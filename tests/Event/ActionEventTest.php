@@ -15,17 +15,31 @@ use Symfony\Component\EventDispatcher\Event;
 class ActionEventTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @var \ClickNow\Checker\Context\ContextInterface|\Mockery\MockInterface
+     */
+    protected $context;
+
+    /**
+     * @var \ClickNow\Checker\Action\ActionInterface|\Mockery\MockInterface
+     */
+    protected $action;
+
+    /**
+     * @var \ClickNow\Checker\Result\ResultInterface|\Mockery\MockInterface
+     */
+    protected $result;
+
+    /**
      * @var \ClickNow\Checker\Event\ActionEvent
      */
     protected $actionEvent;
 
     protected function setUp()
     {
-        $context = m::mock(ContextInterface::class);
-        $action = m::mock(ActionInterface::class);
-        $result = m::mock(ResultInterface::class);
-
-        $this->actionEvent = new ActionEvent($context, $action, $result);
+        $this->context = m::mock(ContextInterface::class);
+        $this->action = m::mock(ActionInterface::class);
+        $this->result = m::mock(ResultInterface::class);
+        $this->actionEvent = new ActionEvent($this->context, $this->action, $this->result);
     }
 
     protected function tearDown()
@@ -40,23 +54,31 @@ class ActionEventTest extends \PHPUnit_Framework_TestCase
 
     public function testGetContext()
     {
-        $this->assertInstanceOf(ContextInterface::class, $this->actionEvent->getContext());
+        $context = $this->actionEvent->getContext();
+
+        $this->assertInstanceOf(ContextInterface::class, $context);
+        $this->assertSame($this->context, $context);
     }
 
     public function testGetAction()
     {
-        $this->assertInstanceOf(ActionInterface::class, $this->actionEvent->getAction());
+        $action = $this->actionEvent->getAction();
+
+        $this->assertInstanceOf(ActionInterface::class, $action);
+        $this->assertSame($this->action, $action);
     }
 
     public function testGetResult()
     {
-        $this->assertInstanceOf(ResultInterface::class, $this->actionEvent->getResult());
+        $result = $this->actionEvent->getResult();
+
+        $this->assertInstanceOf(ResultInterface::class, $result);
+        $this->assertSame($this->result, $result);
     }
 
     public function testGetResultDefault()
     {
-        $actionEvent = new ActionEvent(m::mock(ContextInterface::class), m::mock(ActionInterface::class));
-
+        $actionEvent = new ActionEvent($this->context, $this->action);
         $this->assertNull($actionEvent->getResult());
     }
 }

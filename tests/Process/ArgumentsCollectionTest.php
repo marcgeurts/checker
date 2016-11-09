@@ -33,7 +33,7 @@ class ArgumentsCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(ArrayCollection::class, $this->argumentsCollection);
     }
 
-    public function testCreateNewCollectionForExecutable()
+    public function testForExecutable()
     {
         $result = ArgumentsCollection::forExecutable('foo');
 

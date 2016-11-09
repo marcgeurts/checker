@@ -15,17 +15,31 @@ use Symfony\Component\EventDispatcher\Event;
 class RunnerEventTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @var \ClickNow\Checker\Context\ContextInterface|\Mockery\MockInterface
+     */
+    protected $context;
+
+    /**
+     * @var \ClickNow\Checker\Action\ActionsCollection|\Mockery\MockInterface
+     */
+    protected $actions;
+
+    /**
+     * @var \ClickNow\Checker\Result\ResultsCollection|\Mockery\MockInterface
+     */
+    protected $results;
+
+    /**
      * @var \ClickNow\Checker\Event\RunnerEvent
      */
     protected $runnerEvent;
 
     protected function setUp()
     {
-        $context = m::mock(ContextInterface::class);
-        $actions = m::mock(ActionsCollection::class);
-        $results = m::mock(ResultsCollection::class);
-
-        $this->runnerEvent = new RunnerEvent($context, $actions, $results);
+        $this->context = m::mock(ContextInterface::class);
+        $this->actions = m::mock(ActionsCollection::class);
+        $this->results = m::mock(ResultsCollection::class);
+        $this->runnerEvent = new RunnerEvent($this->context, $this->actions, $this->results);
     }
 
     protected function tearDown()
@@ -40,22 +54,31 @@ class RunnerEventTest extends \PHPUnit_Framework_TestCase
 
     public function testGetContext()
     {
-        $this->assertInstanceOf(ContextInterface::class, $this->runnerEvent->getContext());
+        $context = $this->runnerEvent->getContext();
+
+        $this->assertInstanceOf(ContextInterface::class, $context);
+        $this->assertSame($this->context, $context);
     }
 
     public function testGetActions()
     {
-        $this->assertInstanceOf(ActionsCollection::class, $this->runnerEvent->getActions());
+        $actions = $this->runnerEvent->getActions();
+
+        $this->assertInstanceOf(ActionsCollection::class, $actions);
+        $this->assertSame($this->actions, $actions);
     }
 
     public function testGetResults()
     {
-        $this->assertInstanceOf(ResultsCollection::class, $this->runnerEvent->getResults());
+        $results = $this->runnerEvent->getResults();
+
+        $this->assertInstanceOf(ResultsCollection::class, $results);
+        $this->assertSame($this->results, $results);
     }
 
     public function testGetResultsDefault()
     {
-        $runnerEvent = new RunnerEvent(m::mock(ContextInterface::class), m::mock(ActionsCollection::class));
+        $runnerEvent = new RunnerEvent($this->context, $this->actions);
 
         $this->assertNull($runnerEvent->getResults());
     }
