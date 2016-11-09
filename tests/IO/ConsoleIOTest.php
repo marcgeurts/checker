@@ -6,6 +6,7 @@ use ClickNow\Checker\Exception\InvalidArgumentException;
 use Mockery as m;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -30,7 +31,7 @@ class ConsoleIOTest extends \PHPUnit_Framework_TestCase
     public function testIsInteractive()
     {
         $input = m::mock(InputInterface::class);
-        $input->shouldReceive('isInteractive')->once()->andReturn(false);
+        $input->shouldReceive('isInteractive')->withNoArgs()->once()->andReturn(false);
 
         $io = new ConsoleIO($input, $this->mockOutput());
         $this->assertFalse($io->isInteractive());
@@ -39,9 +40,9 @@ class ConsoleIOTest extends \PHPUnit_Framework_TestCase
     public function testLog()
     {
         $output = $this->mockOutput();
-        $output->shouldReceive('isVeryVerbose')->once()->andReturn(true);
-        $output->shouldReceive('write')->twice()->andReturnNull();
-        $output->shouldReceive('writeln')->once()->andReturnNull();
+        $output->shouldReceive('isVeryVerbose')->withNoArgs()->once()->andReturn(true);
+        $output->shouldReceive('write')->withAnyArgs()->twice()->andReturnNull();
+        $output->shouldReceive('writeln')->with(' foo', BufferedOutput::OUTPUT_NORMAL)->once()->andReturnNull();
 
         $io = new ConsoleIO(m::mock(InputInterface::class), $output);
         $io->log('foo');
@@ -50,7 +51,7 @@ class ConsoleIOTest extends \PHPUnit_Framework_TestCase
     public function testLogIsNotVeryVerbose()
     {
         $output = $this->mockOutput();
-        $output->shouldReceive('isVeryVerbose')->once()->andReturn(false);
+        $output->shouldReceive('isVeryVerbose')->withNoArgs()->once()->andReturn(false);
 
         $io = new ConsoleIO(m::mock(InputInterface::class), $output);
         $io->log('foo');
@@ -59,7 +60,7 @@ class ConsoleIOTest extends \PHPUnit_Framework_TestCase
     public function testLogWithoutMessage()
     {
         $output = $this->mockOutput();
-        $output->shouldReceive('isVeryVerbose')->once()->andReturn(true);
+        $output->shouldReceive('isVeryVerbose')->withNoArgs()->once()->andReturn(true);
 
         $io = new ConsoleIO(m::mock(InputInterface::class), $output);
         $io->log('');
@@ -92,9 +93,10 @@ class ConsoleIOTest extends \PHPUnit_Framework_TestCase
 
     protected function mockOutput()
     {
+        $formatter = m::spy(OutputFormatterInterface::class);
         $output = m::mock(OutputInterface::class);
-        $output->shouldReceive('getVerbosity')->once()->andReturn(OutputInterface::VERBOSITY_NORMAL);
-        $output->shouldReceive('getFormatter')->once()->andReturn(m::spy(OutputFormatterInterface::class));
+        $output->shouldReceive('getVerbosity')->withNoArgs()->once()->andReturn(OutputInterface::VERBOSITY_NORMAL);
+        $output->shouldReceive('getFormatter')->withNoArgs()->once()->andReturn($formatter);
 
         return $output;
     }

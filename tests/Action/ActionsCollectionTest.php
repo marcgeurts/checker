@@ -24,9 +24,9 @@ class ActionsCollectionTest extends \PHPUnit_Framework_TestCase
         $action3 = m::mock(ActionInterface::class);
 
         $command = m::mock(CommandInterface::class);
-        $command->shouldReceive('getActionPriority')->once()->with($action1)->andReturn(100);
-        $command->shouldReceive('getActionPriority')->once()->with($action2)->andReturn(200);
-        $command->shouldReceive('getActionPriority')->once()->with($action3)->andReturn(100);
+        $command->shouldReceive('getActionPriority')->with($action1)->once()->andReturn(100);
+        $command->shouldReceive('getActionPriority')->with($action2)->once()->andReturn(200);
+        $command->shouldReceive('getActionPriority')->with($action3)->once()->andReturn(100);
 
         $actionsCollection = new ActionsCollection([$action1, $action2, $action3]);
         $result = $actionsCollection->sortByPriority($command);
@@ -41,14 +41,14 @@ class ActionsCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testFilterByContext()
     {
+        $command = m::mock(CommandInterface::class);
+        $context = m::mock(ContextInterface::class);
+
         $action1 = m::mock(ActionInterface::class);
         $action2 = m::mock(ActionInterface::class);
 
-        $action1->shouldReceive('canRunInContext')->once()->andReturn(true);
-        $action2->shouldReceive('canRunInContext')->once()->andReturn(false);
-
-        $command = m::mock(CommandInterface::class);
-        $context = m::mock(ContextInterface::class);
+        $action1->shouldReceive('canRunInContext')->with($command, $context)->once()->andReturn(true);
+        $action2->shouldReceive('canRunInContext')->with($command, $context)->once()->andReturn(false);
 
         $actionsCollection = new ActionsCollection([$action1, $action2]);
         $result = $actionsCollection->filterByContext($command, $context);

@@ -24,11 +24,11 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $checker = m::mock(Checker::class);
-        $checker->shouldReceive('getProcessTimeout')->atLeast()->once()->andReturn(null);
-        $checker->shouldReceive('isStopOnFailure')->atLeast()->once()->andReturn(false);
-        $checker->shouldReceive('isIgnoreUnstagedChanges')->atLeast()->once()->andReturn(false);
-        $checker->shouldReceive('isSkipSuccessOutput')->atLeast()->once()->andReturn(false);
-        $checker->shouldReceive('getMessage')->atMost()->once()->andReturn(null);
+        $checker->shouldReceive('getProcessTimeout')->withNoArgs()->atLeast()->once()->andReturn(null);
+        $checker->shouldReceive('isStopOnFailure')->withNoArgs()->atLeast()->once()->andReturn(false);
+        $checker->shouldReceive('isIgnoreUnstagedChanges')->withNoArgs()->atLeast()->once()->andReturn(false);
+        $checker->shouldReceive('isSkipSuccessOutput')->withNoArgs()->atLeast()->once()->andReturn(false);
+        $checker->shouldReceive('getMessage')->withAnyArgs()->atMost()->once()->andReturn(null);
 
         $this->command = new Command($checker, 'foo');
     }
@@ -156,10 +156,10 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     public function testCanRunInContextByArray()
     {
         $command = m::mock(CommandInterface::class);
-        $command->shouldReceive('getName')->twice()->andReturn('bar');
+        $command->shouldReceive('getName')->withNoArgs()->twice()->andReturn('bar');
 
         $context = m::mock(ContextInterface::class);
-        $context->shouldReceive('getCommand')->times(3)->andReturn($this->command);
+        $context->shouldReceive('getCommand')->withNoArgs()->times(3)->andReturn($this->command);
 
         $this->command->setConfig(['can_run_in' => ['bar']]);
         $this->assertTrue($this->command->canRunInContext($command, $context));
@@ -252,22 +252,22 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 
     public function testGetActionsToRun()
     {
+        $context = m::mock(ContextInterface::class);
+
         $action1 = m::mock(ActionInterface::class);
-        $action1->shouldReceive('getName')->atLeast()->once()->andReturn('action1');
-        $action1->shouldReceive('canRunInContext')->once()->andReturn(true);
+        $action1->shouldReceive('getName')->withNoArgs()->atLeast()->once()->andReturn('action1');
+        $action1->shouldReceive('canRunInContext')->with($this->command, $context)->once()->andReturn(true);
         $this->command->addAction($action1);
 
         $action2 = m::mock(ActionInterface::class);
-        $action2->shouldReceive('getName')->atLeast()->once()->andReturn('action2');
-        $action2->shouldReceive('canRunInContext')->once()->andReturn(false);
+        $action2->shouldReceive('getName')->withNoArgs()->atLeast()->once()->andReturn('action2');
+        $action2->shouldReceive('canRunInContext')->with($this->command, $context)->once()->andReturn(false);
         $this->command->addAction($action2);
 
         $action3 = m::mock(ActionInterface::class);
-        $action3->shouldReceive('getName')->atLeast()->once()->andReturn('action3');
-        $action3->shouldReceive('canRunInContext')->once()->andReturn(true);
+        $action3->shouldReceive('getName')->withNoArgs()->atLeast()->once()->andReturn('action3');
+        $action3->shouldReceive('canRunInContext')->with($this->command, $context)->once()->andReturn(true);
         $this->command->addAction($action3);
-
-        $context = m::mock(ContextInterface::class);
 
         $result = $this->command->getActionsToRun($context);
         $this->assertInstanceOf(ActionsCollection::class, $result);
@@ -284,7 +284,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     protected function mockAction()
     {
         $action = m::mock(ActionInterface::class);
-        $action->shouldReceive('getName')->atLeast()->once()->andReturn('bar');
+        $action->shouldReceive('getName')->withNoArgs()->atLeast()->once()->andReturn('bar');
 
         return $action;
     }

@@ -40,7 +40,7 @@ class RawProcessFormatterTest extends \PHPUnit_Framework_TestCase
     public function testDisplayStdoutOnly()
     {
         $process = $this->mockProcess();
-        $process->shouldReceive('getErrorOutput')->once()->andReturnNull();
+        $process->shouldReceive('getErrorOutput')->withNoArgs()->once()->andReturnNull();
 
         $this->assertEquals('stdout', $this->formatter->format($process));
     }
@@ -48,7 +48,7 @@ class RawProcessFormatterTest extends \PHPUnit_Framework_TestCase
     public function testDisplayStderrOnly()
     {
         $process = $this->mockProcess();
-        $process->shouldReceive('getOutput')->once()->andReturnNull();
+        $process->shouldReceive('getOutput')->withNoArgs()->once()->andReturnNull();
 
         $this->assertEquals('stderr', $this->formatter->format($process));
     }
@@ -59,9 +59,9 @@ class RawProcessFormatterTest extends \PHPUnit_Framework_TestCase
     protected function mockProcess()
     {
         $process = m::mock(Process::class);
-        $process->shouldReceive('stop')->atMost()->once()->andReturnNull();
-        $process->shouldReceive('getOutput')->once()->andReturn('stdout')->byDefault();
-        $process->shouldReceive('getErrorOutput')->once()->andReturn('stderr')->byDefault();
+        $process->shouldReceive('stop')->with(0)->atMost()->once()->andReturnNull();
+        $process->shouldReceive('getOutput')->withNoArgs()->once()->andReturn('stdout')->byDefault();
+        $process->shouldReceive('getErrorOutput')->withNoArgs()->once()->andReturn('stderr')->byDefault();
 
         return $process;
     }

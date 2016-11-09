@@ -2,7 +2,6 @@
 
 namespace ClickNow\Checker\IO;
 
-use Mockery as m;
 use Symfony\Component\Console\Output\NullOutput;
 
 /**
@@ -19,11 +18,6 @@ class NullIOTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->io = new NullIO();
-    }
-
-    protected function tearDown()
-    {
-        m::close();
     }
 
     public function testConstruct()
