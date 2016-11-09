@@ -59,7 +59,7 @@ class RawProcessFormatterTest extends \PHPUnit_Framework_TestCase
     protected function mockProcess()
     {
         $process = m::mock(Process::class);
-        $process->shouldReceive('stop')->with(0)->atMost()->once()->andReturnNull();
+        $process->shouldReceive('stop')->atMost()->once()->andReturnNull();
         $process->shouldReceive('getOutput')->withNoArgs()->once()->andReturn('stdout')->byDefault();
         $process->shouldReceive('getErrorOutput')->withNoArgs()->once()->andReturn('stderr')->byDefault();
 
