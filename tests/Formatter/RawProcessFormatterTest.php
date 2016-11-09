@@ -14,11 +14,11 @@ class RawProcessFormatterTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \ClickNow\Checker\Formatter\RawProcessFormatter
      */
-    protected $formatter;
+    protected $rawProcessFormatter;
 
     protected function setUp()
     {
-        $this->formatter = new RawProcessFormatter();
+        $this->rawProcessFormatter = new RawProcessFormatter();
     }
 
     protected function tearDown()
@@ -28,13 +28,15 @@ class RawProcessFormatterTest extends \PHPUnit_Framework_TestCase
 
     public function testConstruct()
     {
-        $this->assertInstanceOf(ProcessFormatterInterface::class, $this->formatter);
+        $this->assertInstanceOf(ProcessFormatterInterface::class, $this->rawProcessFormatter);
     }
 
     public function testDisplayTheFullProcessOutput()
     {
         $process = $this->mockProcess();
-        $this->assertEquals('stdout'.PHP_EOL.'stderr', $this->formatter->format($process));
+        $result = $this->rawProcessFormatter->format($process);
+
+        $this->assertSame('stdout'.PHP_EOL.'stderr', $result);
     }
 
     public function testDisplayStdoutOnly()
@@ -42,7 +44,8 @@ class RawProcessFormatterTest extends \PHPUnit_Framework_TestCase
         $process = $this->mockProcess();
         $process->shouldReceive('getErrorOutput')->withNoArgs()->once()->andReturnNull();
 
-        $this->assertEquals('stdout', $this->formatter->format($process));
+        $result = $this->rawProcessFormatter->format($process);
+        $this->assertSame('stdout', $result);
     }
 
     public function testDisplayStderrOnly()
@@ -50,7 +53,8 @@ class RawProcessFormatterTest extends \PHPUnit_Framework_TestCase
         $process = $this->mockProcess();
         $process->shouldReceive('getOutput')->withNoArgs()->once()->andReturnNull();
 
-        $this->assertEquals('stderr', $this->formatter->format($process));
+        $result = $this->rawProcessFormatter->format($process);
+        $this->assertSame('stderr', $result);
     }
 
     /**

@@ -15,14 +15,14 @@ class HookContextTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \ClickNow\Checker\Context\HookContext
      */
-    protected $context;
+    protected $hookContext;
 
     protected function setUp()
     {
         $command = m::mock(CommandInterface::class);
         $files = m::mock(FilesCollection::class);
 
-        $this->context = new HookContext($command, $files);
+        $this->hookContext = new HookContext($command, $files);
     }
 
     protected function tearDown()
@@ -32,16 +32,16 @@ class HookContextTest extends \PHPUnit_Framework_TestCase
 
     public function testConstruct()
     {
-        $this->assertInstanceOf(ContextInterface::class, $this->context);
+        $this->assertInstanceOf(ContextInterface::class, $this->hookContext);
     }
 
     public function testGetCommand()
     {
-        $this->assertInstanceOf(CommandInterface::class, $this->context->getCommand());
+        $this->assertInstanceOf(CommandInterface::class, $this->hookContext->getCommand());
     }
 
     public function testGetFiles()
     {
-        $this->assertInstanceOf(FilesCollection::class, $this->context->getFiles());
+        $this->assertInstanceOf(FilesCollection::class, $this->hookContext->getFiles());
     }
 }

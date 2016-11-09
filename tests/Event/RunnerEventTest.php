@@ -17,7 +17,7 @@ class RunnerEventTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \ClickNow\Checker\Event\RunnerEvent
      */
-    protected $event;
+    protected $runnerEvent;
 
     protected function setUp()
     {
@@ -25,7 +25,7 @@ class RunnerEventTest extends \PHPUnit_Framework_TestCase
         $actions = m::mock(ActionsCollection::class);
         $results = m::mock(ResultsCollection::class);
 
-        $this->event = new RunnerEvent($context, $actions, $results);
+        $this->runnerEvent = new RunnerEvent($context, $actions, $results);
     }
 
     protected function tearDown()
@@ -35,27 +35,28 @@ class RunnerEventTest extends \PHPUnit_Framework_TestCase
 
     public function testConstruct()
     {
-        $this->assertInstanceOf(Event::class, $this->event);
+        $this->assertInstanceOf(Event::class, $this->runnerEvent);
     }
 
     public function testGetContext()
     {
-        $this->assertInstanceOf(ContextInterface::class, $this->event->getContext());
+        $this->assertInstanceOf(ContextInterface::class, $this->runnerEvent->getContext());
     }
 
     public function testGetActions()
     {
-        $this->assertInstanceOf(ActionsCollection::class, $this->event->getActions());
+        $this->assertInstanceOf(ActionsCollection::class, $this->runnerEvent->getActions());
     }
 
     public function testGetResults()
     {
-        $this->assertInstanceOf(ResultsCollection::class, $this->event->getResults());
+        $this->assertInstanceOf(ResultsCollection::class, $this->runnerEvent->getResults());
     }
 
     public function testGetResultsDefault()
     {
-        $event = new RunnerEvent(m::mock(ContextInterface::class), m::mock(ActionsCollection::class));
-        $this->assertNull($event->getResults());
+        $runnerEvent = new RunnerEvent(m::mock(ContextInterface::class), m::mock(ActionsCollection::class));
+
+        $this->assertNull($runnerEvent->getResults());
     }
 }

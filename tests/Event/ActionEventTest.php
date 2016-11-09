@@ -17,7 +17,7 @@ class ActionEventTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \ClickNow\Checker\Event\ActionEvent
      */
-    protected $event;
+    protected $actionEvent;
 
     protected function setUp()
     {
@@ -25,7 +25,7 @@ class ActionEventTest extends \PHPUnit_Framework_TestCase
         $action = m::mock(ActionInterface::class);
         $result = m::mock(ResultInterface::class);
 
-        $this->event = new ActionEvent($context, $action, $result);
+        $this->actionEvent = new ActionEvent($context, $action, $result);
     }
 
     protected function tearDown()
@@ -35,27 +35,28 @@ class ActionEventTest extends \PHPUnit_Framework_TestCase
 
     public function testConstruct()
     {
-        $this->assertInstanceOf(Event::class, $this->event);
+        $this->assertInstanceOf(Event::class, $this->actionEvent);
     }
 
     public function testGetContext()
     {
-        $this->assertInstanceOf(ContextInterface::class, $this->event->getContext());
+        $this->assertInstanceOf(ContextInterface::class, $this->actionEvent->getContext());
     }
 
     public function testGetAction()
     {
-        $this->assertInstanceOf(ActionInterface::class, $this->event->getAction());
+        $this->assertInstanceOf(ActionInterface::class, $this->actionEvent->getAction());
     }
 
     public function testGetResult()
     {
-        $this->assertInstanceOf(ResultInterface::class, $this->event->getResult());
+        $this->assertInstanceOf(ResultInterface::class, $this->actionEvent->getResult());
     }
 
     public function testGetResultDefault()
     {
-        $event = new ActionEvent(m::mock(ContextInterface::class), m::mock(ActionInterface::class));
-        $this->assertNull($event->getResult());
+        $actionEvent = new ActionEvent(m::mock(ContextInterface::class), m::mock(ActionInterface::class));
+
+        $this->assertNull($actionEvent->getResult());
     }
 }

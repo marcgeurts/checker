@@ -15,14 +15,14 @@ class RunContextTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \ClickNow\Checker\Context\RunContext
      */
-    protected $context;
+    protected $runContext;
 
     protected function setUp()
     {
         $command = m::mock(CommandInterface::class);
         $files = m::mock(FilesCollection::class);
 
-        $this->context = new RunContext($command, $files);
+        $this->runContext = new RunContext($command, $files);
     }
 
     protected function tearDown()
@@ -32,16 +32,16 @@ class RunContextTest extends \PHPUnit_Framework_TestCase
 
     public function testConstruct()
     {
-        $this->assertInstanceOf(ContextInterface::class, $this->context);
+        $this->assertInstanceOf(ContextInterface::class, $this->runContext);
     }
 
     public function testGetCommand()
     {
-        $this->assertInstanceOf(CommandInterface::class, $this->context->getCommand());
+        $this->assertInstanceOf(CommandInterface::class, $this->runContext->getCommand());
     }
 
     public function testGetFiles()
     {
-        $this->assertInstanceOf(FilesCollection::class, $this->context->getFiles());
+        $this->assertInstanceOf(FilesCollection::class, $this->runContext->getFiles());
     }
 }

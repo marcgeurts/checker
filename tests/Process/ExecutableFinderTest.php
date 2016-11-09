@@ -19,24 +19,23 @@ class ExecutableFinderTest extends \PHPUnit_Framework_TestCase
 
     public function testFindExecutable()
     {
-        $executableFinder = m::mock(SymfonyExecutableFinder::class);
-        $executableFinder->shouldReceive('find')->with('foo', null, ['bin'])->twice()->andReturn('bin/foo');
+        $symfonyExecutableFinder = m::mock(SymfonyExecutableFinder::class);
+        $symfonyExecutableFinder->shouldReceive('find')->with('foo', null, ['bin'])->twice()->andReturn('bin/foo');
 
-        $finder = new ExecutableFinder('bin', $executableFinder);
-        $this->assertEquals('bin/foo', $finder->find('foo'));
+        $executableFinder = new ExecutableFinder('bin', $symfonyExecutableFinder);
 
-        // force unix
-        $this->assertEquals('bin/foo', $finder->find('foo', true));
+        $this->assertSame('bin/foo', $executableFinder->find('foo'));
+        $this->assertSame('bin/foo', $executableFinder->find('foo', true));
     }
 
     public function testExecutableNotFound()
     {
         $this->setExpectedException(ExecutableNotFoundException::class, 'Executable `foo` was not found.');
 
-        $executableFinder = m::mock(SymfonyExecutableFinder::class);
-        $executableFinder->shouldReceive('find')->with('foo', null, ['bin'])->once()->andReturn(false);
+        $symfonyExecutableFinder = m::mock(SymfonyExecutableFinder::class);
+        $symfonyExecutableFinder->shouldReceive('find')->with('foo', null, ['bin'])->once()->andReturn(false);
 
-        $finder = new ExecutableFinder('bin', $executableFinder);
-        $this->assertEquals('bin/foo', $finder->find('foo'));
+        $executableFinder = new ExecutableFinder('bin', $symfonyExecutableFinder);
+        $this->assertSame('bin/foo', $executableFinder->find('foo'));
     }
 }

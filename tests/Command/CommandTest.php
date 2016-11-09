@@ -46,12 +46,13 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 
     public function testGetName()
     {
-        $this->assertEquals('foo', $this->command->getName());
+        $this->assertSame('foo', $this->command->getName());
     }
 
     public function testGetActionsIsEmpty()
     {
         $actions = $this->command->getActions();
+
         $this->assertInstanceOf(ActionsCollection::class, $actions);
         $this->assertEmpty($actions);
     }
@@ -61,6 +62,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $action = $this->mockAction();
         $this->command->addAction($action);
         $actions = $this->command->getActions();
+
         $this->assertInstanceOf(ActionsCollection::class, $actions);
         $this->assertCount(1, $actions);
         $this->assertSame($action, $actions->first());
@@ -83,13 +85,13 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     public function testSetProcessTimeoutToInteger()
     {
         $this->command->setConfig(['process_timeout' => 60]);
-        $this->assertEquals(60, $this->command->getProcessTimeout());
+        $this->assertSame(60, $this->command->getProcessTimeout());
     }
 
     public function testSetProcessTimeoutToFloat()
     {
         $this->command->setConfig(['process_timeout' => 90.5]);
-        $this->assertEquals(90.5, $this->command->getProcessTimeout());
+        $this->assertSame(90.5, $this->command->getProcessTimeout());
     }
 
     public function testStopOnFailureIsFalse()
@@ -133,7 +135,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     public function testSetMessage()
     {
         $this->command->setConfig(['message' => ['foo' => 'foo']]);
-        $this->assertEquals('foo', $this->command->getMessage('foo'));
+        $this->assertSame('foo', $this->command->getMessage('foo'));
     }
 
     public function testCanRunInContextIsTrue()
@@ -181,8 +183,8 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $metadata);
         $this->assertArrayHasKey('priority', $metadata);
         $this->assertArrayHasKey('blocking', $metadata);
-        $this->assertEquals(['priority' => 0, 'blocking' => true], $metadata);
-        $this->assertEquals(0, $this->command->getActionPriority($action));
+        $this->assertSame(['priority' => 0, 'blocking' => true], $metadata);
+        $this->assertSame(0, $this->command->getActionPriority($action));
         $this->assertTrue($this->command->isActionBlocking($action));
     }
 
@@ -203,8 +205,8 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $metadata);
         $this->assertArrayHasKey('priority', $metadata);
         $this->assertArrayHasKey('blocking', $metadata);
-        $this->assertEquals(['priority' => 100, 'blocking' => true], $metadata);
-        $this->assertEquals(100, $this->command->getActionPriority($action));
+        $this->assertSame(['priority' => 100, 'blocking' => true], $metadata);
+        $this->assertSame(100, $this->command->getActionPriority($action));
         $this->assertTrue($this->command->isActionBlocking($action));
     }
 
@@ -218,8 +220,8 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $metadata);
         $this->assertArrayHasKey('priority', $metadata);
         $this->assertArrayHasKey('blocking', $metadata);
-        $this->assertEquals(['priority' => 0, 'blocking' => false], $metadata);
-        $this->assertEquals(0, $this->command->getActionPriority($action));
+        $this->assertSame(['priority' => 0, 'blocking' => false], $metadata);
+        $this->assertSame(0, $this->command->getActionPriority($action));
         $this->assertFalse($this->command->isActionBlocking($action));
     }
 
@@ -230,7 +232,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $config = $this->command->getActionConfig($action);
 
         $this->assertInternalType('array', $config);
-        $this->assertEquals(['foo' => 'bar'], $config);
+        $this->assertSame(['foo' => 'bar'], $config);
     }
 
     public function testGetActionConfigEmpty()
@@ -270,10 +272,10 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $this->command->addAction($action3);
 
         $result = $this->command->getActionsToRun($context);
+        $actions = $result->toArray();
+
         $this->assertInstanceOf(ActionsCollection::class, $result);
         $this->assertCount(2, $result);
-
-        $actions = $result->toArray();
         $this->assertSame($action1, $actions[0]);
         $this->assertSame($action3, $actions[1]);
     }

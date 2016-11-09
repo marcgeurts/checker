@@ -13,121 +13,121 @@ class NullIOTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \ClickNow\Checker\IO\NullIO
      */
-    protected $io;
+    protected $nullIO;
 
     protected function setUp()
     {
-        $this->io = new NullIO();
+        $this->nullIO = new NullIO();
     }
 
     public function testConstruct()
     {
-        $this->assertInstanceOf(IOInterface::class, $this->io);
-        $this->assertInstanceOf(NullOutput::class, $this->io);
+        $this->assertInstanceOf(IOInterface::class, $this->nullIO);
+        $this->assertInstanceOf(NullOutput::class, $this->nullIO);
     }
 
     public function testIsInteractive()
     {
-        $this->assertFalse($this->io->isInteractive());
+        $this->assertFalse($this->nullIO->isInteractive());
     }
 
     public function testCreateProgressBar()
     {
-        $this->io->createProgressBar();
+        $this->nullIO->createProgressBar();
     }
 
     public function testLog()
     {
-        $this->io->log('');
+        $this->nullIO->log('');
     }
 
     public function testTitle()
     {
-        $this->io->title('');
+        $this->nullIO->title('');
     }
 
     public function testSection()
     {
-        $this->io->section('');
+        $this->nullIO->section('');
     }
 
     public function testListing()
     {
-        $this->io->listing([]);
+        $this->nullIO->listing([]);
     }
 
     public function testText()
     {
-        $this->io->text('');
+        $this->nullIO->text('');
     }
 
     public function testSuccess()
     {
-        $this->io->success('');
+        $this->nullIO->success('');
     }
 
     public function testError()
     {
-        $this->io->error('');
+        $this->nullIO->error('');
     }
 
     public function testWarning()
     {
-        $this->io->warning('');
+        $this->nullIO->warning('');
     }
 
     public function testNote()
     {
-        $this->io->note('');
+        $this->nullIO->note('');
     }
 
     public function testCaution()
     {
-        $this->io->caution('');
+        $this->nullIO->caution('');
     }
 
     public function testTable()
     {
-        $this->io->table([], []);
+        $this->nullIO->table([], []);
     }
 
     public function testAsk()
     {
-        $this->assertEmpty($this->io->ask(''));
+        $this->assertEmpty($this->nullIO->ask(''));
     }
 
     public function testAskHidden()
     {
-        $this->assertEmpty($this->io->askHidden(''));
+        $this->assertEmpty($this->nullIO->askHidden(''));
     }
 
     public function testConfirm()
     {
-        $this->assertFalse($this->io->confirm(''));
+        $this->assertFalse($this->nullIO->confirm(''));
     }
 
     public function testChoice()
     {
-        $this->assertEmpty($this->io->choice('', []));
+        $this->assertEmpty($this->nullIO->choice('', []));
     }
 
     public function testNewLine()
     {
-        $this->io->newLine();
+        $this->nullIO->newLine();
     }
 
     public function testProgressStart()
     {
-        $this->io->progressStart();
+        $this->nullIO->progressStart();
     }
 
     public function testProgressAdvance()
     {
-        $this->io->progressAdvance();
+        $this->nullIO->progressAdvance();
     }
 
     public function testProgressFinish()
     {
-        $this->io->progressFinish();
+        $this->nullIO->progressFinish();
     }
 }
