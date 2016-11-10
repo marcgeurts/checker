@@ -79,7 +79,6 @@ class RunnerEventTest extends \PHPUnit_Framework_TestCase
     public function testGetResultsDefault()
     {
         $runnerEvent = new RunnerEvent($this->context, $this->actions);
-
         $this->assertNull($runnerEvent->getResults());
     }
 }

@@ -277,6 +277,10 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Mock action.
+     *
+     * @param string $name
+     *
      * @return \ClickNow\Checker\Action\ActionInterface|\Mockery\MockInterface
      */
     protected function mockAction($name)

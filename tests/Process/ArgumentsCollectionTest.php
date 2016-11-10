@@ -105,21 +105,19 @@ class ArgumentsCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testAddFiles()
     {
-        $this->argumentsCollection->addFiles($this->mockFiles());
+        $files = m::mock(FilesCollection::class);
+        $files->shouldReceive('getAllPaths')->withNoArgs()->once()->andReturn(['file1.txt', 'file2.txt']);
+
+        $this->argumentsCollection->addFiles($files);
         $this->assertSame(['file1.txt', 'file2.txt'], $this->argumentsCollection->getValues());
     }
 
     public function testAddCommaSeparatedFiles()
     {
-        $this->argumentsCollection->addCommaSeparatedFiles($this->mockFiles());
-        $this->assertSame(['file1.txt,file2.txt'], $this->argumentsCollection->getValues());
-    }
-
-    protected function mockFiles()
-    {
         $files = m::mock(FilesCollection::class);
         $files->shouldReceive('getAllPaths')->withNoArgs()->once()->andReturn(['file1.txt', 'file2.txt']);
 
-        return $files;
+        $this->argumentsCollection->addCommaSeparatedFiles($files);
+        $this->assertSame(['file1.txt,file2.txt'], $this->argumentsCollection->getValues());
     }
 }

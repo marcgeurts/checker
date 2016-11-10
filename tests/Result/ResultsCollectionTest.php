@@ -61,6 +61,7 @@ class ResultsCollectionTest extends \PHPUnit_Framework_TestCase
         $this->resultsCollection->add($result2);
 
         $results = $this->resultsCollection->toArray();
+
         $this->assertCount(2, $this->resultsCollection);
         $this->assertSame($result1, $results[0]);
         $this->assertSame($result2, $results[1]);
@@ -82,9 +83,13 @@ class ResultsCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->resultsCollection->isFailed());
     }
 
-    public function testIfResultIsEmpty()
+    public function testIsNotSuccessfullyIfResultIsEmpty()
     {
         $this->assertFalse($this->resultsCollection->isSuccessfully());
+    }
+
+    public function testIsNotFailedIfResultIsEmpty()
+    {
         $this->assertFalse($this->resultsCollection->isFailed());
     }
 
@@ -110,6 +115,7 @@ class ResultsCollectionTest extends \PHPUnit_Framework_TestCase
         $this->resultsCollection->add(Result::error($this->command, $this->context, $this->action, 'ERROR'));
 
         $result = $this->resultsCollection->getAllMessages();
+
         $this->assertCount(2, $result);
         $this->assertSame(['WARNING', 'ERROR'], $result);
     }

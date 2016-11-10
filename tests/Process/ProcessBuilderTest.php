@@ -14,6 +14,34 @@ use Symfony\Component\Process\ProcessBuilder as SymfonyProcessBuilder;
  */
 class ProcessBuilderTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var \ClickNow\Checker\Process\ExecutableFinder|\Mockery\MockInterface
+     */
+    protected $executableFinder;
+
+    /**
+     * @var \Symfony\Component\Process\ProcessBuilder|\Mockery\MockInterface
+     */
+    protected $builder;
+
+    /**
+     * @var \ClickNow\Checker\IO\IOInterface|\Mockery\MockInterface
+     */
+    protected $io;
+
+    /**
+     * @var \ClickNow\Checker\Process\ProcessBuilder
+     */
+    protected $processBuilder;
+
+    protected function setUp()
+    {
+        $this->executableFinder = m::mock(ExecutableFinder::class);
+        $this->builder = m::mock(SymfonyProcessBuilder::class);
+        $this->io = m::mock(IOInterface::class);
+        $this->processBuilder = new ProcessBuilder($this->executableFinder, $this->builder, $this->io);
+    }
+
     protected function tearDown()
     {
         m::close();
@@ -21,14 +49,9 @@ class ProcessBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateArgumentsForCommand()
     {
-        $executableFinder = m::mock(ExecutableFinder::class);
-        $executableFinder->shouldReceive('find')->with('foo')->once()->andReturn('bin/foo');
+        $this->executableFinder->shouldReceive('find')->with('foo')->once()->andReturn('bin/foo');
 
-        $symfonyProcessBuilder = m::mock(SymfonyProcessBuilder::class);
-        $io = m::mock(IOInterface::class);
-
-        $processBuilder = new ProcessBuilder($executableFinder, $symfonyProcessBuilder, $io);
-        $result = $processBuilder->createArgumentsForCommand('foo');
+        $result = $this->processBuilder->createArgumentsForCommand('foo');
 
         $this->assertInstanceOf(ArgumentsCollection::class, $result);
         $this->assertCount(1, $result);
@@ -41,19 +64,19 @@ class ProcessBuilderTest extends \PHPUnit_Framework_TestCase
         $process->shouldReceive('stop')->atMost()->once()->andReturnNull();
         $process->shouldReceive('getCommandLine')->withNoArgs()->once()->andReturn('bin/foo');
 
-        $symfonyProcessBuilder = m::mock(SymfonyProcessBuilder::class);
-        $symfonyProcessBuilder->shouldReceive('setArguments')->with(['bin/foo'])->once()->andReturnSelf();
-        $symfonyProcessBuilder->shouldReceive('setTimeout')->with(null)->once()->andReturnSelf();
-        $symfonyProcessBuilder->shouldReceive('getProcess')->withNoArgs()->once()->andReturn($process);
+        $this->builder->shouldReceive('setArguments')->with(['bin/foo'])->once()->andReturnSelf();
+        $this->builder->shouldReceive('setTimeout')->with(null)->once()->andReturnSelf();
+        $this->builder->shouldReceive('getProcess')->withNoArgs()->once()->andReturn($process);
 
-        $io = m::mock(IOInterface::class);
-        $io->shouldReceive('log')->with('Command: bin/foo')->once()->andReturnNull();
+        $this->io->shouldReceive('log')->with('Command: bin/foo')->once()->andReturnNull();
 
         $command = m::mock(CommandInterface::class);
         $command->shouldReceive('getProcessTimeout')->withNoArgs()->once()->andReturnNull();
 
-        $processBuilder = new ProcessBuilder(m::mock(ExecutableFinder::class), $symfonyProcessBuilder, $io);
-        $result = $processBuilder->buildProcess(ArgumentsCollection::forExecutable('bin/foo'), $command);
+        $arguments = m::mock(ArgumentsCollection::class);
+        $arguments->shouldReceive('getValues')->withNoArgs()->once()->andReturn(['bin/foo']);
+
+        $result = $this->processBuilder->buildProcess($arguments, $command);
 
         $this->assertInstanceOf(Process::class, $result);
         $this->assertSame($process, $result);

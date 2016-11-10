@@ -281,6 +281,8 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Mock action.
+     *
      * @return \ClickNow\Checker\Action\ActionInterface|\Mockery\MockInterface
      */
     protected function mockAction()

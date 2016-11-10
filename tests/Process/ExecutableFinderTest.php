@@ -12,6 +12,22 @@ use Symfony\Component\Process\ExecutableFinder as SymfonyExecutableFinder;
  */
 class ExecutableFinderTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var \Symfony\Component\Process\ExecutableFinder|\Mockery\MockInterface
+     */
+    protected $finder;
+
+    /**
+     * @var \ClickNow\Checker\Process\ExecutableFinder
+     */
+    protected $executableFinder;
+
+    protected function setUp()
+    {
+        $this->finder = m::mock(SymfonyExecutableFinder::class);
+        $this->executableFinder = new ExecutableFinder('bin', $this->finder);
+    }
+
     protected function tearDown()
     {
         m::close();
@@ -19,23 +35,18 @@ class ExecutableFinderTest extends \PHPUnit_Framework_TestCase
 
     public function testFindExecutable()
     {
-        $symfonyExecutableFinder = m::mock(SymfonyExecutableFinder::class);
-        $symfonyExecutableFinder->shouldReceive('find')->with('foo', null, ['bin'])->twice()->andReturn('bin/foo');
+        $this->finder->shouldReceive('find')->with('foo', null, ['bin'])->twice()->andReturn('bin/foo');
 
-        $executableFinder = new ExecutableFinder('bin', $symfonyExecutableFinder);
-
-        $this->assertSame('bin/foo', $executableFinder->find('foo'));
-        $this->assertSame('bin/foo', $executableFinder->find('foo', true));
+        $this->assertSame('bin/foo', $this->executableFinder->find('foo'));
+        $this->assertSame('bin/foo', $this->executableFinder->find('foo', true));
     }
 
     public function testExecutableNotFound()
     {
         $this->setExpectedException(ExecutableNotFoundException::class, 'Executable `foo` was not found.');
 
-        $symfonyExecutableFinder = m::mock(SymfonyExecutableFinder::class);
-        $symfonyExecutableFinder->shouldReceive('find')->with('foo', null, ['bin'])->once()->andReturn(false);
+        $this->finder->shouldReceive('find')->with('foo', null, ['bin'])->once()->andReturn(false);
 
-        $executableFinder = new ExecutableFinder('bin', $symfonyExecutableFinder);
-        $this->assertSame('bin/foo', $executableFinder->find('foo'));
+        $this->assertSame('bin/foo', $this->executableFinder->find('foo'));
     }
 }

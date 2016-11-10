@@ -16,6 +16,41 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 class ConsoleIOTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var \Symfony\Component\Console\Input\InputInterface|\Mockery\MockInterface
+     */
+    protected $input;
+
+    /**
+     * @var \Symfony\Component\Console\Output\OutputInterface|\Mockery\MockInterface
+     */
+    protected $output;
+
+    /**
+     * @var \ClickNow\Checker\IO\ConsoleIO
+     */
+    protected $consoleIO;
+
+    public function setUp()
+    {
+        $this->input = m::mock(InputInterface::class);
+
+        $this->output = m::mock(OutputInterface::class);
+        $this->output
+            ->shouldReceive('getVerbosity')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(OutputInterface::VERBOSITY_NORMAL);
+
+        $this->output
+            ->shouldReceive('getFormatter')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(m::spy(OutputFormatterInterface::class));
+
+        $this->consoleIO = new ConsoleIO($this->input, $this->output);
+    }
+
     protected function tearDown()
     {
         m::close();
@@ -23,64 +58,47 @@ class ConsoleIOTest extends \PHPUnit_Framework_TestCase
 
     public function testConstruct()
     {
-        $consoleIO = new ConsoleIO(m::mock(InputInterface::class), $this->mockOutput());
-
-        $this->assertInstanceOf(IOInterface::class, $consoleIO);
-        $this->assertInstanceOf(SymfonyStyle::class, $consoleIO);
+        $this->assertInstanceOf(IOInterface::class, $this->consoleIO);
+        $this->assertInstanceOf(SymfonyStyle::class, $this->consoleIO);
     }
 
     public function testIsInteractive()
     {
-        $input = m::mock(InputInterface::class);
-        $input->shouldReceive('isInteractive')->withNoArgs()->once()->andReturn(false);
-
-        $consoleIO = new ConsoleIO($input, $this->mockOutput());
-        $this->assertFalse($consoleIO->isInteractive());
+        $this->input->shouldReceive('isInteractive')->withNoArgs()->once()->andReturn(false);
+        $this->assertFalse($this->consoleIO->isInteractive());
     }
 
     public function testLog()
     {
-        $output = $this->mockOutput();
-        $output->shouldReceive('isVeryVerbose')->withNoArgs()->once()->andReturn(true);
-        $output->shouldReceive('write')->withAnyArgs()->twice()->andReturnNull();
-        $output->shouldReceive('writeln')->with(' foo', BufferedOutput::OUTPUT_NORMAL)->once()->andReturnNull();
+        $this->output->shouldReceive('isVeryVerbose')->withNoArgs()->once()->andReturn(true);
+        $this->output->shouldReceive('write')->withAnyArgs()->twice()->andReturnNull();
+        $this->output->shouldReceive('writeln')->with(' foo', BufferedOutput::OUTPUT_NORMAL)->once()->andReturnNull();
 
-        $consoleIO = new ConsoleIO(m::mock(InputInterface::class), $output);
-        $consoleIO->log('foo');
+        $this->consoleIO->log('foo');
     }
 
     public function testLogIsNotVeryVerbose()
     {
-        $output = $this->mockOutput();
-        $output->shouldReceive('isVeryVerbose')->withNoArgs()->once()->andReturn(false);
-
-        $consoleIO = new ConsoleIO(m::mock(InputInterface::class), $output);
-        $consoleIO->log('foo');
+        $this->output->shouldReceive('isVeryVerbose')->withNoArgs()->once()->andReturn(false);
+        $this->consoleIO->log('foo');
     }
 
     public function testLogWithoutMessage()
     {
-        $output = $this->mockOutput();
-        $output->shouldReceive('isVeryVerbose')->withNoArgs()->once()->andReturn(true);
-
-        $consoleIO = new ConsoleIO(m::mock(InputInterface::class), $output);
-        $consoleIO->log('');
+        $this->output->shouldReceive('isVeryVerbose')->withNoArgs()->once()->andReturn(true);
+        $this->consoleIO->log('');
     }
 
     public function testReadyCommandInput()
     {
-        $consoleIO = new ConsoleIO(m::mock(InputInterface::class), $this->mockOutput());
         $handle = $this->mockHandle('input');
-
-        $this->assertSame('input', $consoleIO->readCommandInput($handle));
+        $this->assertSame('input', $this->consoleIO->readCommandInput($handle));
     }
 
     public function testReadyCommandInputEmpty()
     {
-        $consoleIO = new ConsoleIO(m::mock(InputInterface::class), $this->mockOutput());
         $handle = $this->mockHandle("\r\n\t\f");
-
-        $this->assertEmpty($consoleIO->readCommandInput($handle));
+        $this->assertEmpty($this->consoleIO->readCommandInput($handle));
     }
 
     public function testReadyCommandInputInvalid()
@@ -90,20 +108,16 @@ class ConsoleIOTest extends \PHPUnit_Framework_TestCase
             'Expected a resource stream for reading the commandline input. Got `string`.'
         );
 
-        $consoleIO = new ConsoleIO(m::mock(InputInterface::class), $this->mockOutput());
-        $consoleIO->readCommandInput('string');
+        $this->consoleIO->readCommandInput('string');
     }
 
-    protected function mockOutput()
-    {
-        $formatter = m::spy(OutputFormatterInterface::class);
-        $output = m::mock(OutputInterface::class);
-        $output->shouldReceive('getVerbosity')->withNoArgs()->once()->andReturn(OutputInterface::VERBOSITY_NORMAL);
-        $output->shouldReceive('getFormatter')->withNoArgs()->once()->andReturn($formatter);
-
-        return $output;
-    }
-
+    /**
+     * Mock handle.
+     *
+     * @param string $content
+     *
+     * @return resource
+     */
     protected function mockHandle($content)
     {
         $handle = fopen('php://memory', 'a');

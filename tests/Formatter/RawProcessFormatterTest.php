@@ -33,9 +33,7 @@ class RawProcessFormatterTest extends \PHPUnit_Framework_TestCase
 
     public function testDisplayTheFullProcessOutput()
     {
-        $process = $this->mockProcess();
-        $result = $this->rawProcessFormatter->format($process);
-
+        $result = $this->rawProcessFormatter->format($this->mockProcess());
         $this->assertSame('stdout'.PHP_EOL.'stderr', $result);
     }
 
@@ -58,6 +56,8 @@ class RawProcessFormatterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Mock process.
+     *
      * @return \Symfony\Component\Process\Process|\Mockery\MockInterface
      */
     protected function mockProcess()
