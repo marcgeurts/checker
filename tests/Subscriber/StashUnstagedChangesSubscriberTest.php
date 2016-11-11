@@ -7,10 +7,10 @@ use ClickNow\Checker\Context\ContextInterface;
 use ClickNow\Checker\Event\RunnerEvent;
 use ClickNow\Checker\Exception\RuntimeException;
 use ClickNow\Checker\IO\IOInterface;
+use Exception;
 use Gitonomy\Git\Diff\Diff;
 use Gitonomy\Git\Repository;
 use Gitonomy\Git\WorkingCopy;
-use Exception;
 use Mockery as m;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
