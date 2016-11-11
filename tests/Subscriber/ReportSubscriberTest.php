@@ -2,9 +2,16 @@
 
 namespace ClickNow\Checker\Subscriber;
 
+use ClickNow\Checker\Action\ActionInterface;
+use ClickNow\Checker\Command\CommandInterface;
+use ClickNow\Checker\Console\Helper\PathsHelper;
+use ClickNow\Checker\Context\ContextInterface;
+use ClickNow\Checker\Event\RunnerEvent;
 use ClickNow\Checker\IO\IOInterface;
-use Composer\EventDispatcher\EventSubscriberInterface;
+use ClickNow\Checker\Result\Result;
+use ClickNow\Checker\Result\ResultsCollection;
 use Mockery as m;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * @group subscriber
@@ -30,7 +37,8 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->io = m::mock(IOInterface::class);
-        $this->reportSubscriber = new ProgressSubscriber($this->io);
+        $this->paths = m::mock(PathsHelper::class);
+        $this->reportSubscriber = new ReportSubscriber($this->io, $this->paths);
     }
 
     protected function tearDown()
@@ -46,41 +54,169 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testGetSubscribedEvent()
     {
         $this->assertInternalType('array', ReportSubscriber::getSubscribedEvents());
-        $this->assertCount(4, ReportSubscriber::getSubscribedEvents());
+        $this->assertCount(2, ReportSubscriber::getSubscribedEvents());
     }
 
-    public function onReportSuccessWithMessage()
+    public function testOnReportEmpty()
     {
+        $results = new ResultsCollection();
 
+        $event = m::mock(RunnerEvent::class);
+        $event->shouldReceive('getResults')->withNoArgs()->once()->andReturn($results);
+
+        $this->reportSubscriber->onReport($event);
     }
 
-    public function onReportSuccessWithoutMessage()
+    public function testOnReportSuccessWithMessage()
     {
+        $command = m::mock(CommandInterface::class);
+        $command->shouldReceive('isSkipSuccessOutput')->withNoArgs()->once()->andReturn(false);
+        $command->shouldReceive('getMessage')->with('successfully')->once()->andReturn('successfully');
 
+        $results = new ResultsCollection();
+        $results->add($this->mockResult(Result::SUCCESS, $command));
+        $results->add($this->mockResult(Result::SUCCESS, $command));
+
+        $this->paths->shouldReceive('getMessage')->with('successfully')->once()->andReturn('successfully');
+        $this->io->shouldReceive('text')->with('<fg=green>successfully</fg=green>')->once()->andReturnNull();
+
+        $this->reportSubscriber->onReport($this->mockEvent($command, $results));
     }
 
-    public function onReportSuccessAndWarning()
+    public function testOnReportSuccessWithoutMessage()
     {
+        $command = m::mock(CommandInterface::class);
+        $command->shouldReceive('isSkipSuccessOutput')->withNoArgs()->once()->andReturn(false);
+        $command->shouldReceive('getMessage')->with('successfully')->once()->andReturnNull();
 
+        $results = new ResultsCollection();
+        $results->add($this->mockResult(Result::SUCCESS, $command));
+        $results->add($this->mockResult(Result::SUCCESS, $command));
+
+        $this->paths->shouldReceive('getMessage')->with(null)->once()->andReturnNull();
+        $this->io->shouldNotReceive('text');
+
+        $this->reportSubscriber->onReport($this->mockEvent($command, $results));
     }
 
-    public function onReportWithSkippedSuccess()
+    public function testOnReportSuccessAndWarning()
     {
+        $command = m::mock(CommandInterface::class);
+        $command->shouldReceive('isSkipSuccessOutput')->withNoArgs()->once()->andReturn(false);
+        $command->shouldReceive('getMessage')->with('successfully')->once()->andReturnNull();
 
+        $results = new ResultsCollection();
+        $results->add($this->mockResult(Result::SUCCESS, $command));
+        $results->add($this->mockResult(Result::SUCCESS, $command));
+        $results->add($this->mockResult(Result::WARNING, $command, 'WARNING1'));
+        $results->add($this->mockResult(Result::WARNING, $command, 'WARNING2'));
+
+        $this->paths->shouldReceive('getMessage')->with(null)->once()->andReturnNull();
+        $this->io->shouldReceive('note')->with('WARNING1')->once()->andReturnNull()->ordered();
+        $this->io->shouldReceive('note')->with('WARNING2')->once()->andReturnNull()->ordered();
+
+        $this->reportSubscriber->onReport($this->mockEvent($command, $results));
     }
 
-    public function onReportErrorWithMessage()
+    public function testOnReportWithSkippedSuccess()
     {
+        $command = m::mock(CommandInterface::class);
+        $command->shouldReceive('isSkipSuccessOutput')->withNoArgs()->once()->andReturn(true);
 
+        $results = new ResultsCollection();
+        $results->add($this->mockResult(Result::SUCCESS, $command));
+
+        $this->reportSubscriber->onReport($this->mockEvent($command, $results));
     }
 
-    public function onReportErrorWithoutMessage()
+    public function testOnReportErrorWithMessage()
     {
+        $command = m::mock(CommandInterface::class);
+        $command->shouldReceive('getMessage')->with('failed')->once()->andReturn('failed');
 
+        $results = new ResultsCollection();
+        $results->add($this->mockResult(Result::ERROR, $command, 'ERROR1'));
+        $results->add($this->mockResult(Result::ERROR, $command, 'ERROR2'));
+
+        $this->paths->shouldReceive('getMessage')->with('failed')->once()->andReturn('failed');
+        $this->io->shouldReceive('text')->with('<fg=red>failed</fg=red>')->once()->andReturnNull();
+        $this->io->shouldReceive('error')->with('ERROR1')->once()->andReturnNull()->ordered();
+        $this->io->shouldReceive('error')->with('ERROR2')->once()->andReturnNull()->ordered();
+
+        $this->reportSubscriber->onReport($this->mockEvent($command, $results));
     }
 
-    public function onReportErrorAndWarning()
+    public function testOnReportErrorWithoutMessage()
     {
+        $command = m::mock(CommandInterface::class);
+        $command->shouldReceive('getMessage')->with('failed')->once()->andReturnNull();
 
+        $results = new ResultsCollection();
+        $results->add($this->mockResult(Result::ERROR, $command, 'ERROR1'));
+        $results->add($this->mockResult(Result::ERROR, $command, 'ERROR2'));
+
+        $this->paths->shouldReceive('getMessage')->with(null)->once()->andReturnNull();
+        $this->io->shouldNotReceive('text');
+        $this->io->shouldReceive('error')->with('ERROR1')->once()->andReturnNull()->ordered();
+        $this->io->shouldReceive('error')->with('ERROR2')->once()->andReturnNull()->ordered();
+
+        $this->reportSubscriber->onReport($this->mockEvent($command, $results));
+    }
+
+    public function testOnReportErrorAndWarning()
+    {
+        $command = m::mock(CommandInterface::class);
+        $command->shouldReceive('getMessage')->with('failed')->once()->andReturnNull();
+
+        $results = new ResultsCollection();
+        $results->add($this->mockResult(Result::WARNING, $command, 'WARNING1'));
+        $results->add($this->mockResult(Result::WARNING, $command, 'WARNING2'));
+        $results->add($this->mockResult(Result::ERROR, $command, 'ERROR1'));
+        $results->add($this->mockResult(Result::ERROR, $command, 'ERROR2'));
+
+        $this->paths->shouldReceive('getMessage')->with(null)->once()->andReturnNull();
+        $this->io->shouldReceive('note')->with('WARNING1')->once()->andReturnNull()->ordered();
+        $this->io->shouldReceive('note')->with('WARNING2')->once()->andReturnNull()->ordered();
+        $this->io->shouldReceive('error')->with('ERROR1')->once()->andReturnNull()->ordered();
+        $this->io->shouldReceive('error')->with('ERROR2')->once()->andReturnNull()->ordered();
+
+        $this->reportSubscriber->onReport($this->mockEvent($command, $results));
+    }
+
+    /**
+     * Mock event.
+     *
+     * @param \ClickNow\Checker\Result\ResultsCollection $results
+     * @param \ClickNow\Checker\Command\CommandInterface $command
+     *
+     * @return \ClickNow\Checker\Event\RunnerEvent|\Mockery\MockInterface
+     */
+    protected function mockEvent(CommandInterface $command, ResultsCollection $results)
+    {
+        $context = m::mock(ContextInterface::class);
+        $context->shouldReceive('getCommand')->withNoArgs()->once()->andReturn($command);
+
+        $event = m::mock(RunnerEvent::class);
+        $event->shouldReceive('getResults')->withNoArgs()->once()->andReturn($results);
+        $event->shouldReceive('getContext')->withNoArgs()->once()->andReturn($context);
+
+        return $event;
+    }
+
+    /**
+     * Mock result.
+     *
+     * @param int                                        $status
+     * @param \ClickNow\Checker\Command\CommandInterface $command
+     * @param null                                       $message
+     *
+     * @return \ClickNow\Checker\Result\ResultInterface
+     */
+    protected function mockResult($status, $command, $message = null)
+    {
+        $context = m::mock(ContextInterface::class);
+        $action = m::mock(ActionInterface::class);
+
+        return new Result($status, $command, $context, $action, $message);
     }
 }

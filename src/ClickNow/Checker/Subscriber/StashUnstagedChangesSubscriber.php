@@ -41,8 +41,8 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
      */
     public function __construct(IOInterface $io, Repository $repository)
     {
-        $this->repository = $repository;
         $this->io = $io;
+        $this->repository = $repository;
     }
 
     /**

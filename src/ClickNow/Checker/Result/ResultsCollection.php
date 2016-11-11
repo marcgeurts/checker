@@ -13,11 +13,11 @@ class ResultsCollection extends ArrayCollection
      */
     public function isSuccessfully()
     {
-        if ($this->count() > 0) {
-            return !($this->filterByError()->count() > 0 || $this->filterByWarning()->count() > 0);
+        if ($this->isEmpty()) {
+            return false;
         }
 
-        return false;
+        return !($this->filterByError()->count() > 0 || $this->filterByWarning()->count() > 0);
     }
 
     /**
@@ -27,11 +27,11 @@ class ResultsCollection extends ArrayCollection
      */
     public function isFailed()
     {
-        if ($this->count() > 0) {
-            return $this->filterByError()->count() > 0;
+        if ($this->isEmpty()) {
+            return false;
         }
 
-        return false;
+        return $this->filterByError()->count() > 0;
     }
 
     /**

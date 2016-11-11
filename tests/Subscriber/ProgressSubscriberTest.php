@@ -87,7 +87,7 @@ class ProgressSubscriberTest extends \PHPUnit_Framework_TestCase
     {
         $this->progressBar->shouldReceive('getProgress')->withNoArgs()->once()->andReturn(1);
         $this->progressBar->shouldReceive('getMaxSteps')->withNoArgs()->once()->andReturn(2);
-        $this->progressBar->shouldReceive('finish')->withNoArgs()->never()->andReturnNull();
+        $this->progressBar->shouldNotReceive('finish');
         $this->io->shouldReceive('newLine')->with(2)->once()->andReturnNull();
         $this->io->shouldReceive('caution')->with('Aborted...')->once()->andReturnNull();
         $this->progressSubscriber->finishProgress();

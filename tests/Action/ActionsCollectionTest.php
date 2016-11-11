@@ -40,9 +40,9 @@ class ActionsCollectionTest extends \PHPUnit_Framework_TestCase
         $action3 = m::mock(ActionInterface::class);
 
         $command = m::mock(CommandInterface::class);
-        $command->shouldReceive('getActionPriority')->with($action1)->once()->andReturn(100);
-        $command->shouldReceive('getActionPriority')->with($action2)->once()->andReturn(200);
-        $command->shouldReceive('getActionPriority')->with($action3)->once()->andReturn(100);
+        $command->shouldReceive('getActionPriority')->with($action1)->once()->andReturn(100)->ordered();
+        $command->shouldReceive('getActionPriority')->with($action2)->once()->andReturn(200)->ordered();
+        $command->shouldReceive('getActionPriority')->with($action3)->once()->andReturn(100)->ordered();
 
         $this->actionsCollection->add($action1);
         $this->actionsCollection->add($action2);

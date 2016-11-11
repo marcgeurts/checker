@@ -205,10 +205,7 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
             ->once()
             ->andReturn(Result::error($this->command, $this->context, $action1, 'ERROR'));
 
-        $action2
-            ->shouldReceive('run')
-            ->with($this->command, $this->context)
-            ->never();
+        $action2->shouldNotReceive('run');
 
         $this->command->addAction($action1);
         $this->command->addAction($action2);

@@ -56,6 +56,10 @@ class ReportSubscriber implements EventSubscriberInterface
     public function onReport(RunnerEvent $event)
     {
         $results = $event->getResults();
+        if ($results->isEmpty()) {
+            return;
+        }
+
         $command = $event->getContext()->getCommand();
         $warning = $results->filterByWarning();
 
