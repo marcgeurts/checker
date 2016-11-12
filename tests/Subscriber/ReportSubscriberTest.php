@@ -63,6 +63,7 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
 
         $event = m::mock(RunnerEvent::class);
         $event->shouldReceive('getResults')->withNoArgs()->once()->andReturn($results);
+        $event->shouldNotReceive('getContext');
 
         $this->reportSubscriber->onReport($event);
     }
@@ -125,6 +126,13 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
 
         $results = new ResultsCollection();
         $results->add($this->mockResult(Result::SUCCESS, $command));
+        $results->add($this->mockResult(Result::SUCCESS, $command));
+        $results->add($this->mockResult(Result::WARNING, $command, 'WARNING1'));
+        $results->add($this->mockResult(Result::WARNING, $command, 'WARNING2'));
+
+        $this->paths->shouldNotReceive('getMessage');
+        $this->io->shouldReceive('note')->with('WARNING1')->once()->andReturnNull()->ordered();
+        $this->io->shouldReceive('note')->with('WARNING2')->once()->andReturnNull()->ordered();
 
         $this->reportSubscriber->onReport($this->mockEvent($command, $results));
     }
@@ -132,6 +140,7 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testOnReportErrorWithMessage()
     {
         $command = m::mock(CommandInterface::class);
+        $command->shouldNotReceive('isSkipSuccessOutput');
         $command->shouldReceive('getMessage')->with('failed')->once()->andReturn('failed');
 
         $results = new ResultsCollection();
@@ -149,6 +158,7 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testOnReportErrorWithoutMessage()
     {
         $command = m::mock(CommandInterface::class);
+        $command->shouldNotReceive('isSkipSuccessOutput');
         $command->shouldReceive('getMessage')->with('failed')->once()->andReturnNull();
 
         $results = new ResultsCollection();
@@ -166,6 +176,7 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testOnReportErrorAndWarning()
     {
         $command = m::mock(CommandInterface::class);
+        $command->shouldNotReceive('isSkipSuccessOutput');
         $command->shouldReceive('getMessage')->with('failed')->once()->andReturnNull();
 
         $results = new ResultsCollection();

@@ -35,18 +35,12 @@ class ConsoleIOTest extends \PHPUnit_Framework_TestCase
     {
         $this->input = m::mock(InputInterface::class);
 
-        $this->output = m::mock(OutputInterface::class);
-        $this->output
-            ->shouldReceive('getVerbosity')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(OutputInterface::VERBOSITY_NORMAL);
+        $verbosity = OutputInterface::VERBOSITY_NORMAL;
+        $formatter = m::spy(OutputFormatterInterface::class);
 
-        $this->output
-            ->shouldReceive('getFormatter')
-            ->withNoArgs()
-            ->once()
-            ->andReturn(m::spy(OutputFormatterInterface::class));
+        $this->output = m::mock(OutputInterface::class);
+        $this->output->shouldReceive('getVerbosity')->withNoArgs()->once()->andReturn($verbosity);
+        $this->output->shouldReceive('getFormatter')->withNoArgs()->once()->andReturn($formatter);
 
         $this->consoleIO = new ConsoleIO($this->input, $this->output);
     }
@@ -80,12 +74,18 @@ class ConsoleIOTest extends \PHPUnit_Framework_TestCase
     public function testLogIsNotVeryVerbose()
     {
         $this->output->shouldReceive('isVeryVerbose')->withNoArgs()->once()->andReturn(false);
+        $this->output->shouldNotReceive('write');
+        $this->output->shouldNotReceive('writeln');
+
         $this->consoleIO->log('foo');
     }
 
     public function testLogWithoutMessage()
     {
         $this->output->shouldReceive('isVeryVerbose')->withNoArgs()->once()->andReturn(true);
+        $this->output->shouldNotReceive('write');
+        $this->output->shouldNotReceive('writeln');
+
         $this->consoleIO->log('');
     }
 

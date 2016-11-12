@@ -22,7 +22,7 @@ class ProcessBuilderTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \Symfony\Component\Process\ProcessBuilder|\Mockery\MockInterface
      */
-    protected $symfonyProcessBuilder;
+    protected $builder;
 
     /**
      * @var \ClickNow\Checker\IO\IOInterface|\Mockery\MockInterface
@@ -37,9 +37,9 @@ class ProcessBuilderTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->executableFinder = m::mock(ExecutableFinder::class);
-        $this->symfonyProcessBuilder = m::mock(SymfonyProcessBuilder::class);
+        $this->builder = m::mock(SymfonyProcessBuilder::class);
         $this->io = m::mock(IOInterface::class);
-        $this->processBuilder = new ProcessBuilder($this->executableFinder, $this->symfonyProcessBuilder, $this->io);
+        $this->processBuilder = new ProcessBuilder($this->executableFinder, $this->builder, $this->io);
     }
 
     protected function tearDown()
@@ -64,9 +64,9 @@ class ProcessBuilderTest extends \PHPUnit_Framework_TestCase
         $process->shouldReceive('stop')->atMost()->once()->andReturnNull();
         $process->shouldReceive('getCommandLine')->withNoArgs()->once()->andReturn('bin/foo');
 
-        $this->symfonyProcessBuilder->shouldReceive('setArguments')->with(['bin/foo'])->once()->andReturnSelf();
-        $this->symfonyProcessBuilder->shouldReceive('setTimeout')->with(null)->once()->andReturnSelf();
-        $this->symfonyProcessBuilder->shouldReceive('getProcess')->withNoArgs()->once()->andReturn($process);
+        $this->builder->shouldReceive('setArguments')->with(['bin/foo'])->once()->andReturnSelf();
+        $this->builder->shouldReceive('setTimeout')->with(null)->once()->andReturnSelf();
+        $this->builder->shouldReceive('getProcess')->withNoArgs()->once()->andReturn($process);
 
         $this->io->shouldReceive('log')->with('Command: bin/foo')->once()->andReturnNull();
 
