@@ -8,7 +8,7 @@ use ClickNow\Checker\Context\ContextInterface;
 use ClickNow\Checker\Formatter\ProcessFormatterInterface;
 use ClickNow\Checker\Process\ProcessBuilder;
 
-abstract class AbstractTask implements TaskInterface
+abstract class AbstractExternalTask implements TaskInterface
 {
     /**
      * @var \ClickNow\Checker\Config\Checker

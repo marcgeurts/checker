@@ -48,7 +48,7 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(CommandInterface::class, $this->command);
     }
 
-    public function testWithoutActions()
+    public function testRunWithoutActions()
     {
         $result = $this->command->run($this->command, $this->context);
 
@@ -57,7 +57,7 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($result->getMessage());
     }
 
-    public function testReturnSuccess()
+    public function testRunAndReturnSuccess()
     {
         $this->command->addAction($this->mockAction('action1'));
         $this->command->addAction($this->mockAction('action2'));
@@ -69,7 +69,7 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($result->getMessage());
     }
 
-    public function testReturnAError()
+    public function testRunAndReturnAError()
     {
         $action1 = $this->mockAction('action1');
         $action2 = $this->mockAction('action2');
@@ -87,7 +87,7 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('ERROR', $result->getMessage());
     }
 
-    public function testReturnAWarning()
+    public function testRunAndReturnAWarning()
     {
         $action1 = $this->mockAction('action1');
         $action2 = $this->mockAction('action2');
@@ -105,7 +105,7 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('WARNING', $result->getMessage());
     }
 
-    public function testReturnSomeErrors()
+    public function testRunAndReturnSomeErrors()
     {
         $action1 = $this->mockAction('action1');
         $action2 = $this->mockAction('action2');
@@ -126,7 +126,7 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('ERROR1'.PHP_EOL.'ERROR2', $result->getMessage());
     }
 
-    public function testReturnSomeWarnings()
+    public function testRunAndReturnSomeWarnings()
     {
         $action1 = $this->mockAction('action1');
         $action2 = $this->mockAction('action2');
@@ -147,7 +147,7 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('WARNING1'.PHP_EOL.'WARNING2', $result->getMessage());
     }
 
-    public function testReturnSomeErrorsAndWarnings()
+    public function testRunAndReturnSomeErrorsAndWarnings()
     {
         $action1 = $this->mockAction('action1');
         $action2 = $this->mockAction('action2');
@@ -168,7 +168,7 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('ERROR'.PHP_EOL.'WARNING', $result->getMessage());
     }
 
-    public function testWithStopOnFailure()
+    public function testRunWithStopOnFailure()
     {
         $this->command->setConfig(['stop_on_failure' => true]);
 
@@ -190,7 +190,7 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('ERROR', $result->getMessage());
     }
 
-    public function testDoNotStopOnFailureIfTheActionIsNonABlocking()
+    public function testRunAndDoNotStopOnFailureIfTheActionIsNonABlocking()
     {
         $this->command->setConfig(['stop_on_failure' => true]);
 
@@ -213,7 +213,7 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('ERROR'.PHP_EOL.'WARNING', $result->getMessage());
     }
 
-    public function testValidatesTheReturnTypeOfAction()
+    public function testRunAndValidatesTheReturnTypeOfAction()
     {
         $action1 = $this->mockAction('action1');
         $action2 = $this->mockAction('action2');

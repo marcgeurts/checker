@@ -61,6 +61,19 @@ class ReportSubscriber implements EventSubscriberInterface
         }
 
         $command = $event->getContext()->getCommand();
+        $this->report($command, $results);
+    }
+
+    /**
+     * Report.
+     *
+     * @param \ClickNow\Checker\Command\CommandInterface $command
+     * @param \ClickNow\Checker\Result\ResultsCollection $results
+     *
+     * @return void
+     */
+    private function report(CommandInterface $command, ResultsCollection $results)
+    {
         $warning = $results->filterByWarning();
 
         if ($results->isFailed()) {
