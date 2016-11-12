@@ -152,6 +152,8 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
      * Register shutdown handler.
      *
      * @return void
+     *
+     * @codeCoverageIgnore
      */
     private function registerShutdownHandler()
     {
