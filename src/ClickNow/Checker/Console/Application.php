@@ -40,7 +40,7 @@ class Application extends SymfonyConsole
      */
     public function __construct()
     {
-        $this->config = new Config(new Filesystem(), $this->initializeComposerPackage());
+        $this->config = new Config(new Filesystem(), $this->getComposerPackage());
         $this->container = $this->initializeContainer();
 
         parent::__construct(self::APP_NAME, self::APP_VERSION);
@@ -164,20 +164,19 @@ class Application extends SymfonyConsole
     }
 
     /**
-     * Initialize composer package.
+     * Get composer package.
      *
      * @return \Composer\Package\PackageInterface|null
      */
-    private function initializeComposerPackage()
+    private function getComposerPackage()
     {
-        $package = null;
-
         try {
             $config = Factory::createConfig();
             $this->ensureProjectBinDirInSystemPath($config->get('bin-dir'));
             $loader = new JsonLoader(new RootPackageLoader(RepositoryFactory::manager(new NullIO(), $config), $config));
             $package = $loader->load(getcwd().DIRECTORY_SEPARATOR.'composer.json');
         } catch (Exception $e) {
+            $package = null;
         }
 
         return $package;
