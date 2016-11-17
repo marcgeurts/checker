@@ -23,7 +23,7 @@ class FilesCollection extends ArrayCollection
      *
      * @return \ClickNow\Checker\Util\FilesCollection
      */
-    public function name($pattern)
+    public function filterByName($pattern)
     {
         return new self(iterator_to_array(
             new FilenameFilterIterator($this->getIterator(), [$pattern], [])
@@ -37,7 +37,7 @@ class FilesCollection extends ArrayCollection
      *
      * @return \ClickNow\Checker\Util\FilesCollection
      */
-    public function notName($pattern)
+    public function filterByNotName($pattern)
     {
         return new self(iterator_to_array(
             new FilenameFilterIterator($this->getIterator(), [], [$pattern])
@@ -51,7 +51,7 @@ class FilesCollection extends ArrayCollection
      *
      * @return \ClickNow\Checker\Util\FilesCollection
      */
-    public function path($pattern)
+    public function filterByPath($pattern)
     {
         return new self(iterator_to_array(
             new PathFilterIterator($this->getIterator(), [$pattern], [])
@@ -65,7 +65,7 @@ class FilesCollection extends ArrayCollection
      *
      * @return \ClickNow\Checker\Util\FilesCollection
      */
-    public function notPath($pattern)
+    public function filterByNotPath($pattern)
     {
         return new self(iterator_to_array(
             new PathFilterIterator($this->getIterator(), [], [$pattern])
@@ -79,13 +79,13 @@ class FilesCollection extends ArrayCollection
      *
      * @return \ClickNow\Checker\Util\FilesCollection
      */
-    public function extensions(array $extensions)
+    public function filterByExtensions(array $extensions)
     {
         if (count($extensions) < 1) {
             return new self();
         }
 
-        return $this->name(sprintf('/\.(%s)$/i', implode('|', $extensions)));
+        return $this->filterByName(sprintf('/\.(%s)$/i', implode('|', $extensions)));
     }
 
     /**
@@ -95,7 +95,7 @@ class FilesCollection extends ArrayCollection
      *
      * @return \ClickNow\Checker\Util\FilesCollection
      */
-    public function size($size)
+    public function filterBySize($size)
     {
         return new self(iterator_to_array(
             new SizeRangeFilterIterator($this->getIterator(), [new NumberComparator($size)])
@@ -109,7 +109,7 @@ class FilesCollection extends ArrayCollection
      *
      * @return \ClickNow\Checker\Util\FilesCollection
      */
-    public function date($date)
+    public function filterByDate($date)
     {
         return new self(iterator_to_array(
             new DateRangeFilterIterator($this->getIterator(), [new DateComparator($date)])

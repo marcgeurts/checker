@@ -19,16 +19,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \ClickNow\Checker\Task\AbstractExternalTask
+     * @var \ClickNow\Checker\Task\AbstractExternalTask|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $task;
 
     protected function setUp()
     {
-        $checker = m::mock(Checker::class);
-        $processBuilder = m::mock(ProcessBuilder::class);
-        $formatter = m::mock(ProcessFormatterInterface::class);
-        $this->task = new FooTask($checker, $processBuilder, $formatter);
+        $this->task = $this->getMockForAbstractClass(AbstractExternalTask::class, [
+            m::mock(Checker::class),
+            m::mock(ProcessBuilder::class),
+            m::mock(ProcessFormatterInterface::class),
+        ]);
+
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults(['foo' => null, 'bar' => null, 'foobar' => null]);
+        $this->task->expects($this->atMost(1))->method('getConfigOptions')->willReturn($resolver);
     }
 
     protected function tearDown()
@@ -44,6 +49,8 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
 
     public function testGetName()
     {
+        $this->task->expects($this->once())->method('getName')->willReturn('foo');
+
         $this->assertSame('foo', $this->task->getName());
     }
 
@@ -58,9 +65,9 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
     public function testGetConfigOption()
     {
         $options = $this->task->getConfigOptions();
-        $this->assertInstanceOf(OptionsResolver::class, $options);
-
         $result = $options->getDefinedOptions();
+
+        $this->assertInstanceOf(OptionsResolver::class, $options);
         $this->assertInternalType('array', $result);
         $this->assertCount(3, $result);
         $this->assertContains('foo', $result);
@@ -71,11 +78,8 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
     public function testGetConfigWithMergeDefaultConfig()
     {
         $this->task->mergeDefaultConfig(['foo' => 'bar', 'bar' => 'foo']);
+        $result = $this->task->getConfig($this->mockCommand());
 
-        $command = m::mock(CommandInterface::class);
-        $command->shouldReceive('getActionConfig')->once()->andReturn(['bar' => 'bar', 'foobar' => 'foobar']);
-
-        $result = $this->task->getConfig($command);
         $this->assertInternalType('array', $result);
         $this->assertCount(3, $result);
         $this->assertSame('bar', $result['foo']);
@@ -85,10 +89,8 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
 
     public function testGetConfigWithoutMergeDefaultConfig()
     {
-        $command = m::mock(CommandInterface::class);
-        $command->shouldReceive('getActionConfig')->once()->andReturn(['bar' => 'bar', 'foobar' => 'foobar']);
+        $result = $this->task->getConfig($this->mockCommand());
 
-        $result = $this->task->getConfig($command);
         $this->assertInternalType('array', $result);
         $this->assertCount(3, $result);
         $this->assertNull($result['foo']);
@@ -98,10 +100,14 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
 
     public function testRun()
     {
-        $command = m::mock(CommandInterface::class);
-        $command->shouldReceive('getActionConfig')->once()->andReturn(['bar' => 'bar', 'foobar' => 'foobar']);
-
+        $command = $this->mockCommand();
         $context = m::mock(ContextInterface::class);
+
+        $this->task
+            ->expects($this->once())
+            ->method('execute')
+            ->willReturn(Result::success($command, $context, $this->task));
+
         $result = $this->task->run($command, $context);
 
         $this->assertInstanceOf(ResultInterface::class, $result);
@@ -110,30 +116,17 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($context, $result->getContext());
         $this->assertSame($this->task, $result->getAction());
     }
-}
 
-class FooTask extends AbstractExternalTask
-{
-    public function getName()
+    /**
+     * Mock command.
+     *
+     * @return \ClickNow\Checker\Command\CommandInterface|\Mockery\MockInterface
+     */
+    protected function mockCommand()
     {
-        return 'foo';
-    }
+        $command = m::mock(CommandInterface::class);
+        $command->shouldReceive('getActionConfig')->once()->andReturn(['bar' => 'bar', 'foobar' => 'foobar']);
 
-    public function getConfigOptions()
-    {
-        $options = new OptionsResolver();
-
-        $options->setDefaults([
-            'foo'    => null,
-            'bar'    => null,
-            'foobar' => null,
-        ]);
-
-        return $options;
-    }
-
-    protected function execute($config, CommandInterface $command, ContextInterface $context)
-    {
-        return Result::success($command, $context, $this);
+        return $command;
     }
 }

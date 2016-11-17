@@ -6,7 +6,6 @@ use ClickNow\Checker\Exception\InvalidArgumentException;
 use Mockery as m;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -66,7 +65,7 @@ class ConsoleIOTest extends \PHPUnit_Framework_TestCase
     {
         $this->output->shouldReceive('isVeryVerbose')->withNoArgs()->once()->andReturn(true);
         $this->output->shouldReceive('write')->withAnyArgs()->twice()->andReturnNull();
-        $this->output->shouldReceive('writeln')->with(' foo', BufferedOutput::OUTPUT_NORMAL)->once()->andReturnNull();
+        $this->output->shouldReceive('writeln')->with(' foo', m::any())->once()->andReturnNull();
 
         $this->consoleIO->log('foo');
     }

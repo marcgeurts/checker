@@ -52,21 +52,6 @@ class ResultsCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(ArrayCollection::class, $this->resultsCollection);
     }
 
-    public function testContainsResult()
-    {
-        $result1 = m::mock(ResultInterface::class);
-        $result2 = m::mock(ResultInterface::class);
-
-        $this->resultsCollection->add($result1);
-        $this->resultsCollection->add($result2);
-
-        $results = $this->resultsCollection->toArray();
-
-        $this->assertCount(2, $this->resultsCollection);
-        $this->assertSame($result1, $results[0]);
-        $this->assertSame($result2, $results[1]);
-    }
-
     public function testIsSuccessfullyIfItContainsOnlyResultPassed()
     {
         $this->resultsCollection->add(Result::success($this->command, $this->context, $this->action));
@@ -95,16 +80,44 @@ class ResultsCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testFilterByStatus()
     {
-        $this->resultsCollection->add(Result::skipped($this->command, $this->context, $this->action));
-        $this->resultsCollection->add(Result::success($this->command, $this->context, $this->action));
-        $this->resultsCollection->add(Result::warning($this->command, $this->context, $this->action, 'WARNING'));
-        $this->resultsCollection->add(Result::error($this->command, $this->context, $this->action, 'ERROR'));
+        $resultSkipped = Result::skipped($this->command, $this->context, $this->action);
+        $resultSuccess = Result::success($this->command, $this->context, $this->action);
+        $resultWarning = Result::warning($this->command, $this->context, $this->action, 'WARNING');
+        $resultError = Result::error($this->command, $this->context, $this->action, 'ERROR');
 
+        $this->resultsCollection->add($resultSkipped);
+        $this->resultsCollection->add($resultSuccess);
+        $this->resultsCollection->add($resultWarning);
+        $this->resultsCollection->add($resultError);
         $this->assertCount(4, $this->resultsCollection);
-        $this->assertCount(1, $this->resultsCollection->filterBySkipped());
-        $this->assertCount(1, $this->resultsCollection->filterBySuccess());
-        $this->assertCount(1, $this->resultsCollection->filterByWarning());
-        $this->assertCount(1, $this->resultsCollection->filterByError());
+
+        $skipped = $this->resultsCollection->filterBySkipped();
+        $this->assertCount(1, $skipped);
+        $this->assertSame($resultSkipped, $skipped[0]);
+        $this->assertNull($skipped[1]);
+        $this->assertNull($skipped[2]);
+        $this->assertNull($skipped[3]);
+
+        $success = $this->resultsCollection->filterBySuccess();
+        $this->assertCount(1, $success);
+        $this->assertNull($success[0]);
+        $this->assertSame($resultSuccess, $success[1]);
+        $this->assertNull($success[2]);
+        $this->assertNull($success[3]);
+
+        $warning = $this->resultsCollection->filterByWarning();
+        $this->assertCount(1, $warning);
+        $this->assertNull($warning[0]);
+        $this->assertNull($warning[1]);
+        $this->assertSame($resultWarning, $warning[2]);
+        $this->assertNull($warning[3]);
+
+        $error = $this->resultsCollection->filterByError();
+        $this->assertCount(1, $error);
+        $this->assertNull($error[0]);
+        $this->assertNull($error[1]);
+        $this->assertNull($error[2]);
+        $this->assertSame($resultError, $error[3]);
     }
 
     public function testGetAllMessages()
@@ -117,7 +130,7 @@ class ResultsCollectionTest extends \PHPUnit_Framework_TestCase
         $result = $this->resultsCollection->getAllMessages();
 
         $this->assertCount(2, $result);
-        $this->assertSame(['WARNING', 'ERROR'], $result);
+        $this->assertSame([2 => 'WARNING', 3 => 'ERROR'], $result);
     }
 
     public function testGetAllMessagesEmpty()

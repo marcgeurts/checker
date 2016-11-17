@@ -257,27 +257,27 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $context = m::mock(ContextInterface::class);
 
         $action1 = m::mock(ActionInterface::class);
-        $action1->shouldReceive('getName')->withNoArgs()->atLeast()->once()->andReturn('action1');
-        $action1->shouldReceive('canRunInContext')->with($this->command, $context)->once()->andReturn(true);
-        $this->command->addAction($action1);
-
         $action2 = m::mock(ActionInterface::class);
-        $action2->shouldReceive('getName')->withNoArgs()->atLeast()->once()->andReturn('action2');
-        $action2->shouldReceive('canRunInContext')->with($this->command, $context)->once()->andReturn(false);
-        $this->command->addAction($action2);
-
         $action3 = m::mock(ActionInterface::class);
+
+        $action1->shouldReceive('getName')->withNoArgs()->atLeast()->once()->andReturn('action1');
+        $action2->shouldReceive('getName')->withNoArgs()->atLeast()->once()->andReturn('action2');
         $action3->shouldReceive('getName')->withNoArgs()->atLeast()->once()->andReturn('action3');
+
+        $action1->shouldReceive('canRunInContext')->with($this->command, $context)->once()->andReturn(true);
+        $action2->shouldReceive('canRunInContext')->with($this->command, $context)->once()->andReturn(false);
         $action3->shouldReceive('canRunInContext')->with($this->command, $context)->once()->andReturn(true);
+
+        $this->command->addAction($action1);
+        $this->command->addAction($action2);
         $this->command->addAction($action3);
 
         $result = $this->command->getActionsToRun($context);
-        $actions = $result->toArray();
 
         $this->assertInstanceOf(ActionsCollection::class, $result);
         $this->assertCount(2, $result);
-        $this->assertSame($action1, $actions[0]);
-        $this->assertSame($action3, $actions[1]);
+        $this->assertSame($action1, $result[0]);
+        $this->assertSame($action3, $result[1]);
     }
 
     /**

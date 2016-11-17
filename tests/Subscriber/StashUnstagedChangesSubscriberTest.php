@@ -10,7 +10,6 @@ use ClickNow\Checker\IO\IOInterface;
 use Exception;
 use Gitonomy\Git\Diff\Diff;
 use Gitonomy\Git\Repository;
-use Gitonomy\Git\WorkingCopy;
 use Mockery as m;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -40,6 +39,17 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->io = m::mock(IOInterface::class);
         $this->repository = m::mock(Repository::class);
         $this->stashUnstagedChangesSubscriber = new StashUnstagedChangesSubscriber($this->io, $this->repository);
+
+        $diff = m::mock(Diff::class);
+        $diff->shouldReceive('getFiles')->withNoArgs()->atMost()->once()->andReturn(['file.txt']);
+
+        $this->repository
+            ->shouldReceive('getWorkingCopy->getDiffPending')
+            ->withNoArgs()
+            ->atMost()
+            ->once()
+            ->andReturn($diff)
+            ->byDefault();
     }
 
     protected function tearDown()
@@ -72,8 +82,10 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
         $command = m::mock(CommandInterface::class);
         $command->shouldReceive('isIgnoreUnstagedChanges')->withNoArgs()->once()->andReturn(true);
 
-        $workingCopy = $this->mockWorkingCopy();
-        $this->repository->shouldReceive('getWorkingCopy')->withNoArgs()->once()->andReturn($workingCopy);
+        $diff = m::mock(Diff::class);
+        $diff->shouldReceive('getFiles')->withNoArgs()->once()->andReturn([]);
+
+        $this->repository->shouldReceive('getWorkingCopy->getDiffPending')->withNoArgs()->once()->andReturn($diff);
         $this->stashUnstagedChangesSubscriber->saveStash($this->mockEvent($command));
     }
 
@@ -82,8 +94,6 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
         $command = m::mock(CommandInterface::class);
         $command->shouldReceive('isIgnoreUnstagedChanges')->withNoArgs()->once()->andReturn(true);
 
-        $workingCopy = $this->mockWorkingCopy(['file1.php', 'file2.php']);
-        $this->repository->shouldReceive('getWorkingCopy')->withNoArgs()->once()->andReturn($workingCopy);
         $this->repository->shouldReceive('run')->with('stash', m::contains('save'))->once()->andReturnNull();
         $this->repository->shouldReceive('run')->with('stash', m::contains('pop'))->once()->andReturnNull();
 
@@ -99,8 +109,6 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
         $command = m::mock(CommandInterface::class);
         $command->shouldReceive('isIgnoreUnstagedChanges')->withNoArgs()->once()->andReturn(true);
 
-        $workingCopy = $this->mockWorkingCopy(['file1.php', 'file2.php']);
-        $this->repository->shouldReceive('getWorkingCopy')->withNoArgs()->once()->andReturn($workingCopy);
         $this->repository->shouldReceive('run')->with('stash', m::contains('save'))->once()->andThrow(Exception::class);
         $this->repository->shouldNotReceive('run')->with('stash', m::contains('pop'));
 
@@ -118,8 +126,6 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
         $command = m::mock(CommandInterface::class);
         $command->shouldReceive('isIgnoreUnstagedChanges')->withNoArgs()->once()->andReturn(true);
 
-        $workingCopy = $this->mockWorkingCopy(['file1.php', 'file2.php']);
-        $this->repository->shouldReceive('getWorkingCopy')->withNoArgs()->once()->andReturn($workingCopy);
         $this->repository->shouldReceive('run')->with('stash', m::contains('save'))->once()->andReturnNull();
         $this->repository->shouldReceive('run')->with('stash', m::contains('pop'))->once()->andThrow(Exception::class);
 
@@ -146,21 +152,5 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
         $event->shouldReceive('getContext')->withNoArgs()->once()->andReturn($context);
 
         return $event;
-    }
-
-    /**
-     * @param array $files
-     *
-     * @return m\MockInterface
-     */
-    protected function mockWorkingCopy(array $files = [])
-    {
-        $diff = m::mock(Diff::class);
-        $diff->shouldReceive('getFiles')->withNoArgs()->once()->andReturn($files);
-
-        $workingCopy = m::mock(WorkingCopy::class);
-        $workingCopy->shouldReceive('getDiffPending')->withNoArgs()->once()->andReturn($diff);
-
-        return $workingCopy;
     }
 }

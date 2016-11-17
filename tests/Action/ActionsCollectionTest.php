@@ -49,13 +49,12 @@ class ActionsCollectionTest extends \PHPUnit_Framework_TestCase
         $this->actionsCollection->add($action3);
 
         $result = $this->actionsCollection->sortByPriority($command);
-        $actions = $result->toArray();
 
         $this->assertInstanceOf(ActionsCollection::class, $result);
         $this->assertCount(3, $result);
-        $this->assertSame($action2, $actions[0]);
-        $this->assertSame($action1, $actions[1]);
-        $this->assertSame($action3, $actions[2]);
+        $this->assertSame($action2, $result[0]);
+        $this->assertSame($action1, $result[1]);
+        $this->assertSame($action3, $result[2]);
     }
 
     public function testFilterByContext()
@@ -65,18 +64,22 @@ class ActionsCollectionTest extends \PHPUnit_Framework_TestCase
 
         $action1 = m::mock(ActionInterface::class);
         $action2 = m::mock(ActionInterface::class);
+        $action3 = m::mock(ActionInterface::class);
 
         $action1->shouldReceive('canRunInContext')->with($command, $context)->once()->andReturn(true);
         $action2->shouldReceive('canRunInContext')->with($command, $context)->once()->andReturn(false);
+        $action3->shouldReceive('canRunInContext')->with($command, $context)->once()->andReturn(true);
 
         $this->actionsCollection->add($action1);
         $this->actionsCollection->add($action2);
+        $this->actionsCollection->add($action3);
 
         $result = $this->actionsCollection->filterByContext($command, $context);
-        $actions = $result->toArray();
 
         $this->assertInstanceOf(ActionsCollection::class, $result);
-        $this->assertCount(1, $result);
-        $this->assertSame($action1, $actions[0]);
+        $this->assertCount(2, $result);
+        $this->assertSame($action1, $result[0]);
+        $this->assertNull($result[1]);
+        $this->assertSame($action3, $result[2]);
     }
 }

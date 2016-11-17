@@ -3,7 +3,7 @@
 namespace ClickNow\Checker\Command;
 
 use ClickNow\Checker\Action\ActionInterface;
-use ClickNow\Checker\Config\Checker;
+use ClickNow\Checker\Action\ActionsCollection;
 use ClickNow\Checker\Context\ContextInterface;
 use ClickNow\Checker\Exception\RuntimeException;
 use ClickNow\Checker\Result\Result;
@@ -17,7 +17,7 @@ use Mockery as m;
 class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \ClickNow\Checker\Command\Command
+     * @var \ClickNow\Checker\Command\AbstractCommandRunner|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $command;
 
@@ -28,13 +28,7 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $checker = m::mock(Checker::class);
-        $checker->shouldReceive('getProcessTimeout')->withNoArgs()->atLeast()->once()->andReturnNull();
-        $checker->shouldReceive('isStopOnFailure')->withNoArgs()->atLeast()->once()->andReturn(false);
-        $checker->shouldReceive('isIgnoreUnstagedChanges')->withNoArgs()->atLeast()->once()->andReturn(false);
-        $checker->shouldReceive('isSkipSuccessOutput')->withNoArgs()->atLeast()->once()->andReturn(false);
-
-        $this->command = new Command($checker, 'foo');
+        $this->command = $this->getMockForAbstractClass(AbstractCommandRunner::class);
         $this->context = m::mock(ContextInterface::class);
     }
 
@@ -50,6 +44,11 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testRunWithoutActions()
     {
+        $this->command->expects($this->never())->method('isStopOnFailure');
+        $this->command->expects($this->never())->method('isActionBlocking');
+
+        $actions = new ActionsCollection();
+        $this->command->expects($this->once())->method('getActionsToRun')->willReturn($actions);
         $result = $this->command->run($this->command, $this->context);
 
         $this->assertInstanceOf(ResultInterface::class, $result);
@@ -59,9 +58,11 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAndReturnSuccess()
     {
-        $this->command->addAction($this->mockAction('action1'));
-        $this->command->addAction($this->mockAction('action2'));
+        $this->command->expects($this->never())->method('isStopOnFailure');
+        $this->command->expects($this->never())->method('isActionBlocking');
 
+        $actions = new ActionsCollection([$this->mockAction(), $this->mockAction()]);
+        $this->command->expects($this->once())->method('getActionsToRun')->willReturn($actions);
         $result = $this->command->run($this->command, $this->context);
 
         $this->assertInstanceOf(ResultInterface::class, $result);
@@ -71,15 +72,17 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAndReturnAError()
     {
-        $action1 = $this->mockAction('action1');
-        $action2 = $this->mockAction('action2');
+        $action1 = $this->mockAction();
+        $action2 = $this->mockAction();
 
         $result1 = Result::error($this->command, $this->context, $action1, 'ERROR');
         $action1->shouldReceive('run')->with($this->command, $this->context)->once()->andReturn($result1);
 
-        $this->command->addAction($action1);
-        $this->command->addAction($action2);
+        $this->command->expects($this->once())->method('isStopOnFailure')->willReturn(false);
+        $this->command->expects($this->once())->method('isActionBlocking')->with($action1)->willReturn(true);
 
+        $actions = new ActionsCollection([$action1, $action2]);
+        $this->command->expects($this->once())->method('getActionsToRun')->willReturn($actions);
         $result = $this->command->run($this->command, $this->context);
 
         $this->assertInstanceOf(ResultInterface::class, $result);
@@ -89,15 +92,17 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAndReturnAWarning()
     {
-        $action1 = $this->mockAction('action1');
-        $action2 = $this->mockAction('action2');
+        $action1 = $this->mockAction();
+        $action2 = $this->mockAction();
 
         $result1 = Result::warning($this->command, $this->context, $action1, 'WARNING');
         $action1->shouldReceive('run')->with($this->command, $this->context)->once()->andReturn($result1);
 
-        $this->command->addAction($action1);
-        $this->command->addAction($action2);
+        $this->command->expects($this->never())->method('isStopOnFailure');
+        $this->command->expects($this->once())->method('isActionBlocking')->with($action1)->willReturn(true);
 
+        $actions = new ActionsCollection([$action1, $action2]);
+        $this->command->expects($this->once())->method('getActionsToRun')->willReturn($actions);
         $result = $this->command->run($this->command, $this->context);
 
         $this->assertInstanceOf(ResultInterface::class, $result);
@@ -107,8 +112,8 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAndReturnSomeErrors()
     {
-        $action1 = $this->mockAction('action1');
-        $action2 = $this->mockAction('action2');
+        $action1 = $this->mockAction();
+        $action2 = $this->mockAction();
 
         $result1 = Result::error($this->command, $this->context, $action1, 'ERROR1');
         $result2 = Result::error($this->command, $this->context, $action2, 'ERROR2');
@@ -116,9 +121,19 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
         $action1->shouldReceive('run')->with($this->command, $this->context)->once()->andReturn($result1);
         $action2->shouldReceive('run')->with($this->command, $this->context)->once()->andReturn($result2);
 
-        $this->command->addAction($action1);
-        $this->command->addAction($action2);
+        $this->command
+            ->expects($this->exactly(2))
+            ->method('isStopOnFailure')
+            ->willReturn(false);
 
+        $this->command
+            ->expects($this->exactly(2))
+            ->method('isActionBlocking')
+            ->withConsecutive([$action1], [$action2])
+            ->willReturn(true);
+
+        $actions = new ActionsCollection([$action1, $action2]);
+        $this->command->expects($this->once())->method('getActionsToRun')->willReturn($actions);
         $result = $this->command->run($this->command, $this->context);
 
         $this->assertInstanceOf(ResultInterface::class, $result);
@@ -128,8 +143,8 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAndReturnSomeWarnings()
     {
-        $action1 = $this->mockAction('action1');
-        $action2 = $this->mockAction('action2');
+        $action1 = $this->mockAction();
+        $action2 = $this->mockAction();
 
         $result1 = Result::warning($this->command, $this->context, $action1, 'WARNING1');
         $result2 = Result::warning($this->command, $this->context, $action2, 'WARNING2');
@@ -137,9 +152,18 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
         $action1->shouldReceive('run')->with($this->command, $this->context)->once()->andReturn($result1);
         $action2->shouldReceive('run')->with($this->command, $this->context)->once()->andReturn($result2);
 
-        $this->command->addAction($action1);
-        $this->command->addAction($action2);
+        $this->command
+            ->expects($this->never())
+            ->method('isStopOnFailure');
 
+        $this->command
+            ->expects($this->exactly(2))
+            ->method('isActionBlocking')
+            ->withConsecutive([$action1], [$action2])
+            ->willReturn(true);
+
+        $actions = new ActionsCollection([$action1, $action2]);
+        $this->command->expects($this->once())->method('getActionsToRun')->willReturn($actions);
         $result = $this->command->run($this->command, $this->context);
 
         $this->assertInstanceOf(ResultInterface::class, $result);
@@ -149,40 +173,56 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAndReturnSomeErrorsAndWarnings()
     {
-        $action1 = $this->mockAction('action1');
-        $action2 = $this->mockAction('action2');
+        $action1 = $this->mockAction();
+        $action2 = $this->mockAction();
+        $action3 = $this->mockAction();
+        $action4 = $this->mockAction();
 
-        $result1 = Result::error($this->command, $this->context, $action1, 'ERROR');
-        $result2 = Result::warning($this->command, $this->context, $action2, 'WARNING');
+        $result1 = Result::error($this->command, $this->context, $action1, 'ERROR1');
+        $result2 = Result::error($this->command, $this->context, $action2, 'ERROR2');
+        $result3 = Result::warning($this->command, $this->context, $action3, 'WARNING1');
+        $result4 = Result::warning($this->command, $this->context, $action4, 'WARNING2');
 
         $action1->shouldReceive('run')->with($this->command, $this->context)->once()->andReturn($result1);
         $action2->shouldReceive('run')->with($this->command, $this->context)->once()->andReturn($result2);
+        $action3->shouldReceive('run')->with($this->command, $this->context)->once()->andReturn($result3);
+        $action4->shouldReceive('run')->with($this->command, $this->context)->once()->andReturn($result4);
 
-        $this->command->addAction($action1);
-        $this->command->addAction($action2);
+        $this->command
+            ->expects($this->exactly(2))
+            ->method('isStopOnFailure')
+            ->willReturn(false);
 
+        $this->command
+            ->expects($this->exactly(4))
+            ->method('isActionBlocking')
+            ->withConsecutive([$action1], [$action2], [$action3], [$action4])
+            ->willReturn(true);
+
+        $actions = new ActionsCollection([$action1, $action2, $action3, $action4]);
+        $this->command->expects($this->once())->method('getActionsToRun')->willReturn($actions);
         $result = $this->command->run($this->command, $this->context);
 
         $this->assertInstanceOf(ResultInterface::class, $result);
         $this->assertTrue($result->isError());
-        $this->assertSame('ERROR'.PHP_EOL.'WARNING', $result->getMessage());
+        $this->assertSame('ERROR1'.PHP_EOL.'ERROR2'.PHP_EOL.'WARNING1'.PHP_EOL.'WARNING2', $result->getMessage());
     }
 
     public function testRunWithStopOnFailure()
     {
-        $this->command->setConfig(['stop_on_failure' => true]);
-
-        $action1 = $this->mockAction('action1');
-        $action2 = $this->mockAction('action2');
+        $action1 = $this->mockAction();
+        $action2 = $this->mockAction();
 
         $result1 = Result::error($this->command, $this->context, $action1, 'ERROR');
 
         $action1->shouldReceive('run')->with($this->command, $this->context)->once()->andReturn($result1);
         $action2->shouldNotReceive('run');
 
-        $this->command->addAction($action1);
-        $this->command->addAction($action2);
+        $this->command->expects($this->once())->method('isStopOnFailure')->willReturn(true);
+        $this->command->expects($this->once())->method('isActionBlocking')->with($action1)->willReturn(true);
 
+        $actions = new ActionsCollection([$action1, $action2]);
+        $this->command->expects($this->once())->method('getActionsToRun')->willReturn($actions);
         $result = $this->command->run($this->command, $this->context);
 
         $this->assertInstanceOf(ResultInterface::class, $result);
@@ -192,10 +232,8 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAndDoNotStopOnFailureIfTheActionIsNonABlocking()
     {
-        $this->command->setConfig(['stop_on_failure' => true]);
-
-        $action1 = $this->mockAction('action1');
-        $action2 = $this->mockAction('action2');
+        $action1 = $this->mockAction();
+        $action2 = $this->mockAction();
 
         $result1 = Result::error($this->command, $this->context, $action1, 'ERROR');
         $result2 = Result::warning($this->command, $this->context, $action2, 'WARNING');
@@ -203,9 +241,18 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
         $action1->shouldReceive('run')->with($this->command, $this->context)->once()->andReturn($result1);
         $action2->shouldReceive('run')->with($this->command, $this->context)->once()->andReturn($result2);
 
-        $this->command->addAction($action1, ['metadata' => ['blocking' => false]]);
-        $this->command->addAction($action2);
+        $this->command
+            ->expects($this->never())
+            ->method('isStopOnFailure');
 
+        $this->command
+            ->expects($this->exactly(2))
+            ->method('isActionBlocking')
+            ->withConsecutive([$action1], [$action2])
+            ->willReturn(false);
+
+        $actions = new ActionsCollection([$action1, $action2]);
+        $this->command->expects($this->once())->method('getActionsToRun')->willReturn($actions);
         $result = $this->command->run($this->command, $this->context);
 
         $this->assertInstanceOf(ResultInterface::class, $result);
@@ -215,8 +262,11 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAndValidatesTheReturnTypeOfAction()
     {
-        $action1 = $this->mockAction('action1');
-        $action2 = $this->mockAction('action2');
+        $action1 = $this->mockAction();
+        $action2 = $this->mockAction();
+
+        $action1->shouldReceive('getName')->withNoArgs()->once()->andReturn('action1');
+        $action2->shouldNotReceive('getName');
 
         $action1
             ->shouldReceive('run')
@@ -230,9 +280,19 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
             ->once()
             ->andThrow(RuntimeException::class, 'ERROR');
 
-        $this->command->addAction($action1);
-        $this->command->addAction($action2);
+        $this->command
+            ->expects($this->exactly(2))
+            ->method('isStopOnFailure')
+            ->willReturn(false);
 
+        $this->command
+            ->expects($this->exactly(2))
+            ->method('isActionBlocking')
+            ->withConsecutive([$action1], [$action2])
+            ->willReturn(true);
+
+        $actions = new ActionsCollection([$action1, $action2]);
+        $this->command->expects($this->once())->method('getActionsToRun')->willReturn($actions);
         $result = $this->command->run($this->command, $this->context);
 
         $this->assertInstanceOf(ResultInterface::class, $result);
@@ -243,34 +303,13 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
     /**
      * Mock action.
      *
-     * @param string $name
-     *
      * @return \ClickNow\Checker\Action\ActionInterface|\Mockery\MockInterface
      */
-    protected function mockAction($name)
+    protected function mockAction()
     {
         $action = m::mock(ActionInterface::class);
-
-        $action
-            ->shouldReceive('getName')
-            ->withNoArgs()
-            ->atLeast()
-            ->once()
-            ->andReturn($name);
-
-        $action
-            ->shouldReceive('canRunInContext')
-            ->with($this->command, $this->context)
-            ->once()
-            ->andReturn(true)
-            ->byDefault();
-
-        $action
-            ->shouldReceive('run')
-            ->with($this->command, $this->context)
-            ->once()
-            ->andReturn(Result::success($this->command, $this->context, $action))
-            ->byDefault();
+        $result = Result::success($this->command, $this->context, $action);
+        $action->shouldReceive('run')->with($this->command, $this->context)->once()->andReturn($result)->byDefault();
 
         return $action;
     }
