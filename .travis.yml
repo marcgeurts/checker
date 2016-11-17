@@ -1,4 +1,13 @@
+sudo: false
+
 language: php
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+notifications:
+  email: false
 
 php:
   - 5.5.9
@@ -7,7 +16,6 @@ php:
   - 7.0
   - 7.1
   - hhvm
-  - nightly
 
 env:
   global:
@@ -20,12 +28,6 @@ matrix:
       env: setup=lowest
     - php: 5.5.9
       env: setup=stable
-
-sudo: false
-
-cache:
-  directories:
-    - $HOME/.composer/cache
 
 before_install:
   - travis_retry composer self-update
