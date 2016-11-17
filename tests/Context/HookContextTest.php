@@ -3,7 +3,7 @@
 namespace ClickNow\Checker\Context;
 
 use ClickNow\Checker\Command\CommandInterface;
-use ClickNow\Checker\Util\FilesCollection;
+use ClickNow\Checker\Repository\FilesCollection;
 use Mockery as m;
 
 /**
@@ -18,7 +18,7 @@ class HookContextTest extends \PHPUnit_Framework_TestCase
     protected $command;
 
     /**
-     * @var \ClickNow\Checker\Util\FilesCollection|\Mockery\MockInterface
+     * @var \ClickNow\Checker\Repository\FilesCollection|\Mockery\MockInterface
      */
     protected $files;
 

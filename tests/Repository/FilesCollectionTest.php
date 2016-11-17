@@ -1,14 +1,14 @@
 <?php
 
-namespace ClickNow\Checker\Util;
+namespace ClickNow\Checker\Repository;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery as m;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
- * @group util
- * @covers \ClickNow\Checker\Util\FilesCollection
+ * @group repository
+ * @covers \ClickNow\Checker\Repository\FilesCollection
  */
 class FilesCollectionTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,7 +18,7 @@ class FilesCollectionTest extends \PHPUnit_Framework_TestCase
     protected $tempFile;
 
     /**
-     * @var \ClickNow\Checker\Util\FilesCollection
+     * @var \ClickNow\Checker\Repository\FilesCollection
      */
     protected $filesCollection;
 

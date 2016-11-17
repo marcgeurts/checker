@@ -3,7 +3,7 @@
 namespace ClickNow\Checker\Context;
 
 use ClickNow\Checker\Command\CommandInterface;
-use ClickNow\Checker\Util\FilesCollection;
+use ClickNow\Checker\Repository\FilesCollection;
 
 class RunContext implements ContextInterface
 {
@@ -13,15 +13,15 @@ class RunContext implements ContextInterface
     private $command;
 
     /**
-     * @var \ClickNow\Checker\Util\FilesCollection
+     * @var \ClickNow\Checker\Repository\FilesCollection
      */
     private $files;
 
     /**
      * Run context.
      *
-     * @param \ClickNow\Checker\Command\CommandInterface $command
-     * @param \ClickNow\Checker\Util\FilesCollection     $files
+     * @param \ClickNow\Checker\Command\CommandInterface   $command
+     * @param \ClickNow\Checker\Repository\FilesCollection $files
      */
     public function __construct(CommandInterface $command, FilesCollection $files)
     {
@@ -42,7 +42,7 @@ class RunContext implements ContextInterface
     /**
      * Get files.
      *
-     * @return \ClickNow\Checker\Util\FilesCollection
+     * @return \ClickNow\Checker\Repository\FilesCollection
      */
     public function getFiles()
     {

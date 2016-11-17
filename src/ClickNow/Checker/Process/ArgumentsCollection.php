@@ -3,7 +3,7 @@
 namespace ClickNow\Checker\Process;
 
 use ClickNow\Checker\Exception\InvalidArgumentException;
-use ClickNow\Checker\Util\FilesCollection;
+use ClickNow\Checker\Repository\FilesCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class ArgumentsCollection extends ArrayCollection
@@ -147,7 +147,7 @@ class ArgumentsCollection extends ArrayCollection
     /**
      * Add files.
      *
-     * @param \ClickNow\Checker\Util\FilesCollection $files
+     * @param \ClickNow\Checker\Repository\FilesCollection $files
      *
      * @return void
      */
@@ -159,7 +159,7 @@ class ArgumentsCollection extends ArrayCollection
     /**
      * Add comma separated files.
      *
-     * @param \ClickNow\Checker\Util\FilesCollection $files
+     * @param \ClickNow\Checker\Repository\FilesCollection $files
      *
      * @return void
      */

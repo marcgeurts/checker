@@ -3,7 +3,7 @@
 namespace ClickNow\Checker\Process;
 
 use ClickNow\Checker\Exception\InvalidArgumentException;
-use ClickNow\Checker\Util\FilesCollection;
+use ClickNow\Checker\Repository\FilesCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery as m;
 

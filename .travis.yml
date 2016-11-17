@@ -51,5 +51,8 @@ script:
   - vendor/bin/phpunit --colors --coverage-clover=coverage.clover
 
 after_script:
-  - test "5.5.9" == "${TRAVIS_PHP_VERSION}" && wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+  - |
+    if [[ "${TRAVIS_PHP_VERSION}" == "5.5.9" ]]; then
+      wget https://scrutinizer-ci.com/ocular.phar
+      php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+    fi

@@ -2,7 +2,7 @@
 
 namespace ClickNow\Checker\Config\Compiler;
 
-use ClickNow\Checker\Util\Git;
+use ClickNow\Checker\Repository\Git;
 
 class HookCompilerPass extends AbstractCompilerPass
 {

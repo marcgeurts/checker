@@ -1,6 +1,6 @@
 <?php
 
-namespace ClickNow\Checker\Util;
+namespace ClickNow\Checker\Repository;
 
 use Closure;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -21,7 +21,7 @@ class FilesCollection extends ArrayCollection
      *
      * @param string $pattern
      *
-     * @return \ClickNow\Checker\Util\FilesCollection
+     * @return \ClickNow\Checker\Repository\FilesCollection
      */
     public function filterByName($pattern)
     {
@@ -35,7 +35,7 @@ class FilesCollection extends ArrayCollection
      *
      * @param string $pattern
      *
-     * @return \ClickNow\Checker\Util\FilesCollection
+     * @return \ClickNow\Checker\Repository\FilesCollection
      */
     public function filterByNotName($pattern)
     {
@@ -49,7 +49,7 @@ class FilesCollection extends ArrayCollection
      *
      * @param string $pattern
      *
-     * @return \ClickNow\Checker\Util\FilesCollection
+     * @return \ClickNow\Checker\Repository\FilesCollection
      */
     public function filterByPath($pattern)
     {
@@ -63,7 +63,7 @@ class FilesCollection extends ArrayCollection
      *
      * @param string $pattern
      *
-     * @return \ClickNow\Checker\Util\FilesCollection
+     * @return \ClickNow\Checker\Repository\FilesCollection
      */
     public function filterByNotPath($pattern)
     {
@@ -77,7 +77,7 @@ class FilesCollection extends ArrayCollection
      *
      * @param array $extensions
      *
-     * @return \ClickNow\Checker\Util\FilesCollection
+     * @return \ClickNow\Checker\Repository\FilesCollection
      */
     public function filterByExtensions(array $extensions)
     {
@@ -93,7 +93,7 @@ class FilesCollection extends ArrayCollection
      *
      * @param string $size
      *
-     * @return \ClickNow\Checker\Util\FilesCollection
+     * @return \ClickNow\Checker\Repository\FilesCollection
      */
     public function filterBySize($size)
     {
@@ -107,7 +107,7 @@ class FilesCollection extends ArrayCollection
      *
      * @param string $date
      *
-     * @return \ClickNow\Checker\Util\FilesCollection
+     * @return \ClickNow\Checker\Repository\FilesCollection
      */
     public function filterByDate($date)
     {
@@ -121,7 +121,7 @@ class FilesCollection extends ArrayCollection
      *
      * @param \Closure $closure
      *
-     * @return \ClickNow\Checker\Util\FilesCollection
+     * @return \ClickNow\Checker\Repository\FilesCollection
      */
     public function filterByClosure(Closure $closure)
     {
@@ -145,7 +145,7 @@ class FilesCollection extends ArrayCollection
      *
      * @param \Traversable $fileList
      *
-     * @return \ClickNow\Checker\Util\FilesCollection
+     * @return \ClickNow\Checker\Repository\FilesCollection
      */
     public function filterByFileList(Traversable $fileList)
     {

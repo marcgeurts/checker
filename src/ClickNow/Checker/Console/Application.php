@@ -6,9 +6,13 @@ use ClickNow\Checker\Command\CommandInterface;
 use ClickNow\Checker\Config\ContainerFactory;
 use ClickNow\Checker\Console\Command\Git\HookCommand;
 use ClickNow\Checker\Exception\CommandInvalidException;
-use ClickNow\Checker\Exception\RuntimeException;
-use ClickNow\Checker\Util\ComposerUtil;
-use ClickNow\Checker\Util\Git;
+use ClickNow\Checker\Repository\Git;
+use Composer\Factory;
+use Composer\IO\NullIO;
+use Composer\Package\Loader\JsonLoader;
+use Composer\Package\Loader\RootPackageLoader;
+use Composer\Repository\RepositoryFactory;
+use Exception;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Symfony\Component\Console\Application as SymfonyConsole;
@@ -20,11 +24,6 @@ class Application extends SymfonyConsole
 {
     const APP_NAME = 'Checker';
     const APP_VERSION = '0.1.0';
-
-    /**
-     * @var \Symfony\Component\Filesystem\Filesystem
-     */
-    private $filesystem;
 
     /**
      * @var \ClickNow\Checker\Console\Config
@@ -41,8 +40,7 @@ class Application extends SymfonyConsole
      */
     public function __construct()
     {
-        $this->filesystem = new Filesystem();
-        $this->config = $this->initializeConfig();
+        $this->config = new Config(new Filesystem(), $this->initializeComposerPackage());
         $this->container = $this->initializeContainer();
 
         parent::__construct(self::APP_NAME, self::APP_VERSION);
@@ -73,8 +71,8 @@ class Application extends SymfonyConsole
         array_push($commands, $this->container->get('command.git.install'));
         array_push($commands, $this->container->get('command.git.uninstall'));
 
-        /** @var \ClickNow\Checker\Util\Git $git */
-        $git = $this->container->get('util.git');
+        /** @var \ClickNow\Checker\Repository\Git $git */
+        $git = $this->container->get('repository.git');
 
         foreach (Git::$hooks as $hook) {
             array_push($commands, new HookCommand($this->getHookCommand($hook), $git));
@@ -149,24 +147,6 @@ class Application extends SymfonyConsole
     }
 
     /**
-     * Initialize config.
-     *
-     * @return \ClickNow\Checker\Console\Config
-     */
-    private function initializeConfig()
-    {
-        try {
-            $config = ComposerUtil::loadConfig();
-            ComposerUtil::ensureProjectBinDirInSystemPath($config->get('bin-dir'));
-            $package = ComposerUtil::loadPackage($config);
-        } catch (RuntimeException $e) {
-            $package = null;
-        }
-
-        return new Config($this->filesystem, $package);
-    }
-
-    /**
      * Initialize container.
      *
      * @return \Symfony\Component\DependencyInjection\ContainerBuilder
@@ -181,5 +161,51 @@ class Application extends SymfonyConsole
         $this->setDispatcher($eventDispatcher);
 
         return $container;
+    }
+
+    /**
+     * Initialize composer package.
+     *
+     * @return \Composer\Package\PackageInterface|null
+     */
+    private function initializeComposerPackage()
+    {
+        $package = null;
+
+        try {
+            $config = Factory::createConfig();
+            $this->ensureProjectBinDirInSystemPath($config->get('bin-dir'));
+            $loader = new JsonLoader(new RootPackageLoader(RepositoryFactory::manager(new NullIO(), $config), $config));
+            $package = $loader->load(getcwd().DIRECTORY_SEPARATOR.'composer.json');
+        } catch (Exception $e) {
+        }
+
+        return $package;
+    }
+
+    /**
+     * Composer contains some logic to prepend the current bin dir to the system PATH.
+     * To make sure this application works the same in CLI and Composer modus,
+     * we'll have to ensure that the bin path is always prefixed.
+     *
+     * @param string $binDir
+     *
+     * @return void
+     */
+    private function ensureProjectBinDirInSystemPath($binDir)
+    {
+        $absoluteBinDir = realpath($binDir);
+        $pathStr = (!isset($_SERVER['PATH']) && isset($_SERVER['Path'])) ? 'Path' : 'PATH';
+        $match = preg_match(
+            '{(^|'.PATH_SEPARATOR.')'.preg_quote($absoluteBinDir).'($|'.PATH_SEPARATOR.')}',
+            $_SERVER[$pathStr]
+        );
+
+        if (!is_dir($absoluteBinDir) || !isset($_SERVER[$pathStr]) || $match) {
+            return;
+        }
+
+        $_SERVER[$pathStr] = $absoluteBinDir.PATH_SEPARATOR.getenv($pathStr);
+        putenv($pathStr.'='.$_SERVER[$pathStr]);
     }
 }

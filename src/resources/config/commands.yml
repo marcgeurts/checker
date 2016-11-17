@@ -3,7 +3,7 @@ services:
     class: ClickNow\Checker\Console\Command\RunCommand
     arguments:
       - '@commands_collection'
-      - '@util.git'
+      - '@repository.git'
 
   command.git.install:
     class: ClickNow\Checker\Console\Command\Git\InstallCommand

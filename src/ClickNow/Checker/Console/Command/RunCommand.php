@@ -7,7 +7,7 @@ use ClickNow\Checker\Command\CommandsCollection;
 use ClickNow\Checker\Context\RunContext;
 use ClickNow\Checker\Exception\CommandInvalidException;
 use ClickNow\Checker\Exception\CommandNotFoundException;
-use ClickNow\Checker\Util\Git;
+use ClickNow\Checker\Repository\Git;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,7 +22,7 @@ class RunCommand extends SymfonyCommand
     private $commandsCollection;
 
     /**
-     * @var \ClickNow\Checker\Util\Git
+     * @var \ClickNow\Checker\Repository\Git
      */
     private $git;
 
@@ -30,7 +30,7 @@ class RunCommand extends SymfonyCommand
      * Hook command.
      *
      * @param \ClickNow\Checker\Command\CommandsCollection $commandsCollection
-     * @param \ClickNow\Checker\Util\Git                   $git
+     * @param \ClickNow\Checker\Repository\Git             $git
      */
     public function __construct(CommandsCollection $commandsCollection, Git $git)
     {

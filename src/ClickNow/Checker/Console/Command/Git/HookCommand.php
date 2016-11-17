@@ -5,7 +5,7 @@ namespace ClickNow\Checker\Console\Command\Git;
 use ClickNow\Checker\Command\CommandInterface;
 use ClickNow\Checker\Context\HookContext;
 use ClickNow\Checker\IO\ConsoleIO;
-use ClickNow\Checker\Util\Git;
+use ClickNow\Checker\Repository\Git;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -19,7 +19,7 @@ class HookCommand extends SymfonyCommand
     private $command;
 
     /**
-     * @var \ClickNow\Checker\Util\Git
+     * @var \ClickNow\Checker\Repository\Git
      */
     private $git;
 
@@ -27,7 +27,7 @@ class HookCommand extends SymfonyCommand
      * Hook command.
      *
      * @param \ClickNow\Checker\Command\CommandInterface $command
-     * @param \ClickNow\Checker\Util\Git                 $git
+     * @param \ClickNow\Checker\Repository\Git           $git
      */
     public function __construct(CommandInterface $command, Git $git)
     {

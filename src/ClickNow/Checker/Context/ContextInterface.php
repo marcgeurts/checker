@@ -14,7 +14,7 @@ interface ContextInterface
     /**
      * Get files.
      *
-     * @return \ClickNow\Checker\Util\FilesCollection
+     * @return \ClickNow\Checker\Repository\FilesCollection
      */
     public function getFiles();
 }

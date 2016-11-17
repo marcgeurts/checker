@@ -1,6 +1,6 @@
 <?php
 
-namespace ClickNow\Checker\Util;
+namespace ClickNow\Checker\Repository;
 
 use Gitonomy\Git\Diff\Diff;
 use Gitonomy\Git\Diff\File;
@@ -9,8 +9,8 @@ use Mockery as m;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
- * @group util
- * @covers \ClickNow\Checker\Util\Git
+ * @group repository
+ * @covers \ClickNow\Checker\Repository\Git
  */
 class GitTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,7 +20,7 @@ class GitTest extends \PHPUnit_Framework_TestCase
     protected $repository;
 
     /**
-     * @var \ClickNow\Checker\Util\Git
+     * @var \ClickNow\Checker\Repository\Git
      */
     protected $git;
 

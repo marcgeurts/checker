@@ -1,6 +1,6 @@
 <?php
 
-namespace ClickNow\Checker\Util;
+namespace ClickNow\Checker\Repository;
 
 use Gitonomy\Git\Diff\Diff;
 use Gitonomy\Git\Diff\File;
@@ -50,7 +50,7 @@ class Git
     /**
      * Get registered files.
      *
-     * @return \ClickNow\Checker\Util\FilesCollection
+     * @return \ClickNow\Checker\Repository\FilesCollection
      */
     public function getRegisteredFiles()
     {
@@ -70,7 +70,7 @@ class Git
      *
      * @param string $rawDiff
      *
-     * @return \ClickNow\Checker\Util\FilesCollection
+     * @return \ClickNow\Checker\Repository\FilesCollection
      */
     public function getChangedFiles($rawDiff)
     {
@@ -91,7 +91,7 @@ class Git
      *
      * @param \Gitonomy\Git\Diff\Diff $diff
      *
-     * @return \ClickNow\Checker\Util\FilesCollection
+     * @return \ClickNow\Checker\Repository\FilesCollection
      */
     private function parseFilesFromDiff(Diff $diff)
     {
