@@ -56,7 +56,7 @@ class ReportSubscriber implements EventSubscriberInterface
     public function onReport(RunnerEvent $event)
     {
         $results = $event->getResults();
-        if ($results->isEmpty()) {
+        if (is_null($results) || $results->isEmpty()) {
             return;
         }
 

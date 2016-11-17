@@ -57,6 +57,15 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, ReportSubscriber::getSubscribedEvents());
     }
 
+    public function testOnReportNull()
+    {
+        $event = m::mock(RunnerEvent::class);
+        $event->shouldReceive('getResults')->withNoArgs()->once()->andReturnNull();
+        $event->shouldNotReceive('getContext');
+
+        $this->reportSubscriber->onReport($event);
+    }
+
     public function testOnReportEmpty()
     {
         $results = new ResultsCollection();
