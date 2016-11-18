@@ -15,7 +15,7 @@ class ExtensionException extends RuntimeException
      * @param string $extensionClass
      * @param string $message
      */
-    public function __construct($extensionClass, $message)
+    public function __construct($extensionClass, $message = '')
     {
         $this->extensionClass = $extensionClass;
 

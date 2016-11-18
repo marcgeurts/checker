@@ -15,7 +15,7 @@ class TaskException extends RuntimeException
      * @param string $taskName
      * @param string $message
      */
-    public function __construct($taskName, $message)
+    public function __construct($taskName, $message = '')
     {
         $this->taskName = $taskName;
 

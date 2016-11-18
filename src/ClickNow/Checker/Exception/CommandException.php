@@ -15,7 +15,7 @@ class CommandException extends RuntimeException
      * @param string $commandName
      * @param string $message
      */
-    public function __construct($commandName, $message)
+    public function __construct($commandName, $message = '')
     {
         $this->commandName = $commandName;
 

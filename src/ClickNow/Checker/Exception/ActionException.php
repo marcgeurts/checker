@@ -15,7 +15,7 @@ class ActionException extends RuntimeException
      * @param string $actionName
      * @param string $message
      */
-    public function __construct($actionName, $message)
+    public function __construct($actionName, $message = '')
     {
         $this->actionName = $actionName;
 
