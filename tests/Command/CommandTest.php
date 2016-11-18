@@ -80,49 +80,34 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     public function testGetProcessTimeout()
     {
         $this->assertNull($this->command->getProcessTimeout());
-    }
 
-    public function testSetProcessTimeoutToInteger()
-    {
         $this->command->setConfig(['process_timeout' => 60]);
         $this->assertSame(60, $this->command->getProcessTimeout());
-    }
 
-    public function testSetProcessTimeoutToFloat()
-    {
         $this->command->setConfig(['process_timeout' => 90.5]);
         $this->assertSame(90.5, $this->command->getProcessTimeout());
     }
 
-    public function testStopOnFailureIsFalse()
+    public function testIsStopOnFailure()
     {
         $this->assertFalse($this->command->isStopOnFailure());
-    }
 
-    public function testStopOnFailureIsTrue()
-    {
         $this->command->setConfig(['stop_on_failure' => true]);
         $this->assertTrue($this->command->isStopOnFailure());
     }
 
-    public function testIgnoreUnstagedChangesIsFalse()
+    public function testIsIgnoreUnstagedChanges()
     {
         $this->assertFalse($this->command->isIgnoreUnstagedChanges());
-    }
 
-    public function testIgnoreUnstagedChangesIsTrue()
-    {
         $this->command->setConfig(['ignore_unstaged_changes' => true]);
         $this->assertTrue($this->command->isIgnoreUnstagedChanges());
     }
 
-    public function testSkipSuccessOutputIsFalse()
+    public function testIsSkipSuccessOutput()
     {
         $this->assertFalse($this->command->isSkipSuccessOutput());
-    }
 
-    public function testSkipSuccessOutputIsTrue()
-    {
         $this->command->setConfig(['skip_success_output' => true]);
         $this->assertTrue($this->command->isSkipSuccessOutput());
     }
@@ -130,38 +115,23 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     public function testGetMessage()
     {
         $this->assertNull($this->command->getMessage('foo'));
-    }
 
-    public function testSetMessage()
-    {
         $this->command->setConfig(['message' => ['foo' => 'foo']]);
         $this->assertSame('foo', $this->command->getMessage('foo'));
     }
 
-    public function testCanRunInContextIsTrue()
-    {
-        $command = m::mock(CommandInterface::class);
-        $context = m::mock(ContextInterface::class);
-
-        $this->assertTrue($this->command->canRunInContext($command, $context));
-    }
-
-    public function testCanRunInContextIsFalse()
-    {
-        $command = m::mock(CommandInterface::class);
-        $context = m::mock(ContextInterface::class);
-
-        $this->command->setConfig(['can_run_in' => false]);
-        $this->assertFalse($this->command->canRunInContext($command, $context));
-    }
-
-    public function testCanRunInContextByArray()
+    public function testCanRunInContext()
     {
         $command = m::mock(CommandInterface::class);
         $command->shouldReceive('getName')->withNoArgs()->twice()->andReturn('bar');
 
         $context = m::mock(ContextInterface::class);
         $context->shouldReceive('getCommand')->withNoArgs()->times(3)->andReturn($this->command);
+
+        $this->assertTrue($this->command->canRunInContext($command, $context));
+
+        $this->command->setConfig(['can_run_in' => false]);
+        $this->assertFalse($this->command->canRunInContext($command, $context));
 
         $this->command->setConfig(['can_run_in' => ['bar']]);
         $this->assertTrue($this->command->canRunInContext($command, $context));

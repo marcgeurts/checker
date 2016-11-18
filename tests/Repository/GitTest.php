@@ -35,6 +35,11 @@ class GitTest extends \PHPUnit_Framework_TestCase
         m::close();
     }
 
+    public function testHooks()
+    {
+        $this->assertClassHasStaticAttribute('hooks', Git::class);
+    }
+
     public function testGetRegisteredFiles()
     {
         $this->repository->shouldReceive('run')->with('ls-files')->once()->andReturn('file1.txt'.PHP_EOL.'file2.txt');
