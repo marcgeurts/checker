@@ -5,7 +5,6 @@ namespace ClickNow\Checker\Config\Compiler;
 use ClickNow\Checker\Command\Command;
 use ClickNow\Checker\Exception\CommandAlreadyRegisteredException;
 use ClickNow\Checker\Exception\CommandNotFoundException;
-use ClickNow\Checker\Exception\TaskAlreadyRegisteredException;
 use ClickNow\Checker\Exception\TaskNotFoundException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -91,28 +90,19 @@ abstract class AbstractCompilerPass implements CompilerPassInterface
      * @param array $tasks
      *
      * @throws \ClickNow\Checker\Exception\TaskNotFoundException
-     * @throws \ClickNow\Checker\Exception\TaskAlreadyRegisteredException
      *
      * @return array
      */
     protected function parseTasks(array $tasks)
     {
         $services = $this->getTasksServices();
-        $configured = [];
         $parsed = [];
 
-        array_walk($tasks, function ($config, $name) use ($services, &$configured, &$parsed) {
-            // Checks if there is a task service with this identifier
+        array_walk($tasks, function ($config, $name) use ($services, &$parsed) {
             if (!array_key_exists($name, $services)) {
                 throw new TaskNotFoundException($name);
             }
 
-            // Checks if the task has already been configured
-            if (array_key_exists($name, $configured)) {
-                throw new TaskAlreadyRegisteredException($name);
-            }
-
-            $configured[$name] = $config;
             $parsed[$services[$name]] = $config;
         });
 

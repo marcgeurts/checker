@@ -2,6 +2,7 @@
 
 namespace ClickNow\Checker\Config\Compiler;
 
+use ClickNow\Checker\Exception\TaskNotFoundException;
 use Mockery as m;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -28,7 +29,7 @@ class TaskCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->container = m::mock(ContainerBuilder::class);
         $this->container
             ->shouldReceive('findTaggedServiceIds')
-            ->with(TaskCompilerPass::TAG_TASK)
+            ->with('checker.task')
             ->atMost()
             ->once()
             ->andReturn(['foo' => [['config' => 'foo']]]);
@@ -47,25 +48,22 @@ class TaskCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(AbstractCompilerPass::class, $this->taskCompilerPass);
     }
 
-    public function testA()
+    public function testConfigure()
     {
-        $this->container->shouldReceive('getParameter')->with('tasks')->once()->andReturn(['foo' => []]);
-
         $definition = m::mock(Definition::class);
-        $definition->shouldReceive('addMethodCall')->with('mergeDefaultConfig', [[]])->once()->andReturn();
+        $definition->shouldReceive('addMethodCall')->with('mergeDefaultConfig', [[]])->once()->andReturnNull();
 
+        $this->container->shouldReceive('getParameter')->with('tasks')->once()->andReturn(['foo' => []]);
         $this->container->shouldReceive('findDefinition')->with('foo')->once()->andReturn($definition);
+
         $this->taskCompilerPass->process($this->container);
     }
 
-    public function testAA()
+    public function testTaskNotFound()
     {
-        $this->container->shouldReceive('getParameter')->with('tasks')->once()->andReturn(['foo' => []]);
+        $this->setExpectedException(TaskNotFoundException::class, 'Task `bar` was not found.');
 
-        $definition = m::mock(Definition::class);
-        $definition->shouldReceive('addMethodCall')->with('mergeDefaultConfig', [[]])->once()->andReturn();
-
-        $this->container->shouldReceive('findDefinition')->with('foo')->once()->andReturn($definition);
+        $this->container->shouldReceive('getParameter')->with('tasks')->once()->andReturn(['bar' => []]);
         $this->taskCompilerPass->process($this->container);
     }
 }
