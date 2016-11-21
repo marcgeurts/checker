@@ -175,8 +175,11 @@ class FilesCollectionTest extends \PHPUnit_Framework_TestCase
         $file1 = m::mock(SplFileInfo::class);
         $file2 = m::mock(SplFileInfo::class);
 
-        $file1->shouldReceive('getPathname')->withNoArgs()->once()->andReturn($this->tempFile);
-        $file2->shouldReceive('getPathname')->withNoArgs()->once()->andReturn($this->tempFile);
+        $file1->shouldReceive('getPathname')->withNoArgs()->atMost()->once()->andReturn($this->tempFile);
+        $file2->shouldReceive('getPathname')->withNoArgs()->atMost()->once()->andReturn($this->tempFile);
+
+        $file1->shouldReceive('getRealPath')->withNoArgs()->atMost()->once()->andReturn($this->tempFile);
+        $file2->shouldReceive('getRealPath')->withNoArgs()->atMost()->once()->andReturn($this->tempFile);
 
         $file1->shouldReceive('getMTime')->withNoArgs()->once()->andReturn(strtotime('-5 days'));
         $file2->shouldReceive('getMTime')->withNoArgs()->once()->andReturn(strtotime('-4 hours'));
