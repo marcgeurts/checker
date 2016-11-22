@@ -50,11 +50,11 @@ class TaskCompilerPassTest extends \PHPUnit_Framework_TestCase
 
     public function testConfigure()
     {
-        $definition = m::mock(Definition::class);
-        $definition->shouldReceive('addMethodCall')->with('mergeDefaultConfig', [[]])->once()->andReturnNull();
+        $task = m::mock(Definition::class);
+        $task->shouldReceive('addMethodCall')->with('mergeDefaultConfig', [[]])->once()->andReturnNull();
 
         $this->container->shouldReceive('getParameter')->with('tasks')->once()->andReturn(['foo' => []]);
-        $this->container->shouldReceive('findDefinition')->with('foo')->once()->andReturn($definition);
+        $this->container->shouldReceive('findDefinition')->with('foo')->once()->andReturn($task);
 
         $this->taskCompilerPass->process($this->container);
     }
@@ -64,6 +64,8 @@ class TaskCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException(TaskNotFoundException::class, 'Task `bar` was not found.');
 
         $this->container->shouldReceive('getParameter')->with('tasks')->once()->andReturn(['bar' => []]);
+        $this->container->shouldReceive('findDefinition')->with('bar')->never();
+
         $this->taskCompilerPass->process($this->container);
     }
 }

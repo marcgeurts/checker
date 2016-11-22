@@ -55,16 +55,17 @@ class HookCompilerPassTest extends \PHPUnit_Framework_TestCase
     public function testConfigure()
     {
         $times = count(Git::$hooks);
+        $config = ['pre-commit' => ['tasks' => ['foo' => []], 'commands' => ['bar' => []]]];
 
-        $definition = m::mock(Definition::class);
-        $definition
+        $hook = m::mock(Definition::class);
+        $hook
             ->shouldReceive('addArgument')
             ->with(m::type(Reference::class))
             ->times($times)
             ->andReturnSelf()
             ->ordered('addArgument');
 
-        $definition
+        $hook
             ->shouldReceive('addArgument')
             ->with(m::on(function ($hook) {
                 return in_array($hook, Git::$hooks);
@@ -73,33 +74,28 @@ class HookCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->andReturnSelf()
             ->ordered('addArgument');
 
-        $definition
+        $hook
             ->shouldReceive('addMethodCall')
             ->with('addAction', [new Reference('foo'), []])
             ->once()
             ->andReturnSelf();
 
-        $definition
+        $hook
             ->shouldReceive('addMethodCall')
             ->with('addAction', [new Reference('command.bar'), []])
             ->once()
             ->andReturnSelf();
 
-        $definition
+        $hook
             ->shouldReceive('addMethodCall')
             ->with('setConfig', [[]])
             ->times($times)
             ->andReturnSelf();
 
-        $config = ['pre-commit' => ['tasks' => ['foo' => []], 'commands' => ['bar' => []]]];
         $this->container->shouldReceive('getParameter')->with('hooks')->once()->andReturn($config);
         $this->container->shouldReceive('hasDefinition')->with('/^hook./')->times($times)->andReturn(false);
         $this->container->shouldReceive('hasDefinition')->with('command.bar')->once()->andReturn(true);
-        $this->container
-            ->shouldReceive('register')
-            ->with('/^hook./', Command::class)
-            ->times($times)
-            ->andReturn($definition);
+        $this->container->shouldReceive('register')->with('/^hook./', Command::class)->times($times)->andReturn($hook);
 
         $this->hookCompilerPass->process($this->container);
     }
@@ -108,14 +104,15 @@ class HookCompilerPassTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException(TaskNotFoundException::class, 'Task `bar` was not found.');
 
-        $definition = m::mock(Definition::class);
-        $definition->shouldReceive('addMethodCall')->with('addAction', [new Reference('bar'), []])->never();
-        $definition->shouldReceive('addMethodCall')->with('setConfig', [[]])->andReturnSelf();
-
         $config = ['pre-commit' => ['tasks' => ['bar' => []]]];
+
+        $hook = m::mock(Definition::class);
+        $hook->shouldReceive('addMethodCall')->with('addAction', [new Reference('bar'), []])->never();
+        $hook->shouldReceive('addMethodCall')->with('setConfig', [[]])->andReturnSelf();
+
         $this->container->shouldReceive('getParameter')->with('hooks')->once()->andReturn($config);
         $this->container->shouldReceive('hasDefinition')->with('/^hook./')->andReturn(true);
-        $this->container->shouldReceive('findDefinition')->with('/^hook./')->andReturn($definition);
+        $this->container->shouldReceive('findDefinition')->with('/^hook./')->andReturn($hook);
 
         $this->hookCompilerPass->process($this->container);
     }
@@ -124,14 +121,15 @@ class HookCompilerPassTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException(CommandNotFoundException::class, 'Command `bar` was not found.');
 
-        $definition = m::mock(Definition::class);
-        $definition->shouldReceive('addMethodCall')->with('addAction', [new Reference('command.bar'), []])->never();
-        $definition->shouldReceive('addMethodCall')->with('setConfig', [[]])->andReturnSelf();
-
         $config = ['pre-commit' => ['commands' => ['bar' => []]]];
+
+        $hook = m::mock(Definition::class);
+        $hook->shouldReceive('addMethodCall')->with('addAction', [new Reference('command.bar'), []])->never();
+        $hook->shouldReceive('addMethodCall')->with('setConfig', [[]])->andReturnSelf();
+
         $this->container->shouldReceive('getParameter')->with('hooks')->once()->andReturn($config);
         $this->container->shouldReceive('hasDefinition')->with('/^hook./')->andReturn(true);
-        $this->container->shouldReceive('findDefinition')->with('/^hook./')->andReturn($definition);
+        $this->container->shouldReceive('findDefinition')->with('/^hook./')->andReturn($hook);
         $this->container->shouldReceive('hasDefinition')->with('command.bar')->once()->andReturn(false);
 
         $this->hookCompilerPass->process($this->container);
