@@ -73,7 +73,7 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
         $command = m::mock(CommandInterface::class);
         $command->shouldReceive('isIgnoreUnstagedChanges')->withNoArgs()->once()->andReturn(false);
 
-        $this->repository->shouldNotReceive('getWorkingCopy');
+        $this->repository->shouldReceive('getWorkingCopy')->withNoArgs()->never();
         $this->stashUnstagedChangesSubscriber->saveStash($this->mockEvent($command));
     }
 
@@ -97,8 +97,8 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->repository->shouldReceive('run')->with('stash', m::contains('save'))->once()->andReturnNull();
         $this->repository->shouldReceive('run')->with('stash', m::contains('pop'))->once()->andReturnNull();
 
-        $this->io->shouldReceive('note')->twice()->andReturnNull();
-        $this->io->shouldNotReceive('warning');
+        $this->io->shouldReceive('note')->withAnyArgs()->twice()->andReturnNull();
+        $this->io->shouldReceive('warning')->withAnyArgs()->never();
 
         $this->stashUnstagedChangesSubscriber->saveStash($this->mockEvent($command));
         $this->stashUnstagedChangesSubscriber->popStash();
@@ -110,10 +110,10 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
         $command->shouldReceive('isIgnoreUnstagedChanges')->withNoArgs()->once()->andReturn(true);
 
         $this->repository->shouldReceive('run')->with('stash', m::contains('save'))->once()->andThrow(Exception::class);
-        $this->repository->shouldNotReceive('run')->with('stash', m::contains('pop'));
+        $this->repository->shouldReceive('run')->with('stash', m::contains('pop'))->never();
 
-        $this->io->shouldReceive('note')->once()->andReturnNull();
-        $this->io->shouldReceive('warning')->once()->andReturnNull();
+        $this->io->shouldReceive('note')->withAnyArgs()->once()->andReturnNull();
+        $this->io->shouldReceive('warning')->withAnyArgs()->once()->andReturnNull();
 
         $this->stashUnstagedChangesSubscriber->saveStash($this->mockEvent($command));
         $this->stashUnstagedChangesSubscriber->popStash();
@@ -129,8 +129,8 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->repository->shouldReceive('run')->with('stash', m::contains('save'))->once()->andReturnNull();
         $this->repository->shouldReceive('run')->with('stash', m::contains('pop'))->once()->andThrow(Exception::class);
 
-        $this->io->shouldReceive('note')->twice()->andReturnNull();
-        $this->io->shouldNotReceive('warning');
+        $this->io->shouldReceive('note')->withAnyArgs()->twice()->andReturnNull();
+        $this->io->shouldReceive('warning')->withAnyArgs()->never();
 
         $this->stashUnstagedChangesSubscriber->saveStash($this->mockEvent($command));
         $this->stashUnstagedChangesSubscriber->popStash();

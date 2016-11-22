@@ -73,8 +73,8 @@ class ConsoleIOTest extends \PHPUnit_Framework_TestCase
     public function testLogIsNotVeryVerbose()
     {
         $this->output->shouldReceive('isVeryVerbose')->withNoArgs()->once()->andReturn(false);
-        $this->output->shouldNotReceive('write');
-        $this->output->shouldNotReceive('writeln');
+        $this->output->shouldReceive('write')->withAnyArgs()->never();
+        $this->output->shouldReceive('writeln')->withAnyArgs()->never();
 
         $this->consoleIO->log('foo');
     }
@@ -82,8 +82,8 @@ class ConsoleIOTest extends \PHPUnit_Framework_TestCase
     public function testLogWithoutMessage()
     {
         $this->output->shouldReceive('isVeryVerbose')->withNoArgs()->once()->andReturn(true);
-        $this->output->shouldNotReceive('write');
-        $this->output->shouldNotReceive('writeln');
+        $this->output->shouldReceive('write')->withAnyArgs()->never();
+        $this->output->shouldReceive('writeln')->withAnyArgs()->never();
 
         $this->consoleIO->log('');
     }

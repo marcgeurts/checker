@@ -65,7 +65,7 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
 
         $this->setExpectedException(
             ExtensionAlreadyRegisteredException::class,
-            'Extension `' . $class . '` already registered.'
+            'Extension `'.$class.'` already registered.'
         );
 
         $this->container->shouldReceive('getParameter')->with('extensions')->once()->andReturn([$class, $class]);

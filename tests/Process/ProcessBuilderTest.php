@@ -61,7 +61,7 @@ class ProcessBuilderTest extends \PHPUnit_Framework_TestCase
     public function testBuildProcess()
     {
         $process = m::mock(Process::class);
-        $process->shouldReceive('stop')->atMost()->once()->andReturnNull();
+        $process->shouldReceive('stop')->withAnyArgs()->atMost()->once()->andReturnNull();
         $process->shouldReceive('getCommandLine')->withNoArgs()->once()->andReturn('bin/foo');
 
         $this->builder->shouldReceive('setArguments')->with(['bin/foo'])->once()->andReturnSelf();

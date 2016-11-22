@@ -61,7 +61,7 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
     {
         $event = m::mock(RunnerEvent::class);
         $event->shouldReceive('getResults')->withNoArgs()->once()->andReturnNull();
-        $event->shouldNotReceive('getContext');
+        $event->shouldReceive('getContext')->withNoArgs()->never();
 
         $this->reportSubscriber->onReport($event);
     }
@@ -72,7 +72,7 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
 
         $event = m::mock(RunnerEvent::class);
         $event->shouldReceive('getResults')->withNoArgs()->once()->andReturn($results);
-        $event->shouldNotReceive('getContext');
+        $event->shouldReceive('getContext')->withNoArgs()->never();
 
         $this->reportSubscriber->onReport($event);
     }
@@ -104,7 +104,7 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
         $results->add($this->mockResult(Result::SUCCESS));
 
         $this->paths->shouldReceive('getMessage')->with(null)->once()->andReturnNull();
-        $this->io->shouldNotReceive('text');
+        $this->io->shouldReceive('text')->withAnyArgs()->never();
 
         $this->reportSubscriber->onReport($this->mockEvent($command, $results));
     }
@@ -139,7 +139,7 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
         $results->add($this->mockResult(Result::WARNING, 'WARNING1'));
         $results->add($this->mockResult(Result::WARNING, 'WARNING2'));
 
-        $this->paths->shouldNotReceive('getMessage');
+        $this->paths->shouldReceive('getMessage')->withAnyArgs()->never();
         $this->io->shouldReceive('note')->with('WARNING1')->once()->andReturnNull()->ordered();
         $this->io->shouldReceive('note')->with('WARNING2')->once()->andReturnNull()->ordered();
 
@@ -149,7 +149,7 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testOnReportErrorWithMessage()
     {
         $command = m::mock(CommandInterface::class);
-        $command->shouldNotReceive('isSkipSuccessOutput');
+        $command->shouldReceive('isSkipSuccessOutput')->withNoArgs()->never();
         $command->shouldReceive('getMessage')->with('failed')->once()->andReturn('failed');
 
         $results = new ResultsCollection();
@@ -167,7 +167,7 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testOnReportErrorWithoutMessage()
     {
         $command = m::mock(CommandInterface::class);
-        $command->shouldNotReceive('isSkipSuccessOutput');
+        $command->shouldReceive('isSkipSuccessOutput')->withNoArgs()->never();
         $command->shouldReceive('getMessage')->with('failed')->once()->andReturnNull();
 
         $results = new ResultsCollection();
@@ -175,7 +175,7 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
         $results->add($this->mockResult(Result::ERROR, 'ERROR2'));
 
         $this->paths->shouldReceive('getMessage')->with(null)->once()->andReturnNull();
-        $this->io->shouldNotReceive('text');
+        $this->io->shouldReceive('text')->withAnyArgs()->never();
         $this->io->shouldReceive('error')->with('ERROR1')->once()->andReturnNull()->ordered();
         $this->io->shouldReceive('error')->with('ERROR2')->once()->andReturnNull()->ordered();
 
@@ -185,7 +185,7 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testOnReportErrorAndWarning()
     {
         $command = m::mock(CommandInterface::class);
-        $command->shouldNotReceive('isSkipSuccessOutput');
+        $command->shouldReceive('isSkipSuccessOutput')->withNoArgs()->never();
         $command->shouldReceive('getMessage')->with('failed')->once()->andReturnNull();
 
         $results = new ResultsCollection();

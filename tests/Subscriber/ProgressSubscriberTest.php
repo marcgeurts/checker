@@ -35,7 +35,7 @@ class ProgressSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->progressBar = m::mock(ProgressBar::class);
 
         $this->io = m::mock(IOInterface::class);
-        $this->io->shouldReceive('createProgressBar')->withNoArgs()->once()->andReturn($this->progressBar);
+        $this->io->shouldReceive('createProgressBar')->withAnyArgs()->once()->andReturn($this->progressBar);
 
         $this->progressSubscriber = new ProgressSubscriber($this->io);
     }
@@ -87,7 +87,7 @@ class ProgressSubscriberTest extends \PHPUnit_Framework_TestCase
     {
         $this->progressBar->shouldReceive('getProgress')->withNoArgs()->once()->andReturn(1);
         $this->progressBar->shouldReceive('getMaxSteps')->withNoArgs()->once()->andReturn(2);
-        $this->progressBar->shouldNotReceive('finish');
+        $this->progressBar->shouldReceive('finish')->withNoArgs()->never();
         $this->io->shouldReceive('newLine')->with(2)->once()->andReturnNull();
         $this->io->shouldReceive('caution')->with('Aborted...')->once()->andReturnNull();
         $this->progressSubscriber->finishProgress();

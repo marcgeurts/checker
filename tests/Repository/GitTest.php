@@ -38,6 +38,7 @@ class GitTest extends \PHPUnit_Framework_TestCase
     public function testHooks()
     {
         $this->assertClassHasStaticAttribute('hooks', Git::class);
+        $this->assertInternalType('array', Git::$hooks);
     }
 
     public function testGetRegisteredFiles()
@@ -63,16 +64,16 @@ class GitTest extends \PHPUnit_Framework_TestCase
         $file3->shouldReceive('isDeletion')->withNoArgs()->once()->andReturn(false);
 
         $file1->shouldReceive('isRename')->withNoArgs()->once()->andReturn(false);
-        $file2->shouldNotReceive('isRename');
+        $file2->shouldReceive('isRename')->withNoArgs()->never();
         $file3->shouldReceive('isRename')->withNoArgs()->once()->andReturn(true);
 
-        $file1->shouldNotReceive('getNewName');
-        $file2->shouldNotReceive('getNewName');
+        $file1->shouldReceive('getNewName')->withNoArgs()->never();
+        $file2->shouldReceive('getNewName')->withNoArgs()->never();
         $file3->shouldReceive('getNewName')->withNoArgs()->once()->andReturn('file3.txt');
 
         $file1->shouldReceive('getName')->withNoArgs()->once()->andReturn('file1.txt');
-        $file2->shouldNotReceive('getName');
-        $file3->shouldNotReceive('getName');
+        $file2->shouldReceive('getName')->withNoArgs()->never();
+        $file3->shouldReceive('getName')->withNoArgs()->never();
 
         $diff = m::mock(Diff::class);
         $diff->shouldReceive('getFiles')->withNoArgs()->once()->andReturn([$file1, $file2, $file3]);

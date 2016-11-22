@@ -2,9 +2,15 @@
 
 namespace ClickNow\Checker\Config\Compiler;
 
+use ClickNow\Checker\Command\Command;
+use ClickNow\Checker\Exception\CommandNotFoundException;
+use ClickNow\Checker\Exception\TaskNotFoundException;
+use ClickNow\Checker\Repository\Git;
 use Mockery as m;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * @group config/compiler
@@ -25,6 +31,13 @@ class HookCompilerPassTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->container = m::mock(ContainerBuilder::class);
+        $this->container
+            ->shouldReceive('findTaggedServiceIds')
+            ->with('checker.task')
+            ->atMost()
+            ->once()
+            ->andReturn(['foo' => [['config' => 'foo']]]);
+
         $this->hookCompilerPass = new HookCompilerPass();
     }
 
@@ -41,14 +54,86 @@ class HookCompilerPassTest extends \PHPUnit_Framework_TestCase
 
     public function testConfigure()
     {
-        /*$definition = m::mock(Definition::class);
-        //$definition->shouldReceive('addMethodCall')->with('mergeDefaultConfig', [[]])->once()->andReturnNull();
-        //$definition->shouldReceive('addMethodCall')->with('mergeDefaultConfig', [[]])->once()->andReturnNull();
+        $times = count(Git::$hooks);
+
+        $definition = m::mock(Definition::class);
+        $definition
+            ->shouldReceive('addArgument')
+            ->with(m::type(Reference::class))
+            ->times($times)
+            ->andReturnSelf()
+            ->ordered('addArgument');
+
+        $definition
+            ->shouldReceive('addArgument')
+            ->with(m::on(function ($hook) {
+                return in_array($hook, Git::$hooks);
+            }))
+            ->times($times)
+            ->andReturnSelf()
+            ->ordered('addArgument');
+
+        $definition
+            ->shouldReceive('addMethodCall')
+            ->with('addAction', [new Reference('foo'), []])
+            ->once()
+            ->andReturnSelf();
+
+        $definition
+            ->shouldReceive('addMethodCall')
+            ->with('addAction', [new Reference('command.bar'), []])
+            ->once()
+            ->andReturnSelf();
+
+        $definition
+            ->shouldReceive('addMethodCall')
+            ->with('setConfig', [[]])
+            ->times($times)
+            ->andReturnSelf();
 
         $config = ['pre-commit' => ['tasks' => ['foo' => []], 'commands' => ['bar' => []]]];
         $this->container->shouldReceive('getParameter')->with('hooks')->once()->andReturn($config);
-        $this->container->shouldReceive('hasDefinition')->once()->andReturn(false);
-        $this->container->shouldReceive('register')->once()->andReturn($definition);
-        $this->hookCompilerPass->process($this->container);*/
+        $this->container->shouldReceive('hasDefinition')->with('/^hook./')->times($times)->andReturn(false);
+        $this->container->shouldReceive('hasDefinition')->with('command.bar')->once()->andReturn(true);
+        $this->container
+            ->shouldReceive('register')
+            ->with('/^hook./', Command::class)
+            ->times($times)
+            ->andReturn($definition);
+
+        $this->hookCompilerPass->process($this->container);
+    }
+
+    public function testTaskNotFound()
+    {
+        $this->setExpectedException(TaskNotFoundException::class, 'Task `bar` was not found.');
+
+        $definition = m::mock(Definition::class);
+        $definition->shouldReceive('addMethodCall')->with('addAction', [new Reference('bar'), []])->never();
+        $definition->shouldReceive('addMethodCall')->with('setConfig', [[]])->andReturnSelf();
+
+        $config = ['pre-commit' => ['tasks' => ['bar' => []]]];
+        $this->container->shouldReceive('getParameter')->with('hooks')->once()->andReturn($config);
+        $this->container->shouldReceive('hasDefinition')->with('/^hook./')->andReturn(true);
+        $this->container->shouldReceive('findDefinition')->with('/^hook./')->andReturn($definition);
+
+        $this->hookCompilerPass->process($this->container);
+    }
+
+    public function testCommandNotFound()
+    {
+        $this->setExpectedException(CommandNotFoundException::class, 'Command `bar` was not found.');
+
+        $definition = m::mock(Definition::class);
+        $definition->shouldReceive('addMethodCall')->with('addAction', [new Reference('command.bar'), []])->never();
+        $definition->shouldReceive('addMethodCall')->with('setConfig', [[]])->andReturnSelf();
+
+        $config = ['pre-commit' => ['commands' => ['bar' => []]]];
+        $this->container->shouldReceive('getParameter')->with('hooks')->once()->andReturn($config);
+        $this->container->shouldReceive('hasDefinition')->with('/^hook./')->andReturn(true);
+        $this->container->shouldReceive('findDefinition')->with('/^hook./')->andReturn($definition);
+        $this->container->shouldReceive('hasDefinition')->with('command.bar')->once()->andReturn(false);
+
+        $this->hookCompilerPass->process($this->container);
     }
 }

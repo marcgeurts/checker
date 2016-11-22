@@ -22,13 +22,13 @@ class ContainerFactoryTest extends \PHPUnit_Framework_TestCase
     protected $tempFile;
 
     /**
-     * @var  \Symfony\Component\DependencyInjection\ContainerBuilder
+     * @var \Symfony\Component\DependencyInjection\ContainerBuilder
      */
     protected $container;
 
     protected function setUp()
     {
-        $this->tempFile = __DIR__ . '/config.yml';
+        $this->tempFile = __DIR__.'/config.yml';
         file_put_contents($this->tempFile, "parameters:\n  foo: bar");
         $this->container = ContainerFactory::create($this->tempFile);
     }

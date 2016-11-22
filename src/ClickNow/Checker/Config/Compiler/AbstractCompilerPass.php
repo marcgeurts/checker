@@ -3,7 +3,6 @@
 namespace ClickNow\Checker\Config\Compiler;
 
 use ClickNow\Checker\Command\Command;
-use ClickNow\Checker\Exception\CommandAlreadyRegisteredException;
 use ClickNow\Checker\Exception\CommandNotFoundException;
 use ClickNow\Checker\Exception\TaskNotFoundException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -152,28 +151,18 @@ abstract class AbstractCompilerPass implements CompilerPassInterface
      * @param array                                             $commands
      *
      * @throws \ClickNow\Checker\Exception\CommandNotFoundException
-     * @throws \ClickNow\Checker\Exception\CommandAlreadyRegisteredException
      *
      * @return void
      */
     protected function addCommands(Definition $definition, array $commands)
     {
-        $registered = [];
-
         foreach ($commands as $name => $config) {
             $id = 'command.'.$name;
 
-            // Checks if there is a command service with this identifier
             if (!$this->container->hasDefinition($id)) {
                 throw new CommandNotFoundException($name);
             }
 
-            // Checks if the command has already been registered
-            if (array_key_exists($name, $registered)) {
-                throw new CommandAlreadyRegisteredException($name);
-            }
-
-            $registered[$name] = $config;
             $definition->addMethodCall('addAction', [new Reference($id), (array) $config]);
         }
     }

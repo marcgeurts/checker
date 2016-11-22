@@ -216,7 +216,7 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
         $result1 = Result::error($this->command, $this->context, $action1, 'ERROR');
 
         $action1->shouldReceive('run')->with($this->command, $this->context)->once()->andReturn($result1);
-        $action2->shouldNotReceive('run');
+        $action2->shouldReceive('run')->with($this->command, $this->context)->never();
 
         $this->command->expects($this->once())->method('isStopOnFailure')->willReturn(true);
         $this->command->expects($this->once())->method('isActionBlocking')->with($action1)->willReturn(true);
@@ -266,7 +266,7 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
         $action2 = $this->mockAction();
 
         $action1->shouldReceive('getName')->withNoArgs()->once()->andReturn('action1');
-        $action2->shouldNotReceive('getName');
+        $action2->shouldReceive('getName')->withNoArgs()->never();
 
         $action1
             ->shouldReceive('run')

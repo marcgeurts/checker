@@ -125,7 +125,11 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
     protected function mockCommand()
     {
         $command = m::mock(CommandInterface::class);
-        $command->shouldReceive('getActionConfig')->once()->andReturn(['bar' => 'bar', 'foobar' => 'foobar']);
+        $command
+            ->shouldReceive('getActionConfig')
+            ->with($this->task)
+            ->once()
+            ->andReturn(['bar' => 'bar', 'foobar' => 'foobar']);
 
         return $command;
     }
