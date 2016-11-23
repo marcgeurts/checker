@@ -11,6 +11,7 @@ use Symfony\Component\DependencyInjection\Definition;
 /**
  * @group config/compiler
  * @covers \ClickNow\Checker\Config\Compiler\TaskCompilerPass
+ * @covers \ClickNow\Checker\Config\Compiler\AbstractCompilerPass
  */
 class TaskCompilerPassTest extends \PHPUnit_Framework_TestCase
 {

@@ -13,6 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * @group config/compiler
  * @covers \ClickNow\Checker\Config\Compiler\ExtensionCompilerPass
+ * @covers \ClickNow\Checker\Config\Compiler\AbstractCompilerPass
  */
 class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
 {

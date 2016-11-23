@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * @group config/compiler
  * @covers \ClickNow\Checker\Config\Compiler\HookCompilerPass
+ * @covers \ClickNow\Checker\Config\Compiler\AbstractCompilerPass
  */
 class HookCompilerPassTest extends \PHPUnit_Framework_TestCase
 {
