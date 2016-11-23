@@ -19,17 +19,18 @@ use Symfony\Component\DependencyInjection\Reference;
 class HookCompilerPassTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Symfony\Component\DependencyInjection\ContainerBuilder|\Mockery\MockInterface
-     */
-    protected $container;
-
-    /**
      * @var \ClickNow\Checker\Config\Compiler\HookCompilerPass
      */
     protected $hookCompilerPass;
 
+    /**
+     * @var \Symfony\Component\DependencyInjection\ContainerBuilder|\Mockery\MockInterface
+     */
+    protected $container;
+
     protected function setUp()
     {
+        $this->hookCompilerPass = new HookCompilerPass();
         $this->container = m::mock(ContainerBuilder::class);
         $this->container
             ->shouldReceive('findTaggedServiceIds')
@@ -37,8 +38,6 @@ class HookCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->atMost()
             ->once()
             ->andReturn(['foo' => [['config' => 'foo']]]);
-
-        $this->hookCompilerPass = new HookCompilerPass();
     }
 
     protected function tearDown()

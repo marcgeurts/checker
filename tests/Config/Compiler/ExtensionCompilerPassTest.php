@@ -17,19 +17,19 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Symfony\Component\DependencyInjection\ContainerBuilder|\Mockery\MockInterface
-     */
-    protected $container;
-
-    /**
      * @var \ClickNow\Checker\Config\Compiler\ExtensionCompilerPass
      */
     protected $extensionCompilerPass;
 
+    /**
+     * @var \Symfony\Component\DependencyInjection\ContainerBuilder|\Mockery\MockInterface
+     */
+    protected $container;
+
     protected function setUp()
     {
-        $this->container = m::mock(ContainerBuilder::class);
         $this->extensionCompilerPass = new ExtensionCompilerPass();
+        $this->container = m::mock(ContainerBuilder::class);
     }
 
     protected function tearDown()

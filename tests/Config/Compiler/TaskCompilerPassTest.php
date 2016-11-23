@@ -15,17 +15,18 @@ use Symfony\Component\DependencyInjection\Definition;
 class TaskCompilerPassTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Symfony\Component\DependencyInjection\ContainerBuilder|\Mockery\MockInterface
-     */
-    protected $container;
-
-    /**
      * @var \ClickNow\Checker\Config\Compiler\TaskCompilerPass
      */
     protected $taskCompilerPass;
 
+    /**
+     * @var \Symfony\Component\DependencyInjection\ContainerBuilder|\Mockery\MockInterface
+     */
+    protected $container;
+
     protected function setUp()
     {
+        $this->taskCompilerPass = new TaskCompilerPass();
         $this->container = m::mock(ContainerBuilder::class);
         $this->container
             ->shouldReceive('findTaggedServiceIds')
@@ -33,8 +34,6 @@ class TaskCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->atMost()
             ->once()
             ->andReturn(['foo' => [['config' => 'foo']]]);
-
-        $this->taskCompilerPass = new TaskCompilerPass();
     }
 
     protected function tearDown()

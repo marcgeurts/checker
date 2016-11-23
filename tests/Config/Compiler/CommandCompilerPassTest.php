@@ -4,6 +4,7 @@ namespace ClickNow\Checker\Config\Compiler;
 
 use ClickNow\Checker\Command\Command;
 use ClickNow\Checker\Exception\CommandInvalidException;
+use ClickNow\Checker\Exception\CommandNotFoundException;
 use ClickNow\Checker\Exception\TaskNotFoundException;
 use Mockery as m;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -18,17 +19,18 @@ use Symfony\Component\DependencyInjection\Reference;
 class CommandCompilerPassTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Symfony\Component\DependencyInjection\ContainerBuilder|\Mockery\MockInterface
-     */
-    protected $container;
-
-    /**
      * @var \ClickNow\Checker\Config\Compiler\CommandCompilerPass
      */
     protected $commandCompilerPass;
 
+    /**
+     * @var \Symfony\Component\DependencyInjection\ContainerBuilder|\Mockery\MockInterface
+     */
+    protected $container;
+
     protected function setUp()
     {
+        $this->commandCompilerPass = new CommandCompilerPass();
         $this->container = m::mock(ContainerBuilder::class);
         $this->container
             ->shouldReceive('findTaggedServiceIds')
@@ -36,8 +38,6 @@ class CommandCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->atMost()
             ->once()
             ->andReturn(['foo' => [['config' => 'foo']]]);
-
-        $this->commandCompilerPass = new CommandCompilerPass();
     }
 
     protected function tearDown()
@@ -85,13 +85,11 @@ class CommandCompilerPassTest extends \PHPUnit_Framework_TestCase
             'The name of a command `foo` can not be the same as the name of a task.'
         );
 
-        $config = ['foo' => []];
-
         $collection = m::mock(Definition::class);
         $collection->shouldReceive('addMethodCall')->with('set', m::any())->never();
 
         $this->container->shouldReceive('findDefinition')->with('commands_collection')->once()->andReturn($collection);
-        $this->container->shouldReceive('getParameter')->with('commands')->once()->andReturn($config);
+        $this->container->shouldReceive('getParameter')->with('commands')->once()->andReturn(['foo' => []]);
 
         $this->commandCompilerPass->process($this->container);
     }
@@ -119,6 +117,24 @@ class CommandCompilerPassTest extends \PHPUnit_Framework_TestCase
 
     public function testCommandNotFound()
     {
-        
+        $this->setExpectedException(CommandNotFoundException::class, 'Command `bar` was not found.');
+
+        $config = ['foobar' => ['commands' => ['bar' => []]]];
+
+        $collection = m::mock(Definition::class);
+        $command = m::mock(Definition::class);
+
+        $this->container->shouldReceive('findDefinition')->with('commands_collection')->once()->andReturn($collection);
+        $this->container->shouldReceive('getParameter')->with('commands')->once()->andReturn($config);
+        $this->container->shouldReceive('hasDefinition')->with('command.foobar')->once()->andReturn(true);
+        $this->container->shouldReceive('findDefinition')->with('command.foobar')->twice()->andReturn($command);
+        $this->container->shouldReceive('hasDefinition')->with('command.bar')->once()->andReturn(false);
+
+        $collection->shouldReceive('addMethodCall')->with('set', ['foobar', $command])->once()->andReturnSelf();
+
+        $command->shouldReceive('addMethodCall')->with('setConfig', [[]])->once()->andReturnSelf();
+        $command->shouldReceive('addMethodCall')->with('addAction', [new Reference('command.bar'), []])->never();
+
+        $this->commandCompilerPass->process($this->container);
     }
 }
