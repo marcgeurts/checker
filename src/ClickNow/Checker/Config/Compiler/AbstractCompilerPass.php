@@ -13,8 +13,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractCompilerPass implements CompilerPassInterface
 {
-    const TAG_TASK = 'checker.task';
-
     /**
      * @var \Symfony\Component\DependencyInjection\ContainerBuilder
      */
@@ -119,7 +117,7 @@ abstract class AbstractCompilerPass implements CompilerPassInterface
             return self::$tasks;
         }
 
-        $taggedServices = $this->container->findTaggedServiceIds(self::TAG_TASK);
+        $taggedServices = $this->container->findTaggedServiceIds('checker.task');
 
         foreach ($taggedServices as $id => $tags) {
             $taskTags = $this->getTaskTags($tags);
