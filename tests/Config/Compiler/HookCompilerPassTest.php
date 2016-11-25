@@ -93,9 +93,9 @@ class HookCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->andReturnSelf();
 
         $this->container->shouldReceive('getParameter')->with('hooks')->once()->andReturn($config);
-        $this->container->shouldReceive('hasDefinition')->with('/^hook./')->times($times)->andReturn(false);
+        $this->container->shouldReceive('hasDefinition')->with('/^hook\./')->times($times)->andReturn(false);
         $this->container->shouldReceive('hasDefinition')->with('command.bar')->once()->andReturn(true);
-        $this->container->shouldReceive('register')->with('/^hook./', Command::class)->times($times)->andReturn($hook);
+        $this->container->shouldReceive('register')->with('/^hook\./', Command::class)->times($times)->andReturn($hook);
 
         $this->hookCompilerPass->process($this->container);
     }
@@ -111,8 +111,8 @@ class HookCompilerPassTest extends \PHPUnit_Framework_TestCase
         $hook->shouldReceive('addMethodCall')->with('setConfig', [[]])->andReturnSelf();
 
         $this->container->shouldReceive('getParameter')->with('hooks')->once()->andReturn($config);
-        $this->container->shouldReceive('hasDefinition')->with('/^hook./')->andReturn(true);
-        $this->container->shouldReceive('findDefinition')->with('/^hook./')->andReturn($hook);
+        $this->container->shouldReceive('hasDefinition')->with('/^hook\./')->andReturn(true);
+        $this->container->shouldReceive('findDefinition')->with('/^hook\./')->andReturn($hook);
 
         $this->hookCompilerPass->process($this->container);
     }
@@ -128,8 +128,8 @@ class HookCompilerPassTest extends \PHPUnit_Framework_TestCase
         $hook->shouldReceive('addMethodCall')->with('setConfig', [[]])->andReturnSelf();
 
         $this->container->shouldReceive('getParameter')->with('hooks')->once()->andReturn($config);
-        $this->container->shouldReceive('hasDefinition')->with('/^hook./')->andReturn(true);
-        $this->container->shouldReceive('findDefinition')->with('/^hook./')->andReturn($hook);
+        $this->container->shouldReceive('hasDefinition')->with('/^hook\./')->andReturn(true);
+        $this->container->shouldReceive('findDefinition')->with('/^hook\./')->andReturn($hook);
         $this->container->shouldReceive('hasDefinition')->with('command.bar')->once()->andReturn(false);
 
         $this->hookCompilerPass->process($this->container);
