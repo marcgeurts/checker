@@ -2,21 +2,16 @@
 
 namespace ClickNow\Checker\Console;
 
-use ClickNow\Checker\Command\CommandInterface;
+use ClickNow\Checker\Composer\ComposerUtil;
 use ClickNow\Checker\Config\ContainerFactory;
 use ClickNow\Checker\Console\Command\Git\HookCommand;
-use ClickNow\Checker\Exception\CommandInvalidException;
 use ClickNow\Checker\Repository\Git;
-use Composer\Factory;
-use Composer\IO\NullIO;
-use Composer\Package\Loader\JsonLoader;
-use Composer\Package\Loader\RootPackageLoader;
-use Composer\Repository\RepositoryFactory;
-use Exception;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Symfony\Component\Console\Application as SymfonyConsole;
+use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -26,9 +21,9 @@ class Application extends SymfonyConsole
     const APP_VERSION = '0.1.0';
 
     /**
-     * @var \ClickNow\Checker\Console\Config
+     * @var \ClickNow\Checker\Console\ConfigFile
      */
-    private $config;
+    private $configFile;
 
     /**
      * @var \Symfony\Component\DependencyInjection\ContainerBuilder
@@ -40,7 +35,7 @@ class Application extends SymfonyConsole
      */
     public function __construct()
     {
-        $this->config = new Config(new Filesystem(), $this->getComposerPackage());
+        $this->configFile = new ConfigFile(new Filesystem(), ComposerUtil::loadPackage());
         $this->container = $this->initializeContainer();
 
         parent::__construct(self::APP_NAME, self::APP_VERSION);
@@ -54,7 +49,13 @@ class Application extends SymfonyConsole
     protected function getDefaultInputDefinition()
     {
         $definition = parent::getDefaultInputDefinition();
-        $definition->addOption($this->config->getInputOption());
+        $definition->addOption(new InputOption(
+            'config',
+            'c',
+            InputOption::VALUE_OPTIONAL,
+            'Path to config',
+            $this->configFile->getDefaultPath()
+        ));
 
         return $definition;
     }
@@ -75,30 +76,12 @@ class Application extends SymfonyConsole
         $git = $this->container->get('repository.git');
 
         foreach (Git::$hooks as $hook) {
-            array_push($commands, new HookCommand($this->getHookCommand($hook), $git));
+            /** @var \ClickNow\Checker\Command\CommandInterface $hookCommand */
+            $hookCommand = $this->container->get(sprintf('hook.%s', $hook));
+            array_push($commands, new HookCommand($hookCommand, $git));
         }
 
         return $commands;
-    }
-
-    /**
-     * Get hook command.
-     *
-     * @param string $hook
-     *
-     * @throws \ClickNow\Checker\Exception\CommandInvalidException
-     *
-     * @return \ClickNow\Checker\Command\CommandInterface
-     */
-    private function getHookCommand($hook)
-    {
-        $command = $this->container->get(sprintf('hook.%s', $hook));
-
-        if (!$command instanceof CommandInterface) {
-            throw new CommandInvalidException($hook);
-        }
-
-        return $command;
     }
 
     /**
@@ -153,58 +136,16 @@ class Application extends SymfonyConsole
      */
     private function initializeContainer()
     {
-        $container = ContainerFactory::create($this->config->getPath());
-        $container->set('console.config', $this->config);
+        $input = new ArgvInput();
+        $configPath = $input->getParameterOption(['--config', '-c']) ?: $this->configFile->getDefaultPath();
+
+        $container = ContainerFactory::create($configPath);
+        $container->set('console.config_file', $this->configFile);
 
         /** @var \Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher $eventDispatcher */
         $eventDispatcher = $container->get('event_dispatcher');
         $this->setDispatcher($eventDispatcher);
 
         return $container;
-    }
-
-    /**
-     * Get composer package.
-     *
-     * @return \Composer\Package\PackageInterface|null
-     */
-    private function getComposerPackage()
-    {
-        try {
-            $config = Factory::createConfig();
-            $this->ensureProjectBinDirInSystemPath($config->get('bin-dir'));
-            $loader = new JsonLoader(new RootPackageLoader(RepositoryFactory::manager(new NullIO(), $config), $config));
-            $package = $loader->load(getcwd().DIRECTORY_SEPARATOR.'composer.json');
-        } catch (Exception $e) {
-            $package = null;
-        }
-
-        return $package;
-    }
-
-    /**
-     * Composer contains some logic to prepend the current bin dir to the system PATH.
-     * To make sure this application works the same in CLI and Composer modus,
-     * we'll have to ensure that the bin path is always prefixed.
-     *
-     * @param string $binDir
-     *
-     * @return void
-     */
-    private function ensureProjectBinDirInSystemPath($binDir)
-    {
-        $absoluteBinDir = realpath($binDir);
-        $pathStr = (!isset($_SERVER['PATH']) && isset($_SERVER['Path'])) ? 'Path' : 'PATH';
-        $match = preg_match(
-            '{(^|'.PATH_SEPARATOR.')'.preg_quote($absoluteBinDir).'($|'.PATH_SEPARATOR.')}',
-            $_SERVER[$pathStr]
-        );
-
-        if (!is_dir($absoluteBinDir) || !isset($_SERVER[$pathStr]) || $match) {
-            return;
-        }
-
-        $_SERVER[$pathStr] = $absoluteBinDir.PATH_SEPARATOR.getenv($pathStr);
-        putenv($pathStr.'='.$_SERVER[$pathStr]);
     }
 }
