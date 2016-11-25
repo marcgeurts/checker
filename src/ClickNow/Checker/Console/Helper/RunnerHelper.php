@@ -46,16 +46,19 @@ class RunnerHelper extends Helper
      *
      * @param \ClickNow\Checker\Context\ContextInterface $context
      *
-     * @return int|void
+     * @return int
      */
     public function run(ContextInterface $context)
     {
-        $this->io->title(sprintf('Checker is analyzing your code by action `%s`!', $context->getCommand()->getName()));
+        $command = $context->getCommand();
+        $this->io->title(sprintf('Checker is analyzing your code by action `%s`!', $command->getName()));
 
-        $actions = $context->getCommand()->getActionsToRun($context);
+        $actions = $command->getActionsToRun($context);
 
         if ($actions->isEmpty()) {
-            return $this->io->note('No actions available.');
+            $this->io->note('No actions available.');
+
+            return self::CODE_SUCCESS;
         }
 
         $this->dispatcher->dispatch(RunnerEvent::RUNNER_RUN, new RunnerEvent($context, $actions));
