@@ -14,7 +14,7 @@ use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
 
-class Plugin implements PluginInterface, EventSubscriberInterface
+class CheckerPlugin implements PluginInterface, EventSubscriberInterface
 {
     const PACKAGE_NAME = 'cknow/checker';
 
