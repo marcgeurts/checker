@@ -237,20 +237,20 @@ class InstallCommand extends Command
             $command,
         ]);
 
-        $configFile = $this->useExoticConfigFile();
-        if ($configFile !== null) {
-            $this->processBuilder->add(sprintf('--config=%s', $configFile));
+        $configPath = $this->useExoticConfigPath();
+        if ($configPath !== null) {
+            $this->processBuilder->add(sprintf('--config=%s', $configPath));
         }
 
         return $this->processBuilder->getProcess()->getCommandLine();
     }
 
     /**
-     * Use exotic config file.
+     * Use exotic config path.
      *
      * @return null|string
      */
-    private function useExoticConfigFile()
+    private function useExoticConfigPath()
     {
         try {
             $configPath = $this->paths()->getAbsolutePath($this->input->getOption('config'));
@@ -258,7 +258,7 @@ class InstallCommand extends Command
                 return $this->paths()->getRelativeProjectPath($configPath);
             }
         } catch (FileNotFoundException $e) {
-            // no config file
+            // no config path
         }
 
         return null;

@@ -3,7 +3,7 @@
 namespace ClickNow\Checker\Console\Helper;
 
 use ClickNow\Checker\Config\Checker;
-use ClickNow\Checker\Console\Config;
+use ClickNow\Checker\Console\ConfigFile;
 use ClickNow\Checker\Exception\DirectoryNotFoundException;
 use ClickNow\Checker\Exception\FileNotFoundException;
 use ClickNow\Checker\Process\ExecutableFinder;
@@ -30,9 +30,9 @@ class PathsHelper extends Helper
     private $executableFinder;
 
     /**
-     * @var \ClickNow\Checker\Console\Config
+     * @var \ClickNow\Checker\Console\ConfigFile
      */
-    private $config;
+    private $configFile;
 
     /**
      * Paths helper.
@@ -40,18 +40,18 @@ class PathsHelper extends Helper
      * @param \ClickNow\Checker\Config\Checker           $checker
      * @param \Symfony\Component\Filesystem\Filesystem   $filesystem
      * @param \ClickNow\Checker\Process\ExecutableFinder $executableFinder
-     * @param \ClickNow\Checker\Console\Config           $config
+     * @param \ClickNow\Checker\Console\ConfigFile       $configFile
      */
     public function __construct(
         Checker $checker,
         Filesystem $filesystem,
         ExecutableFinder $executableFinder,
-        Config $config
+        ConfigFile $configFile
     ) {
         $this->checker = $checker;
         $this->filesystem = $filesystem;
         $this->executableFinder = $executableFinder;
-        $this->config = $config;
+        $this->configFile = $configFile;
     }
 
     /**
@@ -284,7 +284,7 @@ class PathsHelper extends Helper
      */
     public function getDefaultConfigPath()
     {
-        return $this->config->getDefaultPath();
+        return $this->configFile->getDefaultPath();
     }
 
     /**
