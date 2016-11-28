@@ -60,6 +60,19 @@ class RunnerHelper extends Helper
             return self::CODE_SUCCESS;
         }
 
+        return $this->doRun($context, $actions);
+    }
+
+    /**
+     * Do run.
+     *
+     * @param \ClickNow\Checker\Context\ContextInterface $context
+     * @param \ClickNow\Checker\Action\ActionsCollection $actions
+     *
+     * @return int
+     */
+    private function doRun(ContextInterface $context, ActionsCollection $actions)
+    {
         $this->dispatcher->dispatch(RunnerEvent::RUNNER_RUN, new RunnerEvent($context, $actions));
         $results = $this->runActions($context, $actions);
 
