@@ -50,10 +50,9 @@ class RunnerHelper extends Helper
      */
     public function run(ContextInterface $context)
     {
-        $command = $context->getCommand();
-        $this->io->title(sprintf('Checker is analyzing your code by action `%s`!', $command->getName()));
+        $this->io->title(sprintf('Checker is analyzing your code by action `%s`!', $context->getCommand()->getName()));
 
-        $actions = $command->getActionsToRun($context);
+        $actions = $context->getCommand()->getActionsToRun($context);
 
         if ($actions->isEmpty()) {
             $this->io->note('No actions available.');
