@@ -20,7 +20,7 @@ class ComposerUtil
     {
         try {
             $config = Factory::createConfig();
-            static::ensureProjectBinDirInSystemPath($config->get('bin-dir'));
+            self::ensureProjectBinDirInSystemPath($config->get('bin-dir'));
             $loader = new JsonLoader(new RootPackageLoader(RepositoryFactory::manager(new NullIO(), $config), $config));
             $package = $loader->load(getcwd().DIRECTORY_SEPARATOR.'composer.json');
         } catch (Exception $e) {
