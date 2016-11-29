@@ -21,27 +21,27 @@ class PathsHelperTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \ClickNow\Checker\Config\Checker|\Mockery\MockInterface
      */
-    private $checker;
+    protected $checker;
 
     /**
      * @var \Symfony\Component\Filesystem\Filesystem|\Mockery\MockInterface
      */
-    private $filesystem;
+    protected $filesystem;
 
     /**
      * @var \ClickNow\Checker\Process\ExecutableFinder|\Mockery\MockInterface
      */
-    private $executableFinder;
+    protected $executableFinder;
 
     /**
      * @var \ClickNow\Checker\Console\ConfigFile|\Mockery\MockInterface
      */
-    private $configFile;
+    protected $configFile;
 
     /**
      * @var \ClickNow\Checker\Console\Helper\PathsHelper
      */
-    private $pathsHelper;
+    protected $pathsHelper;
 
     protected function setUp()
     {
@@ -108,14 +108,18 @@ class PathsHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testGetMessage()
     {
-        $tempDir = sys_get_temp_dir();
+        $tempDir = __DIR__.'/tmp';
         $tempDirAscii = $tempDir.'/resources/ascii/';
-        $tempFile = tempnam($tempDir, 'phpunit');
-        $tempFileAscii = tempnam($tempDirAscii, 'phpunit');
+
+        $fs = new Filesystem();
+        $fs->mkdir($tempDirAscii);
+
+        $tempFile = $fs->tempnam($tempDir, 'phpunit');
+        $tempFileAscii = $fs->tempnam($tempDirAscii, 'phpunit');
         $fileAscii = basename($tempFileAscii);
 
-        file_put_contents($tempFile, 'foo');
-        file_put_contents($tempFileAscii, 'bar');
+        $fs->dumpFile($tempFile, 'foo');
+        $fs->dumpFile($tempFileAscii, 'bar');
 
         $this->filesystem->shouldReceive('exists')->with($tempFile)->once()->andReturn(true);
         $this->filesystem->shouldReceive('exists')->with($fileAscii)->once()->andReturn(false);
@@ -133,8 +137,7 @@ class PathsHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('bar', $this->pathsHelper->getMessage($fileAscii));
         $this->assertSame('foobar', $this->pathsHelper->getMessage('foobar'));
 
-        unlink($tempFile);
-        unlink($tempFileAscii);
+        $fs->remove($tempDir);
     }
 
     public function testGetWorkingDir()
