@@ -94,8 +94,8 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->runPopStash();
         $this->stashIsApplied = false;
+        $this->runPopStash();
     }
 
     /**
