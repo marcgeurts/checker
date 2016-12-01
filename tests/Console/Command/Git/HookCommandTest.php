@@ -13,7 +13,6 @@ use Symfony\Component\Console\Tester\CommandTester;
 /**
  * @group console/command
  * @covers \ClickNow\Checker\Console\Command\Git\HookCommand
- * @runTestsInSeparateProcesses
  */
 class HookCommandTest extends \PHPUnit_Framework_TestCase
 {
@@ -32,11 +31,9 @@ class HookCommandTest extends \PHPUnit_Framework_TestCase
      */
     protected function setupConfig()
     {
-        $handle = fopen('php://memory', 'a');
+        $handle = STDIN;
         fwrite($handle, "\r\n\t\f");
         rewind($handle);
-
-        define('STDIN', $handle);
     }
 
     protected function setUp()
