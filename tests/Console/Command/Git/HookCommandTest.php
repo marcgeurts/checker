@@ -3,11 +3,11 @@
 namespace ClickNow\Checker\Console\Command\Git;
 
 use ClickNow\Checker\Command\CommandInterface;
+use ClickNow\Checker\Console\Application;
 use ClickNow\Checker\Console\Helper\RunnerHelper;
 use ClickNow\Checker\Repository\FilesCollection;
 use ClickNow\Checker\Repository\Git;
 use Mockery as m;
-use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -30,14 +30,17 @@ class HookCommandTest extends \PHPUnit_Framework_TestCase
     {
         $this->git = m::mock(Git::class);
 
-        $hookCommand = m::spy(CommandInterface::class);
+        $hookCommand = m::mock(CommandInterface::class);
         $hookCommand->shouldReceive('getName')->withNoArgs()->andReturn('foo');
+        $hookCommand->shouldReceive('setConfig')->withAnyArgs()->andReturnNull();
 
         $app = new Application();
         $app->add(new HookCommand($hookCommand, $this->git));
 
+        $runner = $this->getMock(RunnerHelper::class, [], [], '', false);
+
         $command = $app->find('git:foo');
-        $command->getHelperSet()->set(m::spy(RunnerHelper::class), 'runner');
+        $command->getHelperSet()->set($runner, 'runner');
 
         $this->commandTester = new CommandTester($command);
     }
