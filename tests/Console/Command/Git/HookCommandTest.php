@@ -37,7 +37,8 @@ class HookCommandTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
         $app->add(new HookCommand($hookCommand, $this->git));
 
-        $runner = $this->getMock(RunnerHelper::class, [], [], '', false);
+        $runner = $this->getMock(RunnerHelper::class, ['run'], [], '', false);
+        $runner->expects($this->once())->method('run')->willReturn(0);
 
         $command = $app->find('git:foo');
         $command->getHelperSet()->set($runner, 'runner');
@@ -59,15 +60,15 @@ class HookCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(0, $this->commandTester->getStatusCode());
     }
 
-    public function testRunWithOptions()
+    public function tfdestRunWithOptions()
     {
         $this->git->shouldReceive('getChangedFiles')->with(null)->once()->andReturn(new FilesCollection());
 
         $this->commandTester->execute([
             '--process-timeout'         => 10,
-            '--stop-on-failure'         => true,
-            '--ignore-unstaged-changes' => true,
-            '--skip-success-output'     => true,
+            '--stop-on-failure'         => false,
+            '--ignore-unstaged-changes' => false,
+            '--skip-success-output'     => false,
         ]);
 
         $this->assertSame(0, $this->commandTester->getStatusCode());
