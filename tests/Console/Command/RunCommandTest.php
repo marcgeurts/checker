@@ -4,13 +4,13 @@ namespace ClickNow\Checker\Console\Command;
 
 use ClickNow\Checker\Command\CommandInterface;
 use ClickNow\Checker\Command\CommandsCollection;
-use ClickNow\Checker\Console\Application;
 use ClickNow\Checker\Console\Helper\RunnerHelper;
 use ClickNow\Checker\Exception\CommandInvalidException;
 use ClickNow\Checker\Exception\CommandNotFoundException;
 use ClickNow\Checker\Repository\FilesCollection;
 use ClickNow\Checker\Repository\Git;
 use Mockery as m;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -50,11 +50,31 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
 
     protected function tearDown()
     {
-        //m::close();
+        m::close();
     }
 
     public function testRun()
     {
+        $commandsCollection = new CommandsCollection();
+        $git = m::mock(Git::class);
+
+        $commandsCollection->set('foo', m::spy(CommandInterface::class));
+        $git->shouldReceive('getRegisteredFiles')->withNoArgs()->once()->andReturn(new FilesCollection());
+
+        $app = new Application();
+        $app->add(new RunCommand($commandsCollection, $git));
+
+        $runner = $this->getMock(RunnerHelper::class, ['run'], [], '', false);
+        $runner->expects($this->once())->method('run')->willReturn(0);
+
+        $command = $app->find('run');
+        $command->getHelperSet()->set($runner, 'runner');
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(['name' => 'foo']);
+
+
+
         /*$this->commandsCollection->set('foo', m::spy(CommandInterface::class));
         $this->git->shouldReceive('getRegisteredFiles')->withNoArgs()->once()->andReturn(new FilesCollection());
 
