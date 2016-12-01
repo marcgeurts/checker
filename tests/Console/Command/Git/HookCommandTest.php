@@ -28,48 +28,45 @@ class HookCommandTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-       /* $this->git = m::mock(Git::class);
+        $this->git = m::mock(Git::class);
 
-        $hookCommand = m::mock(CommandInterface::class);
+        $hookCommand = m::spy(CommandInterface::class);
         $hookCommand->shouldReceive('getName')->withNoArgs()->andReturn('foo');
-        $hookCommand->shouldReceive('setConfig')->withAnyArgs()->andReturnNull();
 
         $app = new Application();
         $app->add(new HookCommand($hookCommand, $this->git));
 
-        $runner = $this->getMock(RunnerHelper::class, ['run'], [], '', false);
-        $runner->expects($this->once())->method('run')->willReturn(0);
-
         $command = $app->find('git:foo');
-        $command->getHelperSet()->set($runner, 'runner');
+        $command->getHelperSet()->set(m::spy(RunnerHelper::class), 'runner');
 
-        $this->commandTester = new CommandTester($command);*/
+        $this->commandTester = new CommandTester($command);
     }
 
     protected function tearDown()
     {
-       // m::close();
+        m::close();
     }
 
     public function testRun()
-    {/* $this->git->shouldReceive('getChangedFiles')->with(null)->once()->andReturn(new FilesCollection());
+    {
+        $this->git->shouldReceive('getChangedFiles')->with(null)->once()->andReturn(new FilesCollection());
 
         $this->commandTester->execute([]);
 
-        $this->assertSame(0, $this->commandTester->getStatusCode());*/
+        $this->assertSame(0, $this->commandTester->getStatusCode());
     }
 
     public function testRunWithOptions()
     {
-        /*$this->git->shouldReceive('getChangedFiles')->with(null)->once()->andReturn(new FilesCollection());
+        $this->git->shouldReceive('getChangedFiles')->with(null)->once()->andReturn(new FilesCollection());
 
         $this->commandTester->execute([
             '--process-timeout'         => 10,
-            '--stop-on-failure'         => false,
-            '--ignore-unstaged-changes' => false,
-            '--skip-success-output'     => false,
+            '--stop-on-failure'         => true,
+            '--ignore-unstaged-changes' => true,
+            '--skip-success-output'     => true,
         ]);
 
-        $this->assertSame(0, $this->commandTester->getStatusCode());*/
+        $this->assertSame(0, $this->commandTester->getStatusCode());
     }
 }
