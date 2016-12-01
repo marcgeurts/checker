@@ -11,8 +11,9 @@ use Mockery as m;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * @group console/command/git
+ * @group console/command
  * @covers \ClickNow\Checker\Console\Command\Git\HookCommand
+ * @runTestsInSeparateProcesses
  */
 class HookCommandTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,6 +26,18 @@ class HookCommandTest extends \PHPUnit_Framework_TestCase
      * @var \Symfony\Component\Console\Tester\CommandTester
      */
     protected $commandTester;
+
+    /**
+     * @before
+     */
+    protected function setupConfig()
+    {
+        $handle = fopen('php://memory', 'a');
+        fwrite($handle, "\r\n\t\f");
+        rewind($handle);
+
+        define('STDIN', $handle);
+    }
 
     protected function setUp()
     {
