@@ -3,16 +3,17 @@
 namespace ClickNow\Checker\Console\Command\Git;
 
 use ClickNow\Checker\Command\CommandInterface;
-use ClickNow\Checker\Console\Application;
 use ClickNow\Checker\Console\Helper\RunnerHelper;
 use ClickNow\Checker\Repository\FilesCollection;
 use ClickNow\Checker\Repository\Git;
 use Mockery as m;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * @group console/command
  * @covers \ClickNow\Checker\Console\Command\Git\HookCommand
+ * @runTestsInSeparateProcesses
  */
 class HookCommandTest extends \PHPUnit_Framework_TestCase
 {
@@ -26,18 +27,12 @@ class HookCommandTest extends \PHPUnit_Framework_TestCase
      */
     protected $commandTester;
 
-    /**
-     * @before
-     */
-    protected function setupConfig()
-    {
-        $handle = STDIN;
-        fwrite($handle, "\r\n\t\f");
-        rewind($handle);
-    }
-
     protected function setUp()
     {
+        if (!defined('STDIN')) {
+            define('STDIN', null);
+        }
+
         $this->git = m::mock(Git::class);
 
         $hookCommand = m::spy(CommandInterface::class);
