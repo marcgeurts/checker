@@ -2,7 +2,6 @@
 
 namespace ClickNow\Checker\IO;
 
-use ClickNow\Checker\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -18,11 +17,6 @@ class ConsoleIO extends SymfonyStyle implements IOInterface
      * @var \Symfony\Component\Console\Output\OutputInterface
      */
     private $consoleOutput;
-
-    /**
-     * @var string
-     */
-    private $stdin;
 
     /**
      * Console the input and output.
@@ -70,54 +64,19 @@ class ConsoleIO extends SymfonyStyle implements IOInterface
      *
      * @param mixed $handle
      *
-     * @return string
+     * @return null|string
      */
     public function readCommandInput($handle)
     {
-        $resource = $this->validateResource($handle);
-
-        if ($this->stdin === null && ftell($resource) === 0) {
-            $this->stdin = $this->prepareCommandInput($resource);
+        if (!is_resource($handle) || ftell($handle) !== 0) {
+            return null;
         }
 
-        return $this->stdin;
-    }
-
-    /**
-     * Validate resource.
-     *
-     * @param mixed $handle
-     *
-     * @throws \ClickNow\Checker\Exception\InvalidArgumentException
-     *
-     * @return resource
-     */
-    private function validateResource($handle)
-    {
-        if (!is_resource($handle)) {
-            throw new InvalidArgumentException(
-                sprintf('Expected a resource stream for reading the commandline input. Got `%s`.', gettype($handle))
-            );
-        }
-
-        return $handle;
-    }
-
-    /**
-     * Prepare command input.
-     *
-     * @param resource $handle
-     *
-     * @return string
-     */
-    private function prepareCommandInput($handle)
-    {
         $input = '';
         while (!feof($handle)) {
             $input .= fread($handle, 1024);
         }
 
-        // When the input only consist of white space characters, we assume that there is no input.
         return !preg_match('/^([\s]*)$/m', $input) ? $input : '';
     }
 }

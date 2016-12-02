@@ -2,7 +2,6 @@
 
 namespace ClickNow\Checker\IO;
 
-use ClickNow\Checker\Exception\InvalidArgumentException;
 use Mockery as m;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -90,24 +89,9 @@ class ConsoleIOTest extends \PHPUnit_Framework_TestCase
 
     public function testReadyCommandInput()
     {
-        $handle = $this->mockHandle('input');
-        $this->assertSame('input', $this->consoleIO->readCommandInput($handle));
-    }
-
-    public function testReadyCommandInputEmpty()
-    {
-        $handle = $this->mockHandle("\r\n\t\f");
-        $this->assertEmpty($this->consoleIO->readCommandInput($handle));
-    }
-
-    public function testReadyCommandInputInvalid()
-    {
-        $this->setExpectedException(
-            InvalidArgumentException::class,
-            'Expected a resource stream for reading the commandline input. Got `string`.'
-        );
-
-        $this->consoleIO->readCommandInput('string');
+        $this->assertNull($this->consoleIO->readCommandInput(null));
+        $this->assertSame('input', $this->consoleIO->readCommandInput($this->mockHandle('input')));
+        $this->assertEmpty($this->consoleIO->readCommandInput($this->mockHandle("\r\n\t\f")));
     }
 
     /**
