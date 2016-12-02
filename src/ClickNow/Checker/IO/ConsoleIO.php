@@ -72,6 +72,18 @@ class ConsoleIO extends SymfonyStyle implements IOInterface
             return null;
         }
 
+        return $this->prepareCommandInput($handle);
+    }
+
+    /**
+     * Prepare command input.
+     *
+     * @param resource $handle
+     *
+     * @return string
+     */
+    private function prepareCommandInput($handle)
+    {
         $input = '';
         while (!feof($handle)) {
             $input .= fread($handle, 1024);
