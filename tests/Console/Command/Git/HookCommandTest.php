@@ -3,11 +3,11 @@
 namespace ClickNow\Checker\Console\Command\Git;
 
 use ClickNow\Checker\Command\CommandInterface;
+use ClickNow\Checker\Console\Application;
 use ClickNow\Checker\Console\Helper\RunnerHelper;
 use ClickNow\Checker\Repository\FilesCollection;
 use ClickNow\Checker\Repository\Git;
 use Mockery as m;
-use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**

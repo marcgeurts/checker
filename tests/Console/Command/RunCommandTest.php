@@ -4,13 +4,13 @@ namespace ClickNow\Checker\Console\Command;
 
 use ClickNow\Checker\Command\CommandInterface;
 use ClickNow\Checker\Command\CommandsCollection;
+use ClickNow\Checker\Console\Application;
 use ClickNow\Checker\Console\Helper\RunnerHelper;
 use ClickNow\Checker\Exception\CommandInvalidException;
 use ClickNow\Checker\Exception\CommandNotFoundException;
 use ClickNow\Checker\Repository\FilesCollection;
 use ClickNow\Checker\Repository\Git;
 use Mockery as m;
-use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
