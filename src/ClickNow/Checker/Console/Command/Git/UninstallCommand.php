@@ -2,7 +2,6 @@
 
 namespace ClickNow\Checker\Console\Command\Git;
 
-use ClickNow\Checker\Config\Checker;
 use ClickNow\Checker\IO\IOInterface;
 use ClickNow\Checker\Repository\Git;
 use Symfony\Component\Console\Command\Command;
@@ -12,11 +11,6 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class UninstallCommand extends Command
 {
-    /**
-     * @var \ClickNow\Checker\Config\Checker
-     */
-    private $checker;
-
     /**
      * @var \Symfony\Component\Filesystem\Filesystem
      */
@@ -30,13 +24,11 @@ class UninstallCommand extends Command
     /**
      * Uninstall command.
      *
-     * @param \ClickNow\Checker\Config\Checker         $checker
      * @param \Symfony\Component\Filesystem\Filesystem $filesystem
      * @param \ClickNow\Checker\IO\IOInterface         $io
      */
-    public function __construct(Checker $checker, Filesystem $filesystem, IOInterface $io)
+    public function __construct(Filesystem $filesystem, IOInterface $io)
     {
-        $this->checker = $checker;
         $this->filesystem = $filesystem;
         $this->io = $io;
 

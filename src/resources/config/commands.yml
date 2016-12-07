@@ -16,6 +16,5 @@ services:
   command.git.uninstall:
     class: ClickNow\Checker\Console\Command\Git\UninstallCommand
     arguments:
-      - '@checker'
       - '@filesystem'
       - '@io'
