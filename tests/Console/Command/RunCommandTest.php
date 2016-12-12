@@ -6,6 +6,7 @@ use ClickNow\Checker\Command\CommandInterface;
 use ClickNow\Checker\Command\CommandsCollection;
 use ClickNow\Checker\Console\Application;
 use ClickNow\Checker\Console\Helper\RunnerHelper;
+use ClickNow\Checker\Context\ContextInterface;
 use ClickNow\Checker\Exception\CommandInvalidException;
 use ClickNow\Checker\Exception\CommandNotFoundException;
 use ClickNow\Checker\Repository\FilesCollection;
@@ -30,6 +31,11 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
     protected $git;
 
     /**
+     * @var \ClickNow\Checker\Console\Helper\RunnerHelper|\Mockery\MockInterface
+     */
+    protected $runnerHelper;
+
+    /**
      * @var \Symfony\Component\Console\Tester\CommandTester
      */
     protected $commandTester;
@@ -42,8 +48,10 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
         $app->add(new RunCommand($this->commandsCollection, $this->git));
 
+        $this->runnerHelper = m::spy(RunnerHelper::class);
+
         $command = $app->find('run');
-        $command->getHelperSet()->set(m::spy(RunnerHelper::class), 'runner');
+        $command->getHelperSet()->set($this->runnerHelper, 'runner');
 
         $this->commandTester = new CommandTester($command);
     }
@@ -57,16 +65,29 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
     {
         $this->commandsCollection->set('foo', m::spy(CommandInterface::class));
         $this->git->shouldReceive('getRegisteredFiles')->withNoArgs()->once()->andReturn(new FilesCollection());
+        $this->runnerHelper->shouldReceive('run')->with(m::type(ContextInterface::class))->once()->andReturn(0);
 
         $this->commandTester->execute(['name' => 'foo']);
 
         $this->assertSame(0, $this->commandTester->getStatusCode());
     }
 
+    public function testRunAndReturnError()
+    {
+        $this->commandsCollection->set('foo', m::spy(CommandInterface::class));
+        $this->git->shouldReceive('getRegisteredFiles')->withNoArgs()->once()->andReturn(new FilesCollection());
+        $this->runnerHelper->shouldReceive('run')->with(m::type(ContextInterface::class))->once()->andReturn(1);
+
+        $this->commandTester->execute(['name' => 'foo']);
+
+        $this->assertSame(1, $this->commandTester->getStatusCode());
+    }
+
     public function testRunWithOptions()
     {
         $this->commandsCollection->set('foo', m::spy(CommandInterface::class));
         $this->git->shouldReceive('getRegisteredFiles')->withNoArgs()->once()->andReturn(new FilesCollection());
+        $this->runnerHelper->shouldReceive('run')->with(m::type(ContextInterface::class))->once()->andReturn(0);
 
         $this->commandTester->execute([
             'name'                      => 'foo',

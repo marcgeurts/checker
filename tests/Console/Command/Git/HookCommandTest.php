@@ -5,6 +5,7 @@ namespace ClickNow\Checker\Console\Command\Git;
 use ClickNow\Checker\Command\CommandInterface;
 use ClickNow\Checker\Console\Application;
 use ClickNow\Checker\Console\Helper\RunnerHelper;
+use ClickNow\Checker\Context\ContextInterface;
 use ClickNow\Checker\Repository\FilesCollection;
 use ClickNow\Checker\Repository\Git;
 use Mockery as m;
@@ -21,6 +22,11 @@ class HookCommandTest extends \PHPUnit_Framework_TestCase
      * @var \ClickNow\Checker\Repository\Git|\Mockery\MockInterface
      */
     protected $git;
+
+    /**
+     * @var \ClickNow\Checker\Console\Helper\RunnerHelper|\Mockery\MockInterface
+     */
+    protected $runnerHelper;
 
     /**
      * @var \Symfony\Component\Console\Tester\CommandTester
@@ -41,8 +47,10 @@ class HookCommandTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
         $app->add(new HookCommand($hookCommand, $this->git));
 
+        $this->runnerHelper = m::spy(RunnerHelper::class);
+
         $command = $app->find('git:foo');
-        $command->getHelperSet()->set(m::spy(RunnerHelper::class), 'runner');
+        $command->getHelperSet()->set($this->runnerHelper, 'runner');
 
         $this->commandTester = new CommandTester($command);
     }
@@ -55,15 +63,27 @@ class HookCommandTest extends \PHPUnit_Framework_TestCase
     public function testRun()
     {
         $this->git->shouldReceive('getChangedFiles')->with(null)->once()->andReturn(new FilesCollection());
+        $this->runnerHelper->shouldReceive('run')->with(m::type(ContextInterface::class))->once()->andReturn(0);
 
         $this->commandTester->execute([]);
 
         $this->assertSame(0, $this->commandTester->getStatusCode());
     }
 
+    public function testRunAndReturnError()
+    {
+        $this->git->shouldReceive('getChangedFiles')->with(null)->once()->andReturn(new FilesCollection());
+        $this->runnerHelper->shouldReceive('run')->with(m::type(ContextInterface::class))->once()->andReturn(1);
+
+        $this->commandTester->execute([]);
+
+        $this->assertSame(1, $this->commandTester->getStatusCode());
+    }
+
     public function testRunWithOptions()
     {
         $this->git->shouldReceive('getChangedFiles')->with(null)->once()->andReturn(new FilesCollection());
+        $this->runnerHelper->shouldReceive('run')->with(m::type(ContextInterface::class))->once()->andReturn(0);
 
         $this->commandTester->execute([
             '--process-timeout'         => 10,
