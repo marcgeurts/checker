@@ -217,7 +217,7 @@ class InstallCommand extends Command
         ];
 
         $content = str_replace(array_keys($replacements), array_values($replacements), $content);
-        file_put_contents($hookPath, $content);
+        $this->filesystem->dumpFile($hookPath, $content);
         $this->filesystem->chmod($hookPath, 0775);
     }
 
