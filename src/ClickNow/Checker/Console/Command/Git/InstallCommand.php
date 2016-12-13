@@ -158,15 +158,11 @@ class InstallCommand extends Command
     {
         $customHooksPath = $this->paths()->getPathWithTrailingSlash($this->checker->getHooksDir());
 
-        if (!$customHooksPath) {
-            return $defaultTemplate;
-        }
-
-        if ($this->filesystem->exists($customHooksPath.$hook)) {
+        if ($customHooksPath && $this->filesystem->exists($customHooksPath.$hook)) {
             return $customHooksPath.$hook;
         }
 
-        if ($this->filesystem->exists($customHooksPath.'all')) {
+        if ($customHooksPath && $this->filesystem->exists($customHooksPath.'all')) {
             return $customHooksPath.'all';
         }
 
@@ -188,7 +184,7 @@ class InstallCommand extends Command
 
         $content = file_get_contents($hookPath);
 
-        if (strpos($content, self::GENERATED_MESSAGE)) {
+        if (strpos($content, self::GENERATED_MESSAGE) !== false) {
             return;
         }
 

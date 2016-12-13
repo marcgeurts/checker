@@ -5,6 +5,7 @@ namespace ClickNow\Checker\Console\Command\Git;
 use ClickNow\Checker\Config\Checker;
 use ClickNow\Checker\Console\Application;
 use ClickNow\Checker\Console\Helper\PathsHelper;
+use ClickNow\Checker\Exception\FileNotFoundException;
 use ClickNow\Checker\IO\IOInterface;
 use Mockery as m;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -12,7 +13,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
- * @group console/command
+ * @group console/commandi
  * @covers \ClickNow\Checker\Console\Command\Git\InstallCommand
  */
 class InstallCommandTest extends \PHPUnit_Framework_TestCase
@@ -54,7 +55,7 @@ class InstallCommandTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->tmpDir = __DIR__ . '/tmp/';
+        $this->tmpDir = __DIR__.'/tmp/';
 
         $fs = new Filesystem();
         $fs->mkdir($this->tmpDir);
@@ -85,22 +86,33 @@ class InstallCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testRun()
     {
-        file_put_contents($this->tmpDir.'all', '');
+        $dir = $this->tmpDir;
 
-        $this->checker->shouldReceive('getHooksPreset')->withNoArgs()->andReturn($this->tmpDir);
-        $this->checker->shouldReceive('getHooksDir')->withNoArgs()->andReturnNull();
+        file_put_contents($dir.'all', '');
+        file_put_contents($dir.'pre-commit', '');
+        file_put_contents($dir.'pre-push', InstallCommand::GENERATED_MESSAGE);
 
-        $this->pathsHelper->shouldReceive('getGitHooksDir')->withNoArgs()->once()->andReturn($this->tmpDir);
+        $this->checker->shouldReceive('getHooksPreset')->withNoArgs()->andReturn($dir);
+        $this->checker->shouldReceive('getHooksDir')->withNoArgs()->andReturnValues([null, $dir]);
+
+        $this->pathsHelper->shouldReceive('getGitHooksDir')->withNoArgs()->once()->andReturn($dir);
         $this->pathsHelper->shouldReceive('getGitHookTemplatesDir')->withNoArgs()->andReturn('');
-        $this->pathsHelper->shouldReceive('getPathWithTrailingSlash')->with($this->tmpDir)->andReturn($this->tmpDir);
+        $this->pathsHelper->shouldReceive('getPathWithTrailingSlash')->with($dir)->andReturn($dir);
         $this->pathsHelper->shouldReceive('getPathWithTrailingSlash')->with(null)->andReturn(false);
+        $this->pathsHelper->shouldReceive('getAbsolutePath')->with('foo')->andReturnValues(['foo', 'bar']);
+        $this->pathsHelper->shouldReceive('getDefaultConfigPath')->withNoArgs()->andReturn('bar');
+        $this->pathsHelper->shouldReceive('getRelativeProjectPath')->with('foo')->once()->andReturn('foo');
 
-        $this->filesystem->shouldReceive('exists')->with($this->tmpDir)->once()->andReturn(false);
-        $this->filesystem->shouldReceive('mkdir')->with($this->tmpDir)->once()->andReturnNull();
-        $this->filesystem->shouldReceive('exists')->with(m::not($this->tmpDir.'all'))->andReturn(false);
-        $this->filesystem->shouldReceive('exists')->with($this->tmpDir.'all')->andReturn(true);
-        $this->filesystem->shouldReceive('dumpFile')->with(m::not($this->tmpDir.'all'), '')->andReturnNull();
-        $this->filesystem->shouldReceive('chmod')->with(m::not($this->tmpDir.'all'), 0775)->andReturnNull();
+        $this->filesystem->shouldReceive('exists')->with($dir)->once()->andReturn(false);
+        $this->filesystem->shouldReceive('mkdir')->with($dir)->once()->andReturnNull();
+
+        $this->filesystem->shouldReceive('exists')->with($dir.'all')->andReturn(true);
+        $this->filesystem->shouldReceive('exists')->with($dir.'pre-commit')->andReturn(true);
+        $this->filesystem->shouldReceive('exists')->with($dir.'pre-push')->andReturn(true);
+        $this->filesystem->shouldReceive('exists')->withAnyArgs()->andReturn(false);
+        $this->filesystem->shouldReceive('rename')->with($dir.'pre-commit', $dir.'pre-commit.checker', true)->once();
+        $this->filesystem->shouldReceive('dumpFile')->withAnyArgs()->andReturnNull();
+        $this->filesystem->shouldReceive('chmod')->withAnyArgs()->andReturnNull();
 
         $this->io->shouldReceive('title')->withAnyArgs()->once()->andReturnNull();
         $this->io->shouldReceive('log')->withAnyArgs()->andReturnNull();
@@ -108,10 +120,36 @@ class InstallCommandTest extends \PHPUnit_Framework_TestCase
         $this->io->shouldReceive('success')->withAnyArgs()->once()->andReturnNull();
 
         $this->processBuilder->shouldReceive('setArguments')->withAnyArgs()->andReturnNull();
+        $this->processBuilder->shouldReceive('add')->with('--config=foo')->once()->andReturnNull();
         $this->processBuilder->shouldReceive('getProcess->getCommandLine')->withNoArgs()->andReturn('');
 
-        $this->commandTester->execute([]);
+        $this->commandTester->execute([
+            '--config' => 'foo'
+        ]);
 
         $this->assertSame(0, $this->commandTester->getStatusCode());
+    }
+
+    public function testHookTemplateNotFound()
+    {
+        $this->setExpectedException(FileNotFoundException::class);
+
+        $dir = $this->tmpDir;
+
+        $this->checker->shouldReceive('getHooksPreset')->withNoArgs()->once()->andReturn($dir);
+        $this->checker->shouldReceive('getHooksDir')->withNoArgs()->once()->andReturn(null);
+
+        $this->pathsHelper->shouldReceive('getGitHooksDir')->withNoArgs()->once()->andReturn($dir);
+        $this->pathsHelper->shouldReceive('getGitHookTemplatesDir')->withNoArgs()->once()->andReturn('');
+        $this->pathsHelper->shouldReceive('getPathWithTrailingSlash')->with($dir)->once()->andReturn($dir);
+        $this->pathsHelper->shouldReceive('getPathWithTrailingSlash')->with(null)->once()->andReturn(false);
+
+        $this->filesystem->shouldReceive('exists')->with($dir)->once()->andReturn(true);
+        $this->filesystem->shouldReceive('exists')->with(m::not($dir))->twice()->andReturn(false);
+
+        $this->io->shouldReceive('title')->withAnyArgs()->once()->andReturnNull();
+        $this->io->shouldReceive('success')->withAnyArgs()->never();
+
+        $this->commandTester->execute([]);
     }
 }
