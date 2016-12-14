@@ -45,12 +45,12 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
         $this->commandsCollection = new CommandsCollection();
         $this->git = m::mock(Git::class);
 
-        $app = new Application();
-        $app->add(new RunCommand($this->commandsCollection, $this->git));
+        $application = new Application();
+        $application->add(new RunCommand($this->commandsCollection, $this->git));
 
         $this->runnerHelper = m::spy(RunnerHelper::class);
 
-        $command = $app->find('run');
+        $command = $application->find('run');
         $command->getHelperSet()->set($this->runnerHelper, 'runner');
 
         $this->commandTester = new CommandTester($command);

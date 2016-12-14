@@ -44,12 +44,12 @@ class HookCommandTest extends \PHPUnit_Framework_TestCase
         $hookCommand = m::spy(CommandInterface::class);
         $hookCommand->shouldReceive('getName')->withNoArgs()->andReturn('foo');
 
-        $app = new Application();
-        $app->add(new HookCommand($hookCommand, $this->git));
+        $application = new Application();
+        $application->add(new HookCommand($hookCommand, $this->git));
 
         $this->runnerHelper = m::spy(RunnerHelper::class);
 
-        $command = $app->find('git:foo');
+        $command = $application->find('git:foo');
         $command->getHelperSet()->set($this->runnerHelper, 'runner');
 
         $this->commandTester = new CommandTester($command);
