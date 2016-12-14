@@ -157,10 +157,10 @@ class CheckerPlugin implements PluginInterface, EventSubscriberInterface
     private function runCommand($command)
     {
         $config = $this->composer->getConfig();
-        $finder = new ExecutableFinder();
-        $executable = $finder->find('checker', null, [$config->get('bin-dir')]);
-        $builder = new ProcessBuilder([$executable, $command, '--no-interaction']);
-        $this->runProcess($builder->getProcess());
+        $executableFinder = new ExecutableFinder();
+        $executable = $executableFinder->find('checker', null, [$config->get('bin-dir')]);
+        $processBuilder = new ProcessBuilder([$executable, $command, '--no-interaction']);
+        $this->runProcess($processBuilder->getProcess());
     }
 
     /**
