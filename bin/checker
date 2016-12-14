@@ -30,5 +30,5 @@ if (! $loaded) {
 
 date_default_timezone_set('UTC');
 
-$app = new ClickNow\Checker\Console\Application();
-$app->run();
+$application = new ClickNow\Checker\Console\Application();
+$application->run();
