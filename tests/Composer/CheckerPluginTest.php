@@ -13,10 +13,13 @@ use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Composer\Plugin\PluginInterface;
 use Mockery as m;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\ProcessBuilder;
 
 /**
  * @group composer
  * @covers \ClickNow\Checker\Composer\CheckerPlugin
+ * @runTestsInSeparateProcesses
  */
 class CheckerPluginTest extends \PHPUnit_Framework_TestCase
 {
@@ -52,227 +55,195 @@ class CheckerPluginTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(5, CheckerPlugin::getSubscribedEvents());
     }
 
-    public function testPostPackageInstallEnabledWithVeryVerboseAndSuccessfully()
+    public function testPostPackageInstallSuccessfully()
     {
-        $this->markTestSkipped();
+        $operation = m::mock(InstallOperation::class);
+        $operation->shouldReceive('getPackage')->withNoArgs()->once()->andReturn($this->mockPackage());
 
-        $io = m::mock(IOInterface::class);
-        $io->shouldReceive('isVeryVerbose')->once()->andReturn(true);
-        $io->shouldReceive('write')->twice()->andReturnNull();
-
-        $event = $this->getEvent($this->getPackage(), InstallOperation::class);
-
-        $this->checkerPlugin->activate($this->getComposer(), $io);
-        $this->checkerPlugin->postPackageInstall($event);
+        $this->activateSuccess();
+        $this->checkerPlugin->postPackageInstall($this->mockEvent($operation));
         $this->checkerPlugin->runScheduledTasks();
     }
 
-    public function testPostPackageInstallEnabledWithoutVeryVerboseAndSuccessfully()
+    public function testPostPackageInstallFail()
     {
-        $this->markTestSkipped();
+        $operation = m::mock(InstallOperation::class);
+        $operation->shouldReceive('getPackage')->withNoArgs()->once()->andReturn($this->mockPackage());
 
-        $io = m::mock(IOInterface::class);
-        $io->shouldReceive('isVeryVerbose')->once()->andReturn(false);
-        $io->shouldReceive('write')->once()->andReturnNull();
-
-        $event = $this->getEvent($this->getPackage(), InstallOperation::class);
-
-        $this->checkerPlugin->activate($this->getComposer(), $io);
-        $this->checkerPlugin->postPackageInstall($event);
-        $this->checkerPlugin->runScheduledTasks();
-    }
-
-    public function testPostPackageInstallEnabledWithVeryVerboseAndFail()
-    {
-        $io = m::mock(IOInterface::class);
-        $io->shouldReceive('isVeryVerbose')->once()->andReturn(true);
-        $io->shouldReceive('write')->times(3)->andReturnNull();
-
-        $event = $this->getEvent($this->getPackage(), InstallOperation::class);
-
-        $this->checkerPlugin->activate($this->getComposer(), $io);
-        $this->checkerPlugin->postPackageInstall($event);
-        $this->checkerPlugin->runScheduledTasks();
-    }
-
-    public function testPostPackageInstallEnabledWithoutVeryVerboseAndFail()
-    {
-        $io = m::mock(IOInterface::class);
-        $io->shouldReceive('isVeryVerbose')->once()->andReturn(false);
-        $io->shouldReceive('write')->twice()->andReturnNull();
-
-        $event = $this->getEvent($this->getPackage(), InstallOperation::class);
-
-        $this->checkerPlugin->activate($this->getComposer(), $io);
-        $this->checkerPlugin->postPackageInstall($event);
+        $this->activateFail();
+        $this->checkerPlugin->postPackageInstall($this->mockEvent($operation));
         $this->checkerPlugin->runScheduledTasks();
     }
 
     public function testPostPackageInstallDisabled()
     {
-        $package = $this->getPackage();
-        $package->shouldReceive('getName')->once()->andReturnNull();
+        $package = $this->mockPackage();
+        $package->shouldReceive('getName')->withNoArgs()->once()->andReturnNull();
 
-        $event = $this->getEvent($package, InstallOperation::class);
+        $operation = m::mock(InstallOperation::class);
+        $operation->shouldReceive('getPackage')->withNoArgs()->once()->andReturn($package);
 
-        $this->checkerPlugin->postPackageInstall($event);
+        $this->checkerPlugin->postPackageInstall($this->mockEvent($operation));
     }
 
-    public function testPostPackageUpdateEnabledWithVeryVerboseAndSuccessfully()
+    public function testPostPackageUpdateSuccessfully()
     {
-        $this->markTestSkipped();
+        $operation = m::mock(UpdateOperation::class);
+        $operation->shouldReceive('getTargetPackage')->withNoArgs()->once()->andReturn($this->mockPackage());
 
-        $io = m::mock(IOInterface::class);
-        $io->shouldReceive('isVeryVerbose')->once()->andReturn(true);
-        $io->shouldReceive('write')->twice()->andReturnNull();
-
-        $event = $this->getEvent($this->getPackage(), UpdateOperation::class, 'getTargetPackage');
-
-        $this->checkerPlugin->activate($this->getComposer(), $io);
-        $this->checkerPlugin->postPackageUpdate($event);
+        $this->activateSuccess();
+        $this->checkerPlugin->postPackageUpdate($this->mockEvent($operation));
         $this->checkerPlugin->runScheduledTasks();
     }
 
-    public function testPostPackageUpdateEnabledWithoutVeryVerboseAndSuccessfully()
+    public function testPostPackageUpdateFail()
     {
-        $this->markTestSkipped();
+        $operation = m::mock(UpdateOperation::class);
+        $operation->shouldReceive('getTargetPackage')->withNoArgs()->once()->andReturn($this->mockPackage());
 
-        $io = m::mock(IOInterface::class);
-        $io->shouldReceive('isVeryVerbose')->once()->andReturn(false);
-        $io->shouldReceive('write')->once()->andReturnNull();
-
-        $event = $this->getEvent($this->getPackage(), UpdateOperation::class, 'getTargetPackage');
-
-        $this->checkerPlugin->activate($this->getComposer(), $io);
-        $this->checkerPlugin->postPackageUpdate($event);
-        $this->checkerPlugin->runScheduledTasks();
-    }
-
-    public function testPostPackageUpdateEnabledWithVeryVerboseAndFail()
-    {
-        $io = m::mock(IOInterface::class);
-        $io->shouldReceive('isVeryVerbose')->once()->andReturn(true);
-        $io->shouldReceive('write')->times(3)->andReturnNull();
-
-        $event = $this->getEvent($this->getPackage(), UpdateOperation::class, 'getTargetPackage');
-
-        $this->checkerPlugin->activate($this->getComposer(), $io);
-        $this->checkerPlugin->postPackageUpdate($event);
-        $this->checkerPlugin->runScheduledTasks();
-    }
-
-    public function testPostPackageUpdateEnabledWithoutVeryVerboseAndFail()
-    {
-        $io = m::mock(IOInterface::class);
-        $io->shouldReceive('isVeryVerbose')->once()->andReturn(false);
-        $io->shouldReceive('write')->twice()->andReturnNull();
-
-        $event = $this->getEvent($this->getPackage(), UpdateOperation::class, 'getTargetPackage');
-
-        $this->checkerPlugin->activate($this->getComposer(), $io);
-        $this->checkerPlugin->postPackageUpdate($event);
+        $this->activateFail();
+        $this->checkerPlugin->postPackageUpdate($this->mockEvent($operation));
         $this->checkerPlugin->runScheduledTasks();
     }
 
     public function testPostPackageUpdateDisabled()
     {
-        $package = $this->getPackage();
-        $package->shouldReceive('getName')->once()->andReturnNull();
+        $package = $this->mockPackage();
+        $package->shouldReceive('getName')->withNoArgs()->once()->andReturnNull();
 
-        $event = $this->getEvent($package, UpdateOperation::class, 'getTargetPackage');
+        $operation = m::mock(UpdateOperation::class);
+        $operation->shouldReceive('getTargetPackage')->withNoArgs()->once()->andReturn($package);
 
-        $this->checkerPlugin->postPackageUpdate($event);
+        $this->checkerPlugin->postPackageUpdate($this->mockEvent($operation));
     }
 
-    public function testPrePackageUninstallEnabledWithVeryVerboseAndSuccessfully()
+    public function testPrePackageUninstallSuccessfully()
     {
-        $this->markTestSkipped();
+        $operation = m::mock(UninstallOperation::class);
+        $operation->shouldReceive('getPackage')->withNoArgs()->once()->andReturn($this->mockPackage());
 
-        $io = m::mock(IOInterface::class);
-        $io->shouldReceive('isVeryVerbose')->once()->andReturn(true);
-        $io->shouldReceive('write')->twice()->andReturnNull();
-
-        $event = $this->getEvent($this->getPackage(), UninstallOperation::class);
-
-        $this->checkerPlugin->activate($this->getComposer(), $io);
-        $this->checkerPlugin->prePackageUninstall($event);
+        $this->activateSuccess();
+        $this->checkerPlugin->prePackageUninstall($this->mockEvent($operation));
     }
 
-    public function testPrePackageUninstallEnabledWithoutVeryVerboseAndSuccessfully()
+    public function testPrePackageUninstallFail()
     {
-        $this->markTestSkipped();
+        $operation = m::mock(UninstallOperation::class);
+        $operation->shouldReceive('getPackage')->withNoArgs()->once()->andReturn($this->mockPackage());
 
-        $io = m::mock(IOInterface::class);
-        $io->shouldReceive('isVeryVerbose')->once()->andReturn(false);
-        $io->shouldReceive('write')->once()->andReturnNull();
-
-        $event = $this->getEvent($this->getPackage(), UninstallOperation::class);
-
-        $this->checkerPlugin->activate($this->getComposer(), $io);
-        $this->checkerPlugin->prePackageUninstall($event);
-    }
-
-    public function testPrePackageUninstallEnabledWithVeryVerboseAndFail()
-    {
-        $io = m::mock(IOInterface::class);
-        $io->shouldReceive('isVeryVerbose')->once()->andReturn(true);
-        $io->shouldReceive('write')->times(3)->andReturnNull();
-
-        $event = $this->getEvent($this->getPackage(), UninstallOperation::class);
-
-        $this->checkerPlugin->activate($this->getComposer(), $io);
-        $this->checkerPlugin->prePackageUninstall($event);
-    }
-
-    public function testPrePackageUninstallEnabledWithoutVeryVerboseAndFail()
-    {
-        $io = m::mock(IOInterface::class);
-        $io->shouldReceive('isVeryVerbose')->once()->andReturn(false);
-        $io->shouldReceive('write')->twice()->andReturnNull();
-
-        $event = $this->getEvent($this->getPackage(), UninstallOperation::class);
-
-        $this->checkerPlugin->activate($this->getComposer(), $io);
-        $this->checkerPlugin->prePackageUninstall($event);
+        $this->activateFail();
+        $this->checkerPlugin->prePackageUninstall($this->mockEvent($operation));
     }
 
     public function testPrePackageUninstallDisabled()
     {
-        $package = $this->getPackage();
-        $package->shouldReceive('getName')->once()->andReturnNull();
+        $package = $this->mockPackage();
+        $package->shouldReceive('getName')->withNoArgs()->once()->andReturnNull();
 
-        $event = $this->getEvent($package, UninstallOperation::class);
+        $operation = m::mock(UninstallOperation::class);
+        $operation->shouldReceive('getPackage')->withNoArgs()->once()->andReturn($package);
 
-        $this->checkerPlugin->prePackageUninstall($event);
+        $this->checkerPlugin->prePackageUninstall($this->mockEvent($operation));
     }
 
-    protected function getPackage()
+    /**
+     * Activate success.
+     *
+     * @return void
+     */
+    protected function activateSuccess()
+    {
+        $process = $this->mockProcess();
+        $process->shouldReceive('isSuccessful')->withNoArgs()->once()->andReturn(true);
+        $process->shouldReceive('getOutput')->withNoArgs()->once()->andReturn('bar');
+
+        $io = m::mock(IOInterface::class);
+        $io->shouldReceive('isVeryVerbose')->withNoArgs()->once()->andReturn(true);
+        $io->shouldReceive('write')->with('/foo$/')->once()->andReturnNull();
+        $io->shouldReceive('write')->with('<fg=yellow>bar</fg=yellow>')->once()->andReturnNull();
+
+        $this->checkerPlugin->activate($this->mockComposer(), $io);
+    }
+
+    /**
+     * Activate fail.
+     *
+     * @return void
+     */
+    protected function activateFail()
+    {
+        $process = $this->mockProcess();
+        $process->shouldReceive('isSuccessful')->withNoArgs()->once()->andReturn(false);
+        $process->shouldReceive('getErrorOutput')->withNoArgs()->once()->andReturn('bar');
+
+        $io = m::mock(IOInterface::class);
+        $io->shouldReceive('isVeryVerbose')->withNoArgs()->once()->andReturn(true);
+        $io->shouldReceive('write')->with('/foo$/')->once()->andReturnNull();
+        $io->shouldReceive('write')->withAnyArgs()->once()->andReturnNull();
+        $io->shouldReceive('write')->with('<fg=red>bar</fg=red>')->once()->andReturnNull();
+
+        $this->checkerPlugin->activate($this->mockComposer(), $io);
+    }
+
+    /**
+     * Mock package.
+     *
+     * @return \Composer\Package\PackageInterface|\Mockery\MockInterface
+     */
+    protected function mockPackage()
     {
         $package = m::mock(PackageInterface::class);
-        $package->shouldReceive('getName')->once()->andReturn(CheckerPlugin::PACKAGE_NAME)->byDefault();
+        $package->shouldReceive('getName')->withNoArgs()->once()->andReturn(CheckerPlugin::PACKAGE_NAME)->byDefault();
 
         return $package;
     }
 
-    protected function getEvent($package, $operation, $method = 'getPackage')
+    /**
+     * Mock process.
+     *
+     * @return \Symfony\Component\Process\Process|\Mockery\MockInterface
+     */
+    protected function mockProcess()
     {
-        $operation = m::mock($operation);
-        $operation->shouldReceive($method)->once()->andReturn($package);
+        $process = m::mock(Process::class);
+        $process->shouldReceive('stop')->withAnyArgs()->atMost()->once()->andReturnNull();
+        $process->shouldReceive('run')->withNoArgs()->once()->andReturnNull();
+        $process->shouldReceive('getCommandLine')->withNoArgs()->once()->andReturn('foo');
 
-        $event = m::mock(PackageEvent::class);
-        $event->shouldReceive('getOperation')->once()->andReturn($operation);
+        $processBuilder = m::mock('overload:'.ProcessBuilder::class);
+        $processBuilder->shouldReceive('getProcess')->withNoArgs()->once()->andReturn($process);
 
-        return $event;
+        return $process;
     }
 
-    protected function getComposer()
+    /**
+     * Mock composer.
+     *
+     * @return \Composer\Composer|\Mockery\MockInterface
+     */
+    protected function mockComposer()
     {
         $config = m::mock(Config::class);
-        $config->shouldReceive('get')->once()->with('bin-dir')->andReturnNull();
+        $config->shouldReceive('get')->with('bin-dir')->once()->andReturnNull();
 
         $composer = m::mock(Composer::class);
-        $composer->shouldReceive('getConfig')->once()->andReturn($config);
+        $composer->shouldReceive('getConfig')->withNoArgs()->once()->andReturn($config);
 
         return $composer;
+    }
+
+    /**
+     * Mock event.
+     *
+     * @param mixed $operation
+     *
+     * @return \Composer\Installer\PackageEvent|\Mockery\MockInterface
+     */
+    protected function mockEvent($operation)
+    {
+        $event = m::mock(PackageEvent::class);
+        $event->shouldReceive('getOperation')->withNoArgs()->once()->andReturn($operation);
+
+        return $event;
     }
 }
