@@ -39,17 +39,6 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->io = m::mock(IOInterface::class);
         $this->repository = m::mock(Repository::class);
         $this->stashUnstagedChangesSubscriber = new StashUnstagedChangesSubscriber($this->io, $this->repository);
-
-        $diff = m::mock(Diff::class);
-        $diff->shouldReceive('getFiles')->withNoArgs()->atMost()->once()->andReturn(['file.txt']);
-
-        $this->repository
-            ->shouldReceive('getWorkingCopy->getDiffPending')
-            ->withNoArgs()
-            ->atMost()
-            ->once()
-            ->andReturn($diff)
-            ->byDefault();
     }
 
     protected function tearDown()
@@ -82,10 +71,9 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
         $command = m::mock(CommandInterface::class);
         $command->shouldReceive('isIgnoreUnstagedChanges')->withNoArgs()->once()->andReturn(true);
 
-        $diff = m::mock(Diff::class);
-        $diff->shouldReceive('getFiles')->withNoArgs()->once()->andReturn([]);
-
+        $diff = $this->mockDiff();
         $this->repository->shouldReceive('getWorkingCopy->getDiffPending')->withNoArgs()->once()->andReturn($diff);
+
         $this->stashUnstagedChangesSubscriber->saveStash($this->mockEvent($command));
     }
 
@@ -94,6 +82,9 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
         $command = m::mock(CommandInterface::class);
         $command->shouldReceive('isIgnoreUnstagedChanges')->withNoArgs()->once()->andReturn(true);
 
+        $diff = $this->mockDiff(['file.txt']);
+
+        $this->repository->shouldReceive('getWorkingCopy->getDiffPending')->withNoArgs()->once()->andReturn($diff);
         $this->repository->shouldReceive('run')->with('stash', m::contains('save'))->once()->andReturnNull();
         $this->repository->shouldReceive('run')->with('stash', m::contains('pop'))->once()->andReturnNull();
 
@@ -109,6 +100,9 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
         $command = m::mock(CommandInterface::class);
         $command->shouldReceive('isIgnoreUnstagedChanges')->withNoArgs()->once()->andReturn(true);
 
+        $diff = $this->mockDiff(['file.txt']);
+
+        $this->repository->shouldReceive('getWorkingCopy->getDiffPending')->withNoArgs()->once()->andReturn($diff);
         $this->repository->shouldReceive('run')->with('stash', m::contains('save'))->once()->andThrow(Exception::class);
         $this->repository->shouldReceive('run')->with('stash', m::contains('pop'))->never();
 
@@ -126,6 +120,9 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
         $command = m::mock(CommandInterface::class);
         $command->shouldReceive('isIgnoreUnstagedChanges')->withNoArgs()->once()->andReturn(true);
 
+        $diff = $this->mockDiff(['file.txt']);
+
+        $this->repository->shouldReceive('getWorkingCopy->getDiffPending')->withNoArgs()->once()->andReturn($diff);
         $this->repository->shouldReceive('run')->with('stash', m::contains('save'))->once()->andReturnNull();
         $this->repository->shouldReceive('run')->with('stash', m::contains('pop'))->once()->andThrow(Exception::class);
 
@@ -134,6 +131,21 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
 
         $this->stashUnstagedChangesSubscriber->saveStash($this->mockEvent($command));
         $this->stashUnstagedChangesSubscriber->popStash();
+    }
+
+    /**
+     * Mock diff.
+     *
+     * @param array $files
+     *
+     * @return \Gitonomy\Git\Diff\Diff|\Mockery\MockInterface
+     */
+    protected function mockDiff(array $files = [])
+    {
+        $diff = m::mock(Diff::class);
+        $diff->shouldReceive('getFiles')->withNoArgs()->once()->andReturn($files);
+
+        return $diff;
     }
 
     /**

@@ -30,10 +30,7 @@ class ConfigFileTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->filesystem = m::mock(Filesystem::class);
-
         $this->package = m::mock(PackageInterface::class);
-        $this->package->shouldReceive('getExtra')->withNoArgs()->atMost()->once()->andReturnNull()->byDefault();
-
         $this->configFile = new ConfigFile($this->filesystem, $this->package);
     }
 
@@ -46,6 +43,8 @@ class ConfigFileTest extends \PHPUnit_Framework_TestCase
     {
         $this->filesystem->shouldReceive('exists')->with('/checker.yml.dist$/')->once()->andReturn(false);
         $this->filesystem->shouldReceive('isAbsolutePath')->with('/checker.yml$/')->once()->andReturn(true);
+
+        $this->package->shouldReceive('getExtra')->withNoArgs()->once()->andReturnNull();
 
         $this->assertSame(getcwd().DIRECTORY_SEPARATOR.'checker.yml', $this->configFile->getDefaultPath());
     }
@@ -73,7 +72,9 @@ class ConfigFileTest extends \PHPUnit_Framework_TestCase
     public function testConfigPathWithDistSupport()
     {
         $this->filesystem->shouldReceive('exists')->with('/checker.yml.dist$/')->once()->andReturn(true);
-        $this->filesystem->shouldReceive('isAbsolutePath')->with('/checker.yml.dist$$/')->once()->andReturn(true);
+        $this->filesystem->shouldReceive('isAbsolutePath')->with('/checker.yml.dist$/')->once()->andReturn(true);
+
+        $this->package->shouldReceive('getExtra')->withNoArgs()->once()->andReturnNull();
 
         $this->assertSame(getcwd().DIRECTORY_SEPARATOR.'checker.yml.dist', $this->configFile->getDefaultPath());
     }

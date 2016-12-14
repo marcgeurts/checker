@@ -30,10 +30,6 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
             m::mock(ProcessBuilder::class),
             m::mock(ProcessFormatterInterface::class),
         ]);
-
-        $resolver = new OptionsResolver();
-        $resolver->setDefaults(['foo' => null, 'bar' => null, 'foobar' => null]);
-        $this->task->expects($this->atMost(1))->method('getConfigOptions')->willReturn($resolver);
     }
 
     protected function tearDown()
@@ -64,6 +60,8 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
 
     public function testGetConfigOption()
     {
+        $this->task->expects($this->once())->method('getConfigOptions')->willReturn($this->getOptionsResolver());
+
         $options = $this->task->getConfigOptions();
         $result = $options->getDefinedOptions();
 
@@ -77,7 +75,9 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
 
     public function testGetConfigWithMergeDefaultConfig()
     {
+        $this->task->expects($this->once())->method('getConfigOptions')->willReturn($this->getOptionsResolver());
         $this->task->mergeDefaultConfig(['foo' => 'bar', 'bar' => 'foo']);
+
         $result = $this->task->getConfig($this->mockCommand());
 
         $this->assertInternalType('array', $result);
@@ -89,6 +89,8 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
 
     public function testGetConfigWithoutMergeDefaultConfig()
     {
+        $this->task->expects($this->once())->method('getConfigOptions')->willReturn($this->getOptionsResolver());
+
         $result = $this->task->getConfig($this->mockCommand());
 
         $this->assertInternalType('array', $result);
@@ -100,6 +102,8 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
 
     public function testRun()
     {
+        $this->task->expects($this->once())->method('getConfigOptions')->willReturn($this->getOptionsResolver());
+
         $command = $this->mockCommand();
         $context = m::mock(ContextInterface::class);
 
@@ -132,5 +136,18 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
             ->andReturn(['bar' => 'bar', 'foobar' => 'foobar']);
 
         return $command;
+    }
+
+    /**
+     * Get options resolver.
+     *
+     * @return \Symfony\Component\OptionsResolver\OptionsResolver
+     */
+    protected function getOptionsResolver()
+    {
+        $optionsResolver = new OptionsResolver();
+        $optionsResolver->setDefaults(['foo' => null, 'bar' => null, 'foobar' => null]);
+
+        return $optionsResolver;
     }
 }

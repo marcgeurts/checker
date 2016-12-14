@@ -60,8 +60,6 @@ class RunnerHelperTest extends \PHPUnit_Framework_TestCase
         $this->command = m::mock(CommandInterface::class);
         $this->actions = new ActionsCollection();
 
-        $this->io->shouldReceive('title')->with('/`foo`/')->atMost()->once()->andReturnNull();
-
         $this->context->shouldReceive('getCommand')->withNoArgs()->andReturn($this->command);
         $this->command->shouldReceive('getName')->withNoArgs()->andReturn('foo');
         $this->command->shouldReceive('getActionsToRun')->with($this->context)->andReturn($this->actions);
@@ -85,18 +83,21 @@ class RunnerHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testRunWithoutActions()
     {
+        $this->io->shouldReceive('title')->with('/`foo`/')->atMost()->once()->andReturnNull();
+        $this->io->shouldReceive('note')->with('No actions available.')->once()->andReturnNull();
+
         $this->dispatcher
             ->shouldReceive('dispatch')
             ->with(RunnerEvent::RUNNER_RUN, m::type(RunnerEvent::class))
             ->never();
-
-        $this->io->shouldReceive('note')->with('No actions available.')->once()->andReturnNull();
 
         $this->assertSame(0, $this->runnerHelper->run($this->context));
     }
 
     public function testRunAndReturnCodeSuccess()
     {
+        $this->io->shouldReceive('title')->with('/`foo`/')->atMost()->once()->andReturnNull();
+
         $this->createAction('action1', Result::SUCCESS);
         $this->createAction('action2', Result::WARNING);
         $this->createAction('action3', Result::SKIPPED);
@@ -112,6 +113,7 @@ class RunnerHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAndReturnCodeError()
     {
+        $this->io->shouldReceive('title')->with('/`foo`/')->atMost()->once()->andReturnNull();
         $this->command->shouldReceive('isStopOnFailure')->withNoArgs()->andReturn(false);
 
         $this->createAction('action1', Result::SUCCESS);
@@ -130,6 +132,7 @@ class RunnerHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testRunWithStopOnFailure()
     {
+        $this->io->shouldReceive('title')->with('/`foo`/')->atMost()->once()->andReturnNull();
         $this->command->shouldReceive('isStopOnFailure')->withNoArgs()->andReturn(true);
 
         $this->createAction('action1', Result::ERROR);
