@@ -94,7 +94,7 @@ class Checker
     /**
      * Get process timeout.
      *
-     * @return null|float|int
+     * @return null|float
      */
     public function getProcessTimeout()
     {
