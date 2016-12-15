@@ -34,11 +34,6 @@ class InstallCommandTest extends \PHPUnit_Framework_TestCase
     protected $filesystem;
 
     /**
-     * @var \ClickNow\Checker\IO\IOInterface|\Mockery\MockInterface
-     */
-    protected $io;
-
-    /**
      * @var \Symfony\Component\Process\ProcessBuilder|\Mockery\MockInterface
      */
     protected $processBuilder;
@@ -62,14 +57,18 @@ class InstallCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->checker = m::mock(Checker::class);
         $this->filesystem = m::mock(Filesystem::class);
-        $this->io = m::mock(IOInterface::class);
         $this->processBuilder = m::mock(ProcessBuilder::class);
 
         $app = new Application();
-        $app->add(new InstallCommand($this->checker, $this->filesystem, $this->io, $this->processBuilder));
+        $app->add(
+            new InstallCommand($this->checker, $this->filesystem, m::spy(IOInterface::class), $this->processBuilder)
+        );
 
         $this->checker->shouldReceive('getHooksPreset')->withNoArgs()->andReturn($this->tmpDir);
         $this->checker->shouldReceive('getHooksDir')->withNoArgs()->andReturn(null)->byDefault();
+
+        $this->processBuilder->shouldReceive('setArguments')->withAnyArgs()->andReturnNull();
+        $this->processBuilder->shouldReceive('getProcess->getCommandLine')->withNoArgs()->andReturn('');
 
         $this->pathsHelper = m::spy(PathsHelper::class);
         $this->pathsHelper->shouldReceive('getGitHooksDir')->withNoArgs()->once()->andReturn($this->tmpDir);
@@ -99,10 +98,6 @@ class InstallCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->checker->shouldReceive('getHooksDir')->withNoArgs()->andReturnValues([null, $this->tmpDir]);
 
-        $this->pathsHelper->shouldReceive('getAbsolutePath')->with('foo')->andReturnValues(['foo', 'bar']);
-        $this->pathsHelper->shouldReceive('getDefaultConfigPath')->withNoArgs()->andReturn('bar');
-        $this->pathsHelper->shouldReceive('getRelativeProjectPath')->with('foo')->once()->andReturn('foo');
-
         $this->filesystem->shouldReceive('exists')->with($this->tmpDir)->once()->andReturn(false);
         $this->filesystem->shouldReceive('mkdir')->with($this->tmpDir)->once()->andReturnNull();
         $this->filesystem->shouldReceive('exists')->with($this->tmpDir.'all')->andReturn(true);
@@ -118,14 +113,26 @@ class InstallCommandTest extends \PHPUnit_Framework_TestCase
             ->once()
             ->andReturnNull();
 
-        $this->io->shouldReceive('title')->withAnyArgs()->once()->andReturnNull();
-        $this->io->shouldReceive('log')->withAnyArgs()->andReturnNull();
-        $this->io->shouldReceive('note')->withAnyArgs()->once()->andReturnNull();
-        $this->io->shouldReceive('success')->withAnyArgs()->once()->andReturnNull();
+        $this->commandTester->execute([]);
 
-        $this->processBuilder->shouldReceive('setArguments')->withAnyArgs()->andReturnNull();
+        $this->assertSame(0, $this->commandTester->getStatusCode());
+    }
+
+    public function testRunWithExoticConfig()
+    {
+        file_put_contents($this->tmpDir.'all', '');
+
+        $this->pathsHelper->shouldReceive('getAbsolutePath')->with('foo')->andReturnValues(['foo', 'bar']);
+        $this->pathsHelper->shouldReceive('getDefaultConfigPath')->withNoArgs()->andReturn('bar');
+        $this->pathsHelper->shouldReceive('getRelativeProjectPath')->with('foo')->once()->andReturn('foo');
+
+        $this->filesystem->shouldReceive('exists')->with($this->tmpDir)->once()->andReturn(true);
+        $this->filesystem->shouldReceive('exists')->with($this->tmpDir.'all')->andReturn(true);
+        $this->filesystem->shouldReceive('exists')->withAnyArgs()->andReturn(false);
+        $this->filesystem->shouldReceive('dumpFile')->withAnyArgs()->andReturnNull();
+        $this->filesystem->shouldReceive('chmod')->withAnyArgs()->andReturnNull();
+
         $this->processBuilder->shouldReceive('add')->with('--config=foo')->once()->andReturnNull();
-        $this->processBuilder->shouldReceive('getProcess->getCommandLine')->withNoArgs()->andReturn('');
 
         $this->commandTester->execute([
             '--config' => 'foo'
@@ -140,9 +147,6 @@ class InstallCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->filesystem->shouldReceive('exists')->with($this->tmpDir)->once()->andReturn(true);
         $this->filesystem->shouldReceive('exists')->with(m::not($this->tmpDir))->twice()->andReturn(false);
-
-        $this->io->shouldReceive('title')->withAnyArgs()->once()->andReturnNull();
-        $this->io->shouldReceive('success')->withAnyArgs()->never();
 
         $this->commandTester->execute([]);
     }

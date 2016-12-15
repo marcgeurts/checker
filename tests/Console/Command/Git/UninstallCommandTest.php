@@ -21,11 +21,6 @@ class UninstallCommandTest extends \PHPUnit_Framework_TestCase
     protected $filesystem;
 
     /**
-     * @var \ClickNow\Checker\IO\IOInterface|\Mockery\MockInterface
-     */
-    protected $io;
-
-    /**
      * @var \ClickNow\Checker\Console\Helper\PathsHelper|\Mockery\MockInterface
      */
     protected $pathsHelper;
@@ -38,14 +33,13 @@ class UninstallCommandTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->filesystem = m::mock(Filesystem::class);
-        $this->io = m::mock(IOInterface::class);
 
-        $app = new Application();
-        $app->add(new UninstallCommand($this->filesystem, $this->io));
+        $application = new Application();
+        $application->add(new UninstallCommand($this->filesystem, m::spy(IOInterface::class)));
 
         $this->pathsHelper = m::spy(PathsHelper::class);
 
-        $command = $app->find('git:uninstall');
+        $command = $application->find('git:uninstall');
         $command->getHelperSet()->set($this->pathsHelper, 'paths');
 
         $this->commandTester = new CommandTester($command);
@@ -68,11 +62,6 @@ class UninstallCommandTest extends \PHPUnit_Framework_TestCase
         $this->filesystem->shouldReceive('remove')->with($hook)->once()->andReturnNull();
         $this->filesystem->shouldReceive('exists')->with($hook.'.checker')->once()->andReturn(true);
         $this->filesystem->shouldReceive('rename')->with($hook.'.checker', $hook)->once()->andReturnNull();
-
-        $this->io->shouldReceive('title')->withAnyArgs()->once()->andReturnNull();
-        $this->io->shouldReceive('log')->withAnyArgs()->twice()->andReturnNull();
-        $this->io->shouldReceive('note')->withAnyArgs()->once()->andReturnNull();
-        $this->io->shouldReceive('success')->withAnyArgs()->once()->andReturnNull();
 
         $this->commandTester->execute([]);
 
