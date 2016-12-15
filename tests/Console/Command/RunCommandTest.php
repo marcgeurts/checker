@@ -100,7 +100,7 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(0, $this->commandTester->getStatusCode());
     }
 
-    public function testRunCommandNotFound()
+    public function testCommandNotFound()
     {
         $this->setExpectedException(CommandNotFoundException::class, 'Command `foo` was not found.');
 
@@ -109,7 +109,7 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
         $this->commandTester->execute(['name' => 'foo']);
     }
 
-    public function testRunCommandInvalid()
+    public function testCommandInvalid()
     {
         $this->setExpectedException(CommandInvalidException::class, 'Command `foo` must implement CommandInterface.');
 
