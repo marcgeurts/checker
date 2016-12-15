@@ -163,7 +163,7 @@ class InstallCommand extends Command
                 return $customHooksPath.$hook;
             }
 
-            if ($customHooksPath && $this->filesystem->exists($customHooksPath.'all')) {
+            if ($this->filesystem->exists($customHooksPath.'all')) {
                 return $customHooksPath.'all';
             }
         }
