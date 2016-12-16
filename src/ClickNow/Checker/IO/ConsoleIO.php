@@ -26,10 +26,10 @@ class ConsoleIO extends SymfonyStyle implements IOInterface
      */
     public function __construct(InputInterface $input, OutputInterface $output)
     {
-        parent::__construct($input, $output);
-
         $this->consoleInput = $input;
         $this->consoleOutput = $output;
+
+        parent::__construct($this->consoleInput, $this->consoleOutput);
     }
 
     /**
