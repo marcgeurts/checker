@@ -135,7 +135,7 @@ class InstallCommandTest extends \PHPUnit_Framework_TestCase
         $this->processBuilder->shouldReceive('add')->with('--config=foo')->once()->andReturnNull();
 
         $this->commandTester->execute([
-            '--config' => 'foo'
+            '--config' => 'foo',
         ]);
 
         $this->assertSame(0, $this->commandTester->getStatusCode());

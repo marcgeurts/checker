@@ -6,8 +6,8 @@ use ClickNow\Checker\Console\Application;
 use ClickNow\Checker\Console\Helper\PathsHelper;
 use ClickNow\Checker\IO\IOInterface;
 use Mockery as m;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @group console/command
@@ -29,7 +29,7 @@ class UninstallCommandTest extends \PHPUnit_Framework_TestCase
      * @var \Symfony\Component\Console\Tester\CommandTester
      */
     protected $commandTester;
-    
+
     protected function setUp()
     {
         $this->filesystem = m::mock(Filesystem::class);
