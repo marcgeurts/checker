@@ -117,6 +117,42 @@ enabled:
   - unary_operator_spaces
   - unix_line_endings
 
+disabled:
+  - align_equals
+  - class_keyword_remove
+  - concat_with_spaces
+  - const_visibility_required
+  - declare_strict_types
+  - echo_to_print
+  - full_opening_tag
+  - length_ordered_imports
+  - long_array_syntax
+  - mb_str_functions
+  - no_blank_lines_before_namespace
+  - not_operator_with_space
+  - not_operator_with_successor_space
+  - ordered_class_elements
+  - php_unit_construct
+  - php_unit_dedicate_assert
+  - php_unit_strict
+  - phpdoc_add_missing_param_annotation
+  - phpdoc_annotation_without_dot
+  - phpdoc_no_empty_return
+  - phpdoc_property
+  - phpdoc_var_to_type
+  - pow_to_exponentiation
+  - protected_to_private
+  - random_api_migration
+  - semicolon_after_instruction
+  - silenced_deprecation_error
+  - simplified_null_return
+  - space_after_semicolon
+  - strict_comparison
+  - strict_param
+  - unalign_double_arrow
+  - uppercase_constants
+  - whitespace_after_comma_in_array
+
 finder:
   name:
     - "*.php"
