@@ -18,7 +18,6 @@ enabled:
   - dir_constant
   - elseif
   - encoding
-  - eof_ending
   - ereg_to_preg
   - function_declaration
   - function_typehint_space
