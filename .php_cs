@@ -1,5 +1,5 @@
 <?php
-
+/*
 use Symfony\CS\Config\Config;
 use Symfony\CS\FixerInterface;
 use Symfony\CS\Finder\DefaultFinder;
@@ -105,3 +105,4 @@ return Config::create()
     ->fixers($fixers)
     ->level(FixerInterface::NONE_LEVEL)
     ->setUsingCache(true);
+*/
