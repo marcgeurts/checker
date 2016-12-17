@@ -16,7 +16,6 @@ enabled:
   - concat_without_spaces
   - declare_equal_normalize
   - dir_constant
-  - print_to_echo
   - elseif
   - encoding
   - eof_ending
