@@ -19,6 +19,7 @@ enabled:
   - elseif
   - encoding
   - ereg_to_preg
+  - full_opening_tag
   - function_declaration
   - function_typehint_space
   - hash_to_slash_comment
@@ -105,6 +106,7 @@ enabled:
   - single_line_after_imports
   - single_line_class_definition
   - single_quote
+  - space_after_semicolon
   - standardize_not_equals
   - switch_case_semicolon_to_colon
   - switch_case_space
