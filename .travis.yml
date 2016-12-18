@@ -32,8 +32,6 @@ matrix:
 before_install:
   - travis_retry composer self-update
   - travis_retry composer global require hirak/prestissimo
-  - travis_retry composer global require satooshi/php-coveralls
-  - travis_retry composer global require codeclimate/php-test-reporter
 
 install:
   - |
@@ -58,6 +56,9 @@ after_script:
       wget https://scrutinizer-ci.com/ocular.phar
       php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
 
-      php coveralls -v
-      php test-reporter
+      travis_retry composer require satooshi/php-coveralls --dev
+      travis_retry php vendor/bin/coveralls -v
+
+      travis_retry composer require codeclimate/php-test-reporter --dev
+      travis_retry php vendor/bin/test-reporter
     fi
