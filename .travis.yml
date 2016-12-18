@@ -48,13 +48,13 @@ install:
     fi
 
 script:
-  - vendor/bin/phpunit --colors --coverage-clover=coverage.clover
+  - vendor/bin/phpunit --colors --coverage-clover=build/logs/clover.xml
 
 after_script:
   - |
     if [[ "${TRAVIS_PHP_VERSION}" == "5.5.9" ]]; then
       wget https://scrutinizer-ci.com/ocular.phar
-      php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+      php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
 
       wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.0/coveralls.phar
       php coveralls.phar -v
