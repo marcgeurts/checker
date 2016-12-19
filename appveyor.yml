@@ -10,7 +10,7 @@ clone_folder: c:\projects\checker
 
 environment:
   matrix:
-    - php_ver: 5.5.9
+    - php_ver: 5.6
 
 cache:
   - '%APPDATA%\Composer'
@@ -42,4 +42,4 @@ before_test:
 
 test_script:
   - cd c:\projects\checker
-  - php vendor/bin/phpunit --colors
+  - vendor/bin/phpunit --colors
