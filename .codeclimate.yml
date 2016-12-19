@@ -5,7 +5,7 @@ exclude_paths:
 
 engines:
   duplication:
-  	enabled: false
+    enabled: false
 
   phpcodesniffer:
     enabled: true
