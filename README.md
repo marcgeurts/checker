@@ -18,16 +18,44 @@ I developed this project inspired in GrumPHP because I felt lack of power create
 
 ## Installation
 
-Run the following command from you terminal:
+### Locally (Composer)
+
+Use the following command to install `checker` in your project locally:
 
 ```bash
-composer require --dev cknow/checker:~1.0.0
+composer require --dev cknow/checker
 ```
 
-or add this to ```require-dev``` section in your composer.json file:
+### Globally (Composer)
 
-```
-"cknow/checker": "~1.0.0"
+Use the following command to install `checker` globally:
+
+```bash
+composer global require cknow/checker
 ```
 
-then run ```composer update```
+Then make sure you have `~/.composer/vendor/bin` in your `PATH` and you're good to go:
+
+```bash
+$ export PATH="$PATH:$HOME/.composer/vendor/bin"
+```
+
+## Update
+
+### Locally (Composer)
+
+Use the following command to update `checker` in your project locally:
+
+```bash
+composer update cknow/checker
+```
+
+### Globally (Composer)
+
+Use the following command to update `checker` globally:
+
+```bash
+composer global update cknow/checker
+```
+
+## Usage
