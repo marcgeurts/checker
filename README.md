@@ -18,8 +18,6 @@ Checker was developed for the purpose of configuring and executing your tasks in
 besides being able to create and execute commands as you wish. 
 Because it is considered a task executor, it does not come with any task by default.
 
-> **Note:** Checker does not contain any jobs by default.
-
 ## Installation
 
 ### Locally (Composer)
@@ -106,14 +104,14 @@ parameters:
 
 ## Parameters
 
-### **bin_dir**
+### bin_dir
 
 *Default: ./vendor/bin*
 
 This parameter will tell you where to find external commands.
 It defaults to the default composer bin directory.
 
-**git_dir**
+### git_dir
 
 *Default: .*
 
@@ -121,7 +119,7 @@ This parameter will tell in which folder it can find the .git folder.
 This parameter is used to create the git hooks at the correct location.
 It defaults to the working directory.
 
-**hooks_dir**
+### hooks_dir
 
 *Default: null*
 
@@ -129,7 +127,7 @@ This parameter will tell in which folder it can find the git hooks template fold
 It is used to find the git hooks at a custom location so that you can write your own git hooks.
 It defaults to null, which means that the default folder `resources/hooks `is used.
 
-**hooks_preset**
+### hooks_preset
 
 *Default: local*
 
@@ -151,14 +149,14 @@ echo 'cd /remote/path/to/your/project' >> ~/.bashrc
 You can also add the `.bashrc` or `.zshrc` to your vagrant provision script.
 This way the home directory will be set for all the people who are using your vagrant box.
 
-**stop_on_failure**
+### stop_on_failure
 
 *Default: false*
 
 This parameter will tell to stop running tasks when one of the tasks results in an error.
 By default will continue running the configured tasks.
 
-**ignore_unstaged_changes**
+### ignore_unstaged_changes
 
 *Default: false*
 
@@ -167,7 +165,7 @@ This way the tasks will run with the code that is actually committed without the
 Note that during the commit, the unstaged changes will be stored in git stash.
 This may mess with your working copy and result in unexpected merge conflicts.
 
-**process_timeout**
+### process_timeout
 
 *Default: 60*
 
@@ -176,29 +174,29 @@ The component will trigger a timeout after 60 seconds by default.
 If you've got tools that run more then 60 seconds, you can increase this parameter.
 It is also possible to disable the timeout by setting the value to `null`.
 
-**skip_success_output**
+### skip_success_output
 
 *Default: false*
 
 This parameter will tell to skip success output.
-By default will continue to show success output.
+By default will continue show success output.
 
-**message**
+### message
 
 *Default: {successfully: successfully.txt, failed: failed.txt}*
 
-**extensions**
+### extensions
 
 *Default: []*
 
-**tasks**
+### tasks
 
 *Default: {}*
 
-**hooks**
+### hooks
 
 *Default: {}*
 
-**commands**
+### commands
 
 *Default: {}*
