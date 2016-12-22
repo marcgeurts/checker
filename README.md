@@ -186,11 +186,13 @@ By default will continue show success output.
 
 ### message
 
-*Default: {successfully: successfully.txt, failed: failed.txt}*
+*Default: { successfully: successfully.txt, failed: failed.txt }*
 
 This parameter will tell where can locate ascii images or display simple text.
 If path is not specified default image from `resources/ascii/` folder are used.
 Currently, only two images `successfully` and were `failed`.
+
+For example:
 
 ```yml
 # checker.yml
@@ -221,6 +223,7 @@ parameters:
 
 The configured extension class needs to implement `ClickNow\Checker\Extension\ExtensionInterface`.
 Now you can register the actions or events from your own package in the service container.
+
 For example:
 
 ```php
@@ -246,6 +249,7 @@ class CheckerExtension implements ExtensionInterface
 
 This parameter will tell which default config to tasks.
 This configuration is merged in default task configuration.
+
 For example:
 
 ```yml
@@ -317,9 +321,47 @@ parameters:
 
 *Default: null*
 
+This parameter will tell which for custom commands. 
+You can create as many commands as you want with custom names.
+
+> **Note:** The command name can not be the same as a task!
+
+You can also override these configurations:
+
+- process_timeout
+- stop_on_failure
+- ignore_unstaged_changes
+- skip_success_output
+
+For example:
+
+```yml
+# checker.yml
+parameters:
+    commands:
+        name_of_command1:
+            process_timeout: 30
+            stop_on_failure: true
+            ignore_unstaged_changes: true
+            skip_success_output: true
+            tasks:
+                foo: ~ # Use default configuration
+        name_of_command2:
+            process_timeout: ~
+            stop_on_failure: false
+            ignore_unstaged_changes: false
+            skip_success_output: false
+            tasks:
+                foo:
+                    bar: value # Custom configuration
+            commands:
+                name_of_command1: ~ # Execute other command
+```
+
 ## Metadata
 
 Every action has a pre-defined metadata key on which application specific options can be configured.
+
 For example:
 
 ```yml
@@ -330,13 +372,13 @@ parameters:
             tasks:
                 any_task:
                     metadata:
-                        blocking: true
-                        priority: 0
+                        blocking: true # Blocking
+                        priority: 2 # Second execution
             commands:
                 any_command:
                     metadata:
-                        blocking: true
-                        priority: 0
+                        blocking: false # Non-blocking
+                        priority: 1 # First execution
 ```
 
 ### priority
@@ -354,11 +396,188 @@ This option can be used to make a failing action non-blocking.
 By default all actions will be marked as blocking.
 When a action is non-blocking, the errors will be displayed but the tests will pass.
 
+## CLI
+
+### run
+
+*Parameter:*
+
+| Name        | Required     | Description
+| ----------- | ------------ | -----------
+| name        | true         | The command name to be executed
+
+For example:
+
+```bash
+# Locally
+php ./vendor/bin/checker run name_of_command
+
+# Globally
+checker run name_of_command
+```
+
+You can also override these configurations:
+
+- process_timeout
+- stop_on_failure
+- ignore_unstaged_changes
+- skip_success_output
+
+For example:
+
+```bash
+# Locally
+php ./vendor/bin/checker run name_of_command --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+
+# Globally
+checker run name_of_command --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+```
+
+### git:install
+
+This command install git hooks to Checker.
+
+> **Note:** This command is triggered by the composer plugin during installation.
+
+> **Note:** If you have custom git hooks they will be stored backup.
+
+*Options:*
+
+| Name          | Shortcut      | Default value | Description
+| ------------- | ------------- | ------------- | -------------
+| config        | c             | null          | Custom path to `checker.yml`
+
+For example:
+
+```bash
+# Locally
+php ./vendor/bin/checker git:install
+php ./vendor/bin/checker git:install --config=/path/to/checker.yml
+php ./vendor/bin/checker git:install -c=/path/to/checker.yml
+
+# Globally
+checker git:install
+checker git:install --config=/path/to/checker.yml
+checker git:install -c=/path/to/checker.yml
+```
+
+### git:uninstall
+
+This command uninstall git hooks to Checker.
+
+> **Note:** If you have git hooks stored in backup, they will be restored.
+
+For example:
+
+```bash
+# Locally
+php ./vendor/bin/checker git:uninstall
+
+# Globally
+checker git:uninstall
+```
+
+### Git hooks
+
+These commands will be triggered with git hooks.
+However, you can run following commands:
+
+```bash
+# Locally
+php ./vendor/bin/checker git:applypatch-msg
+php ./vendor/bin/checker git:pre-applypatch
+php ./vendor/bin/checker git:post-applypatch
+php ./vendor/bin/checker git:pre-commit
+php ./vendor/bin/checker git:prepare-commit-msg
+php ./vendor/bin/checker git:commit-msg
+php ./vendor/bin/checker git:post-commit
+php ./vendor/bin/checker git:pre-rebase
+php ./vendor/bin/checker git:post-checkout
+php ./vendor/bin/checker git:post-merge
+php ./vendor/bin/checker git:pre-push
+php ./vendor/bin/checker git:pre-receive
+php ./vendor/bin/checker git:update
+php ./vendor/bin/checker git:post-receive
+php ./vendor/bin/checker git:post-update
+php ./vendor/bin/checker git:pre-auto-gc
+php ./vendor/bin/checker git:post-rewrite
+
+# Globally
+checker git:applypatch-msg
+checker git:pre-applypatch
+checker git:post-applypatch
+checker git:pre-commit
+checker git:prepare-commit-msg
+checker git:commit-msg
+checker git:post-commit
+checker git:pre-rebase
+checker git:post-checkout
+checker git:post-merge
+checker git:pre-push
+checker git:pre-receive
+checker git:update
+checker git:post-receive
+checker git:post-update
+checker git:pre-auto-gc
+checker git:post-rewrite
+```
+
+You can also override these configurations:
+
+- process_timeout
+- stop_on_failure
+- ignore_unstaged_changes
+- skip_success_output
+
+For example:
+
+```bash
+# Locally
+php ./vendor/bin/checker git:applypatch-msg --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+php ./vendor/bin/checker git:pre-applypatch --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+php ./vendor/bin/checker git:post-applypatch --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+php ./vendor/bin/checker git:pre-commit --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+php ./vendor/bin/checker git:prepare-commit-msg --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+php ./vendor/bin/checker git:commit-msg --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+php ./vendor/bin/checker git:post-commit --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+php ./vendor/bin/checker git:pre-rebase --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+php ./vendor/bin/checker git:post-checkout --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+php ./vendor/bin/checker git:post-merge --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+php ./vendor/bin/checker git:pre-push --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+php ./vendor/bin/checker git:pre-receive --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+php ./vendor/bin/checker git:update --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+php ./vendor/bin/checker git:post-receive --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+php ./vendor/bin/checker git:post-update --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+php ./vendor/bin/checker git:pre-auto-gc --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+php ./vendor/bin/checker git:post-rewrite --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+
+# Globally
+checker git:applypatch-msg --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+checker git:pre-applypatch --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+checker git:post-applypatch --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+checker git:pre-commit --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+checker git:prepare-commit-msg --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+checker git:commit-msg --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+checker git:post-commit --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+checker git:pre-rebase --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+checker git:post-checkout --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+checker git:post-merge --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+checker git:pre-push --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+checker git:pre-receive --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+checker git:update --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+checker git:post-receive --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+checker git:post-update --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+checker git:pre-auto-gc --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+checker git:post-rewrite --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+```
+
 ## Creating a custom task
 
 It is very easy to configure your own project specific task.
-You just have to create a class that implements the `ClickNow\\Checker\Task\TaskInterface`.
-Next register it to the service manager and add your task configuration:
+You just have to create a class that implements the `ClickNow\Checker\Task\TaskInterface`.
+Next register it to the service manager and add your task configuration.
+
+For example:
 
 ```yml
 # checker.yml
@@ -373,7 +592,7 @@ services:
         arguments:
           - '@config'
         tags:
-          - {name: checker.task, config: myConfigKey}
+          - { name: checker.task, config: myConfigKey }
 ```
 
 > **Note:** 
