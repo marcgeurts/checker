@@ -439,6 +439,7 @@ This command install git hooks to Checker.
 
 > **Note:** This command is triggered by the composer plugin during installation.
 
+
 > **Note:** If you have custom git hooks they will be stored backup.
 
 *Options:*
