@@ -14,9 +14,8 @@
 
 > **Note:** This project is inspired in [GrumPHP](https://github.com./phpro/grumphp)!!!
 
-Checker was developed for the purpose of configuring and executing your tasks in any git hooks,
-besides being able to create and execute commands as you wish. 
-Because it is considered a task executor, it does not come with any task by default.
+Checker was developed for the purpose of configuring and executing your actions in any git hooks,
+besides being able to create and execute commands as your wish.
 
 ## Installation
 
@@ -47,10 +46,12 @@ $ export PATH="$PATH:$HOME/.composer/vendor/bin"
 
 That's all! The `checker` command will be available on your CLI and will be used by default.
 
-> **Important:** To make sure your git project hooks it is using the executable global,
+> **Important:**
+To make sure your git project hooks it is using the executable global,
 run the command `checker git:install` in the project directory.
 
-> **Note:** When you globally installed 3rd party tools like e.g. phpunit,
+> **Note:**
+When you globally installed 3rd party tools like e.g. phpunit,
 those will also be used instead of the composer executables.
 
 ## Installation with an exotic project structure
@@ -71,7 +72,7 @@ into your application's `composer.json`:
 ```
 
 You can also change the configuration after installation.
-The only downfall is that you will have to initialize the git hook manually:
+The only downfall is that you will have to initialize the git hooks manually:
 
 ```bash
 php ./vendor/bin/checker git:install --config=path/to/checker.yml
@@ -81,8 +82,10 @@ php ./vendor/bin/checker git:install --config=path/to/checker.yml
 
 Some things in Checker can be configured in a `checker.yml` or `checker.yml.dist`
 file in the root of your project (the directory where you run the `checker` command).
+You can specify a custom config filename and location in `composer.json`
+or in the `--config` option of the console commands.
 
-```yaml
+```yml
 # cheker.yml
 parameters:
     bin_dir: "./vendor/bin"
@@ -153,15 +156,15 @@ This way the home directory will be set for all the people who are using your va
 
 *Default: false*
 
-This parameter will tell to stop running tasks when one of the tasks results in an error.
-By default will continue running the configured tasks.
+This parameter will tell to stop running actions when one of the actions results in an error.
+By default will continue running the configured actions.
 
 ### ignore_unstaged_changes
 
 *Default: false*
 
-By enabling this option, will stash your unstaged changes in git before running the tasks.
-This way the tasks will run with the code that is actually committed without the unstaged changes.
+By enabling this option, will stash your unstaged changes in git before running the actions.
+This way the actions will run with the code that is actually committed without the unstaged changes.
 Note that during the commit, the unstaged changes will be stored in git stash.
 This may mess with your working copy and result in unexpected merge conflicts.
 
@@ -169,7 +172,7 @@ This may mess with your working copy and result in unexpected merge conflicts.
 
 *Default: 60*
 
-Uses the Symfony Process component to run external tasks.
+Uses the Symfony Process component to run external actions.
 The component will trigger a timeout after 60 seconds by default.
 If you've got tools that run more then 60 seconds, you can increase this parameter.
 It is also possible to disable the timeout by setting the value to `null`.
@@ -185,18 +188,238 @@ By default will continue show success output.
 
 *Default: {successfully: successfully.txt, failed: failed.txt}*
 
+This parameter will tell where can locate ascii images or display simple text.
+If path is not specified default image from `resources/ascii/` folder are used.
+Currently, only two images `successfully` and were `failed`.
+
+```yml
+# checker.yml
+parameters:
+    message:
+        successfully: ~ # To disable
+        failed: FAILED!!! # To display simple text
+```
+
 ### extensions
 
 *Default: []*
 
+This parameter will tell which extensions to load.
+
+You will probably have some custom actions or event listeners that are not included in the default project.
+It is possible to group this additional configuration in an extension.
+This way you can easily create your own extension package and load it whenever you need it.
+
+The configuration looks like this:
+
+```yml
+# checker.yml
+parameters:
+    extensions:
+        - My\Project\CheckerExtension
+```
+
+The configured extension class needs to implement `ClickNow\Checker\Extension\ExtensionInterface`.
+Now you can register the actions or events from your own package in the service container.
+For example:
+
+```php
+<?php
+
+namespace My\Project;
+
+use ClickNow\Checker\Extension\ExtensionInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
+class CheckerExtension implements ExtensionInterface
+{
+    public function load(ContainerBuilder $container)
+    {
+        // Register your own stuff to the container!
+    }
+}
+```
+
 ### tasks
 
-*Default: {}*
+*Default: null*
+
+This parameter will tell which default config to tasks.
+This configuration is merged in default task configuration.
+For example:
+
+```yml
+# checker.yml
+parameters:
+    tasks:
+        foo:
+            bar: foobar # Default configuration
+```
 
 ### hooks
 
-*Default: {}*
+*Default: null*
+
+This parameter will tell which for tasks and commands are executed on the git hooks.
+Below is the list available of git hooks:
+
+- applypatch-msg
+- pre-applypatch
+- post-applypatch
+- pre-commit
+- prepare-commit-msg
+- commit-msg
+- post-commit
+- pre-rebase
+- post-checkout
+- post-merge
+- pre-push
+- pre-receive
+- update
+- post-receive
+- post-update
+- pre-auto-gc
+- post-rewrite
+
+You can also override these configurations:
+
+- process_timeout
+- stop_on_failure
+- ignore_unstaged_changes
+- skip_success_output
+
+For example:
+
+```yml
+# checker.yml
+parameters:
+    hooks:
+        pre-commit:
+            process_timeout: 30
+            stop_on_failure: true
+            ignore_unstaged_changes: true
+            skip_success_output: true
+            tasks:
+                foo: ~ # Use default configuration
+        pre-push:
+            process_timeout: ~
+            stop_on_failure: false
+            ignore_unstaged_changes: false
+            skip_success_output: false
+            tasks:
+                foo:
+                    bar: value # Custom configuration
+            commands:
+                example: ~ # Execute command already created
+```
 
 ### commands
 
-*Default: {}*
+*Default: null*
+
+## Metadata
+
+Every action has a pre-defined metadata key on which application specific options can be configured.
+For example:
+
+```yml
+# checker.yml
+parameters:
+    hooks:
+        pre-commit:
+            tasks:
+                any_task:
+                    metadata:
+                        blocking: true
+                        priority: 0
+            commands:
+                any_command:
+                    metadata:
+                        blocking: true
+                        priority: 0
+```
+
+### priority
+
+*Default: 0*
+
+This option can be used to specify the order in which the actions will be executed.
+The higher the priority, the sooner the action will be executed.
+
+### blocking
+
+*Default: true*
+
+This option can be used to make a failing action non-blocking.
+By default all actions will be marked as blocking.
+When a action is non-blocking, the errors will be displayed but the tests will pass.
+
+## Creating a custom task
+
+It is very easy to configure your own project specific task.
+You just have to create a class that implements the `ClickNow\\Checker\Task\TaskInterface`.
+Next register it to the service manager and add your task configuration:
+
+```yml
+# checker.yml
+parameters:
+    tasks:
+        myConfigKey:
+            config1: config-value
+
+services:
+    task.myCustomTask:
+        class: My\Custom\Task
+        arguments:
+          - '@config'
+        tags:
+          - {name: checker.task, config: myConfigKey}
+```
+
+> **Note:** 
+You do NOT have to add the main and task configuration.
+This example just shows you how to do it.
+
+## Events
+
+It is possible to hook in to Checker with events. Internally the Symfony event dispatcher is being used.
+
+Following events are triggered during execution:
+
+| Event name                  | Event class           | Triggered
+| --------------------------- | --------------------- | ----------
+| checker.action.run          | ActionEvent           | before a action is executed
+| checker.action.successfully | ActionEvent           | when a action succeeds
+| checker.action.failed       | ActionEvent           | when a action fails
+| checker.runner.run          | RunnerEvent           | before the actions are executed
+| checker.runner.successfully | RunnerEvent           | when all actions succeed
+| checker.runner.failed       | RunnerEvent           | when one action failed
+| console.command             | ConsoleCommandEvent   | before a CLI command is ran
+| console.terminate           | ConsoleTerminateEvent | before a CLI command terminates
+| console.exception           | ConsoleExceptionEvent | when a CLI command throws an unhandled exception.
+
+Configured events just like you would in Symfony:
+
+```yml
+# checker.yml
+services:   
+    listener.some_listener:
+        class: MyNamespace\EventListener\MyListener
+        tags:
+            - { name: checker.event_listener, event: checker.runner.run }
+            - { name: checker.event_listener, event: checker.runner.run, method: customMethod, priority: 10 }
+    listener.some_subscriber:
+        class: MyNamespace\EventSubscriber\MySubscriber
+        tags:
+            - { name: checker.event_subscriber }
+```
+
+## Contributing
+
+If you're having problems, spot a bug, or have a feature suggestion, please log and issue on Github.
+If you'd like to have a crack yourself, fork the package and make a pull request.
+Please include tests for any added or changed functionality. If it's a bug, include a regression test.
+
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE) for more information.
