@@ -437,9 +437,6 @@ checker run name_of_command --process-timeout=30 --stop-on-failure=true --ignore
 
 This command install git hooks to Checker.
 
-> **Note:** This command is triggered by the composer plugin during installation.
-
-
 > **Note:** If you have custom git hooks they will be stored backup.
 
 *Options:*
@@ -461,6 +458,8 @@ checker git:install
 checker git:install --config=/path/to/checker.yml
 checker git:install -c=/path/to/checker.yml
 ```
+
+> **Note:** This command is triggered by the composer plugin during installation.
 
 ### git:uninstall
 
