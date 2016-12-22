@@ -396,7 +396,7 @@ This option can be used to make a failing action non-blocking.
 By default all actions will be marked as blocking.
 When a action is non-blocking, the errors will be displayed but the tests will pass.
 
-## CLI
+## Command-line Interface (CLI)
 
 ### run
 
