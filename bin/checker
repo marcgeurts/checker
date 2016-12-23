@@ -1,6 +1,15 @@
 #!/usr/bin/env php
 <?php
 
+if (version_compare(phpversion(), '5.5.9', '<')) {
+    fwrite(
+        STDERR,
+        'You must use PHP >= 5.5.9 in order to use Checker.'.PHP_EOL.
+        'Please upgrade your PHP version.'.PHP_EOL
+    );
+    exit(1);
+}
+
 if (!ini_get('date.timezone')) {
     ini_set('date.timezone', 'UTC');
 }
@@ -20,7 +29,7 @@ foreach ($autoloads as $autoload) {
     }
 }
 
-if (! $loaded) {
+if (!$loaded) {
     fwrite(
         STDERR,
         'You must set up the project dependencies, run the following commands:'.PHP_EOL.
