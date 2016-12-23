@@ -3,7 +3,7 @@
 [![StyleCI](https://styleci.io/repos/71817499/shield?style=flat)](https://styleci.io/repos/71817499)
 [![Build Status](https://img.shields.io/travis/cknow/checker.svg?style=flat)](https://travis-ci.org/cknow/checker)
 [![SensioLabs Insight](https://img.shields.io/sensiolabs/i/638e3fd2-c8bd-4e58-aeb1-76b999abea07.svg?style=flat)](https://insight.sensiolabs.com/projects/638e3fd2-c8bd-4e58-aeb1-76b999abea07)
-[![AppVeyor](https://img.shields.io/appveyor/ci/clicknow/checker.svg?style=flat)](https://ci.appveyor.com/project/clicknow/checker)
+[![AppVeyor](https://img.shields.io/appveyor/ci/cknow/checker.svg?style=flat)](https://ci.appveyor.com/project/cknow/checker)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/cknow/checker.png?style=flat)](https://scrutinizer-ci.com/g/cknow/checker)
 [![Code Climate](https://img.shields.io/codeclimate/github/cknow/checker.png?style=flat)](https://codeclimate.com/github/cknow/checker)
 [![Coverage Status](https://img.shields.io/coveralls/cknow/checker.png?style=flat)](https://coveralls.io/github/cknow/checker)
@@ -439,6 +439,18 @@ This command install git hooks to Checker.
 
 > **Note:** If you have custom git hooks they will be stored backup.
 
+For example:
+
+```bash
+# Locally
+php ./vendor/bin/checker git:install
+
+# Globally
+checker git:install
+```
+
+> **Note:** This command is triggered by the composer plugin during installation.
+
 *Options:*
 
 | Name          | Shortcut      | Default value | Description
@@ -449,17 +461,13 @@ For example:
 
 ```bash
 # Locally
-php ./vendor/bin/checker git:install
 php ./vendor/bin/checker git:install --config=/path/to/checker.yml
 php ./vendor/bin/checker git:install -c=/path/to/checker.yml
 
 # Globally
-checker git:install
 checker git:install --config=/path/to/checker.yml
 checker git:install -c=/path/to/checker.yml
 ```
-
-> **Note:** This command is triggered by the composer plugin during installation.
 
 ### git:uninstall
 
