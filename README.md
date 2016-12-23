@@ -75,7 +75,11 @@ You can also change the configuration after installation.
 The only downfall is that you will have to initialize the git hooks manually:
 
 ```bash
+# Locally
 php ./vendor/bin/checker git:install --config=path/to/checker.yml
+
+# Globally
+checker git:install --config=path/to/checker.yml
 ```
 
 ## Configuration
