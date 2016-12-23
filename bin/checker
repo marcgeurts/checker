@@ -1,7 +1,9 @@
 #!/usr/bin/env php
 <?php
 
-define('CHECKER_PATH', realpath(__DIR__ . '/..'));
+if (!ini_get('date.timezone')) {
+    ini_set('date.timezone', 'UTC');
+}
 
 $autoloads = [
     getcwd().'/vendor/autoload.php',
@@ -12,7 +14,7 @@ $autoloads = [
 
 $loaded = false;
 foreach ($autoloads as $autoload) {
-    if (is_file($autoload)) {
+    if (file_exists($autoload)) {
         require_once($autoload);
         $loaded = true;
     }
@@ -27,8 +29,6 @@ if (! $loaded) {
     );
     exit(1);
 }
-
-date_default_timezone_set('UTC');
 
 use ClickNow\Checker\Console\Application;
 
