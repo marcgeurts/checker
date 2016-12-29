@@ -62,12 +62,12 @@
     </rule>
     <rule ref="rulesets/naming.xml/LongVariable">
         <properties>
-            <property name="minimum" value="30" />
+            <property name="maximum" value="30" />
         </properties>
     </rule>
     <rule ref="rulesets/naming.xml/ShortMethodName">
         <properties>
-            <property name="maximum" value="2" />
+            <property name="minimum" value="2" />
         </properties>
     </rule>
 
