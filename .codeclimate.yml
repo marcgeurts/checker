@@ -7,15 +7,9 @@ engines:
   phpcodesniffer:
     enabled: true
     config:
-      file_extensions: "php"
       standard: "PSR2"
 
   phpmd:
     enabled: true
     config:
-      file_extensions: "php"
       rulesets: "phpmd.xml.dist"
-
-ratings:
-  paths:
-    - "**.php"
