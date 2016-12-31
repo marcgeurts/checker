@@ -32,8 +32,9 @@ tools:
 
   php_mess_detector:
     enabled: true
-    excluded_dirs:
-      - tests
+    filter:
+      paths:
+        - src/**/*.php
 
   php_pdepend:
     enabled: true
