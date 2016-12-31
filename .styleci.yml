@@ -2,6 +2,11 @@ preset: none
 
 risky: true
 
+finder:
+  path:
+    - src/**/*.php
+    - tests/**/*.php
+
 enabled:
   - align_double_arrow
   - alpha_ordered_imports

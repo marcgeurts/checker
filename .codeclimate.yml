@@ -1,5 +1,10 @@
 PHP: true
 
+ratings:
+  paths:
+    - src/**/*.php
+    - tests/**/*.php
+
 engines:
   duplication:
     enabled: false
@@ -7,9 +12,9 @@ engines:
   phpcodesniffer:
     enabled: true
     config:
-      standard: "PSR2"
+      standard: psr2
 
   phpmd:
     enabled: true
     config:
-      rulesets: "phpmd.xml.dist"
+      rulesets: phpmd.xml.dist
