@@ -21,9 +21,6 @@ tools:
 
   php_cpd:
     enabled: true
-    filter:
-      paths:
-        - src/**/*.php
 
   php_cs_fixer:
     enabled: true
@@ -32,23 +29,15 @@ tools:
 
   php_hhvm:
     enabled: true
-    filter:
-      paths:
-        - src/**/*.php
+
   php_loc:
     enabled: true
-    filter:
-      paths:
-        - src/**/*.php
 
   php_mess_detector:
     enabled: true
   
   php_pdepend:
     enabled: true
-    filter:
-      paths:
-        - src/**/*.php
 
   sensiolabs_security_checker:
     enabled: true
