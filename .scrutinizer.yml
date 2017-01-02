@@ -4,6 +4,9 @@ tools:
 
   php_analyzer:
     enabled: true
+    filter:
+      paths:
+        - src/**/*.php
 
   php_changetracking:
     enabled: true
@@ -29,7 +32,9 @@ tools:
 
   php_hhvm:
     enabled: true
-
+    filter:
+      paths:
+        - src/**/*.php
   php_loc:
     enabled: true
     filter:
