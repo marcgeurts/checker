@@ -78,7 +78,7 @@ class FilesCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($file2, $result[1]);
     }
 
-    public function testFilterByByPath()
+    public function testFilterByPath()
     {
         $file1 = m::mock(SplFileInfo::class);
         $file2 = m::mock(SplFileInfo::class);
@@ -97,7 +97,7 @@ class FilesCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($file2, $result[1]);
     }
 
-    public function testFilterByNotByPath()
+    public function testFilterByNotPath()
     {
         $file1 = m::mock(SplFileInfo::class);
         $file2 = m::mock(SplFileInfo::class);
@@ -142,10 +142,10 @@ class FilesCollectionTest extends \PHPUnit_Framework_TestCase
     public function testFilterByExtensionsEmpty()
     {
         $this->filesCollection->add(m::mock(SplFileInfo::class));
+
         $result = $this->filesCollection->filterByExtensions([]);
 
-        $this->assertInstanceOf(FilesCollection::class, $result);
-        $this->assertEmpty($result);
+        $this->assertSame($this->filesCollection, $result);
     }
 
     public function testFilterBySize()

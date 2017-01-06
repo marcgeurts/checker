@@ -19,61 +19,61 @@ class FilesCollection extends ArrayCollection
     /**
      * Filter by name.
      *
-     * @param string $pattern
+     * @param string|array $pattern
      *
      * @return \ClickNow\Checker\Repository\FilesCollection
      */
     public function filterByName($pattern)
     {
         return new self(iterator_to_array(
-            new FilenameFilterIterator($this->getIterator(), [$pattern], [])
+            new FilenameFilterIterator($this->getIterator(), is_array($pattern) ? $pattern : [$pattern], [])
         ));
     }
 
     /**
-     * Filter by not path.
+     * Filter by not name.
      *
-     * @param string $pattern
+     * @param string|array $pattern
      *
      * @return \ClickNow\Checker\Repository\FilesCollection
      */
     public function filterByNotName($pattern)
     {
         return new self(iterator_to_array(
-            new FilenameFilterIterator($this->getIterator(), [], [$pattern])
+            new FilenameFilterIterator($this->getIterator(), [], is_array($pattern) ? $pattern : [$pattern])
         ));
     }
 
     /**
      * Filter by path.
      *
-     * @param string $pattern
+     * @param string|array $pattern
      *
      * @return \ClickNow\Checker\Repository\FilesCollection
      */
     public function filterByPath($pattern)
     {
         return new self(iterator_to_array(
-            new PathFilterIterator($this->getIterator(), [$pattern], [])
+            new PathFilterIterator($this->getIterator(), is_array($pattern) ? $pattern : [$pattern], [])
         ));
     }
 
     /**
      * Filter by not path.
      *
-     * @param string $pattern
+     * @param string|array $pattern
      *
      * @return \ClickNow\Checker\Repository\FilesCollection
      */
     public function filterByNotPath($pattern)
     {
         return new self(iterator_to_array(
-            new PathFilterIterator($this->getIterator(), [], [$pattern])
+            new PathFilterIterator($this->getIterator(), [], is_array($pattern) ? $pattern : [$pattern])
         ));
     }
 
     /**
-     * Filter by extension.
+     * Filter by extensions.
      *
      * @param array $extensions
      *
@@ -82,7 +82,7 @@ class FilesCollection extends ArrayCollection
     public function filterByExtensions(array $extensions)
     {
         if (count($extensions) < 1) {
-            return new self();
+            return $this;
         }
 
         return $this->filterByName(sprintf('/\.(%s)$/i', implode('|', $extensions)));
