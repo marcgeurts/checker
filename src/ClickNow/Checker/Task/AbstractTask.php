@@ -38,12 +38,7 @@ abstract class AbstractTask implements TaskInterface
     public function canRunInContext(CommandInterface $command, ContextInterface $context)
     {
         $config = $this->getConfig($command);
-
-        if (!isset($config['can_run_in'])) {
-            return true;
-        }
-
-        $option = $config['can_run_in'];
+        $option = isset($config['can_run_in']) ? $config['can_run_in'] : true;
 
         if (is_array($option)) {
             return in_array($context->getCommand()->getName(), $option) || in_array($command->getName(), $option);
