@@ -177,7 +177,7 @@ abstract class AbstractTask implements TaskInterface
      * @return \ClickNow\Checker\Result\ResultInterface
      */
     abstract protected function execute(
-        $config,
+        array $config,
         FilesCollection $files,
         CommandInterface $command,
         ContextInterface $context
