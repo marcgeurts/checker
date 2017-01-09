@@ -17,4 +17,4 @@ engines:
   phpmd:
     enabled: true
     config:
-      rulesets: phpmd.xml.dist
+      rulesets: phpmd.xml
