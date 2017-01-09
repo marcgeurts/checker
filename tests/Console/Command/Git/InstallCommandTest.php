@@ -74,7 +74,7 @@ class InstallCommandTest extends \PHPUnit_Framework_TestCase
         $this->pathsHelper->shouldReceive('getGitHooksDir')->withNoArgs()->once()->andReturn($this->tmpDir);
         $this->pathsHelper->shouldReceive('getGitHookTemplatesDir')->withNoArgs()->andReturn('');
         $this->pathsHelper->shouldReceive('getPathWithTrailingSlash')->with($this->tmpDir)->andReturn($this->tmpDir);
-        $this->pathsHelper->shouldReceive('getPathWithTrailingSlash')->with(null)->andReturn(false);
+        $this->pathsHelper->shouldReceive('getPathWithTrailingSlash')->with(null)->andReturn($this->tmpDir.'/invalid');
 
         $command = $app->find('git:install');
         $command->getHelperSet()->set($this->pathsHelper, 'paths');
@@ -146,7 +146,7 @@ class InstallCommandTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException(FileNotFoundException::class);
 
         $this->filesystem->shouldReceive('exists')->with($this->tmpDir)->once()->andReturn(true);
-        $this->filesystem->shouldReceive('exists')->with(m::not($this->tmpDir))->twice()->andReturn(false);
+        $this->filesystem->shouldReceive('exists')->with(m::not($this->tmpDir))->andReturn(false);
 
         $this->commandTester->execute([]);
     }

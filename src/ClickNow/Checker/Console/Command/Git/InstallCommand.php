@@ -135,7 +135,10 @@ class InstallCommand extends Command
             $hookTemplate = $resourceHooksPath.$hook;
         }
 
-        $hookTemplate = $this->getCustomHookTemplate($hook, $hookTemplate);
+        $customHooksPath = $this->paths()->getPathWithTrailingSlash($this->checker->getHooksDir());
+        if ($customHooksPath) {
+            $hookTemplate = $this->getCustomHookTemplate($customHooksPath, $hook, $hookTemplate);
+        }
 
         if (!$this->filesystem->exists($hookTemplate)) {
             throw new FileNotFoundException(
@@ -149,20 +152,19 @@ class InstallCommand extends Command
     /**
      * Get custom hook template.
      *
+     * @param string $customHooksPath
      * @param string $hook
      * @param string $defaultTemplate
      *
      * @return string
      */
-    private function getCustomHookTemplate($hook, $defaultTemplate)
+    private function getCustomHookTemplate($customHooksPath, $hook, $defaultTemplate)
     {
-        $customHooksPath = $this->paths()->getPathWithTrailingSlash($this->checker->getHooksDir());
-
-        if ($customHooksPath && $this->filesystem->exists($customHooksPath.$hook)) {
+        if ($this->filesystem->exists($customHooksPath.$hook)) {
             return $customHooksPath.$hook;
         }
 
-        if ($customHooksPath && $this->filesystem->exists($customHooksPath.'all')) {
+        if ($this->filesystem->exists($customHooksPath.'all')) {
             return $customHooksPath.'all';
         }
 
