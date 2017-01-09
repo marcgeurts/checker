@@ -127,17 +127,13 @@ class InstallCommand extends Command
      */
     private function getHookTemplate($hook)
     {
-        $resourceHooksPath = $this->paths()->getGitHookTemplatesDir().$this->checker->getHooksPreset();
-        $resourceHooksPath = $this->paths()->getPathWithTrailingSlash($resourceHooksPath);
-        $hookTemplate = $resourceHooksPath.'all';
+        $resourcePath = $this->paths()->getGitHookTemplatesDir().$this->checker->getHooksPreset();
+        $resourcePath = $this->paths()->getPathWithTrailingSlash($resourcePath);
+        $hookTemplate = $this->filesystem->exists($resourcePath.$hook) ? $resourcePath.$hook : $resourcePath.'all';
 
-        if ($this->filesystem->exists($resourceHooksPath.$hook)) {
-            $hookTemplate = $resourceHooksPath.$hook;
-        }
-
-        $customHooksPath = $this->paths()->getPathWithTrailingSlash($this->checker->getHooksDir());
-        if ($customHooksPath) {
-            $hookTemplate = $this->getCustomHookTemplate($customHooksPath, $hook, $hookTemplate);
+        $customPath = $this->paths()->getPathWithTrailingSlash($this->checker->getHooksDir());
+        if ($customPath) {
+            $hookTemplate = $this->getCustomHookTemplate($customPath, $hook, $hookTemplate);
         }
 
         if (!$this->filesystem->exists($hookTemplate)) {
@@ -152,20 +148,20 @@ class InstallCommand extends Command
     /**
      * Get custom hook template.
      *
-     * @param string $customHooksPath
+     * @param string $customPath
      * @param string $hook
      * @param string $defaultTemplate
      *
      * @return string
      */
-    private function getCustomHookTemplate($customHooksPath, $hook, $defaultTemplate)
+    private function getCustomHookTemplate($customPath, $hook, $defaultTemplate)
     {
-        if ($this->filesystem->exists($customHooksPath.$hook)) {
-            return $customHooksPath.$hook;
+        if ($this->filesystem->exists($customPath.$hook)) {
+            return $customPath.$hook;
         }
 
-        if ($this->filesystem->exists($customHooksPath.'all')) {
-            return $customHooksPath.'all';
+        if ($this->filesystem->exists($customPath.'all')) {
+            return $customPath.'all';
         }
 
         return $defaultTemplate;
