@@ -9,7 +9,6 @@ use ClickNow\Checker\Result\Result;
 use ClickNow\Checker\Result\ResultInterface;
 use Mockery as m;
 use Symfony\Component\Finder\SplFileInfo;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @group task
@@ -92,7 +91,7 @@ class AbstractTaskTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($result->isSuccess());
     }
 
-    public function testRunWithFilesEmptyAndReturnSkipped()
+    public function testRunWithFilesEmpty()
     {
         $command = m::mock(CommandInterface::class);
         $command->shouldReceive('getActionConfig')->with($this->task)->once()->andReturn([]);
