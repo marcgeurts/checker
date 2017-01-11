@@ -3,6 +3,7 @@
 namespace ClickNow\Checker\Repository;
 
 use Gitonomy\Git\Diff\Diff;
+use Gitonomy\Git\Diff\File;
 use Gitonomy\Git\Repository;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\SplFileInfo;
@@ -106,14 +107,27 @@ class Git
 
         /* @var \Gitonomy\Git\Diff\File $file */
         foreach ($diff->getFiles() as $file) {
-            $fileName = $file->isRename() ? $file->getNewName() : $file->getName();
-            $fileObject = new SplFileInfo($fileName, dirname($fileName), $fileName);
+            $splFileInfo = $this->getSplFileInfo($file);
 
-            if (!$file->isDeletion() && $this->filesystem->exists($fileObject->getPathname())) {
-                $files->add($fileObject);
+            if (!$file->isDeletion() && $this->filesystem->exists($splFileInfo->getPathname())) {
+                $files->add($splFileInfo);
             }
         }
 
         return $files;
+    }
+
+    /**
+     * Get SplFileInfo.
+     *
+     * @param \Gitonomy\Git\Diff\File $file
+     *
+     * @return \Symfony\Component\Finder\SplFileInfo
+     */
+    private function getSplFileInfo(File $file)
+    {
+        $name = $file->isRename() ? $file->getNewName() : $file->getName();
+
+        return new SplFileInfo($name, dirname($name), $name);
     }
 }
