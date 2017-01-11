@@ -66,13 +66,9 @@ class GitTest extends \PHPUnit_Framework_TestCase
         $file2 = m::mock(File::class);
         $file3 = m::mock(File::class);
 
-        $file1->shouldReceive('isDeletion')->withNoArgs()->once()->andReturn(false);
-        $file2->shouldReceive('isDeletion')->withNoArgs()->once()->andReturn(false);
-        $file3->shouldReceive('isDeletion')->withNoArgs()->once()->andReturn(true);
-
         $file1->shouldReceive('isRename')->withNoArgs()->once()->andReturn(false);
         $file2->shouldReceive('isRename')->withNoArgs()->once()->andReturn(true);
-        $file3->shouldReceive('isRename')->withNoArgs()->never();
+        $file3->shouldReceive('isRename')->withNoArgs()->once()->andReturn(false);
 
         $file1->shouldReceive('getNewName')->withNoArgs()->never();
         $file2->shouldReceive('getNewName')->withNoArgs()->once()->andReturn('file2.txt');
@@ -80,10 +76,15 @@ class GitTest extends \PHPUnit_Framework_TestCase
 
         $file1->shouldReceive('getName')->withNoArgs()->once()->andReturn('file1.txt');
         $file2->shouldReceive('getName')->withNoArgs()->never();
-        $file3->shouldReceive('getName')->withNoArgs()->never();
+        $file3->shouldReceive('getName')->withNoArgs()->once()->andReturn('file3.txt');
+
+        $file1->shouldReceive('isDeletion')->withNoArgs()->once()->andReturn(false);
+        $file2->shouldReceive('isDeletion')->withNoArgs()->once()->andReturn(false);
+        $file3->shouldReceive('isDeletion')->withNoArgs()->once()->andReturn(true);
 
         $this->filesystem->shouldReceive('exists')->with('file1.txt')->once()->andReturn(true);
         $this->filesystem->shouldReceive('exists')->with('file2.txt')->once()->andReturn(true);
+        $this->filesystem->shouldReceive('exists')->with('file3.txt')->never();
 
         $diff = m::mock(Diff::class);
         $diff->shouldReceive('getFiles')->withNoArgs()->once()->andReturn([$file1, $file2, $file3]);

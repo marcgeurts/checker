@@ -106,14 +106,10 @@ class Git
 
         /* @var \Gitonomy\Git\Diff\File $file */
         foreach ($diff->getFiles() as $file) {
-            if ($file->isDeletion()) {
-                continue;
-            }
-
             $fileName = $file->isRename() ? $file->getNewName() : $file->getName();
             $fileObject = new SplFileInfo($fileName, dirname($fileName), $fileName);
 
-            if ($this->filesystem->exists($fileObject->getPathname())) {
+            if (!$file->isDeletion() && $this->filesystem->exists($fileObject->getPathname())) {
                 $files->add($fileObject);
             }
         }
