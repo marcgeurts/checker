@@ -89,6 +89,6 @@ class ConsoleIO extends SymfonyStyle implements IOInterface
             $input .= fread($handle, 1024);
         }
 
-        return !preg_match('/^([\s]*)$/m', $input) ? $input : '';
+        return !preg_match_all('/^([\s]*)$/', $input) ? $input : '';
     }
 }
