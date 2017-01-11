@@ -4,7 +4,7 @@ namespace ClickNow\Checker\Process;
 
 use ClickNow\Checker\Exception\PlatformException;
 use ClickNow\Checker\IO\IOInterface;
-use Symfony\Component\Process\ProcessBuilder;
+use Symfony\Component\Process\ProcessBuilder as SymfonyProcessBuilder;
 
 class Platform
 {
@@ -24,7 +24,7 @@ class Platform
      * @param \Symfony\Component\Process\ProcessBuilder $processBuilder
      * @param \ClickNow\Checker\IO\IOInterface          $io
      */
-    public function __construct(ProcessBuilder $processBuilder, IOInterface $io)
+    public function __construct(SymfonyProcessBuilder $processBuilder, IOInterface $io)
     {
         $this->processBuilder = $processBuilder;
         $this->io = $io;
