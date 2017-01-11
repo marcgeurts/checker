@@ -14,3 +14,9 @@ services:
       - '@process.executable_finder'
       - '@process_builder'
       - '@io'
+      - '@process.platform'
+
+  process.platform:
+    class: ClickNow\Checker\Process\Platform
+      - '@process_builder'
+      - '@io'

@@ -5,6 +5,7 @@ namespace ClickNow\Checker\Command;
 use ClickNow\Checker\Action\ActionInterface;
 use ClickNow\Checker\Action\ActionsCollection;
 use ClickNow\Checker\Context\ContextInterface;
+use ClickNow\Checker\Exception\PlatformException;
 use ClickNow\Checker\Exception\RuntimeException;
 use ClickNow\Checker\Result\Result;
 use ClickNow\Checker\Result\ResultInterface;
@@ -145,30 +146,36 @@ class AbstractCommandRunnerTest extends \PHPUnit_Framework_TestCase
     {
         $action1 = $this->mockAction();
         $action2 = $this->mockAction();
+        $action3 = $this->mockAction();
 
         $result1 = Result::warning($this->command, $this->context, $action1, 'WARNING1');
         $result2 = Result::warning($this->command, $this->context, $action2, 'WARNING2');
 
         $action1->shouldReceive('run')->with($this->command, $this->context)->once()->andReturn($result1);
         $action2->shouldReceive('run')->with($this->command, $this->context)->once()->andReturn($result2);
+        $action3
+            ->shouldReceive('run')
+            ->with($this->command, $this->context)
+            ->once()
+            ->andThrow(PlatformException::class, 'WARNING3');
 
         $this->command
             ->expects($this->never())
             ->method('isStopOnFailure');
 
         $this->command
-            ->expects($this->exactly(2))
+            ->expects($this->exactly(3))
             ->method('isActionBlocking')
             ->withConsecutive([$action1], [$action2])
             ->willReturn(true);
 
-        $actions = new ActionsCollection([$action1, $action2]);
+        $actions = new ActionsCollection([$action1, $action2, $action3]);
         $this->command->expects($this->once())->method('getActionsToRun')->willReturn($actions);
         $result = $this->command->run($this->command, $this->context);
 
         $this->assertInstanceOf(ResultInterface::class, $result);
         $this->assertTrue($result->isWarning());
-        $this->assertSame('WARNING1'.PHP_EOL.'WARNING2', $result->getMessage());
+        $this->assertSame('WARNING1'.PHP_EOL.'WARNING2'.PHP_EOL.'WARNING3', $result->getMessage());
     }
 
     public function testRunAndReturnSomeErrorsAndWarnings()

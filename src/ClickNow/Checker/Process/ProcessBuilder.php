@@ -24,20 +24,28 @@ class ProcessBuilder
     private $io;
 
     /**
+     * @var \ClickNow\Checker\Process\Platform
+     */
+    private $platform;
+
+    /**
      * Process builder.
      *
      * @param \ClickNow\Checker\Process\ExecutableFinder $executableFinder
      * @param \Symfony\Component\Process\ProcessBuilder  $processBuilder
      * @param \ClickNow\Checker\IO\IOInterface           $io
+     * @param \ClickNow\Checker\Process\Platform         $platform
      */
     public function __construct(
         ExecutableFinder $executableFinder,
         SymfonyProcessBuilder $processBuilder,
-        IOInterface $io
+        IOInterface $io,
+        Platform $platform
     ) {
         $this->executableFinder = $executableFinder;
         $this->processBuilder = $processBuilder;
         $this->io = $io;
+        $this->platform = $platform;
     }
 
     /**
@@ -67,7 +75,10 @@ class ProcessBuilder
         $builder = $this->processBuilder->setArguments($arguments->getValues());
         $builder->setTimeout($command->getProcessTimeout());
         $process = $builder->getProcess();
-        $this->io->log('Command: '.$process->getCommandLine());
+        $commandLine = $process->getCommandLine();
+
+        $this->io->log('Command: '.$commandLine);
+        $this->platform->validateCommandLineMaxLength($commandLine);
 
         return $process;
     }

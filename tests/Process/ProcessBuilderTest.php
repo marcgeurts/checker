@@ -30,6 +30,11 @@ class ProcessBuilderTest extends \PHPUnit_Framework_TestCase
     protected $io;
 
     /**
+     * @var \ClickNow\Checker\Process\Platform|\Mockery\MockInterface
+     */
+    protected $platform;
+
+    /**
      * @var \ClickNow\Checker\Process\ProcessBuilder
      */
     protected $processBuilder;
@@ -39,7 +44,8 @@ class ProcessBuilderTest extends \PHPUnit_Framework_TestCase
         $this->executableFinder = m::mock(ExecutableFinder::class);
         $this->builder = m::mock(SymfonyProcessBuilder::class);
         $this->io = m::mock(IOInterface::class);
-        $this->processBuilder = new ProcessBuilder($this->executableFinder, $this->builder, $this->io);
+        $this->platform = m::mock(Platform::class);
+        $this->processBuilder = new ProcessBuilder($this->executableFinder, $this->builder, $this->io, $this->platform);
     }
 
     protected function tearDown()
@@ -69,6 +75,7 @@ class ProcessBuilderTest extends \PHPUnit_Framework_TestCase
         $this->builder->shouldReceive('getProcess')->withNoArgs()->once()->andReturn($process);
 
         $this->io->shouldReceive('log')->with('Command: bin/foo')->once()->andReturnNull();
+        $this->platform->shouldReceive('validateCommandLineMaxLength')->with('bin/foo')->once()->andReturnNull();
 
         $command = m::mock(CommandInterface::class);
         $command->shouldReceive('getProcessTimeout')->withNoArgs()->once()->andReturnNull();

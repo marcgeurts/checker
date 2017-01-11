@@ -6,6 +6,7 @@ use ClickNow\Checker\Action\ActionInterface;
 use ClickNow\Checker\Action\ActionsCollection;
 use ClickNow\Checker\Context\ContextInterface;
 use ClickNow\Checker\Exception\ActionInvalidResultException;
+use ClickNow\Checker\Exception\PlatformException;
 use ClickNow\Checker\Exception\RuntimeException;
 use ClickNow\Checker\Result\Result;
 use ClickNow\Checker\Result\ResultInterface;
@@ -96,6 +97,8 @@ abstract class AbstractCommandRunner implements CommandInterface
             if (!$result instanceof ResultInterface) {
                 throw new ActionInvalidResultException($action->getName());
             }
+        } catch (PlatformException $e) {
+            $result = Result::warning($this, $context, $action, $e->getMessage());
         } catch (RuntimeException $e) {
             $result = Result::error($this, $context, $action, $e->getMessage());
         }
