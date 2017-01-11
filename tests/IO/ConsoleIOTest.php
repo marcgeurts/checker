@@ -89,7 +89,7 @@ class ConsoleIOTest extends \PHPUnit_Framework_TestCase
 
     public function testReadyCommandInput()
     {
-        $diff = <<<EOD
+        $diff = <<<eod
 diff --git file1.php file2.php
 index 372bf10b74013301cfb4bf0e8007d208bb813363..d95f50da4a02d3d203bda1f3cb94e29d4f0ef481 100644
 --- file1.php
@@ -100,7 +100,7 @@ index 372bf10b74013301cfb4bf0e8007d208bb813363..d95f50da4a02d3d203bda1f3cb94e29d
  'something';
 +'ok';
 
-EOD;
+eod;
 
         $this->assertSame($diff, $this->consoleIO->readCommandInput($this->mockHandle($diff)));
         $this->assertSame('input', $this->consoleIO->readCommandInput($this->mockHandle('input')));
