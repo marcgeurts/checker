@@ -53,12 +53,10 @@ abstract class AbstractCompilerPass implements CompilerPassInterface
      */
     protected function registerCommand($id, $name)
     {
-        // Checks if there is already a service with this identifier
         if ($this->container->hasDefinition($id)) {
             return $this->container->findDefinition($id);
         }
 
-        // Register service
         return $this->container->register($id, Command::class)
             ->addArgument(new Reference('checker'))
             ->addArgument($name);

@@ -26,7 +26,6 @@ class ExtensionCompilerPass extends AbstractCompilerPass
         $extensions = (array) $this->container->getParameter('extensions');
 
         foreach ($extensions as $extension) {
-            // Checks if the class exists
             if (!class_exists($extension)) {
                 throw new ExtensionNotFoundException($extension);
             }
@@ -49,12 +48,10 @@ class ExtensionCompilerPass extends AbstractCompilerPass
     {
         $name = get_class($extension);
 
-        // Checks if the class has already been registered
         if (array_key_exists($name, $this->registered)) {
             throw new ExtensionAlreadyRegisteredException($name);
         }
 
-        // Checks if the class implements the ExtensionInterface
         if (!$extension instanceof ExtensionInterface) {
             throw new ExtensionInvalidException($name);
         }

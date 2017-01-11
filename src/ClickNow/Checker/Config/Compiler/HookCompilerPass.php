@@ -30,16 +30,11 @@ class HookCompilerPass extends AbstractCompilerPass
      */
     private function addHook($hook, array $config = [])
     {
-        // The hook definition
         $definition = $this->registerCommand('hook.'.$hook, $hook);
 
-        // Add tasks
         $this->addTasks($definition, isset($config['tasks']) ? (array) $config['tasks'] : []);
-
-        // Add commands
         $this->addCommands($definition, isset($config['commands']) ? (array) $config['commands'] : []);
 
-        // Set config
         unset($config['tasks'], $config['commands']);
         $definition->addMethodCall('setConfig', [$config]);
     }

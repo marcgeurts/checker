@@ -28,10 +28,7 @@ class TaskCompilerPass extends AbstractCompilerPass
      */
     private function configureTask($task, array $config = [])
     {
-        // The task definition
         $definition = $this->container->findDefinition($task);
-
-        // Merge default config of the task
         $definition->addMethodCall('mergeDefaultConfig', [$config]);
     }
 }
