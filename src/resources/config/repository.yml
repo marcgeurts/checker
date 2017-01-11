@@ -6,3 +6,4 @@ services:
     class: ClickNow\Checker\Repository\Git
     arguments:
       - '@git.repository'
+      - '@filesystem'

@@ -3,8 +3,8 @@
 namespace ClickNow\Checker\Repository;
 
 use Gitonomy\Git\Diff\Diff;
-use Gitonomy\Git\Diff\File;
 use Gitonomy\Git\Repository;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\SplFileInfo;
 
 class Git
@@ -38,13 +38,20 @@ class Git
     private $repository;
 
     /**
+     * @var \Symfony\Component\Filesystem\Filesystem
+     */
+    private $filesystem;
+
+    /**
      * Git.
      *
-     * @param \Gitonomy\Git\Repository $repository
+     * @param \Gitonomy\Git\Repository                 $repository
+     * @param \Symfony\Component\Filesystem\Filesystem $filesystem
      */
-    public function __construct(Repository $repository)
+    public function __construct(Repository $repository, Filesystem $filesystem)
     {
         $this->repository = $repository;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -95,15 +102,22 @@ class Git
      */
     private function parseFilesFromDiff(Diff $diff)
     {
-        $files = new FilesCollection($diff->getFiles());
-        $files = $files->filter(function (File $file) {
-            return !$file->isDeletion();
-        });
+        $files = new FilesCollection();
 
-        return $files->map(function (File $file) {
+        /* @var \Gitonomy\Git\Diff\File $file */
+        foreach ($diff->getFiles() as $file) {
+            if ($file->isDeletion()) {
+                continue;
+            }
+
             $fileName = $file->isRename() ? $file->getNewName() : $file->getName();
+            $fileObject = new SplFileInfo($fileName, dirname($fileName), $fileName);
 
-            return new SplFileInfo($fileName, dirname($fileName), $fileName);
-        });
+            if ($this->filesystem->exists($fileObject->getPathname())) {
+                $files->add($fileObject);
+            }
+        }
+
+        return $files;
     }
 }
