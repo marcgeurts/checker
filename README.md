@@ -286,6 +286,7 @@ Below is the list available of git hooks:
 - update
 - post-receive
 - post-update
+- push-to-checkout
 - pre-auto-gc
 - post-rewrite
 
@@ -511,6 +512,7 @@ php ./vendor/bin/checker git:pre-receive
 php ./vendor/bin/checker git:update
 php ./vendor/bin/checker git:post-receive
 php ./vendor/bin/checker git:post-update
+php ./vendor/bin/checker git:push-to-checkout
 php ./vendor/bin/checker git:pre-auto-gc
 php ./vendor/bin/checker git:post-rewrite
 
@@ -530,6 +532,7 @@ checker git:pre-receive
 checker git:update
 checker git:post-receive
 checker git:post-update
+checker git:push-to-checkout
 checker git:pre-auto-gc
 checker git:post-rewrite
 ```
@@ -560,6 +563,7 @@ php ./vendor/bin/checker git:pre-receive --process-timeout=30 --stop-on-failure=
 php ./vendor/bin/checker git:update --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
 php ./vendor/bin/checker git:post-receive --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
 php ./vendor/bin/checker git:post-update --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+php ./vendor/bin/checker git:push-to-checkout --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
 php ./vendor/bin/checker git:pre-auto-gc --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
 php ./vendor/bin/checker git:post-rewrite --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
 
@@ -579,6 +583,7 @@ checker git:pre-receive --process-timeout=30 --stop-on-failure=true --ignore-uns
 checker git:update --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
 checker git:post-receive --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
 checker git:post-update --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+checker git:push-to-checkout --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
 checker git:pre-auto-gc --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
 checker git:post-rewrite --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
 ```

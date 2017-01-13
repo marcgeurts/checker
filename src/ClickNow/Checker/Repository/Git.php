@@ -29,6 +29,7 @@ class Git
         'update',
         'post-receive',
         'post-update',
+        'push-to-checkout',
         'pre-auto-gc',
         'post-rewrite',
     ];
