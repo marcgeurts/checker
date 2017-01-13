@@ -8,9 +8,9 @@
 [![Code Climate](https://img.shields.io/codeclimate/github/cknow/checker.png?style=flat)](https://codeclimate.com/github/cknow/checker)
 [![Coverage Status](https://img.shields.io/coveralls/cknow/checker.png?style=flat)](https://coveralls.io/github/cknow/checker)
 
-[![Total Downloads](https://img.shields.io/packagist/dt/cknow/checker.svg?style=flat)](https://packagist.org/packages/cknow/checker)
+[![Total Downloads](https://img.shields.io/packagist/dt/cknow/checker.svg?style=flat)](https://packagist.org/packages/cknow/checker/stats)
 [![Latest Stable Version](https://img.shields.io/packagist/v/cknow/checker.svg?style=flat)](https://packagist.org/packages/cknow/checker)
-[![License](https://img.shields.io/packagist/l/cknow/checker.svg?style=flat)](https://packagist.org/packages/cknow/checker)
+[![License](https://img.shields.io/packagist/l/cknow/checker.svg?style=flat)](LICENSE)
 
 > **Note:** This project is inspired in [GrumPHP](https://github.com./phpro/grumphp)!!!
 
