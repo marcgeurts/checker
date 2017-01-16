@@ -56,16 +56,31 @@ class CheckerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('local', $this->checker->getHooksPreset());
     }
 
+    public function testGetProcessTimeout()
+    {
+        $this->container->shouldReceive('getParameter')->with('process_timeout')->once()->andReturnNull();
+        $this->assertNull($this->checker->getProcessTimeout());
+
+        $this->container->shouldReceive('getParameter')->with('process_timeout')->once()->andReturn(60);
+        $this->assertSame(60.0, $this->checker->getProcessTimeout());
+    }
+
+    public function testGetProcessAsyncWait()
+    {
+        $this->container->shouldReceive('getParameter')->with('process_async_wait')->once()->andReturn(1000);
+        $this->assertSame(1000, $this->checker->getProcessAsyncWait());
+    }
+
+    public function testGetProcessAsyncLimit()
+    {
+        $this->container->shouldReceive('getParameter')->with('process_async_limit')->once()->andReturn(10);
+        $this->assertSame(10, $this->checker->getProcessAsyncLimit());
+    }
+
     public function testIsStopOnFailure()
     {
         $this->container->shouldReceive('getParameter')->with('stop_on_failure')->once()->andReturn(true);
         $this->assertTrue($this->checker->isStopOnFailure());
-    }
-
-    public function testIsSkipSuccessOutput()
-    {
-        $this->container->shouldReceive('getParameter')->with('skip_success_output')->once()->andReturn(true);
-        $this->assertTrue($this->checker->isSkipSuccessOutput());
     }
 
     public function testIsIgnoreUnstagedChanges()
@@ -74,13 +89,10 @@ class CheckerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->checker->isIgnoreUnstagedChanges());
     }
 
-    public function testGetProcessTimeout()
+    public function testIsSkipSuccessOutput()
     {
-        $this->container->shouldReceive('getParameter')->with('process_timeout')->once()->andReturnNull();
-        $this->assertNull($this->checker->getProcessTimeout());
-
-        $this->container->shouldReceive('getParameter')->with('process_timeout')->once()->andReturn(60);
-        $this->assertSame(60.0, $this->checker->getProcessTimeout());
+        $this->container->shouldReceive('getParameter')->with('skip_success_output')->once()->andReturn(true);
+        $this->assertTrue($this->checker->isSkipSuccessOutput());
     }
 
     public function testGetMessage()

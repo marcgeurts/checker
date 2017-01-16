@@ -25,6 +25,8 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     {
         $checker = m::mock(Checker::class);
         $checker->shouldReceive('getProcessTimeout')->withNoArgs()->atLeast()->once()->andReturn(null);
+        $checker->shouldReceive('getProcessAsyncWait')->withNoArgs()->atLeast()->once()->andReturn(1000);
+        $checker->shouldReceive('getProcessAsyncLimit')->withNoArgs()->atLeast()->once()->andReturn(10);
         $checker->shouldReceive('isStopOnFailure')->withNoArgs()->atLeast()->once()->andReturn(false);
         $checker->shouldReceive('isIgnoreUnstagedChanges')->withNoArgs()->atLeast()->once()->andReturn(false);
         $checker->shouldReceive('isSkipSuccessOutput')->withNoArgs()->atLeast()->once()->andReturn(false);
@@ -86,6 +88,22 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 
         $this->command->setConfig(['process_timeout' => 90.5]);
         $this->assertSame(90.5, $this->command->getProcessTimeout());
+    }
+
+    public function testGetProcessAsyncWait()
+    {
+        $this->assertSame(1000, $this->command->getProcessAsyncWait());
+
+        $this->command->setConfig(['process_async_wait' => 2000]);
+        $this->assertSame(2000, $this->command->getProcessAsyncWait());
+    }
+
+    public function testGetProcessAsyncLimit()
+    {
+        $this->assertSame(10, $this->command->getProcessAsyncLimit());
+
+        $this->command->setConfig(['process_async_limit' => 30]);
+        $this->assertSame(30, $this->command->getProcessAsyncLimit());
     }
 
     public function testIsStopOnFailure()

@@ -149,13 +149,17 @@ class Command extends AbstractCommandRunner
         $resolver = new OptionsResolver();
         $resolver->setDefaults(array_merge([
             'process_timeout'         => $this->checker->getProcessTimeout(),
+            'process_async_wait'      => $this->checker->getProcessAsyncWait(),
+            'process_async_limit'     => $this->checker->getProcessAsyncLimit(),
             'stop_on_failure'         => $this->checker->isStopOnFailure(),
             'ignore_unstaged_changes' => $this->checker->isIgnoreUnstagedChanges(),
             'skip_success_output'     => $this->checker->isSkipSuccessOutput(),
             'message'                 => [],
             'can_run_in'              => true,
         ], $this->options));
-        $resolver->setAllowedTypes('process_timeout', ['float', 'integer', 'null']);
+        $resolver->setAllowedTypes('process_timeout', ['float', 'int', 'null']);
+        $resolver->setAllowedTypes('process_async_wait', ['int']);
+        $resolver->setAllowedTypes('process_async_limit', ['int']);
         $resolver->setAllowedTypes('stop_on_failure', ['bool']);
         $resolver->setAllowedTypes('ignore_unstaged_changes', ['bool']);
         $resolver->setAllowedTypes('skip_success_output', ['bool']);
@@ -175,13 +179,33 @@ class Command extends AbstractCommandRunner
     }
 
     /**
+     * Get process async wait.
+     *
+     * @return int
+     */
+    public function getProcessAsyncWait()
+    {
+        return (int) $this->options['process_async_wait'];
+    }
+
+    /**
+     * Get process async limit.
+     *
+     * @return int
+     */
+    public function getProcessAsyncLimit()
+    {
+        return (int) $this->options['process_async_limit'];
+    }
+
+    /**
      * Is stop on failure?
      *
      * @return bool
      */
     public function isStopOnFailure()
     {
-        return $this->options['stop_on_failure'];
+        return (bool) $this->options['stop_on_failure'];
     }
 
     /**
@@ -191,7 +215,7 @@ class Command extends AbstractCommandRunner
      */
     public function isIgnoreUnstagedChanges()
     {
-        return $this->options['ignore_unstaged_changes'];
+        return (bool) $this->options['ignore_unstaged_changes'];
     }
 
     /**
@@ -201,7 +225,7 @@ class Command extends AbstractCommandRunner
      */
     public function isSkipSuccessOutput()
     {
-        return $this->options['skip_success_output'];
+        return (bool) $this->options['skip_success_output'];
     }
 
     /**
@@ -213,8 +237,10 @@ class Command extends AbstractCommandRunner
      */
     public function getMessage($resource)
     {
-        if (array_key_exists($resource, $this->options['message'])) {
-            return (string) $this->options['message'][$resource];
+        $messages = (array) $this->options['message'];
+
+        if (array_key_exists($resource, $messages)) {
+            return (string) $messages[$resource];
         }
 
         return $this->checker->getMessage($resource);

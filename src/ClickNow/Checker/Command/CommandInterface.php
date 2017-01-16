@@ -41,6 +41,20 @@ interface CommandInterface extends ActionInterface
     public function getProcessTimeout();
 
     /**
+     * Get process async wait.
+     *
+     * @return int
+     */
+    public function getProcessAsyncWait();
+
+    /**
+     * Get process async limit
+     *
+     * @return int
+     */
+    public function getProcessAsyncLimit();
+
+    /**
      * Is stop on failure?
      *
      * @return bool

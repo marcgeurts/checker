@@ -62,36 +62,6 @@ class Checker
     }
 
     /**
-     * Is stop on failure?
-     *
-     * @return bool
-     */
-    public function isStopOnFailure()
-    {
-        return (bool) $this->container->getParameter('stop_on_failure');
-    }
-
-    /**
-     * It is to skip the success output?
-     *
-     * @return bool
-     */
-    public function isSkipSuccessOutput()
-    {
-        return (bool) $this->container->getParameter('skip_success_output');
-    }
-
-    /**
-     * Is ignore unstaged changes?
-     *
-     * @return bool
-     */
-    public function isIgnoreUnstagedChanges()
-    {
-        return (bool) $this->container->getParameter('ignore_unstaged_changes');
-    }
-
-    /**
      * Get process timeout.
      *
      * @return null|float
@@ -105,6 +75,56 @@ class Checker
         }
 
         return (float) $timeout;
+    }
+
+    /**
+     * Get process async wait.
+     *
+     * @return int
+     */
+    public function getProcessAsyncWait()
+    {
+        return (int) $this->container->getParameter('process_async_wait');
+    }
+
+    /**
+     * Get process async limit.
+     *
+     * @return int
+     */
+    public function getProcessAsyncLimit()
+    {
+        return (int) $this->container->getParameter('process_async_limit');
+    }
+
+    /**
+     * Is stop on failure?
+     *
+     * @return bool
+     */
+    public function isStopOnFailure()
+    {
+        return (bool) $this->container->getParameter('stop_on_failure');
+    }
+
+    /**
+     * Is ignore unstaged changes?
+     *
+     * @return bool
+     */
+    public function isIgnoreUnstagedChanges()
+    {
+        return (bool) $this->container->getParameter('ignore_unstaged_changes');
+    }
+
+    /**
+     * It is to skip the success output?
+     *
+     * @return bool
+     */
+    public function isSkipSuccessOutput()
+    {
+        return (bool) $this->container->getParameter('skip_success_output');
     }
 
     /**

@@ -2,14 +2,16 @@
 
 namespace ClickNow\Checker\Process;
 
+use ClickNow\Checker\Command\CommandInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Process\Process;
 
 class AsyncProcessRunner
 {
     /**
-     * @var array
+     * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $processes;
+    private $processCollection;
 
     /**
      * @var int
@@ -17,20 +19,42 @@ class AsyncProcessRunner
     private $running;
 
     /**
+     * @var \ClickNow\Checker\Command\CommandInterface
+     */
+    private $command;
+
+    /**
+     * Async process runner.
+     */
+    public function __construct()
+    {
+        $this->processCollection = new ArrayCollection();
+    }
+
+    /**
+     * Add.
+     *
+     * @param \Symfony\Component\Process\Process $process
+     */
+    public function add(Process $process)
+    {
+        $this->processCollection->add($process);
+    }
+
+    /**
      * Run.
      *
-     * @param array $processes
+     * @param \ClickNow\Checker\Command\CommandInterface $command
      *
      * @return void
      */
-    public function run(array $processes)
+    public function run(CommandInterface $command)
     {
-        $this->processes = $processes;
         $this->running = 0;
-        $sleepDuration = $this->config->getProcessAsyncWaitTime();
+        $this->command = $command;
 
         while ($this->watchProcesses()) {
-            usleep($sleepDuration);
+            usleep($this->command->getProcessAsyncWait());
         }
     }
 
@@ -41,15 +65,11 @@ class AsyncProcessRunner
      */
     private function watchProcesses()
     {
-        foreach ($this->processes as $key => $process) {
-            $isTerminated = $this->handleProcess($process);
+        $this->processCollection = $this->processCollection->filter(function (Process $process) {
+            return !$this->handleProcess($process);
+        });
 
-            if ($isTerminated) {
-                unset($this->processes[$key]);
-            }
-        }
-
-        return count($this->processes) !== 0;
+        return !$this->processCollection->isEmpty();
     }
 
     /**
@@ -70,7 +90,7 @@ class AsyncProcessRunner
             return false;
         }
 
-        if ($this->running < $this->config->getProcessAsyncLimit()) {
+        if ($this->running < $this->command->getProcessAsyncLimit()) {
             $process->start();
             $this->running++;
         }

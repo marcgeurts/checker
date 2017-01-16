@@ -96,9 +96,11 @@ parameters:
     git_dir: "."
     hooks_dir: ~
     hooks_preset: local
+    process_timeout: 60
+    process_async_wait: 1000
+    process_async_limit: 10
     stop_on_failure: false
     ignore_unstaged_changes: false
-    process_timeout: 60
     skip_success_output: false
     message:
         successfully: successfully.txt
@@ -156,6 +158,30 @@ echo 'cd /remote/path/to/your/project' >> ~/.bashrc
 You can also add the `.bashrc` or `.zshrc` to your vagrant provision script.
 This way the home directory will be set for all the people who are using your vagrant box.
 
+### process_timeout
+
+*Default: 60*
+
+Uses the Symfony Process component to run external actions.
+The component will trigger a timeout after 60 seconds by default.
+If you've got tools that run more then 60 seconds, you can increase this parameter.
+It is also possible to disable the timeout by setting the value to `null`.
+
+### process_async_wait
+
+*Default: 1000*
+
+This parameter controls how long will wait (in microseconds)
+before checking the status of all asynchronous processes.
+
+### process_async_limit
+
+*Default: 10*
+
+This parameter controls how many asynchronous processes will run simultaneously. 
+Please note that not all external tasks uses asynchronous processes,
+nor would they necessarily benefit from using it.
+
 ### stop_on_failure
 
 *Default: false*
@@ -171,15 +197,6 @@ By enabling this option, will stash your unstaged changes in git before running 
 This way the actions will run with the code that is actually committed without the unstaged changes.
 Note that during the commit, the unstaged changes will be stored in git stash.
 This may mess with your working copy and result in unexpected merge conflicts.
-
-### process_timeout
-
-*Default: 60*
-
-Uses the Symfony Process component to run external actions.
-The component will trigger a timeout after 60 seconds by default.
-If you've got tools that run more then 60 seconds, you can increase this parameter.
-It is also possible to disable the timeout by setting the value to `null`.
 
 ### skip_success_output
 
@@ -293,6 +310,8 @@ Below is the list available of git hooks:
 You can also override these configurations:
 
 - process_timeout
+- process_async_wait
+- process_async_limit
 - stop_on_failure
 - ignore_unstaged_changes
 - skip_success_output
@@ -305,6 +324,8 @@ parameters:
     hooks:
         pre-commit:
             process_timeout: 30
+            process_async_wait: 500
+            process_async_limit: 30
             stop_on_failure: true
             ignore_unstaged_changes: true
             skip_success_output: true
@@ -312,6 +333,8 @@ parameters:
                 foo: ~ # Use default configuration
         pre-push:
             process_timeout: ~
+            process_async_wait: 2000
+            process_async_limit: 60
             stop_on_failure: false
             ignore_unstaged_changes: false
             skip_success_output: false
@@ -334,6 +357,8 @@ You can create as many commands as you want with custom names.
 You can also override these configurations:
 
 - process_timeout
+- process_async_wait
+- process_async_limit
 - stop_on_failure
 - ignore_unstaged_changes
 - skip_success_output
@@ -346,6 +371,8 @@ parameters:
     commands:
         name_of_command1:
             process_timeout: 30
+            process_async_wait: 500
+            process_async_limit: 30
             stop_on_failure: true
             ignore_unstaged_changes: true
             skip_success_output: true
@@ -353,6 +380,8 @@ parameters:
                 foo: ~ # Use default configuration
         name_of_command2:
             process_timeout: ~
+            process_async_wait: 2000
+            process_async_limit: 60
             stop_on_failure: false
             ignore_unstaged_changes: false
             skip_success_output: false
@@ -424,6 +453,8 @@ checker run name_of_command
 You can also override these configurations:
 
 - process_timeout
+- process_async_wait
+- process_async_limit
 - stop_on_failure
 - ignore_unstaged_changes
 - skip_success_output
@@ -540,6 +571,8 @@ checker git:post-rewrite
 You can also override these configurations:
 
 - process_timeout
+- process_async_wait
+- process_async_limit
 - stop_on_failure
 - ignore_unstaged_changes
 - skip_success_output
