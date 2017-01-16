@@ -53,41 +53,41 @@ class AsyncProcessRunner
         $this->running = 0;
         $this->command = $command;
 
-        while ($this->watchProcesses()) {
+        while ($this->hasProcesses()) {
             usleep($this->command->getProcessAsyncWait());
         }
     }
 
     /**
-     * Watch processes.
+     * Has processes?
      *
      * @return bool
      */
-    private function watchProcesses()
+    private function hasProcesses()
     {
         $this->processCollection = $this->processCollection->filter(function (Process $process) {
-            return !$this->handleProcess($process);
+            return $this->isPendingProcess($process);
         });
 
         return !$this->processCollection->isEmpty();
     }
 
     /**
-     * Handle process.
+     * Is pending process?
      *
      * @param \Symfony\Component\Process\Process $process
      *
      * @return bool
      */
-    private function handleProcess(Process $process)
+    private function isPendingProcess(Process $process)
     {
         if ($process->isStarted()) {
             if ($process->isTerminated()) {
                 $this->running--;
-                return true;
+                return false;
             }
 
-            return false;
+            return true;
         }
 
         if ($this->running < $this->command->getProcessAsyncLimit()) {
@@ -95,6 +95,6 @@ class AsyncProcessRunner
             $this->running++;
         }
 
-        return false;
+        return true;
     }
 }
