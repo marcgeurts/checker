@@ -35,7 +35,7 @@ class ResultsCollection extends ArrayCollection
     }
 
     /**
-     * Filter results by skipped.
+     * Filter by skipped.
      *
      * @return \ClickNow\Checker\Result\ResultsCollection
      */
@@ -47,7 +47,7 @@ class ResultsCollection extends ArrayCollection
     }
 
     /**
-     * Filter results by success.
+     * Filter by success.
      *
      * @return \ClickNow\Checker\Result\ResultsCollection
      */
@@ -59,7 +59,7 @@ class ResultsCollection extends ArrayCollection
     }
 
     /**
-     * Filter results by warning.
+     * Filter by warning.
      *
      * @return \ClickNow\Checker\Result\ResultsCollection
      */
@@ -71,7 +71,7 @@ class ResultsCollection extends ArrayCollection
     }
 
     /**
-     * Filter results by error.
+     * Filter by error.
      *
      * @return \ClickNow\Checker\Result\ResultsCollection
      */
@@ -83,7 +83,7 @@ class ResultsCollection extends ArrayCollection
     }
 
     /**
-     * Get all messages from results.
+     * Get all messages.
      *
      * @return array
      */

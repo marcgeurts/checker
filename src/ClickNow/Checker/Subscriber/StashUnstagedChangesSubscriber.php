@@ -107,7 +107,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
      */
     private function isStashEnabled(ContextInterface $context)
     {
-        return $context->getCommand()->isIgnoreUnstagedChanges();
+        return $context->getRunner()->isIgnoreUnstagedChanges();
     }
 
     /**

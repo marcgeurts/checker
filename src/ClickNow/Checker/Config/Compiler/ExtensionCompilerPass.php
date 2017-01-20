@@ -15,7 +15,7 @@ class ExtensionCompilerPass extends AbstractCompilerPass
     private $registered = [];
 
     /**
-     * Configure extensions.
+     * Configure.
      *
      * @throws \ClickNow\Checker\Exception\ExtensionNotFoundException
      *

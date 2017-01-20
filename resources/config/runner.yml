@@ -1,0 +1,21 @@
+services:
+  runner.commands-collection:
+    class: ClickNow\Checker\Runner\CommandsCollection
+
+  runner.git-hook.commit-msg:
+    class: ClickNow\Checker\Runner\Runner
+    arguments:
+      - '@checker'
+      - 'commit-msg'
+
+  runner.git-hook.pre-commit:
+    class: ClickNow\Checker\Runner\Runner
+    arguments:
+      - '@checker'
+      - 'pre-commit'
+
+  runner.git-hook.pre-push:
+    class: ClickNow\Checker\Runner\Runner
+    arguments:
+      - '@checker'
+      - 'pre-push'

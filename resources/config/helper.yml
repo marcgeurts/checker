@@ -1,0 +1,14 @@
+services:
+  helper.paths:
+    class: ClickNow\Checker\Helper\PathsHelper
+    arguments:
+      - '@checker'
+      - '@filesystem'
+      - '@process.executable-finder'
+      - '@console.config-file'
+
+  helper.runner:
+    class: ClickNow\Checker\Helper\RunnerHelper
+    arguments:
+      - '@event-dispatcher'
+      - '@io'

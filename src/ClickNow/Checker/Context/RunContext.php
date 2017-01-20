@@ -2,15 +2,15 @@
 
 namespace ClickNow\Checker\Context;
 
-use ClickNow\Checker\Command\CommandInterface;
 use ClickNow\Checker\Repository\FilesCollection;
+use ClickNow\Checker\Runner\RunnerInterface;
 
 class RunContext implements ContextInterface
 {
     /**
-     * @var \ClickNow\Checker\Command\CommandInterface
+     * @var \ClickNow\Checker\Runner\RunnerInterface
      */
-    private $command;
+    private $runner;
 
     /**
      * @var \ClickNow\Checker\Repository\FilesCollection
@@ -20,23 +20,23 @@ class RunContext implements ContextInterface
     /**
      * Run context.
      *
-     * @param \ClickNow\Checker\Command\CommandInterface   $command
+     * @param \ClickNow\Checker\Runner\RunnerInterface     $runner
      * @param \ClickNow\Checker\Repository\FilesCollection $files
      */
-    public function __construct(CommandInterface $command, FilesCollection $files)
+    public function __construct(RunnerInterface $runner, FilesCollection $files)
     {
-        $this->command = $command;
+        $this->runner = $runner;
         $this->files = $files;
     }
 
     /**
-     * Get command.
+     * Get runner.
      *
-     * @return \ClickNow\Checker\Command\CommandInterface
+     * @return \ClickNow\Checker\Runner\RunnerInterface
      */
-    public function getCommand()
+    public function getRunner()
     {
-        return $this->command;
+        return $this->runner;
     }
 
     /**

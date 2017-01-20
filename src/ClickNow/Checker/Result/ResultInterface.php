@@ -12,11 +12,11 @@ interface ResultInterface
     public function getStatus();
 
     /**
-     * Get command.
+     * Get runner.
      *
-     * @return \ClickNow\Checker\Command\CommandInterface
+     * @return \ClickNow\Checker\Runner\RunnerInterface
      */
-    public function getCommand();
+    public function getRunner();
 
     /**
      * Get context.

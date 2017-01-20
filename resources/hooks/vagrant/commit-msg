@@ -1,0 +1,41 @@
+#!/bin/sh
+
+#
+# Run the hook command.
+# $(GENERATED_MESSAGE)
+#
+
+GIT_USER_NAME=$(git config user.name)
+GIT_USER_EMAIL=$(git config user.email)
+
+# Fetch the commit message
+COMMIT_MESSAGE_FILE=$1
+COMMIT_MESSAGE=$(cat "${COMMIT_MESSAGE_FILE}")
+
+# Fetch the GIT diff and format it as command input:
+DIFF=$(git diff -r -p -m -M --full-index --staged | cat)
+
+vagrant ssh --command '$(which sh)' << COMMANDS
+
+    # Transfer the DIFF
+    DIFF=\$(cat <<- '__CHECKER_DIFF_HEREDOC__'
+        ${DIFF}
+        __CHECKER_DIFF_HEREDOC__
+    )
+
+    # Transfer the commit message
+    COMMIT_MSG=\$(cat <<- '__CHECKER_COMMIT_MESSAGE_HEREDOC__'
+        ${COMMIT_MESSAGE}
+        __CHECKER_COMMIT_MESSAGE_HEREDOC__
+    )
+
+    VAGRANT_COMMIT_MESSAGE_FILE=\$(mktemp -t "checker-commitmsg.XXXXXXXXXX")
+    echo "\${COMMIT_MESSAGE}" > \$VAGRANT_COMMIT_MESSAGE_FILE
+
+    # Run
+    printf "%s\n" "\${DIFF}" | exec $(HOOK_COMMAND) '--ansi' '--skip-success-output=true' --git-user-name='$GIT_USER_NAME' --git-user-email='$GIT_USER_EMAIL' \$VAGRANT_COMMIT_MESSAGE_FILE
+    RC=\$?
+    rm \$VAGRANT_COMMIT_MESSAGE_FILE
+    exit \$RC
+
+COMMANDS

@@ -22,33 +22,33 @@ class Checker
     }
 
     /**
-     * Get bin directory.
+     * Get bin dir.
      *
      * @return string
      */
     public function getBinDir()
     {
-        return (string) $this->container->getParameter('bin_dir');
+        return (string) $this->container->getParameter('bin-dir');
     }
 
     /**
-     * Get git directory.
+     * Get git dir.
      *
      * @return string
      */
     public function getGitDir()
     {
-        return (string) $this->container->getParameter('git_dir');
+        return (string) $this->container->getParameter('git-dir');
     }
 
     /**
-     * Get hooks directory.
+     * Get hooks dir.
      *
      * @return string
      */
     public function getHooksDir()
     {
-        return (string) $this->container->getParameter('hooks_dir');
+        return (string) $this->container->getParameter('hooks-dir');
     }
 
     /**
@@ -58,7 +58,7 @@ class Checker
      */
     public function getHooksPreset()
     {
-        return (string) $this->container->getParameter('hooks_preset');
+        return (string) $this->container->getParameter('hooks-preset');
     }
 
     /**
@@ -68,7 +68,7 @@ class Checker
      */
     public function getProcessTimeout()
     {
-        $timeout = $this->container->getParameter('process_timeout');
+        $timeout = $this->container->getParameter('process-timeout');
 
         if (is_null($timeout)) {
             return null;
@@ -84,7 +84,7 @@ class Checker
      */
     public function getProcessAsyncWait()
     {
-        return (int) $this->container->getParameter('process_async_wait');
+        return (int) $this->container->getParameter('process-async-wait');
     }
 
     /**
@@ -94,7 +94,7 @@ class Checker
      */
     public function getProcessAsyncLimit()
     {
-        return (int) $this->container->getParameter('process_async_limit');
+        return (int) $this->container->getParameter('process-async-limit');
     }
 
     /**
@@ -104,7 +104,7 @@ class Checker
      */
     public function isStopOnFailure()
     {
-        return (bool) $this->container->getParameter('stop_on_failure');
+        return (bool) $this->container->getParameter('stop-on-failure');
     }
 
     /**
@@ -114,21 +114,21 @@ class Checker
      */
     public function isIgnoreUnstagedChanges()
     {
-        return (bool) $this->container->getParameter('ignore_unstaged_changes');
+        return (bool) $this->container->getParameter('ignore-unstaged-changes');
     }
 
     /**
-     * It is to skip the success output?
+     * Is skip success output?
      *
      * @return bool
      */
     public function isSkipSuccessOutput()
     {
-        return (bool) $this->container->getParameter('skip_success_output');
+        return (bool) $this->container->getParameter('skip-success-output');
     }
 
     /**
-     * Get message by resource.
+     * Get message.
      *
      * @param string $resource
      *

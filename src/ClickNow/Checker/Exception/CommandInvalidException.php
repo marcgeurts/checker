@@ -15,7 +15,7 @@ class CommandInvalidException extends CommandException
         $msg = $message;
 
         if ($msg === null) {
-            $msg = sprintf('Command `%s` must implement CommandInterface.', $commandName);
+            $msg = sprintf('Command `%s` must implement RunnerInterface.', $commandName);
         }
 
         parent::__construct($commandName, $msg);

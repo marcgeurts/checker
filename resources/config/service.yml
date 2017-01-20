@@ -1,0 +1,19 @@
+services:
+  checker:
+    class: ClickNow\Checker\Config\Checker
+    arguments:
+      - '@service_container'
+
+  event-dispatcher:
+    class: Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
+    arguments:
+      - '@service_container'
+
+  executable-finder:
+    class: Symfony\Component\Process\ExecutableFinder
+
+  filesystem:
+    class: Symfony\Component\Filesystem\Filesystem
+
+  process-builder:
+    class: Symfony\Component\Process\ProcessBuilder

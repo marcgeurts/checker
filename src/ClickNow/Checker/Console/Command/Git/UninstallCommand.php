@@ -3,7 +3,6 @@
 namespace ClickNow\Checker\Console\Command\Git;
 
 use ClickNow\Checker\IO\IOInterface;
-use ClickNow\Checker\Repository\Git;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,29 +21,27 @@ class UninstallCommand extends Command
     private $io;
 
     /**
+     * @var array
+     */
+    private $gitHooks;
+
+    /**
      * Uninstall command.
      *
      * @param \Symfony\Component\Filesystem\Filesystem $filesystem
      * @param \ClickNow\Checker\IO\IOInterface         $io
+     * @param array                                    $gitHooks
      */
-    public function __construct(Filesystem $filesystem, IOInterface $io)
+    public function __construct(Filesystem $filesystem, IOInterface $io, array $gitHooks)
     {
         $this->filesystem = $filesystem;
         $this->io = $io;
+        $this->gitHooks = array_keys($gitHooks);
+
+        $this->setName('git:uninstall');
+        $this->setDescription('Uninstall git hooks');
 
         parent::__construct();
-    }
-
-    /**
-     * Configure.
-     *
-     * @return void
-     */
-    protected function configure()
-    {
-        $this
-            ->setName('git:uninstall')
-            ->setDescription('Uninstall git hooks');
     }
 
     /**
@@ -58,13 +55,12 @@ class UninstallCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->io->title('Checker are uninstalling in git hooks!');
-
         $gitHooksDir = $this->paths()->getGitHooksDir();
 
-        foreach (Git::$hooks as $hook) {
-            $hookPath = $gitHooksDir.$hook;
-            $this->removeGitHook($hookPath);
-            $this->restoreGitHook($hookPath);
+        foreach ($this->gitHooks as $gitHook) {
+            $gitHookPath = $gitHooksDir.$gitHook;
+            $this->removeGitHook($gitHookPath);
+            $this->restoreGitHook($gitHookPath);
         }
 
         $this->io->note('To install again use the command `git:install`.');
@@ -74,41 +70,41 @@ class UninstallCommand extends Command
     /**
      * Remove git hook.
      *
-     * @param string $hookPath
+     * @param string $path
      *
      * @return void
      */
-    private function removeGitHook($hookPath)
+    private function removeGitHook($path)
     {
-        if (!$this->filesystem->exists($hookPath)) {
+        if (!$this->filesystem->exists($path)) {
             return;
         }
 
-        $this->io->log(sprintf('Checker remove git hook `%s`.', $hookPath));
-        $this->filesystem->remove($hookPath);
+        $this->io->log(sprintf('Checker remove git hook `%s`.', $path));
+        $this->filesystem->remove($path);
     }
 
     /**
      * Restore git hook.
      *
-     * @param string $hookPath
+     * @param string $path
      *
      * @return void
      */
-    private function restoreGitHook($hookPath)
+    private function restoreGitHook($path)
     {
-        if (!$this->filesystem->exists($hookPath.'.checker')) {
+        if (!$this->filesystem->exists($path.'.checker')) {
             return;
         }
 
-        $this->io->log(sprintf('Checker restore git hook `%s` to `%s`.', $hookPath.'.checker', $hookPath));
-        $this->filesystem->rename($hookPath.'.checker', $hookPath);
+        $this->io->log(sprintf('Checker restore git hook `%s` to `%s`.', $path.'.checker', $path));
+        $this->filesystem->rename($path.'.checker', $path);
     }
 
     /**
      * Paths helper.
      *
-     * @return \ClickNow\Checker\Console\Helper\PathsHelper
+     * @return \ClickNow\Checker\Helper\PathsHelper
      */
     private function paths()
     {

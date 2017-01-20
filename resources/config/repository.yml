@@ -1,0 +1,12 @@
+services:
+  repository.finder-files:
+    class: ClickNow\Checker\Repository\FinderFiles
+    arguments:
+      - '@repository.git'
+      - '@filesystem'
+
+  repository.git:
+    class: Gitonomy\Git\Repository
+    arguments:
+      - '%git-dir%'
+      - { logger: '@logger' }

@@ -1,0 +1,32 @@
+#!/bin/sh
+
+#
+# Run the hook command.
+# $(GENERATED_MESSAGE)
+#
+
+z40=0000000000000000000000000000000000000000
+
+while read local_ref local_sha remote_ref remote_sha
+do
+    if [ "$local_sha" = $z40 ]
+    then
+        # Handle delete
+        :
+    else
+        if [ "$remote_sha" = $z40 ]
+        then
+            # New branch, examine all commits
+            range="$local_sha"
+        else
+            # Update to existing branch, examine new commits
+            range="$remote_sha..$local_sha"
+        fi
+
+        # Fetch the GIT diff and format it as command input:
+        DIFF=$(git diff -r -p -m -M --full-index "$remote"/"$local_ref" | cat)
+
+        # Run
+        (cd "${HOOK_EXEC_PATH}" && printf "%s\n" "${DIFF}" | exec $(HOOK_COMMAND) '--ansi' '--skip-success-output=true')
+    fi
+done

@@ -33,7 +33,7 @@ class ConsoleIO extends SymfonyStyle implements IOInterface
     }
 
     /**
-     * Is this input means interactive?
+     * Is interactive?
      *
      * @return bool
      */

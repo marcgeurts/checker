@@ -2,11 +2,11 @@
 
 namespace ClickNow\Checker\Subscriber;
 
-use ClickNow\Checker\Command\CommandInterface;
-use ClickNow\Checker\Console\Helper\PathsHelper;
 use ClickNow\Checker\Event\RunnerEvent;
+use ClickNow\Checker\Helper\PathsHelper;
 use ClickNow\Checker\IO\IOInterface;
 use ClickNow\Checker\Result\ResultsCollection;
+use ClickNow\Checker\Runner\RunnerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ReportSubscriber implements EventSubscriberInterface
@@ -17,15 +17,15 @@ class ReportSubscriber implements EventSubscriberInterface
     private $io;
 
     /**
-     * @var \ClickNow\Checker\Console\Helper\PathsHelper
+     * @var \ClickNow\Checker\Helper\PathsHelper
      */
     private $paths;
 
     /**
      * Progress subscriber.
      *
-     * @param \ClickNow\Checker\IO\IOInterface             $io
-     * @param \ClickNow\Checker\Console\Helper\PathsHelper $paths
+     * @param \ClickNow\Checker\IO\IOInterface     $io
+     * @param \ClickNow\Checker\Helper\PathsHelper $paths
      */
     public function __construct(IOInterface $io, PathsHelper $paths)
     {
@@ -60,48 +60,48 @@ class ReportSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $command = $event->getContext()->getCommand();
-        $this->report($command, $results);
+        $runner = $event->getContext()->getRunner();
+        $this->report($runner, $results);
     }
 
     /**
      * Report.
      *
-     * @param \ClickNow\Checker\Command\CommandInterface $command
+     * @param \ClickNow\Checker\Runner\RunnerInterface   $runner
      * @param \ClickNow\Checker\Result\ResultsCollection $results
      *
      * @return void
      */
-    private function report(CommandInterface $command, ResultsCollection $results)
+    private function report(RunnerInterface $runner, ResultsCollection $results)
     {
         $warning = $results->filterByWarning();
 
         if ($results->isFailed()) {
-            $this->reportError($command, $results->filterByError(), $warning);
+            $this->reportError($runner, $results->filterByError(), $warning);
 
             return;
         }
 
-        if ($command->isSkipSuccessOutput()) {
+        if ($runner->isSkipSuccessOutput()) {
             $this->reportWarning($warning);
 
             return;
         }
 
-        $this->reportSuccess($command, $warning);
+        $this->reportSuccess($runner, $warning);
     }
 
     /**
      * Report success.
      *
-     * @param \ClickNow\Checker\Command\CommandInterface $command
+     * @param \ClickNow\Checker\Runner\RunnerInterface   $runner
      * @param \ClickNow\Checker\Result\ResultsCollection $warnings
      *
      * @return void
      */
-    private function reportSuccess(CommandInterface $command, ResultsCollection $warnings)
+    private function reportSuccess(RunnerInterface $runner, ResultsCollection $warnings)
     {
-        $successMessage = $this->paths->getMessage($command->getMessage('successfully'));
+        $successMessage = $this->paths->getMessage($runner->getMessage('successfully'));
         if ($successMessage !== null) {
             $this->io->text(sprintf('<fg=green>%s</fg=green>', $successMessage));
         }
@@ -127,15 +127,15 @@ class ReportSubscriber implements EventSubscriberInterface
     /**
      * Report error.
      *
-     * @param \ClickNow\Checker\Command\CommandInterface $command
+     * @param \ClickNow\Checker\Runner\RunnerInterface   $runner
      * @param \ClickNow\Checker\Result\ResultsCollection $errors
      * @param \ClickNow\Checker\Result\ResultsCollection $warnings
      *
      * @return void
      */
-    private function reportError(CommandInterface $command, ResultsCollection $errors, ResultsCollection $warnings)
+    private function reportError(RunnerInterface $runner, ResultsCollection $errors, ResultsCollection $warnings)
     {
-        $errorMessage = $this->paths->getMessage($command->getMessage('failed'));
+        $errorMessage = $this->paths->getMessage($runner->getMessage('failed'));
         if ($errorMessage !== null) {
             $this->io->text(sprintf('<fg=red>%s</fg=red>', $errorMessage));
         }

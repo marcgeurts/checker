@@ -4,7 +4,7 @@ namespace ClickNow\Checker\Config;
 
 use ClickNow\Checker\Config\Compiler\CommandCompilerPass;
 use ClickNow\Checker\Config\Compiler\ExtensionCompilerPass;
-use ClickNow\Checker\Config\Compiler\HookCompilerPass;
+use ClickNow\Checker\Config\Compiler\GitHookCompilerPass;
 use ClickNow\Checker\Config\Compiler\TaskCompilerPass;
 use Symfony\Bridge\ProxyManager\LazyProxy\Instantiator\RuntimeInstantiator;
 use Symfony\Component\Config\FileLocator;
@@ -54,7 +54,7 @@ final class ContainerFactory
         // 1. Extensions were registered
         // 2. Tasks merged default config
         // 3. Commands with their tasks and commands are added to the CommandsCollection
-        // 4. Hooks are configured with their tasks and commands
+        // 4. Git hooks are configured with their tasks and commands
         $container->containerBuilder->compile();
 
         return $container->containerBuilder;
@@ -70,9 +70,9 @@ final class ContainerFactory
         $this->containerBuilder->addCompilerPass(new ExtensionCompilerPass());
         $this->containerBuilder->addCompilerPass(new TaskCompilerPass());
         $this->containerBuilder->addCompilerPass(new CommandCompilerPass());
-        $this->containerBuilder->addCompilerPass(new HookCompilerPass());
+        $this->containerBuilder->addCompilerPass(new GitHookCompilerPass());
         $this->containerBuilder->addCompilerPass(
-            new RegisterListenersPass('event_dispatcher', 'checker.event_listener', 'checker.event_subscriber')
+            new RegisterListenersPass('event-dispatcher', 'checker.event-listener', 'checker.event-subscriber')
         );
     }
 
@@ -85,7 +85,7 @@ final class ContainerFactory
      */
     private function loadServices($configPath)
     {
-        $loader = new YamlFileLoader($this->containerBuilder, new FileLocator(__DIR__.'/../../../resources/config'));
+        $loader = new YamlFileLoader($this->containerBuilder, new FileLocator(__DIR__.'/../../../../resources/config'));
         $loader->load('config.yml');
 
         if ($this->filesystem->exists($configPath)) {

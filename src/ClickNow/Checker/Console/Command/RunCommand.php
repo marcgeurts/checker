@@ -2,137 +2,71 @@
 
 namespace ClickNow\Checker\Console\Command;
 
-use ClickNow\Checker\Command\CommandInterface;
-use ClickNow\Checker\Command\CommandsCollection;
 use ClickNow\Checker\Context\RunContext;
 use ClickNow\Checker\Exception\CommandInvalidException;
 use ClickNow\Checker\Exception\CommandNotFoundException;
-use ClickNow\Checker\Repository\Git;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use ClickNow\Checker\Repository\FinderFiles;
+use ClickNow\Checker\Runner\CommandsCollection;
+use ClickNow\Checker\Runner\RunnerInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 
-class RunCommand extends SymfonyCommand
+class RunCommand extends AbstractRunnerCommand
 {
     /**
-     * @var \ClickNow\Checker\Command\CommandsCollection
+     * @var \ClickNow\Checker\Runner\CommandsCollection
      */
     private $commandsCollection;
 
     /**
-     * @var \ClickNow\Checker\Repository\Git
-     */
-    private $git;
-
-    /**
-     * Hook command.
+     * Run command.
      *
-     * @param \ClickNow\Checker\Command\CommandsCollection $commandsCollection
-     * @param \ClickNow\Checker\Repository\Git             $git
+     * @param \ClickNow\Checker\Runner\CommandsCollection $commandsCollection
+     * @param \ClickNow\Checker\Repository\FinderFiles    $finderFiles
      */
-    public function __construct(CommandsCollection $commandsCollection, Git $git)
+    public function __construct(CommandsCollection $commandsCollection, FinderFiles $finderFiles)
     {
         $this->commandsCollection = $commandsCollection;
-        $this->git = $git;
 
-        parent::__construct();
+        parent::__construct($finderFiles, 'run', 'Run specified command name.');
+
+        $this->addArgument('name', InputArgument::REQUIRED, 'The command name to be executed.');
     }
 
     /**
-     * Configure.
+     * Context.
      *
-     * @return void
+     * @return \ClickNow\Checker\Context\ContextInterface
      */
-    protected function configure()
+    protected function context()
     {
-        $this
-            ->setName('run')
-            ->setDescription('Run specified command name')
-            ->addArgument('name', InputArgument::REQUIRED, 'The command name to be executed')
-            ->addOption('process-timeout', null, InputOption::VALUE_REQUIRED, 'Process timeout.')
-            ->addOption('stop-on-failure', null, InputOption::VALUE_REQUIRED, 'Stop on failure.')
-            ->addOption('ignore-unstaged-changes', null, InputOption::VALUE_REQUIRED, 'Ignore unstaged changes.')
-            ->addOption('skip-success-output', null, InputOption::VALUE_REQUIRED, 'Skip success output.');
+        return new RunContext(
+            $this->getRunner($this->input->getArgument('name')),
+            $this->finderFiles->getRegisteredFiles()
+        );
     }
 
     /**
-     * Execute.
-     *
-     * @param \Symfony\Component\Console\Input\InputInterface   $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     *
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $command = $this->getCommand($input->getArgument('name'));
-        $command->setConfig($this->parseConfig($input));
-
-        $files = $this->git->getRegisteredFiles();
-        $context = new RunContext($command, $files);
-
-        return $this->runner()->run($context);
-    }
-
-    /**
-     * Get command by name.
+     * Get command.
      *
      * @param string $name
      *
      * @throws \ClickNow\Checker\Exception\CommandNotFoundException
      * @throws \ClickNow\Checker\Exception\CommandInvalidException
      *
-     * @return \ClickNow\Checker\Command\CommandInterface
+     * @return \ClickNow\Checker\Runner\RunnerInterface
      */
-    private function getCommand($name)
+    private function getRunner($name)
     {
         if (!$this->commandsCollection->containsKey($name)) {
             throw new CommandNotFoundException($name);
         }
 
-        $command = $this->commandsCollection->get($name);
+        $runner = $this->commandsCollection->get($name);
 
-        if (!$command instanceof CommandInterface) {
+        if (!$runner instanceof RunnerInterface) {
             throw new CommandInvalidException($name);
         }
 
-        return $command;
-    }
-
-    /**
-     * Parse config.
-     *
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     *
-     * @return array
-     */
-    private function parseConfig(InputInterface $input)
-    {
-        $config = [];
-
-        if (!is_null($input->getOption('process-timeout'))) {
-            $config['process_timeout'] = (float) $input->getOption('process-timeout');
-        }
-
-        $options = ['stop-on-failure', 'ignore-unstaged-changes', 'skip-success-output'];
-        foreach ($options as $option) {
-            if (!is_null($input->getOption($option))) {
-                $config[str_replace('-', '_', $option)] = (bool) $input->getOption($option);
-            }
-        }
-
-        return $config;
-    }
-
-    /**
-     * Runner helper.
-     *
-     * @return \ClickNow\Checker\Console\Helper\RunnerHelper
-     */
-    private function runner()
-    {
-        return $this->getHelperSet()->get('runner');
+        return $runner;
     }
 }

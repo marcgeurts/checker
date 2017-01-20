@@ -2,8 +2,8 @@
 
 namespace ClickNow\Checker\Process;
 
-use ClickNow\Checker\Command\CommandInterface;
 use ClickNow\Checker\IO\IOInterface;
+use ClickNow\Checker\Runner\RunnerInterface;
 use Symfony\Component\Process\ProcessBuilder as SymfonyProcessBuilder;
 
 class ProcessBuilder
@@ -66,14 +66,14 @@ class ProcessBuilder
      * Build process.
      *
      * @param \ClickNow\Checker\Process\ArgumentsCollection $arguments
-     * @param \ClickNow\Checker\Command\CommandInterface    $command
+     * @param \ClickNow\Checker\Runner\RunnerInterface      $runner
      *
      * @return \Symfony\Component\Process\Process
      */
-    public function buildProcess(ArgumentsCollection $arguments, CommandInterface $command)
+    public function buildProcess(ArgumentsCollection $arguments, RunnerInterface $runner)
     {
         $builder = $this->processBuilder->setArguments($arguments->getValues());
-        $builder->setTimeout($command->getProcessTimeout());
+        $builder->setTimeout($runner->getProcessTimeout());
         $process = $builder->getProcess();
         $commandLine = $process->getCommandLine();
 

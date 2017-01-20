@@ -8,7 +8,7 @@ use Symfony\Component\Console\Style\StyleInterface;
 interface IOInterface extends OutputInterface, StyleInterface
 {
     /**
-     * Is this input means interactive?
+     * Is interactive?
      *
      * @return bool
      */

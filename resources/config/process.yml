@@ -1,0 +1,23 @@
+services:
+  process.async-process-runner:
+    class: ClickNow\Checker\Process\AsyncProcessRunner
+
+  process.executable-finder:
+    class: ClickNow\Checker\Process\ExecutableFinder
+    arguments:
+      - '%bin-dir%'
+      - '@executable-finder'
+
+  process.platform:
+    class: ClickNow\Checker\Process\Platform
+    arguments:
+      - '@process-builder'
+      - '@io'
+
+  process.process-builder:
+    class: ClickNow\Checker\Process\ProcessBuilder
+    arguments:
+      - '@process.executable-finder'
+      - '@process-builder'
+      - '@io'
+      - '@process.platform'

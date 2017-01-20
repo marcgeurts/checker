@@ -2,13 +2,13 @@
 
 namespace ClickNow\Checker\Task;
 
-use ClickNow\Checker\Command\CommandInterface;
 use ClickNow\Checker\Context\ContextInterface;
 use ClickNow\Checker\Formatter\ProcessFormatterInterface;
 use ClickNow\Checker\Process\ArgumentsCollection;
 use ClickNow\Checker\Process\ProcessBuilder;
 use ClickNow\Checker\Repository\FilesCollection;
 use ClickNow\Checker\Result\Result;
+use ClickNow\Checker\Runner\RunnerInterface;
 
 abstract class AbstractExternalTask extends AbstractTask
 {
@@ -60,7 +60,7 @@ abstract class AbstractExternalTask extends AbstractTask
      *
      * @param array                                        $config
      * @param \ClickNow\Checker\Repository\FilesCollection $files
-     * @param \ClickNow\Checker\Command\CommandInterface   $command
+     * @param \ClickNow\Checker\Runner\RunnerInterface     $runner
      * @param \ClickNow\Checker\Context\ContextInterface   $context
      *
      * @return \ClickNow\Checker\Result\ResultInterface
@@ -68,18 +68,18 @@ abstract class AbstractExternalTask extends AbstractTask
     protected function execute(
         array $config,
         FilesCollection $files,
-        CommandInterface $command,
+        RunnerInterface $runner,
         ContextInterface $context
     ) {
         $arguments = $this->processBuilder->createArgumentsForCommand($this->getCommandName());
         $this->addArguments($arguments, $config, $files);
-        $process = $this->processBuilder->buildProcess($arguments, $command);
+        $process = $this->processBuilder->buildProcess($arguments, $runner);
         $process->run();
 
         if (!$process->isSuccessful()) {
-            return Result::error($command, $context, $this, $this->processFormatter->format($process));
+            return Result::error($runner, $context, $this, $this->processFormatter->format($process));
         }
 
-        return Result::success($command, $context, $this);
+        return Result::success($runner, $context, $this);
     }
 }

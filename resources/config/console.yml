@@ -1,0 +1,52 @@
+services:
+  console.input:
+    class: Symfony\Component\Console\Input\ArgvInput
+    synthetic: true
+
+  console.output:
+    class: Symfony\Component\Console\Output\ConsoleOutput
+    synthetic: true
+
+  console.config-file:
+    class: ClickNow\Checker\Console\ConfigFile
+    synthetic: true
+
+  console.command.run:
+    class: ClickNow\Checker\Console\Command\RunCommand
+    arguments:
+      - '@runner.commands-collection'
+      - '@repository.finder-files'
+
+  console.command.git.install:
+    class: ClickNow\Checker\Console\Command\Git\InstallCommand
+    arguments:
+      - '@checker'
+      - '@filesystem'
+      - '@io'
+      - '@process-builder'
+      - '%git-hooks%'
+
+  console.command.git.commit-msg:
+    class: ClickNow\Checker\Console\Command\Git\CommitMsgCommand
+    arguments:
+      - '@runner.git-hook.commit-msg'
+      - '@repository.finder-files'
+
+  console.command.git.pre-commit:
+    class: ClickNow\Checker\Console\Command\Git\PreCommitCommand
+    arguments:
+      - '@runner.git-hook.pre-commit'
+      - '@repository.finder-files'
+
+  console.command.git.pre-push:
+    class: ClickNow\Checker\Console\Command\Git\PrePushCommand
+    arguments:
+      - '@runner.git-hook.pre-push'
+      - '@repository.finder-files'
+
+  console.command.git.uninstall:
+    class: ClickNow\Checker\Console\Command\Git\UninstallCommand
+    arguments:
+      - '@filesystem'
+      - '@io'
+      - '%git-hooks%'

@@ -1,0 +1,3 @@
+services:
+  formatter.raw-process:
+    class: ClickNow\Checker\Formatter\RawProcessFormatter

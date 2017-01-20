@@ -5,7 +5,7 @@ namespace ClickNow\Checker\Config\Compiler;
 class TaskCompilerPass extends AbstractCompilerPass
 {
     /**
-     * Configure tasks.
+     * Configure.
      *
      * @return void
      */

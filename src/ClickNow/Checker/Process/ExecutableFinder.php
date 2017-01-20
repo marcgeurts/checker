@@ -41,13 +41,12 @@ class ExecutableFinder
      */
     public function find($command, $forceUnix = false)
     {
-        // Search executable
         $executable = $this->executableFinder->find($command, null, [$this->binDir]);
+
         if (!$executable) {
             throw new ExecutableNotFoundException($command);
         }
 
-        // Make sure to add unix-style directory separators if unix-mode is enforced
         if ($forceUnix) {
             $parts = pathinfo($executable);
             $executable = $parts['dirname'].'/'.$parts['filename'];

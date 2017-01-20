@@ -5,7 +5,6 @@ namespace ClickNow\Checker\Console\Command\Git;
 use ClickNow\Checker\Config\Checker;
 use ClickNow\Checker\Exception\FileNotFoundException;
 use ClickNow\Checker\IO\IOInterface;
-use ClickNow\Checker\Repository\Git;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -37,6 +36,11 @@ class InstallCommand extends Command
     private $processBuilder;
 
     /**
+     * @var array
+     */
+    private $gitHooks;
+
+    /**
      * @var \Symfony\Component\Console\Input\InputInterface
      */
     private $input;
@@ -48,31 +52,25 @@ class InstallCommand extends Command
      * @param \Symfony\Component\Filesystem\Filesystem  $filesystem
      * @param \ClickNow\Checker\IO\IOInterface          $io
      * @param \Symfony\Component\Process\ProcessBuilder $processBuilder
+     * @param array                                     $gitHooks
      */
     public function __construct(
         Checker $checker,
         Filesystem $filesystem,
         IOInterface $io,
-        ProcessBuilder $processBuilder
+        ProcessBuilder $processBuilder,
+        array $gitHooks
     ) {
         $this->checker = $checker;
         $this->filesystem = $filesystem;
         $this->io = $io;
         $this->processBuilder = $processBuilder;
+        $this->gitHooks = array_keys($gitHooks);
+
+        $this->setName('git:install');
+        $this->setDescription('Install git hooks');
 
         parent::__construct();
-    }
-
-    /**
-     * Configure.
-     *
-     * @return void
-     */
-    protected function configure()
-    {
-        $this
-            ->setName('git:install')
-            ->setDescription('Install git hooks');
     }
 
     /**
@@ -89,11 +87,11 @@ class InstallCommand extends Command
         $this->io->title('Checker are installing in git hooks!');
         $gitHooksDir = $this->getGitHooksDir();
 
-        foreach (Git::$hooks as $hook) {
-            $hookPath = $gitHooksDir.$hook;
-            $hookTemplate = $this->getHookTemplate($hook);
-            $this->backupGitHook($hookPath);
-            $this->createGitHook($hook, $hookPath, $hookTemplate);
+        foreach ($this->gitHooks as $gitHook) {
+            $gitHookPath = $gitHooksDir.$gitHook;
+            $hookTemplate = $this->getHookTemplate($gitHook);
+            $this->backupGitHook($gitHookPath);
+            $this->createGitHook($gitHook, $gitHookPath, $hookTemplate);
         }
 
         $this->io->success('Checker was installed in git hooks successfully! Very nice...');
@@ -119,100 +117,75 @@ class InstallCommand extends Command
     /**
      * Get hook template.
      *
-     * @param string $hook
+     * @param string $name
      *
      * @throws \ClickNow\Checker\Exception\FileNotFoundException
      *
      * @return string
      */
-    private function getHookTemplate($hook)
+    private function getHookTemplate($name)
     {
         $resourcePath = $this->paths()->getGitHookTemplatesDir().$this->checker->getHooksPreset();
-        $resourcePath = $this->paths()->getPathWithTrailingSlash($resourcePath);
-        $hookTemplate = $this->filesystem->exists($resourcePath.$hook) ? $resourcePath.$hook : $resourcePath.'all';
-
         $customPath = $this->paths()->getPathWithTrailingSlash($this->checker->getHooksDir());
-        if ($customPath) {
-            $hookTemplate = $this->getCustomHookTemplate($customPath, $hook, $hookTemplate);
+        $template = $this->paths()->getPathWithTrailingSlash($resourcePath).$name;
+
+        if ($customPath && $this->filesystem->exists($customPath.$name)) {
+            $template = $customPath.$name;
         }
 
-        if (!$this->filesystem->exists($hookTemplate)) {
-            throw new FileNotFoundException(
-                sprintf('Could not find hook template for `%s` at `%s`.', $hook, $hookTemplate)
-            );
+        if (!$this->filesystem->exists($template)) {
+            throw new FileNotFoundException(sprintf('Could not find template for `%s` at `%s`.', $name, $template));
         }
 
-        return $hookTemplate;
-    }
-
-    /**
-     * Get custom hook template.
-     *
-     * @param string $customPath
-     * @param string $hook
-     * @param string $defaultTemplate
-     *
-     * @return string
-     */
-    private function getCustomHookTemplate($customPath, $hook, $defaultTemplate)
-    {
-        if ($this->filesystem->exists($customPath.$hook)) {
-            return $customPath.$hook;
-        }
-
-        if ($this->filesystem->exists($customPath.'all')) {
-            return $customPath.'all';
-        }
-
-        return $defaultTemplate;
+        return $template;
     }
 
     /**
      * Backup git hook.
      *
-     * @param string $hookPath
+     * @param string $path
      *
      * @return void
      */
-    private function backupGitHook($hookPath)
+    private function backupGitHook($path)
     {
-        if (!$this->filesystem->exists($hookPath)) {
+        if (!$this->filesystem->exists($path)) {
             return;
         }
 
-        $content = file_get_contents($hookPath);
+        $content = file_get_contents($path);
 
         if (strpos($content, self::GENERATED_MESSAGE) !== false) {
             return;
         }
 
-        $this->io->log(sprintf('Checker backup git hook `%s` to `%s`.', $hookPath, $hookPath.'.checker'));
-        $this->filesystem->rename($hookPath, $hookPath.'.checker', true);
+        $this->io->log(sprintf('Checker backup git hook `%s` to `%s`.', $path, $path.'.checker'));
+        $this->filesystem->rename($path, $path.'.checker', true);
     }
 
     /**
      * Create git hook.
      *
-     * @param string $hook
-     * @param string $hookPath
-     * @param string $hookTemplate
+     * @param string $name
+     * @param string $path
+     * @param string $template
      *
      * @return void
      */
-    private function createGitHook($hook, $hookPath, $hookTemplate)
+    private function createGitHook($name, $path, $template)
     {
-        $this->io->log(sprintf('Checker create git hook `%s`.', $hookPath));
+        $this->io->log(sprintf('Checker create git hook `%s`.', $path));
 
-        $content = file_get_contents($hookTemplate);
+        $content = file_get_contents($template);
         $replacements = [
             '$(GENERATED_MESSAGE)' => self::GENERATED_MESSAGE,
             '${HOOK_EXEC_PATH}'    => $this->paths()->getGitHookExecutionPath(),
-            '$(HOOK_COMMAND)'      => $this->generateHookCommand('git:'.$hook),
+            '$(HOOK_COMMAND)'      => $this->generateHookCommand('git:'.$name),
         ];
 
         $content = str_replace(array_keys($replacements), array_values($replacements), $content);
-        $this->filesystem->dumpFile($hookPath, $content);
-        $this->filesystem->chmod($hookPath, 0775);
+        $this->filesystem->dumpFile($path, $content);
+        $this->filesystem->chmod($path, 0775);
     }
 
     /**
@@ -261,7 +234,7 @@ class InstallCommand extends Command
     /**
      * Paths helper.
      *
-     * @return \ClickNow\Checker\Console\Helper\PathsHelper
+     * @return \ClickNow\Checker\Helper\PathsHelper
      */
     private function paths()
     {

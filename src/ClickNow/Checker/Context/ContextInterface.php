@@ -5,11 +5,11 @@ namespace ClickNow\Checker\Context;
 interface ContextInterface
 {
     /**
-     * Get command.
+     * Get runner.
      *
-     * @return \ClickNow\Checker\Command\CommandInterface
+     * @return \ClickNow\Checker\Runner\RunnerInterface
      */
-    public function getCommand();
+    public function getRunner();
 
     /**
      * Get files.

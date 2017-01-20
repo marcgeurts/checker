@@ -31,7 +31,7 @@ class Platform
     }
 
     /**
-     * Validate command line max length
+     * Validate command line max length.
      *
      * @param string $commandLine
      *
@@ -57,7 +57,7 @@ class Platform
     }
 
     /**
-     * Get command line max length
+     * Get command line max length.
      *
      * @return int
      */

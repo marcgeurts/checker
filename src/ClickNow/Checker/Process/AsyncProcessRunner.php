@@ -2,7 +2,7 @@
 
 namespace ClickNow\Checker\Process;
 
-use ClickNow\Checker\Command\CommandInterface;
+use ClickNow\Checker\Runner\RunnerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Process\Process;
 
@@ -19,9 +19,9 @@ class AsyncProcessRunner
     private $running;
 
     /**
-     * @var \ClickNow\Checker\Command\CommandInterface
+     * @var \ClickNow\Checker\Runner\RunnerInterface
      */
-    private $command;
+    private $runner;
 
     /**
      * Async process runner.
@@ -44,17 +44,17 @@ class AsyncProcessRunner
     /**
      * Run.
      *
-     * @param \ClickNow\Checker\Command\CommandInterface $command
+     * @param \ClickNow\Checker\Runner\RunnerInterface $runner
      *
      * @return void
      */
-    public function run(CommandInterface $command)
+    public function run(RunnerInterface $runner)
     {
         $this->running = 0;
-        $this->command = $command;
+        $this->runner = $runner;
 
         while ($this->hasProcesses()) {
-            usleep($this->command->getProcessAsyncWait());
+            usleep($this->runner->getProcessAsyncWait());
         }
     }
 
@@ -84,13 +84,14 @@ class AsyncProcessRunner
         if ($process->isStarted()) {
             if ($process->isTerminated()) {
                 $this->running--;
+
                 return false;
             }
 
             return true;
         }
 
-        if ($this->running < $this->command->getProcessAsyncLimit()) {
+        if ($this->running < $this->runner->getProcessAsyncLimit()) {
             $process->start();
             $this->running++;
         }

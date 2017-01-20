@@ -3,8 +3,8 @@
 namespace ClickNow\Checker\Result;
 
 use ClickNow\Checker\Action\ActionInterface;
-use ClickNow\Checker\Command\CommandInterface;
 use ClickNow\Checker\Context\ContextInterface;
+use ClickNow\Checker\Runner\RunnerInterface;
 
 class Result implements ResultInterface
 {
@@ -19,9 +19,9 @@ class Result implements ResultInterface
     private $status;
 
     /**
-     * @var \ClickNow\Checker\Command\CommandInterface
+     * @var \ClickNow\Checker\Runner\RunnerInterface
      */
-    private $command;
+    private $runner;
 
     /**
      * @var \ClickNow\Checker\Context\ContextInterface
@@ -42,63 +42,63 @@ class Result implements ResultInterface
      * Result.
      *
      * @param int                                        $status
-     * @param \ClickNow\Checker\Command\CommandInterface $command
+     * @param \ClickNow\Checker\Runner\RunnerInterface   $runner
      * @param \ClickNow\Checker\Context\ContextInterface $context
      * @param \ClickNow\Checker\Action\ActionInterface   $action
      * @param null|string                                $message
      */
     public function __construct(
         $status,
-        CommandInterface $command,
+        RunnerInterface $runner,
         ContextInterface $context,
         ActionInterface $action,
         $message = null
     ) {
         $this->status = $status;
-        $this->command = $command;
+        $this->runner = $runner;
         $this->context = $context;
         $this->action = $action;
         $this->message = $message;
     }
 
     /**
-     * Create result by status skipped.
+     * Skipped.
      *
-     * @param \ClickNow\Checker\Command\CommandInterface $command
+     * @param \ClickNow\Checker\Runner\RunnerInterface   $runner
      * @param \ClickNow\Checker\Context\ContextInterface $context
      * @param \ClickNow\Checker\Action\ActionInterface   $action
      *
      * @return \ClickNow\Checker\Result\ResultInterface
      */
     public static function skipped(
-        CommandInterface $command,
+        RunnerInterface $runner,
         ContextInterface $context,
         ActionInterface $action
     ) {
-        return new self(self::SKIPPED, $command, $context, $action);
+        return new self(self::SKIPPED, $runner, $context, $action);
     }
 
     /**
-     * Create result by status success.
+     * Success.
      *
-     * @param \ClickNow\Checker\Command\CommandInterface $command
+     * @param \ClickNow\Checker\Runner\RunnerInterface   $runner
      * @param \ClickNow\Checker\Context\ContextInterface $context
      * @param \ClickNow\Checker\Action\ActionInterface   $action
      *
      * @return \ClickNow\Checker\Result\ResultInterface
      */
     public static function success(
-        CommandInterface $command,
+        RunnerInterface $runner,
         ContextInterface $context,
         ActionInterface $action
     ) {
-        return new self(self::SUCCESS, $command, $context, $action);
+        return new self(self::SUCCESS, $runner, $context, $action);
     }
 
     /**
-     * Create result by status warning.
+     * Warning.
      *
-     * @param \ClickNow\Checker\Command\CommandInterface $command
+     * @param \ClickNow\Checker\Runner\RunnerInterface   $runner
      * @param \ClickNow\Checker\Context\ContextInterface $context
      * @param \ClickNow\Checker\Action\ActionInterface   $action
      * @param string                                     $message
@@ -106,18 +106,18 @@ class Result implements ResultInterface
      * @return \ClickNow\Checker\Result\ResultInterface
      */
     public static function warning(
-        CommandInterface $command,
+        RunnerInterface $runner,
         ContextInterface $context,
         ActionInterface $action,
         $message
     ) {
-        return new self(self::WARNING, $command, $context, $action, $message);
+        return new self(self::WARNING, $runner, $context, $action, $message);
     }
 
     /**
-     * Create result by status error.
+     * Error.
      *
-     * @param \ClickNow\Checker\Command\CommandInterface $command
+     * @param \ClickNow\Checker\Runner\RunnerInterface   $runner
      * @param \ClickNow\Checker\Context\ContextInterface $context
      * @param \ClickNow\Checker\Action\ActionInterface   $action
      * @param string                                     $message
@@ -125,12 +125,12 @@ class Result implements ResultInterface
      * @return \ClickNow\Checker\Result\ResultInterface
      */
     public static function error(
-        CommandInterface $command,
+        RunnerInterface $runner,
         ContextInterface $context,
         ActionInterface $action,
         $message
     ) {
-        return new self(self::ERROR, $command, $context, $action, $message);
+        return new self(self::ERROR, $runner, $context, $action, $message);
     }
 
     /**
@@ -144,13 +144,13 @@ class Result implements ResultInterface
     }
 
     /**
-     * Get command.
+     * Get runner.
      *
-     * @return \ClickNow\Checker\Command\CommandInterface
+     * @return \ClickNow\Checker\Runner\RunnerInterface
      */
-    public function getCommand()
+    public function getRunner()
     {
-        return $this->command;
+        return $this->runner;
     }
 
     /**

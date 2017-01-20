@@ -4,8 +4,6 @@ namespace ClickNow\Checker\Console;
 
 use ClickNow\Checker\Composer\ComposerUtil;
 use ClickNow\Checker\Config\ContainerFactory;
-use ClickNow\Checker\Console\Command\Git\HookCommand;
-use ClickNow\Checker\Repository\Git;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Symfony\Component\Console\Application as SymfonyConsole;
@@ -68,17 +66,13 @@ class Application extends SymfonyConsole
     protected function getDefaultCommands()
     {
         $commands = parent::getDefaultCommands();
-        array_push($commands, $this->container->get('command.run'));
-        array_push($commands, $this->container->get('command.git.install'));
-        array_push($commands, $this->container->get('command.git.uninstall'));
+        array_push($commands, $this->container->get('console.command.run'));
+        array_push($commands, $this->container->get('console.command.git.install'));
+        array_push($commands, $this->container->get('console.command.git.uninstall'));
 
-        /** @var \ClickNow\Checker\Repository\Git $git */
-        $git = $this->container->get('repository.git');
-
-        foreach (Git::$hooks as $hook) {
-            /** @var \ClickNow\Checker\Command\CommandInterface $hookCommand */
-            $hookCommand = $this->container->get(sprintf('hook.%s', $hook));
-            array_push($commands, new HookCommand($hookCommand, $git));
+        $gitHooks = array_keys((array) $this->container->getParameter('git-hooks'));
+        foreach ($gitHooks as $gitHook) {
+            array_push($commands, $this->container->get(sprintf('console.command.git.%s', $gitHook)));
         }
 
         return $commands;
@@ -93,11 +87,11 @@ class Application extends SymfonyConsole
     {
         $helperSet = parent::getDefaultHelperSet();
 
-        /** @var \ClickNow\Checker\Console\Helper\PathsHelper $paths */
+        /** @var \ClickNow\Checker\Helper\PathsHelper $paths */
         $paths = $this->container->get('helper.paths');
         $helperSet->set($paths);
 
-        /** @var \ClickNow\Checker\Console\Helper\RunnerHelper $runner */
+        /** @var \ClickNow\Checker\Helper\RunnerHelper $runner */
         $runner = $this->container->get('helper.runner');
         $helperSet->set($runner);
 
@@ -140,10 +134,10 @@ class Application extends SymfonyConsole
         $configPath = $input->getParameterOption(['--config', '-c']) ?: $this->configFile->getDefaultPath();
 
         $container = ContainerFactory::create($configPath);
-        $container->set('console.config_file', $this->configFile);
+        $container->set('console.config-file', $this->configFile);
 
         /** @var \Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher $eventDispatcher */
-        $eventDispatcher = $container->get('event_dispatcher');
+        $eventDispatcher = $container->get('event-dispatcher');
         $this->setDispatcher($eventDispatcher);
 
         return $container;

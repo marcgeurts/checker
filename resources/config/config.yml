@@ -1,0 +1,13 @@
+imports:
+  - { resource: 'console.yml' }
+  - { resource: 'formatter.yml' }
+  - { resource: 'helper.yml' }
+  - { resource: 'io.yml' }
+  - { resource: 'logger.yml' }
+  - { resource: 'parameter.yml' }
+  - { resource: 'process.yml' }
+  - { resource: 'repository.yml' }
+  - { resource: 'runner.yml' }
+  - { resource: 'service.yml' }
+  - { resource: 'subscriber.yml' }
+  - { resource: 'task.yml' }

@@ -2,7 +2,6 @@
 
 namespace ClickNow\Checker\Config\Compiler;
 
-use ClickNow\Checker\Command\Command;
 use ClickNow\Checker\Exception\CommandNotFoundException;
 use ClickNow\Checker\Exception\TaskNotFoundException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -44,26 +43,7 @@ abstract class AbstractCompilerPass implements CompilerPassInterface
     abstract protected function configure();
 
     /**
-     * Register command definition.
-     *
-     * @param string $id
-     * @param string $name
-     *
-     * @return \Symfony\Component\DependencyInjection\Definition
-     */
-    protected function registerCommand($id, $name)
-    {
-        if ($this->container->hasDefinition($id)) {
-            return $this->container->findDefinition($id);
-        }
-
-        return $this->container->register($id, Command::class)
-            ->addArgument(new Reference('checker'))
-            ->addArgument($name);
-    }
-
-    /**
-     * Add tasks in definition.
+     * Add tasks.
      *
      * @param \Symfony\Component\DependencyInjection\Definition $definition
      * @param array                                             $tasks
@@ -141,7 +121,7 @@ abstract class AbstractCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * Add commands in definition.
+     * Add commands.
      *
      * @param \Symfony\Component\DependencyInjection\Definition $definition
      * @param array                                             $commands
@@ -153,7 +133,7 @@ abstract class AbstractCompilerPass implements CompilerPassInterface
     protected function addCommands(Definition $definition, array $commands)
     {
         foreach ($commands as $name => $config) {
-            $id = 'command.'.$name;
+            $id = 'runner.command.'.$name;
 
             if (!$this->container->hasDefinition($id)) {
                 throw new CommandNotFoundException($name);

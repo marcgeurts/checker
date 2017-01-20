@@ -2,10 +2,10 @@
 
 namespace ClickNow\Checker\Task;
 
-use ClickNow\Checker\Command\CommandInterface;
 use ClickNow\Checker\Context\ContextInterface;
 use ClickNow\Checker\Repository\FilesCollection;
 use ClickNow\Checker\Result\Result;
+use ClickNow\Checker\Runner\RunnerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractTask implements TaskInterface
@@ -30,18 +30,18 @@ abstract class AbstractTask implements TaskInterface
     /**
      * Can run in context?
      *
-     * @param \ClickNow\Checker\Command\CommandInterface $command
+     * @param \ClickNow\Checker\Runner\RunnerInterface   $runner
      * @param \ClickNow\Checker\Context\ContextInterface $context
      *
      * @return bool
      */
-    public function canRunInContext(CommandInterface $command, ContextInterface $context)
+    public function canRunInContext(RunnerInterface $runner, ContextInterface $context)
     {
-        $config = $this->getConfig($command);
-        $option = isset($config['can_run_in']) ? $config['can_run_in'] : true;
+        $config = $this->getConfig($runner);
+        $option = isset($config['can-run-in']) ? $config['can-run-in'] : true;
 
         if (is_array($option)) {
-            return in_array($context->getCommand()->getName(), $option) || in_array($command->getName(), $option);
+            return in_array($context->getRunner()->getName(), $option) || in_array($runner->getName(), $option);
         }
 
         return (bool) $option;
@@ -50,22 +50,22 @@ abstract class AbstractTask implements TaskInterface
     /**
      * Run.
      *
-     * @param \ClickNow\Checker\Command\CommandInterface $command
+     * @param \ClickNow\Checker\Runner\RunnerInterface   $runner
      * @param \ClickNow\Checker\Context\ContextInterface $context
      *
      * @return \ClickNow\Checker\Result\ResultInterface
      */
-    public function run(CommandInterface $command, ContextInterface $context)
+    public function run(RunnerInterface $runner, ContextInterface $context)
     {
-        $config = $this->getConfig($command);
+        $config = $this->getConfig($runner);
         $finder = $this->getFinder(isset($config['finder']) ? (array) $config['finder'] : []);
         $files = $this->finderFiles($context->getFiles(), $finder);
 
         if ($this->isSkipped($files, $config)) {
-            return Result::skipped($command, $context, $this);
+            return Result::skipped($runner, $context, $this);
         }
 
-        return $this->execute($config, $files, $command, $context);
+        return $this->execute($config, $files, $runner, $context);
     }
 
     /**
@@ -77,13 +77,13 @@ abstract class AbstractTask implements TaskInterface
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
-            'can_run_in'     => true,
-            'always_execute' => false,
+            'can-run-in'     => true,
+            'always-execute' => false,
             'finder'         => [],
         ]);
 
-        $resolver->addAllowedTypes('can_run_in', ['array', 'bool']);
-        $resolver->addAllowedTypes('always_execute', ['bool']);
+        $resolver->addAllowedTypes('can-run-in', ['array', 'bool']);
+        $resolver->addAllowedTypes('always-execute', ['bool']);
         $resolver->addAllowedTypes('finder', ['array']);
 
         return $resolver;
@@ -92,13 +92,13 @@ abstract class AbstractTask implements TaskInterface
     /**
      * Get config.
      *
-     * @param \ClickNow\Checker\Command\CommandInterface $command
+     * @param \ClickNow\Checker\Runner\RunnerInterface $runner
      *
      * @return array
      */
-    protected function getConfig(CommandInterface $command)
+    protected function getConfig(RunnerInterface $runner)
     {
-        $config = $command->getActionConfig($this);
+        $config = $runner->getActionConfig($this);
 
         $resolver = $this->getConfigOptions();
         $resolver->setDefaults($this->defaultConfig);
@@ -118,16 +118,16 @@ abstract class AbstractTask implements TaskInterface
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'name'       => [],
-            'not_name'   => [],
+            'not-name'   => [],
             'path'       => [],
-            'not_path'   => [],
+            'not-path'   => [],
             'extensions' => [],
         ]);
 
         $resolver->addAllowedTypes('name', ['array', 'string']);
-        $resolver->addAllowedTypes('not_name', ['array', 'string']);
+        $resolver->addAllowedTypes('not-name', ['array', 'string']);
         $resolver->addAllowedTypes('path', ['array', 'string']);
-        $resolver->addAllowedTypes('not_path', ['array', 'string']);
+        $resolver->addAllowedTypes('not-path', ['array', 'string']);
         $resolver->addAllowedTypes('extensions', ['array']);
 
         return $resolver->resolve($finder);
@@ -145,9 +145,9 @@ abstract class AbstractTask implements TaskInterface
     {
         return $files
             ->filterByName($finder['name'])
-            ->filterByNotName($finder['not_name'])
+            ->filterByNotName($finder['not-name'])
             ->filterByPath($finder['path'])
-            ->filterByNotPath($finder['not_path'])
+            ->filterByNotPath($finder['not-path'])
             ->filterByExtensions($finder['extensions']);
     }
 
@@ -161,7 +161,7 @@ abstract class AbstractTask implements TaskInterface
      */
     protected function isSkipped(FilesCollection $files, array $config)
     {
-        $alwaysExecute = isset($config['always_execute']) ? $config['always_execute'] : false;
+        $alwaysExecute = isset($config['always-execute']) ? $config['always-execute'] : false;
 
         return !$alwaysExecute && $files->isEmpty();
     }
@@ -171,7 +171,7 @@ abstract class AbstractTask implements TaskInterface
      *
      * @param array                                        $config
      * @param \ClickNow\Checker\Repository\FilesCollection $files
-     * @param \ClickNow\Checker\Command\CommandInterface   $command
+     * @param \ClickNow\Checker\Runner\RunnerInterface     $runner
      * @param \ClickNow\Checker\Context\ContextInterface   $context
      *
      * @return \ClickNow\Checker\Result\ResultInterface
@@ -179,7 +179,7 @@ abstract class AbstractTask implements TaskInterface
     abstract protected function execute(
         array $config,
         FilesCollection $files,
-        CommandInterface $command,
+        RunnerInterface $runner,
         ContextInterface $context
     );
 }
