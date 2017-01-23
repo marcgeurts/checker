@@ -4,7 +4,7 @@ namespace ClickNow\Checker\Console\Command\Git;
 
 use ClickNow\Checker\Console\Command\AbstractRunnerCommand;
 use ClickNow\Checker\Context\Git\PrePushContext;
-use ClickNow\Checker\Repository\FinderFiles;
+use ClickNow\Checker\Repository\Git;
 use ClickNow\Checker\Runner\RunnerInterface;
 
 class PrePushCommand extends AbstractRunnerCommand
@@ -15,16 +15,24 @@ class PrePushCommand extends AbstractRunnerCommand
     private $runner;
 
     /**
+     * @var \ClickNow\Checker\Repository\Git
+     */
+    private $git;
+
+    /**
      * Pre push command.
      *
      * @param \ClickNow\Checker\Runner\RunnerInterface $runner
-     * @param \ClickNow\Checker\Repository\FinderFiles $finderFiles
+     * @param \ClickNow\Checker\Repository\Git         $git
      */
-    public function __construct(RunnerInterface $runner, FinderFiles $finderFiles)
+    public function __construct(RunnerInterface $runner, Git $git)
     {
         $this->runner = $runner;
+        $this->git = $git;
 
-        parent::__construct($finderFiles, 'git:pre-push', 'Git hook pre-push.');
+        parent::__construct('git:pre-push');
+
+        $this->setDescription('Git hook pre-push.');
     }
 
     /**
@@ -36,7 +44,7 @@ class PrePushCommand extends AbstractRunnerCommand
     {
         return new PrePushContext(
             $this->runner,
-            $this->finderFiles->getCommittedFiles($this->consoleIO()->readCommandInput(STDIN))
+            $this->git->getCommittedFiles($this->consoleIO()->readCommandInput(STDIN))
         );
     }
 }

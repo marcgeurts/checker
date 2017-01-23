@@ -38,10 +38,9 @@ class UninstallCommand extends Command
         $this->io = $io;
         $this->gitHooks = array_keys($gitHooks);
 
-        $this->setName('git:uninstall');
-        $this->setDescription('Uninstall git hooks');
+        parent::__construct('git:uninstall');
 
-        parent::__construct();
+        $this->setDescription('Uninstall git hooks');
     }
 
     /**

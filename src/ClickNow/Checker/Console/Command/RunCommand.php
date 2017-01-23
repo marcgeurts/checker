@@ -5,7 +5,7 @@ namespace ClickNow\Checker\Console\Command;
 use ClickNow\Checker\Context\RunContext;
 use ClickNow\Checker\Exception\CommandInvalidException;
 use ClickNow\Checker\Exception\CommandNotFoundException;
-use ClickNow\Checker\Repository\FinderFiles;
+use ClickNow\Checker\Repository\Git;
 use ClickNow\Checker\Runner\CommandsCollection;
 use ClickNow\Checker\Runner\RunnerInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -18,17 +18,24 @@ class RunCommand extends AbstractRunnerCommand
     private $commandsCollection;
 
     /**
+     * @var \ClickNow\Checker\Repository\Git
+     */
+    private $git;
+
+    /**
      * Run command.
      *
      * @param \ClickNow\Checker\Runner\CommandsCollection $commandsCollection
-     * @param \ClickNow\Checker\Repository\FinderFiles    $finderFiles
+     * @param \ClickNow\Checker\Repository\Git            $git
      */
-    public function __construct(CommandsCollection $commandsCollection, FinderFiles $finderFiles)
+    public function __construct(CommandsCollection $commandsCollection, Git $git)
     {
         $this->commandsCollection = $commandsCollection;
+        $this->git = $git;
 
-        parent::__construct($finderFiles, 'run', 'Run specified command name.');
+        parent::__construct('run');
 
+        $this->setDescription('Run specified command name.');
         $this->addArgument('name', InputArgument::REQUIRED, 'The command name to be executed.');
     }
 
@@ -41,12 +48,12 @@ class RunCommand extends AbstractRunnerCommand
     {
         return new RunContext(
             $this->getRunner($this->input->getArgument('name')),
-            $this->finderFiles->getRegisteredFiles()
+            $this->git->getRegisteredFiles()
         );
     }
 
     /**
-     * Get command.
+     * Get runner.
      *
      * @param string $name
      *

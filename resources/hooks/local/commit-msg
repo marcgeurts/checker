@@ -13,4 +13,4 @@ COMMIT_MESSAGE_FILE=$1
 DIFF=$(git diff -r -p -m -M --full-index --staged | cat)
 
 # Run
-(cd "${HOOK_EXEC_PATH}" && printf "%s\n" "${DIFF}" | exec $(HOOK_COMMAND) '--ansi' '--skip-success-output=true' "--git-user-name=$GIT_USER_NAME" "--git-user-email=$GIT_USER_EMAIL" "$COMMIT_MESSAGE_FILE")
+(cd "${HOOK_EXEC_PATH}" && printf "%s\n" "${DIFF}" | exec $(HOOK_COMMAND) '--ansi' "--git-user-name=$GIT_USER_NAME" "--git-user-email=$GIT_USER_EMAIL" "$COMMIT_MESSAGE_FILE")

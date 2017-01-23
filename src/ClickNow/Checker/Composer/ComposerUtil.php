@@ -35,11 +35,11 @@ class ComposerUtil
      * To make sure this application works the same in CLI and Composer modus,
      * we'll have to ensure that the bin path is always prefixed.
      *
-     * @SuppressWarnings(PHPMD.Superglobals)
-     *
      * @param string $binDir
      *
      * @return void
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     private static function ensureProjectBinDirInSystemPath($binDir)
     {
@@ -61,9 +61,9 @@ class ComposerUtil
     /**
      * Get path str.
      *
-     * @SuppressWarnings(PHPMD.Superglobals)
-     *
      * @return string
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     private static function getPathStr()
     {

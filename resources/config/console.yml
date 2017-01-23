@@ -15,7 +15,7 @@ services:
     class: ClickNow\Checker\Console\Command\RunCommand
     arguments:
       - '@runner.commands-collection'
-      - '@repository.finder-files'
+      - '@repository.git'
 
   console.command.git.install:
     class: ClickNow\Checker\Console\Command\Git\InstallCommand
@@ -30,19 +30,19 @@ services:
     class: ClickNow\Checker\Console\Command\Git\CommitMsgCommand
     arguments:
       - '@runner.git-hook.commit-msg'
-      - '@repository.finder-files'
+      - '@repository.git'
 
   console.command.git.pre-commit:
     class: ClickNow\Checker\Console\Command\Git\PreCommitCommand
     arguments:
       - '@runner.git-hook.pre-commit'
-      - '@repository.finder-files'
+      - '@repository.git'
 
   console.command.git.pre-push:
     class: ClickNow\Checker\Console\Command\Git\PrePushCommand
     arguments:
       - '@runner.git-hook.pre-push'
-      - '@repository.finder-files'
+      - '@repository.git'
 
   console.command.git.uninstall:
     class: ClickNow\Checker\Console\Command\Git\UninstallCommand

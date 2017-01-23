@@ -34,7 +34,7 @@ do
             )
 
             # Run
-            printf "%s\n" "\${DIFF}" | exec $(HOOK_COMMAND) '--ansi' '--skip-success-output=true'
+            printf "%s\n" "\${DIFF}" | exec $(HOOK_COMMAND) '--ansi'
         COMMANDS
     fi
 done

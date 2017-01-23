@@ -9,7 +9,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\ProcessBuilder;
 
-class FinderFiles
+class Git
 {
     /**
      * @var \Gitonomy\Git\Repository

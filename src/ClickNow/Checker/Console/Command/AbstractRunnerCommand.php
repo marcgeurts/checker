@@ -3,7 +3,6 @@
 namespace ClickNow\Checker\Console\Command;
 
 use ClickNow\Checker\IO\ConsoleIO;
-use ClickNow\Checker\Repository\FinderFiles;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -11,11 +10,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class AbstractRunnerCommand extends Command
 {
-    /**
-     * @var \ClickNow\Checker\Repository\FinderFiles
-     */
-    protected $finderFiles;
-
     /**
      * @var \Symfony\Component\Console\Input\InputInterface
      */
@@ -27,20 +21,13 @@ abstract class AbstractRunnerCommand extends Command
     protected $output;
 
     /**
-     * Abstract runner command.
+     * Configure.
      *
-     * @param \ClickNow\Checker\Repository\FinderFiles $finderFiles
-     * @param string                                   $name
-     * @param string                                   $description
+     * @return void
      */
-    public function __construct(FinderFiles $finderFiles, $name, $description)
+    protected function configure()
     {
-        $this->finderFiles = $finderFiles;
-
-        parent::__construct($name);
-
         $this
-            ->setDescription($description)
             ->addOption('process-timeout', null, InputOption::VALUE_REQUIRED, 'Process timeout.')
             ->addOption('process-async-wait', null, InputOption::VALUE_REQUIRED, 'Process async wait.')
             ->addOption('process-async-limit', null, InputOption::VALUE_REQUIRED, 'Process async limit.')

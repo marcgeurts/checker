@@ -9,4 +9,4 @@
 DIFF=$(git diff -r -p -m -M --full-index --staged | cat)
 
 # Run
-(cd "${HOOK_EXEC_PATH}" && printf "%s\n" "${DIFF}" | exec $(HOOK_COMMAND) '--ansi' '--skip-success-output=true')
+(cd "${HOOK_EXEC_PATH}" && printf "%s\n" "${DIFF}" | exec $(HOOK_COMMAND) '--ansi')

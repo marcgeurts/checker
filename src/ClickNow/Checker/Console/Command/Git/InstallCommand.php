@@ -67,10 +67,9 @@ class InstallCommand extends Command
         $this->processBuilder = $processBuilder;
         $this->gitHooks = array_keys($gitHooks);
 
-        $this->setName('git:install');
-        $this->setDescription('Install git hooks');
+        parent::__construct('git:install');
 
-        parent::__construct();
+        $this->setDescription('Install git hooks');
     }
 
     /**
