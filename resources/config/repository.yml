@@ -4,3 +4,4 @@ services:
     arguments:
       - '@git.repository'
       - '@filesystem'
+      - '@process-builder'
