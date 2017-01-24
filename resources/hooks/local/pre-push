@@ -5,6 +5,7 @@
 # $(GENERATED_MESSAGE)
 #
 
+against=4b825dc642cb6eb9a060e54bf8d69288fbee4904
 z40=0000000000000000000000000000000000000000
 
 while read local_ref local_sha remote_ref remote_sha
@@ -17,14 +18,14 @@ do
         if [ "$remote_sha" = $z40 ]
         then
             # New branch, examine all commits
-            range="$local_sha"
+            range="$against..$local_sha"
         else
             # Update to existing branch, examine new commits
             range="$remote_sha..$local_sha"
         fi
 
         # Fetch the GIT diff and format it as command input:
-        DIFF=$(git diff -r -p -m -M --full-index "$remote"/"$local_ref" | cat)
+        DIFF=$(git diff -r -p -m -M --full-index "$range" | cat)
 
         # Run
         (cd "${HOOK_EXEC_PATH}" && printf "%s\n" "${DIFF}" | exec $(HOOK_COMMAND) '--ansi')
