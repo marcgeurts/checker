@@ -14,7 +14,7 @@
 
 > **Note:** This project is inspired in [GrumPHP](https://github.com./phpro/grumphp)!!!
 
-Checker was developed for the purpose of configuring and executing your actions in any git hooks,
+Checker was developed for the purpose of configuring and executing your actions in git hooks,
 besides being able to create and execute commands as your wish.
 
 ## Installation
@@ -92,35 +92,38 @@ or in the `--config` option of the console commands.
 ```yml
 # cheker.yml
 parameters:
-    bin_dir: "./vendor/bin"
-    git_dir: "."
-    hooks_dir: ~
-    hooks_preset: local
-    process_timeout: 60
-    process_async_wait: 1000
-    process_async_limit: 10
-    stop_on_failure: false
-    ignore_unstaged_changes: false
-    skip_success_output: false
-    message:
-        successfully: successfully.txt
-        failed: failed.txt
-    extensions: []
-    tasks: ~
-    hooks: ~
-    commands: ~
+  bin-dir: "./vendor/bin"
+  git-dir: "."
+  hooks-dir: ~
+  hooks-preset: local
+  process-timeout: 60
+  process-async-wait: 1000
+  process-async-limit: 10
+  stop-on-failure: false
+  ignore-unstaged-changes: false
+  skip-success-output: false
+  message:
+    successfully: successfully.txt
+    failed: failed.txt
+  extensions: []
+  tasks: ~
+  git-hooks:
+    commit-msg: ~
+    pre-commit: ~
+    pre-push: ~
+  commands: ~
 ```
 
 ## Parameters
 
-### bin_dir
+### bin-dir
 
 *Default: ./vendor/bin*
 
 This parameter will tell you where to find external commands.
 It defaults to the default composer bin directory.
 
-### git_dir
+### git-dir
 
 *Default: .*
 
@@ -128,7 +131,7 @@ This parameter will tell in which folder it can find the .git folder.
 This parameter is used to create the git hooks at the correct location.
 It defaults to the working directory.
 
-### hooks_dir
+### hooks-dir
 
 *Default: null*
 
@@ -136,12 +139,12 @@ This parameter will tell in which folder it can find the git hooks template fold
 It is used to find the git hooks at a custom location so that you can write your own git hooks.
 It defaults to null, which means that the default folder `resources/hooks `is used.
 
-### hooks_preset
+### hooks-preset
 
 *Default: local*
 
 This parameter will tell which hooks preset to use.
-Presets are only used when you did NOT specify a custom `hooks_dir`.
+Presets are only used when you did NOT specify a custom `hooks-dir`.
 Comes with following presets:
 
 - `local`: All checks will run on your local computer.
@@ -158,7 +161,7 @@ echo 'cd /remote/path/to/your/project' >> ~/.bashrc
 You can also add the `.bashrc` or `.zshrc` to your vagrant provision script.
 This way the home directory will be set for all the people who are using your vagrant box.
 
-### process_timeout
+### process-timeout
 
 *Default: 60*
 
@@ -167,14 +170,14 @@ The component will trigger a timeout after 60 seconds by default.
 If you've got tools that run more then 60 seconds, you can increase this parameter.
 It is also possible to disable the timeout by setting the value to `null`.
 
-### process_async_wait
+### process-async-wait
 
 *Default: 1000*
 
 This parameter controls how long will wait (in microseconds)
 before checking the status of all asynchronous processes.
 
-### process_async_limit
+### process-async-limit
 
 *Default: 10*
 
@@ -182,14 +185,14 @@ This parameter controls how many asynchronous processes will run simultaneously.
 Please note that not all external tasks uses asynchronous processes,
 nor would they necessarily benefit from using it.
 
-### stop_on_failure
+### stop-on-failure
 
 *Default: false*
 
 This parameter will tell to stop running actions when one of the actions results in an error.
 By default will continue running the configured actions.
 
-### ignore_unstaged_changes
+### ignore-unstaged-changes
 
 *Default: false*
 
@@ -198,7 +201,7 @@ This way the actions will run with the code that is actually committed without t
 Note that during the commit, the unstaged changes will be stored in git stash.
 This may mess with your working copy and result in unexpected merge conflicts.
 
-### skip_success_output
+### skip-success-output
 
 *Default: false*
 
@@ -218,9 +221,9 @@ For example:
 ```yml
 # checker.yml
 parameters:
-    message:
-        successfully: ~ # To disable
-        failed: FAILED!!! # To display simple text
+  message:
+    successfully: ~ # To disable
+    failed: FAILED!!! # To display simple text
 ```
 
 ### extensions
@@ -238,8 +241,8 @@ The configuration looks like this:
 ```yml
 # checker.yml
 parameters:
-    extensions:
-        - My\Project\CheckerExtension
+  extensions:
+    - My\Project\CheckerExtension
 ```
 
 The configured extension class needs to implement `ClickNow\Checker\Extension\ExtensionInterface`.
@@ -276,73 +279,56 @@ For example:
 ```yml
 # checker.yml
 parameters:
-    tasks:
-        foo:
-            bar: foobar # Default configuration
+  tasks:
+    foo:
+      bar: foobar # Default configuration
 ```
 
-### hooks
-
-*Default: null*
+### git-hooks
 
 This parameter will tell which for tasks and commands are executed on the git hooks.
 Below is the list available of git hooks:
 
-- applypatch-msg
-- pre-applypatch
-- post-applypatch
-- pre-commit
-- prepare-commit-msg
 - commit-msg
-- post-commit
-- pre-rebase
-- post-checkout
-- post-merge
+- pre-commit
 - pre-push
-- pre-receive
-- update
-- post-receive
-- post-update
-- push-to-checkout
-- pre-auto-gc
-- post-rewrite
 
 You can also override these configurations:
 
-- process_timeout
-- process_async_wait
-- process_async_limit
-- stop_on_failure
-- ignore_unstaged_changes
-- skip_success_output
+- process-timeout
+- process-async-wait
+- process-async-limit
+- stop-on-failure
+- ignore-unstaged-changes
+- skip-success-output
 
 For example:
 
 ```yml
 # checker.yml
 parameters:
-    hooks:
-        pre-commit:
-            process_timeout: 30
-            process_async_wait: 500
-            process_async_limit: 30
-            stop_on_failure: true
-            ignore_unstaged_changes: true
-            skip_success_output: true
-            tasks:
-                foo: ~ # Use default configuration
-        pre-push:
-            process_timeout: ~
-            process_async_wait: 2000
-            process_async_limit: 60
-            stop_on_failure: false
-            ignore_unstaged_changes: false
-            skip_success_output: false
-            tasks:
-                foo:
-                    bar: value # Custom configuration
-            commands:
-                example: ~ # Execute command already created
+  git-hooks:
+    pre-commit:
+      process-timeout: 30
+      process-async-wait: 1000
+      process-async-limit: 30
+      stop-on-failure: true
+      ignore-unstaged-changes: true
+      skip-success-output: true
+      tasks:
+        foo: ~ # Use default configuration
+    pre-push:
+      process-timeout: 60
+      process-async-wait: 2000
+      process-async-limit: 60
+      stop-on-failure: false
+      ignore-unstaged-changes: false
+      skip-success-output: false
+      tasks:
+        foo:
+          bar: value # Custom configuration
+      commands:
+        example: ~ # Execute command already created
 ```
 
 ### commands
@@ -356,40 +342,40 @@ You can create as many commands as you want with custom names.
 
 You can also override these configurations:
 
-- process_timeout
-- process_async_wait
-- process_async_limit
-- stop_on_failure
-- ignore_unstaged_changes
-- skip_success_output
+- process-timeout
+- process-async-wait
+- process-async-limit
+- stop-on-failure
+- ignore-unstaged-changes
+- skip-success-output
 
 For example:
 
 ```yml
 # checker.yml
 parameters:
-    commands:
-        name_of_command1:
-            process_timeout: 30
-            process_async_wait: 500
-            process_async_limit: 30
-            stop_on_failure: true
-            ignore_unstaged_changes: true
-            skip_success_output: true
-            tasks:
-                foo: ~ # Use default configuration
-        name_of_command2:
-            process_timeout: ~
-            process_async_wait: 2000
-            process_async_limit: 60
-            stop_on_failure: false
-            ignore_unstaged_changes: false
-            skip_success_output: false
-            tasks:
-                foo:
-                    bar: value # Custom configuration
-            commands:
-                name_of_command1: ~ # Execute other command
+  commands:
+    name-of-command1:
+      process-timeout: 30
+      process-async-wait: 1000
+      process-async-limit: 30
+      stop-on-failure: true
+      ignore-unstaged-changes: true
+      skip-success-output: true
+      tasks:
+        foo: ~ # Use default configuration
+    name-of-command2:
+      process-timeout: 60
+      process-async-wait: 2000
+      process-async-limit: 60
+      stop-on-failure: false
+      ignore-unstaged-changes: false
+      skip-success-output: false
+      tasks:
+        foo:
+          bar: value # Custom configuration
+      commands:
+        name-of-command1: ~ # Execute other command
 ```
 
 ## Metadata
@@ -401,18 +387,18 @@ For example:
 ```yml
 # checker.yml
 parameters:
-    hooks:
-        pre-commit:
-            tasks:
-                any_task:
-                    metadata:
-                        blocking: true # Blocking
-                        priority: 2 # Second execution
-            commands:
-                any_command:
-                    metadata:
-                        blocking: false # Non-blocking
-                        priority: 1 # First execution
+  git-hooks:
+    pre-commit:
+      tasks:
+        any-task:
+          metadata:
+            blocking: true # Blocking
+            priority: 2 # Second execution
+      commands:
+        any-command:
+          metadata:
+            blocking: false # Non-blocking
+            priority: 1 # First execution
 ```
 
 ### priority
@@ -444,29 +430,29 @@ For example:
 
 ```bash
 # Locally
-php ./vendor/bin/checker run name_of_command
+php ./vendor/bin/checker run name-of-command
 
 # Globally
-checker run name_of_command
+checker run name-of-command
 ```
 
 You can also override these configurations:
 
-- process_timeout
-- process_async_wait
-- process_async_limit
-- stop_on_failure
-- ignore_unstaged_changes
-- skip_success_output
+- process-timeout
+- process-async-wait
+- process-async-limit
+- stop-on-failure
+- ignore-unstaged-changes
+- skip-success-output
 
 For example:
 
 ```bash
 # Locally
-php ./vendor/bin/checker run name_of_command --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+php ./vendor/bin/checker run name-of-command --process-timeout=30 --process-async-wait=1000 --process-async-limit=30 --stop-on-failure=1 --ignore-unstaged-changes=1 --skip-success-output=1
 
 # Globally
-checker run name_of_command --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+checker run name-of-command --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --skip-success-output=0
 ```
 
 ### git:install
@@ -521,104 +507,106 @@ php ./vendor/bin/checker git:uninstall
 checker git:uninstall
 ```
 
-### Git hooks
+### git:commit-msg
 
-These commands will be triggered with git hooks.
-However, you can run following commands:
-
-```bash
-# Locally
-php ./vendor/bin/checker git:applypatch-msg
-php ./vendor/bin/checker git:pre-applypatch
-php ./vendor/bin/checker git:post-applypatch
-php ./vendor/bin/checker git:pre-commit
-php ./vendor/bin/checker git:prepare-commit-msg
-php ./vendor/bin/checker git:commit-msg
-php ./vendor/bin/checker git:post-commit
-php ./vendor/bin/checker git:pre-rebase
-php ./vendor/bin/checker git:post-checkout
-php ./vendor/bin/checker git:post-merge
-php ./vendor/bin/checker git:pre-push
-php ./vendor/bin/checker git:pre-receive
-php ./vendor/bin/checker git:update
-php ./vendor/bin/checker git:post-receive
-php ./vendor/bin/checker git:post-update
-php ./vendor/bin/checker git:push-to-checkout
-php ./vendor/bin/checker git:pre-auto-gc
-php ./vendor/bin/checker git:post-rewrite
-
-# Globally
-checker git:applypatch-msg
-checker git:pre-applypatch
-checker git:post-applypatch
-checker git:pre-commit
-checker git:prepare-commit-msg
-checker git:commit-msg
-checker git:post-commit
-checker git:pre-rebase
-checker git:post-checkout
-checker git:post-merge
-checker git:pre-push
-checker git:pre-receive
-checker git:update
-checker git:post-receive
-checker git:post-update
-checker git:push-to-checkout
-checker git:pre-auto-gc
-checker git:post-rewrite
-```
-
-You can also override these configurations:
-
-- process_timeout
-- process_async_wait
-- process_async_limit
-- stop_on_failure
-- ignore_unstaged_changes
-- skip_success_output
+This command will be triggered by git hooks in commit-msg. However, you can run!
 
 For example:
 
 ```bash
 # Locally
-php ./vendor/bin/checker git:applypatch-msg --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-php ./vendor/bin/checker git:pre-applypatch --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-php ./vendor/bin/checker git:post-applypatch --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-php ./vendor/bin/checker git:pre-commit --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-php ./vendor/bin/checker git:prepare-commit-msg --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-php ./vendor/bin/checker git:commit-msg --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-php ./vendor/bin/checker git:post-commit --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-php ./vendor/bin/checker git:pre-rebase --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-php ./vendor/bin/checker git:post-checkout --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-php ./vendor/bin/checker git:post-merge --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-php ./vendor/bin/checker git:pre-push --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-php ./vendor/bin/checker git:pre-receive --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-php ./vendor/bin/checker git:update --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-php ./vendor/bin/checker git:post-receive --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-php ./vendor/bin/checker git:post-update --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-php ./vendor/bin/checker git:push-to-checkout --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-php ./vendor/bin/checker git:pre-auto-gc --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-php ./vendor/bin/checker git:post-rewrite --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+php ./vendor/bin/checker git:commit-msg
 
 # Globally
-checker git:applypatch-msg --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-checker git:pre-applypatch --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-checker git:post-applypatch --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-checker git:pre-commit --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-checker git:prepare-commit-msg --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-checker git:commit-msg --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-checker git:post-commit --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-checker git:pre-rebase --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-checker git:post-checkout --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-checker git:post-merge --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-checker git:pre-push --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-checker git:pre-receive --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-checker git:update --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-checker git:post-receive --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-checker git:post-update --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-checker git:push-to-checkout --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-checker git:pre-auto-gc --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
-checker git:post-rewrite --process-timeout=30 --stop-on-failure=true --ignore-unstaged-changes=true --skip-success-output=true
+checker git:commit-msg
+```
+
+You can also override these configurations:
+
+- commit-message-file `If not set, Checker find for you!`
+- git-user-name `If not set, Checker find for you!`
+- git-user-email `If not set, Checker find for you!`
+- process-timeout
+- process-async-wait
+- process-async-limit
+- stop-on-failure
+- ignore-unstaged-changes
+- skip-success-output
+
+For example:
+
+```bash
+# Locally
+php ./vendor/bin/checker git:commit-msg commit-message-file --git-user-name=name --git-user-email=email --process-timeout=30 --process-async-wait=1000 --process-async-limit=30 --stop-on-failure=1 --ignore-unstaged-changes=1 --skip-success-output=1
+
+# Globally
+checker git:commit-msg commit-message-file --git-user-name=name --git-user-email=email --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --skip-success-output=0
+```
+
+### git:pre-commit
+
+This command will be triggered by git hooks in pre-commit. However, you can run!
+
+For example:
+
+```bash
+# Locally
+php ./vendor/bin/checker git:pre-commit
+
+# Globally
+checker git:pre-commit
+```
+
+You can also override these configurations:
+
+- process-timeout
+- process-async-wait
+- process-async-limit
+- stop-on-failure
+- ignore-unstaged-changes
+- skip-success-output
+
+For example:
+
+```bash
+# Locally
+php ./vendor/bin/checker git:pre-commit --process-timeout=30 --process-async-wait=1000 --process-async-limit=30 --stop-on-failure=1 --ignore-unstaged-changes=1 --skip-success-output=1
+
+# Globally
+checker git:pre-commit --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --skip-success-output=0
+```
+
+### git:pre-push
+
+This command will be triggered by git hooks in pre-push. However, you can run!
+
+For example:
+
+```bash
+# Locally
+php ./vendor/bin/checker git:pre-push
+
+# Globally
+checker git:pre-push
+```
+
+You can also override these configurations:
+
+- process-timeout
+- process-async-wait
+- process-async-limit
+- stop-on-failure
+- ignore-unstaged-changes
+- skip-success-output
+
+For example:
+
+```bash
+# Locally
+php ./vendor/bin/checker git:pre-push --process-timeout=30 --process-async-wait=1000 --process-async-limit=30 --stop-on-failure=1 --ignore-unstaged-changes=1 --skip-success-output=1
+
+# Globally
+checker git:pre-push --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --skip-success-output=0
 ```
 
 ## Creating a custom task
@@ -632,17 +620,17 @@ For example:
 ```yml
 # checker.yml
 parameters:
-    tasks:
-        myConfigKey:
-            config1: config-value
+  tasks:
+    myConfigKey:
+      config1: config-value
 
 services:
-    task.myCustomTask:
-        class: My\Custom\Task
-        arguments:
-          - '@config'
-        tags:
-          - { name: checker.task, config: myConfigKey }
+  task.myCustomTask:
+    class: My\Custom\Task
+    arguments:
+      - '@config'
+    tags:
+      - { name: checker.task, config: myConfigKey }
 ```
 
 > **Note:** 
@@ -672,15 +660,15 @@ Configured events just like you would in Symfony:
 ```yml
 # checker.yml
 services:   
-    listener.some_listener:
-        class: MyNamespace\EventListener\MyListener
-        tags:
-            - { name: checker.event_listener, event: checker.runner.run }
-            - { name: checker.event_listener, event: checker.runner.run, method: customMethod, priority: 10 }
-    listener.some_subscriber:
-        class: MyNamespace\EventSubscriber\MySubscriber
-        tags:
-            - { name: checker.event_subscriber }
+  listener.some-listener:
+    class: MyNamespace\EventListener\MyListener
+    tags:
+      - { name: checker.event-listener, event: checker.runner.run }
+      - { name: checker.event-listener, event: checker.runner.run, method: customMethod, priority: 10 }
+  listener.some-subscriber:
+    class: MyNamespace\EventSubscriber\MySubscriber
+    tags:
+      - { name: checker.event-subscriber }
 ```
 
 ## Contributing
@@ -688,6 +676,12 @@ services:
 If you're having problems, spot a bug, or have a feature suggestion, please log and issue on Github.
 If you'd like to have a crack yourself, fork the package and make a pull request.
 Please include tests for any added or changed functionality. If it's a bug, include a regression test.
+
+## Security
+
+If you discover a security vulnerability within this package,
+please send an e-mail to Ricardo Gobbo de Souza at ricardo@clicknow.com.br.
+All security vulnerabilities will be promptly addressed.
 
 ## License
 
