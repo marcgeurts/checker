@@ -16,7 +16,7 @@ use Symfony\Component\Filesystem\Filesystem;
 class Application extends SymfonyConsole
 {
     const APP_NAME = 'Checker';
-    const APP_VERSION = '0.1.0';
+    const APP_VERSION = '1.0.0-1';
 
     /**
      * @var \ClickNow\Checker\Console\ConfigFile
