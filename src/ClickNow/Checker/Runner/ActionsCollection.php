@@ -1,9 +1,8 @@
 <?php
 
-namespace ClickNow\Checker\Action;
+namespace ClickNow\Checker\Runner;
 
 use ClickNow\Checker\Context\ContextInterface;
-use ClickNow\Checker\Runner\RunnerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use SplPriorityQueue;
 
@@ -15,7 +14,7 @@ class ActionsCollection extends ArrayCollection
      * @param \ClickNow\Checker\Runner\RunnerInterface   $runner
      * @param \ClickNow\Checker\Context\ContextInterface $context
      *
-     * @return \ClickNow\Checker\Action\ActionsCollection
+     * @return \ClickNow\Checker\Runner\ActionsCollection
      */
     public function filterByContext(RunnerInterface $runner, ContextInterface $context)
     {
@@ -29,7 +28,7 @@ class ActionsCollection extends ArrayCollection
      *
      * @param \ClickNow\Checker\Runner\RunnerInterface $runner
      *
-     * @return \ClickNow\Checker\Action\ActionsCollection
+     * @return \ClickNow\Checker\Runner\ActionsCollection
      */
     public function sortByPriority(RunnerInterface $runner)
     {

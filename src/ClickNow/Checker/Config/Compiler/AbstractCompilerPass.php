@@ -4,6 +4,7 @@ namespace ClickNow\Checker\Config\Compiler;
 
 use ClickNow\Checker\Exception\CommandNotFoundException;
 use ClickNow\Checker\Exception\TaskNotFoundException;
+use ClickNow\Checker\Runner\ConfigRunner;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -140,6 +141,23 @@ abstract class AbstractCompilerPass implements CompilerPassInterface
             }
 
             $definition->addMethodCall('addAction', [new Reference($id), (array) $config]);
+        }
+    }
+
+    /**
+     * Set config.
+     *
+     * @param \Symfony\Component\DependencyInjection\Definition $definition
+     * @param array                                             $config
+     *
+     * @return void
+     */
+    protected function setConfig(Definition $definition, array $config = [])
+    {
+        foreach (ConfigRunner::$configs as $key => $method) {
+            if (array_key_exists($key, $config)) {
+                $definition->addMethodCall($method, [$config[$key]]);
+            }
         }
     }
 }

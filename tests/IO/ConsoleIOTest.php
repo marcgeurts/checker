@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
- * @group io
+ * @group  io
  * @covers \ClickNow\Checker\IO\ConsoleIO
  */
 class ConsoleIOTest extends \PHPUnit_Framework_TestCase

@@ -1,9 +1,8 @@
 <?php
 
-namespace ClickNow\Checker\Action;
+namespace ClickNow\Checker\Runner;
 
 use ClickNow\Checker\Context\ContextInterface;
-use ClickNow\Checker\Runner\RunnerInterface;
 
 interface ActionInterface
 {

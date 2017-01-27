@@ -1,20 +1,19 @@
 <?php
 
-namespace ClickNow\Checker\Action;
+namespace ClickNow\Checker\Runner;
 
-use ClickNow\Checker\Command\CommandInterface;
 use ClickNow\Checker\Context\ContextInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery as m;
 
 /**
- * @group action
- * @covers \ClickNow\Checker\Action\ActionsCollection
+ * @group  runner
+ * @covers \ClickNow\Checker\Runner\ActionsCollection
  */
 class ActionsCollectionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \ClickNow\Checker\Action\ActionsCollection
+     * @var \ClickNow\Checker\Runner\ActionsCollection
      */
     protected $actionsCollection;
 
@@ -39,7 +38,7 @@ class ActionsCollectionTest extends \PHPUnit_Framework_TestCase
         $action2 = m::mock(ActionInterface::class);
         $action3 = m::mock(ActionInterface::class);
 
-        $command = m::mock(CommandInterface::class);
+        $command = m::mock(RunnerInterface::class);
         $command->shouldReceive('getActionPriority')->with($action1)->once()->andReturn(100)->ordered();
         $command->shouldReceive('getActionPriority')->with($action2)->once()->andReturn(200)->ordered();
         $command->shouldReceive('getActionPriority')->with($action3)->once()->andReturn(100)->ordered();
@@ -59,7 +58,7 @@ class ActionsCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testFilterByContext()
     {
-        $command = m::mock(CommandInterface::class);
+        $command = m::mock(RunnerInterface::class);
         $context = m::mock(ContextInterface::class);
 
         $action1 = m::mock(ActionInterface::class);

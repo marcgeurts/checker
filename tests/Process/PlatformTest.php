@@ -9,7 +9,7 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder as SymfonyProcessBuilder;
 
 /**
- * @group process
+ * @group  process
  * @covers \ClickNow\Checker\Process\Platform
  */
 class PlatformTest extends \PHPUnit_Framework_TestCase

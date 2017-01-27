@@ -6,7 +6,7 @@ use Mockery as m;
 use Symfony\Component\Process\Process;
 
 /**
- * @group formatter
+ * @group  formatter
  * @covers \ClickNow\Checker\Formatter\RawProcessFormatter
  */
 class RawProcessFormatterTest extends \PHPUnit_Framework_TestCase

@@ -2,9 +2,9 @@
 
 namespace ClickNow\Checker\Event;
 
-use ClickNow\Checker\Action\ActionInterface;
 use ClickNow\Checker\Context\ContextInterface;
 use ClickNow\Checker\Result\ResultInterface;
+use ClickNow\Checker\Runner\ActionInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 class ActionEvent extends Event
@@ -19,7 +19,7 @@ class ActionEvent extends Event
     private $context;
 
     /**
-     * @var \ClickNow\Checker\Action\ActionInterface
+     * @var \ClickNow\Checker\Runner\ActionInterface
      */
     private $action;
 
@@ -32,7 +32,7 @@ class ActionEvent extends Event
      * Action event.
      *
      * @param \ClickNow\Checker\Context\ContextInterface    $context
-     * @param \ClickNow\Checker\Action\ActionInterface      $action
+     * @param \ClickNow\Checker\Runner\ActionInterface      $action
      * @param \ClickNow\Checker\Result\ResultInterface|null $result
      */
     public function __construct(ContextInterface $context, ActionInterface $action, ResultInterface $result = null)
@@ -55,7 +55,7 @@ class ActionEvent extends Event
     /**
      * Get action.
      *
-     * @return \ClickNow\Checker\Action\ActionInterface
+     * @return \ClickNow\Checker\Runner\ActionInterface
      */
     public function getAction()
     {

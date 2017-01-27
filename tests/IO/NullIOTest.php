@@ -5,7 +5,7 @@ namespace ClickNow\Checker\IO;
 use Symfony\Component\Console\Output\NullOutput;
 
 /**
- * @group io
+ * @group  io
  * @covers \ClickNow\Checker\IO\NullIO
  */
 class NullIOTest extends \PHPUnit_Framework_TestCase

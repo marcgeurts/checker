@@ -64,17 +64,11 @@ class Checker
     /**
      * Get process timeout.
      *
-     * @return null|float
+     * @return float
      */
     public function getProcessTimeout()
     {
-        $timeout = $this->container->getParameter('process-timeout');
-
-        if (is_null($timeout)) {
-            return null;
-        }
-
-        return (float) $timeout;
+        return (float) $this->container->getParameter('process-timeout');
     }
 
     /**

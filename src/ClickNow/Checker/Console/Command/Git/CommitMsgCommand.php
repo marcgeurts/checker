@@ -47,14 +47,12 @@ class CommitMsgCommand extends AbstractRunnerCommand
      */
     protected function context()
     {
-        $commitMessageFile = $this->input->hasArgument('commit-message-file')
-            ? $this->input->getArgument('commit-message-file')
-            : $this->paths()->getGitDir().'.git/COMMIT_EDITMSG';
+        $commitMessageFile = $this->input->getArgument('commit-message-file');
 
         return new CommitMsgContext(
             $this->runner,
             $this->git->getChangedFiles($this->consoleIO()->readCommandInput(STDIN)),
-            file_exists($commitMessageFile) ? file_get_contents($commitMessageFile) : null,
+            file_exists($commitMessageFile) ? file_get_contents($commitMessageFile) : $this->git->getCommitMessage(),
             $this->input->getOption('git-user-name') ?: $this->git->getUserName(),
             $this->input->getOption('git-user-email') ?: $this->git->getUserEmail()
         );

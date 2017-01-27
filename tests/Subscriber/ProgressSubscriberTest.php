@@ -2,15 +2,15 @@
 
 namespace ClickNow\Checker\Subscriber;
 
-use ClickNow\Checker\Action\ActionsCollection;
 use ClickNow\Checker\Event\RunnerEvent;
 use ClickNow\Checker\IO\IOInterface;
+use ClickNow\Checker\Runner\ActionsCollection;
 use Mockery as m;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * @group subscriber
+ * @group  subscriber
  * @covers \ClickNow\Checker\Subscriber\ProgressSubscriber
  */
 class ProgressSubscriberTest extends \PHPUnit_Framework_TestCase

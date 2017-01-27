@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Mockery as m;
 
 /**
- * @group process
+ * @group  process
  * @covers \ClickNow\Checker\Process\ArgumentsCollection
  */
 class ArgumentsCollectionTest extends \PHPUnit_Framework_TestCase

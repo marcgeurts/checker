@@ -2,11 +2,11 @@
 
 namespace ClickNow\Checker\Subscriber;
 
-use ClickNow\Checker\Command\CommandInterface;
 use ClickNow\Checker\Context\ContextInterface;
 use ClickNow\Checker\Event\RunnerEvent;
 use ClickNow\Checker\Exception\RuntimeException;
 use ClickNow\Checker\IO\IOInterface;
+use ClickNow\Checker\Runner\RunnerInterface;
 use Exception;
 use Gitonomy\Git\Diff\Diff;
 use Gitonomy\Git\Repository;
@@ -14,7 +14,7 @@ use Mockery as m;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * @group subscriber
+ * @group  subscriber
  * @covers \ClickNow\Checker\Subscriber\StashUnstagedChangesSubscriber
  */
 class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
@@ -59,28 +59,28 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function testStashIsNotEnabled()
     {
-        $command = m::mock(CommandInterface::class);
-        $command->shouldReceive('isIgnoreUnstagedChanges')->withNoArgs()->once()->andReturn(false);
+        $runner = m::mock(RunnerInterface::class);
+        $runner->shouldReceive('isIgnoreUnstagedChanges')->withNoArgs()->once()->andReturn(false);
 
         $this->repository->shouldReceive('getWorkingCopy')->withNoArgs()->never();
-        $this->stashUnstagedChangesSubscriber->saveStash($this->mockEvent($command));
+        $this->stashUnstagedChangesSubscriber->saveStash($this->mockEvent($runner));
     }
 
     public function testStashWithoutFiles()
     {
-        $command = m::mock(CommandInterface::class);
-        $command->shouldReceive('isIgnoreUnstagedChanges')->withNoArgs()->once()->andReturn(true);
+        $runner = m::mock(RunnerInterface::class);
+        $runner->shouldReceive('isIgnoreUnstagedChanges')->withNoArgs()->once()->andReturn(true);
 
         $diff = $this->mockDiff();
         $this->repository->shouldReceive('getWorkingCopy->getDiffPending')->withNoArgs()->once()->andReturn($diff);
 
-        $this->stashUnstagedChangesSubscriber->saveStash($this->mockEvent($command));
+        $this->stashUnstagedChangesSubscriber->saveStash($this->mockEvent($runner));
     }
 
     public function testStashSuccessfully()
     {
-        $command = m::mock(CommandInterface::class);
-        $command->shouldReceive('isIgnoreUnstagedChanges')->withNoArgs()->once()->andReturn(true);
+        $runner = m::mock(RunnerInterface::class);
+        $runner->shouldReceive('isIgnoreUnstagedChanges')->withNoArgs()->once()->andReturn(true);
 
         $diff = $this->mockDiff(['file.txt']);
 
@@ -91,14 +91,14 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->io->shouldReceive('note')->withAnyArgs()->twice()->andReturnNull();
         $this->io->shouldReceive('warning')->withAnyArgs()->never();
 
-        $this->stashUnstagedChangesSubscriber->saveStash($this->mockEvent($command));
+        $this->stashUnstagedChangesSubscriber->saveStash($this->mockEvent($runner));
         $this->stashUnstagedChangesSubscriber->popStash();
     }
 
     public function testStashWithSaveFailed()
     {
-        $command = m::mock(CommandInterface::class);
-        $command->shouldReceive('isIgnoreUnstagedChanges')->withNoArgs()->once()->andReturn(true);
+        $runner = m::mock(RunnerInterface::class);
+        $runner->shouldReceive('isIgnoreUnstagedChanges')->withNoArgs()->once()->andReturn(true);
 
         $diff = $this->mockDiff(['file.txt']);
 
@@ -109,7 +109,7 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->io->shouldReceive('note')->withAnyArgs()->once()->andReturnNull();
         $this->io->shouldReceive('warning')->withAnyArgs()->once()->andReturnNull();
 
-        $this->stashUnstagedChangesSubscriber->saveStash($this->mockEvent($command));
+        $this->stashUnstagedChangesSubscriber->saveStash($this->mockEvent($runner));
         $this->stashUnstagedChangesSubscriber->popStash();
     }
 
@@ -117,8 +117,8 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException(RuntimeException::class);
 
-        $command = m::mock(CommandInterface::class);
-        $command->shouldReceive('isIgnoreUnstagedChanges')->withNoArgs()->once()->andReturn(true);
+        $runner = m::mock(RunnerInterface::class);
+        $runner->shouldReceive('isIgnoreUnstagedChanges')->withNoArgs()->once()->andReturn(true);
 
         $diff = $this->mockDiff(['file.txt']);
 
@@ -129,7 +129,7 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->io->shouldReceive('note')->withAnyArgs()->twice()->andReturnNull();
         $this->io->shouldReceive('warning')->withAnyArgs()->never();
 
-        $this->stashUnstagedChangesSubscriber->saveStash($this->mockEvent($command));
+        $this->stashUnstagedChangesSubscriber->saveStash($this->mockEvent($runner));
         $this->stashUnstagedChangesSubscriber->popStash();
     }
 
@@ -151,14 +151,14 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
     /**
      * Mock event.
      *
-     * @param \ClickNow\Checker\Command\CommandInterface $command
+     * @param \ClickNow\Checker\Runner\RunnerInterface $runner
      *
      * @return \ClickNow\Checker\Event\RunnerEvent|\Mockery\MockInterface
      */
-    protected function mockEvent(CommandInterface $command)
+    protected function mockEvent(RunnerInterface $runner)
     {
         $context = m::mock(ContextInterface::class);
-        $context->shouldReceive('getCommand')->withNoArgs()->once()->andReturn($command);
+        $context->shouldReceive('getRunner')->withNoArgs()->once()->andReturn($runner);
 
         $event = m::mock(RunnerEvent::class);
         $event->shouldReceive('getContext')->withNoArgs()->once()->andReturn($context);

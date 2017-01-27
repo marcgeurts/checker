@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * @group config/compiler
+ * @group  config/compiler
  * @covers \ClickNow\Checker\Config\Compiler\ExtensionCompilerPass
  * @covers \ClickNow\Checker\Config\Compiler\AbstractCompilerPass
  */

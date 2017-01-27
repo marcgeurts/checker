@@ -32,8 +32,6 @@ class GitHookCompilerPass extends AbstractCompilerPass
 
         $this->addTasks($definition, isset($config['tasks']) ? (array) $config['tasks'] : []);
         $this->addCommands($definition, isset($config['commands']) ? (array) $config['commands'] : []);
-
-        unset($config['tasks'], $config['commands']);
-        $definition->addMethodCall('setConfig', [$config]);
+        $this->setConfig($definition, $config);
     }
 }

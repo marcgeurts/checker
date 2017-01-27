@@ -7,7 +7,7 @@ use Mockery as m;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
- * @group repository
+ * @group  repository
  * @covers \ClickNow\Checker\Repository\FilesCollection
  */
 class FilesCollectionTest extends \PHPUnit_Framework_TestCase

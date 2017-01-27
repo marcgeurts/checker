@@ -7,7 +7,7 @@ use Exception;
 use Mockery as m;
 
 /**
- * @group composer
+ * @group  composer
  * @covers \ClickNow\Checker\Composer\ComposerUtil
  */
 class ComposerUtilTest extends \PHPUnit_Framework_TestCase

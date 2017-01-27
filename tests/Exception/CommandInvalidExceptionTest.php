@@ -3,7 +3,7 @@
 namespace ClickNow\Checker\Exception;
 
 /**
- * @group exception
+ * @group  exception
  * @covers \ClickNow\Checker\Exception\CommandInvalidException
  */
 class CommandInvalidExceptionTest extends \PHPUnit_Framework_TestCase
@@ -26,7 +26,7 @@ class CommandInvalidExceptionTest extends \PHPUnit_Framework_TestCase
     public function testGetMessage()
     {
         $this->assertSame(
-            'Command `command` must implement CommandInterface.',
+            'Command `command` must implement RunnerInterface.',
             $this->commandInvalidException->getMessage()
         );
     }

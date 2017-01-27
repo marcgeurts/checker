@@ -4,14 +4,14 @@ namespace ClickNow\Checker\Config;
 
 use ClickNow\Checker\Config\Compiler\CommandCompilerPass;
 use ClickNow\Checker\Config\Compiler\ExtensionCompilerPass;
-use ClickNow\Checker\Config\Compiler\HookCompilerPass;
+use ClickNow\Checker\Config\Compiler\GitHookCompilerPass;
 use ClickNow\Checker\Config\Compiler\TaskCompilerPass;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 
 /**
- * @group config
+ * @group  config
  * @covers \ClickNow\Checker\Config\ContainerFactory
  */
 class ContainerFactoryTest extends \PHPUnit_Framework_TestCase
@@ -57,7 +57,7 @@ class ContainerFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(ExtensionCompilerPass::class, $result[0]);
         $this->assertInstanceOf(TaskCompilerPass::class, $result[1]);
         $this->assertInstanceOf(CommandCompilerPass::class, $result[2]);
-        $this->assertInstanceOf(HookCompilerPass::class, $result[3]);
+        $this->assertInstanceOf(GitHookCompilerPass::class, $result[3]);
         $this->assertInstanceOf(RegisterListenersPass::class, $result[4]);
     }
 

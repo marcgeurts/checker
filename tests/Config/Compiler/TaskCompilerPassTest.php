@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * @group config/compiler
+ * @group  config/compiler
  * @covers \ClickNow\Checker\Config\Compiler\TaskCompilerPass
  * @covers \ClickNow\Checker\Config\Compiler\AbstractCompilerPass
  */

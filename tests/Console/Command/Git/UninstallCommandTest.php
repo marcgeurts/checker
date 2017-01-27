@@ -3,14 +3,14 @@
 namespace ClickNow\Checker\Console\Command\Git;
 
 use ClickNow\Checker\Console\Application;
-use ClickNow\Checker\Console\Helper\PathsHelper;
+use ClickNow\Checker\Helper\PathsHelper;
 use ClickNow\Checker\IO\IOInterface;
 use Mockery as m;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * @group console/command
+ * @group  console/command/git
  * @covers \ClickNow\Checker\Console\Command\Git\UninstallCommand
  */
 class UninstallCommandTest extends \PHPUnit_Framework_TestCase
@@ -21,7 +21,7 @@ class UninstallCommandTest extends \PHPUnit_Framework_TestCase
     protected $filesystem;
 
     /**
-     * @var \ClickNow\Checker\Console\Helper\PathsHelper|\Mockery\MockInterface
+     * @var \ClickNow\Checker\Helper\PathsHelper|\Mockery\MockInterface
      */
     protected $pathsHelper;
 
@@ -35,7 +35,11 @@ class UninstallCommandTest extends \PHPUnit_Framework_TestCase
         $this->filesystem = m::mock(Filesystem::class);
 
         $application = new Application();
-        $application->add(new UninstallCommand($this->filesystem, m::spy(IOInterface::class)));
+        $application->add(new UninstallCommand(
+            $this->filesystem,
+            m::spy(IOInterface::class),
+            ['hook1' => [], 'hook2' => []]
+        ));
 
         $this->pathsHelper = m::spy(PathsHelper::class);
 
@@ -52,16 +56,17 @@ class UninstallCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testRun()
     {
-        $path = './';
-        $hook = $path.'pre-commit';
+        $this->pathsHelper->shouldReceive('getGitHooksDir')->withNoArgs()->once()->andReturn('./');
 
-        $this->pathsHelper->shouldReceive('getGitHooksDir')->withNoArgs()->once()->andReturn($path);
+        $this->filesystem->shouldReceive('exists')->with('./hook1')->once()->andReturn(false);
+        $this->filesystem->shouldReceive('exists')->with('./hook1.checker')->once()->andReturn(false);
+        $this->filesystem->shouldReceive('remove')->with('./hook1')->never();
+        $this->filesystem->shouldReceive('rename')->with('./hook1.checker', './hook1')->never();
 
-        $this->filesystem->shouldReceive('exists')->with(m::notAnyOf($hook, $hook.'.checker'))->andReturn(false);
-        $this->filesystem->shouldReceive('exists')->with($hook)->once()->andReturn(true);
-        $this->filesystem->shouldReceive('remove')->with($hook)->once()->andReturnNull();
-        $this->filesystem->shouldReceive('exists')->with($hook.'.checker')->once()->andReturn(true);
-        $this->filesystem->shouldReceive('rename')->with($hook.'.checker', $hook)->once()->andReturnNull();
+        $this->filesystem->shouldReceive('exists')->with('./hook2')->once()->andReturn(true);
+        $this->filesystem->shouldReceive('remove')->with('./hook2')->once()->andReturnNull();
+        $this->filesystem->shouldReceive('exists')->with('./hook2.checker')->once()->andReturn(true);
+        $this->filesystem->shouldReceive('rename')->with('./hook2.checker', './hook2')->once()->andReturnNull();
 
         $this->commandTester->execute([]);
 

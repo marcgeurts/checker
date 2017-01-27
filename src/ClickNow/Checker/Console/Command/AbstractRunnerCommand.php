@@ -3,6 +3,7 @@
 namespace ClickNow\Checker\Console\Command;
 
 use ClickNow\Checker\IO\ConsoleIO;
+use ClickNow\Checker\Runner\ConfigRunner;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -10,6 +11,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class AbstractRunnerCommand extends Command
 {
+    /**
+     * @var array
+     */
+    private $options = [
+        'process-timeout'         => 'Process timeout.',
+        'process-async-wait'      => 'Process async wait.',
+        'process-async-limit'     => 'Process async limit.',
+        'stop-on-failure'         => 'Stop on failure.',
+        'ignore-unstaged-changes' => 'Ignore unstaged changes.',
+        'skip-success-output'     => 'Skip success output.',
+    ];
+
     /**
      * @var \Symfony\Component\Console\Input\InputInterface
      */
@@ -27,13 +40,9 @@ abstract class AbstractRunnerCommand extends Command
      */
     protected function configure()
     {
-        $this
-            ->addOption('process-timeout', null, InputOption::VALUE_REQUIRED, 'Process timeout.')
-            ->addOption('process-async-wait', null, InputOption::VALUE_REQUIRED, 'Process async wait.')
-            ->addOption('process-async-limit', null, InputOption::VALUE_REQUIRED, 'Process async limit.')
-            ->addOption('stop-on-failure', null, InputOption::VALUE_REQUIRED, 'Stop on failure.')
-            ->addOption('ignore-unstaged-changes', null, InputOption::VALUE_REQUIRED, 'Ignore unstaged changes.')
-            ->addOption('skip-success-output', null, InputOption::VALUE_REQUIRED, 'Skip success output.');
+        foreach ($this->options as $option => $description) {
+            $this->addOption($option, null, InputOption::VALUE_REQUIRED, $description);
+        }
     }
 
     /**
@@ -49,13 +58,14 @@ abstract class AbstractRunnerCommand extends Command
         $this->input = $input;
         $this->output = $output;
 
-        $config = [];
-        /*if($this->input->hasOption('process-timeout')) {
-            $config['process-timeout'] = (bool) $this->input->getOption('process-timeout');
-        }*/
-
         $context = $this->context();
-        $context->getRunner()->setConfig($config);
+
+        foreach (array_keys($this->options) as $option) {
+            if ($this->input->getOption($option)) {
+                $function = [$context->getRunner(), ConfigRunner::$configs[$option]];
+                call_user_func($function, $this->input->getOption($option));
+            }
+        }
 
         return $this->runner()->run($context);
     }
@@ -75,16 +85,6 @@ abstract class AbstractRunnerCommand extends Command
     protected function consoleIO()
     {
         return new ConsoleIO($this->input, $this->output);
-    }
-
-    /**
-     * Paths helper.
-     *
-     * @return \ClickNow\Checker\Helper\PathsHelper
-     */
-    protected function paths()
-    {
-        return $this->getHelperSet()->get('paths');
     }
 
     /**

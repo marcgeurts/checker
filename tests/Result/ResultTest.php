@@ -2,21 +2,21 @@
 
 namespace ClickNow\Checker\Result;
 
-use ClickNow\Checker\Action\ActionInterface;
-use ClickNow\Checker\Command\CommandInterface;
 use ClickNow\Checker\Context\ContextInterface;
+use ClickNow\Checker\Runner\ActionInterface;
+use ClickNow\Checker\Runner\RunnerInterface;
 use Mockery as m;
 
 /**
- * @group result
+ * @group  result
  * @covers \ClickNow\Checker\Result\Result
  */
 class ResultTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \ClickNow\Checker\Command\CommandInterface|\Mockery\MockInterface
+     * @var \ClickNow\Checker\Runner\RunnerInterface|\Mockery\MockInterface
      */
-    protected $command;
+    protected $runner;
 
     /**
      * @var \ClickNow\Checker\Context\ContextInterface|\Mockery\MockInterface
@@ -24,13 +24,13 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     protected $context;
 
     /**
-     * @var \ClickNow\Checker\Action\ActionInterface|\Mockery\MockInterface
+     * @var \ClickNow\Checker\Runner\ActionInterface|\Mockery\MockInterface
      */
     protected $action;
 
     protected function setUp()
     {
-        $this->command = m::mock(CommandInterface::class);
+        $this->runner = m::mock(RunnerInterface::class);
         $this->context = m::mock(ContextInterface::class);
         $this->action = m::mock(ActionInterface::class);
     }
@@ -42,12 +42,12 @@ class ResultTest extends \PHPUnit_Framework_TestCase
 
     public function testSkipped()
     {
-        $result = Result::skipped($this->command, $this->context, $this->action);
+        $result = Result::skipped($this->runner, $this->context, $this->action);
 
         $this->assertInstanceOf(ResultInterface::class, $result);
         $this->assertSame(Result::SKIPPED, $result->getStatus());
-        $this->assertInstanceOf(CommandInterface::class, $result->getCommand());
-        $this->assertSame($this->command, $result->getCommand());
+        $this->assertInstanceOf(RunnerInterface::class, $result->getRunner());
+        $this->assertSame($this->runner, $result->getRunner());
         $this->assertInstanceOf(ContextInterface::class, $result->getContext());
         $this->assertSame($this->context, $result->getContext());
         $this->assertInstanceOf(ActionInterface::class, $result->getAction());
@@ -61,12 +61,12 @@ class ResultTest extends \PHPUnit_Framework_TestCase
 
     public function testSuccess()
     {
-        $result = Result::success($this->command, $this->context, $this->action);
+        $result = Result::success($this->runner, $this->context, $this->action);
 
         $this->assertInstanceOf(ResultInterface::class, $result);
         $this->assertSame(Result::SUCCESS, $result->getStatus());
-        $this->assertInstanceOf(CommandInterface::class, $result->getCommand());
-        $this->assertSame($this->command, $result->getCommand());
+        $this->assertInstanceOf(RunnerInterface::class, $result->getRunner());
+        $this->assertSame($this->runner, $result->getRunner());
         $this->assertInstanceOf(ContextInterface::class, $result->getContext());
         $this->assertSame($this->context, $result->getContext());
         $this->assertInstanceOf(ActionInterface::class, $result->getAction());
@@ -80,12 +80,12 @@ class ResultTest extends \PHPUnit_Framework_TestCase
 
     public function testWarning()
     {
-        $result = Result::warning($this->command, $this->context, $this->action, 'WARNING');
+        $result = Result::warning($this->runner, $this->context, $this->action, 'WARNING');
 
         $this->assertInstanceOf(ResultInterface::class, $result);
         $this->assertSame(Result::WARNING, $result->getStatus());
-        $this->assertInstanceOf(CommandInterface::class, $result->getCommand());
-        $this->assertSame($this->command, $result->getCommand());
+        $this->assertInstanceOf(RunnerInterface::class, $result->getRunner());
+        $this->assertSame($this->runner, $result->getRunner());
         $this->assertInstanceOf(ContextInterface::class, $result->getContext());
         $this->assertSame($this->context, $result->getContext());
         $this->assertInstanceOf(ActionInterface::class, $result->getAction());
@@ -99,12 +99,12 @@ class ResultTest extends \PHPUnit_Framework_TestCase
 
     public function testError()
     {
-        $result = Result::error($this->command, $this->context, $this->action, 'ERROR');
+        $result = Result::error($this->runner, $this->context, $this->action, 'ERROR');
 
         $this->assertInstanceOf(ResultInterface::class, $result);
         $this->assertSame(Result::ERROR, $result->getStatus());
-        $this->assertInstanceOf(CommandInterface::class, $result->getCommand());
-        $this->assertSame($this->command, $result->getCommand());
+        $this->assertInstanceOf(RunnerInterface::class, $result->getRunner());
+        $this->assertSame($this->runner, $result->getRunner());
         $this->assertInstanceOf(ContextInterface::class, $result->getContext());
         $this->assertSame($this->context, $result->getContext());
         $this->assertInstanceOf(ActionInterface::class, $result->getAction());

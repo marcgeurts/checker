@@ -2,8 +2,8 @@
 
 namespace ClickNow\Checker\Result;
 
-use ClickNow\Checker\Action\ActionInterface;
 use ClickNow\Checker\Context\ContextInterface;
+use ClickNow\Checker\Runner\ActionInterface;
 use ClickNow\Checker\Runner\RunnerInterface;
 
 class Result implements ResultInterface
@@ -29,7 +29,7 @@ class Result implements ResultInterface
     private $context;
 
     /**
-     * @var \ClickNow\Checker\Action\ActionInterface
+     * @var \ClickNow\Checker\Runner\ActionInterface
      */
     private $action;
 
@@ -44,7 +44,7 @@ class Result implements ResultInterface
      * @param int                                        $status
      * @param \ClickNow\Checker\Runner\RunnerInterface   $runner
      * @param \ClickNow\Checker\Context\ContextInterface $context
-     * @param \ClickNow\Checker\Action\ActionInterface   $action
+     * @param \ClickNow\Checker\Runner\ActionInterface   $action
      * @param null|string                                $message
      */
     public function __construct(
@@ -66,7 +66,7 @@ class Result implements ResultInterface
      *
      * @param \ClickNow\Checker\Runner\RunnerInterface   $runner
      * @param \ClickNow\Checker\Context\ContextInterface $context
-     * @param \ClickNow\Checker\Action\ActionInterface   $action
+     * @param \ClickNow\Checker\Runner\ActionInterface   $action
      *
      * @return \ClickNow\Checker\Result\ResultInterface
      */
@@ -83,7 +83,7 @@ class Result implements ResultInterface
      *
      * @param \ClickNow\Checker\Runner\RunnerInterface   $runner
      * @param \ClickNow\Checker\Context\ContextInterface $context
-     * @param \ClickNow\Checker\Action\ActionInterface   $action
+     * @param \ClickNow\Checker\Runner\ActionInterface   $action
      *
      * @return \ClickNow\Checker\Result\ResultInterface
      */
@@ -100,7 +100,7 @@ class Result implements ResultInterface
      *
      * @param \ClickNow\Checker\Runner\RunnerInterface   $runner
      * @param \ClickNow\Checker\Context\ContextInterface $context
-     * @param \ClickNow\Checker\Action\ActionInterface   $action
+     * @param \ClickNow\Checker\Runner\ActionInterface   $action
      * @param string                                     $message
      *
      * @return \ClickNow\Checker\Result\ResultInterface
@@ -119,7 +119,7 @@ class Result implements ResultInterface
      *
      * @param \ClickNow\Checker\Runner\RunnerInterface   $runner
      * @param \ClickNow\Checker\Context\ContextInterface $context
-     * @param \ClickNow\Checker\Action\ActionInterface   $action
+     * @param \ClickNow\Checker\Runner\ActionInterface   $action
      * @param string                                     $message
      *
      * @return \ClickNow\Checker\Result\ResultInterface
@@ -166,7 +166,7 @@ class Result implements ResultInterface
     /**
      * Get action.
      *
-     * @return \ClickNow\Checker\Action\ActionInterface
+     * @return \ClickNow\Checker\Runner\ActionInterface
      */
     public function getAction()
     {

@@ -3,7 +3,7 @@
 namespace ClickNow\Checker\Exception;
 
 /**
- * @group exception
+ * @group  exception
  * @covers \ClickNow\Checker\Exception\ExtensionException
  */
 class ExtensionExceptionTest extends \PHPUnit_Framework_TestCase

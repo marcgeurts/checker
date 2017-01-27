@@ -7,7 +7,7 @@ use Mockery as m;
 use Symfony\Component\Process\ExecutableFinder as SymfonyExecutableFinder;
 
 /**
- * @group process
+ * @group  process
  * @covers \ClickNow\Checker\Process\ExecutableFinder
  */
 class ExecutableFinderTest extends \PHPUnit_Framework_TestCase

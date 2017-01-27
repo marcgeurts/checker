@@ -28,7 +28,7 @@ interface ResultInterface
     /**
      * Get action.
      *
-     * @return \ClickNow\Checker\Action\ActionInterface
+     * @return \ClickNow\Checker\Runner\ActionInterface
      */
     public function getAction();
 

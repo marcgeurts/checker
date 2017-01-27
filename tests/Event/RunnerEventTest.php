@@ -2,14 +2,14 @@
 
 namespace ClickNow\Checker\Event;
 
-use ClickNow\Checker\Action\ActionsCollection;
 use ClickNow\Checker\Context\ContextInterface;
 use ClickNow\Checker\Result\ResultsCollection;
+use ClickNow\Checker\Runner\ActionsCollection;
 use Mockery as m;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * @group event
+ * @group  event
  * @covers \ClickNow\Checker\Event\RunnerEvent
  */
 class RunnerEventTest extends \PHPUnit_Framework_TestCase
@@ -20,7 +20,7 @@ class RunnerEventTest extends \PHPUnit_Framework_TestCase
     protected $context;
 
     /**
-     * @var \ClickNow\Checker\Action\ActionsCollection|\Mockery\MockInterface
+     * @var \ClickNow\Checker\Runner\ActionsCollection|\Mockery\MockInterface
      */
     protected $actions;
 

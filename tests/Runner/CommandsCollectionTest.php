@@ -1,17 +1,17 @@
 <?php
 
-namespace ClickNow\Checker\Command;
+namespace ClickNow\Checker\Runner;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @group command
- * @covers \ClickNow\Checker\Command\CommandsCollection
+ * @group  runner
+ * @covers \ClickNow\Checker\Runner\CommandsCollection
  */
 class CommandsCollectionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \ClickNow\Checker\Command\CommandsCollection
+     * @var \ClickNow\Checker\Runner\CommandsCollection
      */
     protected $commandsCollection;
 

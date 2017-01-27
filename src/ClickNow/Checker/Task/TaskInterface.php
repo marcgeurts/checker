@@ -2,7 +2,7 @@
 
 namespace ClickNow\Checker\Task;
 
-use ClickNow\Checker\Action\ActionInterface;
+use ClickNow\Checker\Runner\ActionInterface;
 
 interface TaskInterface extends ActionInterface
 {

@@ -2,43 +2,34 @@
 
 namespace ClickNow\Checker\Runner;
 
-use ClickNow\Checker\Action\ActionInterface;
 use ClickNow\Checker\Context\ContextInterface;
 
 interface RunnerInterface extends ActionInterface
 {
     /**
-     * Get actions.
+     * Set process timeout.
      *
-     * @return \ClickNow\Checker\Action\ActionsCollection
-     */
-    public function getActions();
-
-    /**
-     * Add action.
-     *
-     * @param \ClickNow\Checker\Action\ActionInterface $action
-     * @param array                                    $config
+     * @param null|float $processTimeout
      *
      * @return void
      */
-    public function addAction(ActionInterface $action, array $config);
-
-    /**
-     * Set config.
-     *
-     * @param array $config
-     *
-     * @return void
-     */
-    public function setConfig(array $config);
+    public function setProcessTimeout($processTimeout);
 
     /**
      * Get process timeout.
      *
-     * @return null|float|int
+     * @return null|float
      */
     public function getProcessTimeout();
+
+    /**
+     * Set process async wait.
+     *
+     * @param int $processAsyncWait
+     *
+     * @return void
+     */
+    public function setProcessAsyncWait($processAsyncWait);
 
     /**
      * Get process async wait.
@@ -48,11 +39,29 @@ interface RunnerInterface extends ActionInterface
     public function getProcessAsyncWait();
 
     /**
-     * Get process async limit
+     * Set process async limit.
+     *
+     * @param int $processAsyncLimit
+     *
+     * @return void
+     */
+    public function setProcessAsyncLimit($processAsyncLimit);
+
+    /**
+     * Get process async limit.
      *
      * @return int
      */
     public function getProcessAsyncLimit();
+
+    /**
+     * Set stop on failure.
+     *
+     * @param bool $stopOnFailure
+     *
+     * @return void
+     */
+    public function setStopOnFailure($stopOnFailure);
 
     /**
      * Is stop on failure?
@@ -62,6 +71,15 @@ interface RunnerInterface extends ActionInterface
     public function isStopOnFailure();
 
     /**
+     * Set ignore unstaged changes.
+     *
+     * @param bool $ignoreUnstagedChanges
+     *
+     * @return void
+     */
+    public function setIgnoreUnstagedChanges($ignoreUnstagedChanges);
+
+    /**
      * Is ignore unstaged changes?
      *
      * @return bool
@@ -69,11 +87,29 @@ interface RunnerInterface extends ActionInterface
     public function isIgnoreUnstagedChanges();
 
     /**
+     * Set skip success output.
+     *
+     * @param bool $skipSuccessOutput
+     *
+     * @return void
+     */
+    public function setSkipSuccessOutput($skipSuccessOutput);
+
+    /**
      * Is skip success output?
      *
      * @return bool
      */
     public function isSkipSuccessOutput();
+
+    /**
+     * Set message.
+     *
+     * @param array $message
+     *
+     * @return void
+     */
+    public function setMessage(array $message);
 
     /**
      * Get message.
@@ -85,9 +121,26 @@ interface RunnerInterface extends ActionInterface
     public function getMessage($resource);
 
     /**
+     * Get actions.
+     *
+     * @return \ClickNow\Checker\Runner\ActionsCollection
+     */
+    public function getActions();
+
+    /**
+     * Add action.
+     *
+     * @param \ClickNow\Checker\Runner\ActionInterface $action
+     * @param array                                    $config
+     *
+     * @return void
+     */
+    public function addAction(ActionInterface $action, array $config);
+
+    /**
      * Get action metadata.
      *
-     * @param \ClickNow\Checker\Action\ActionInterface $action
+     * @param \ClickNow\Checker\Runner\ActionInterface $action
      *
      * @return array
      */
@@ -96,7 +149,7 @@ interface RunnerInterface extends ActionInterface
     /**
      * Get action priority.
      *
-     * @param \ClickNow\Checker\Action\ActionInterface $action
+     * @param \ClickNow\Checker\Runner\ActionInterface $action
      *
      * @return int
      */
@@ -105,7 +158,7 @@ interface RunnerInterface extends ActionInterface
     /**
      * Is action blocking?
      *
-     * @param \ClickNow\Checker\Action\ActionInterface $action
+     * @param \ClickNow\Checker\Runner\ActionInterface $action
      *
      * @return bool
      */
@@ -114,7 +167,7 @@ interface RunnerInterface extends ActionInterface
     /**
      * Get action config.
      *
-     * @param \ClickNow\Checker\Action\ActionInterface $action
+     * @param \ClickNow\Checker\Runner\ActionInterface $action
      *
      * @return array
      */
@@ -125,7 +178,7 @@ interface RunnerInterface extends ActionInterface
      *
      * @param \ClickNow\Checker\Context\ContextInterface $context
      *
-     * @return \ClickNow\Checker\Action\ActionsCollection
+     * @return \ClickNow\Checker\Runner\ActionsCollection
      */
     public function getActionsToRun(ContextInterface $context);
 
@@ -133,7 +186,7 @@ interface RunnerInterface extends ActionInterface
      * Run action.
      *
      * @param \ClickNow\Checker\Context\ContextInterface $context
-     * @param \ClickNow\Checker\Action\ActionInterface   $action
+     * @param \ClickNow\Checker\Runner\ActionInterface   $action
      *
      * @return \ClickNow\Checker\Result\ResultInterface
      */

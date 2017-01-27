@@ -1,6 +1,6 @@
 <?php
 
-namespace ClickNow\Checker\Console\Helper;
+namespace ClickNow\Checker\Helper;
 
 use ClickNow\Checker\Config\Checker;
 use ClickNow\Checker\Console\ConfigFile;
@@ -13,8 +13,8 @@ use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * @group console/helper
- * @covers \ClickNow\Checker\Console\Helper\PathsHelper
+ * @group  helper
+ * @covers \ClickNow\Checker\Helper\PathsHelper
  */
 class PathsHelperTest extends \PHPUnit_Framework_TestCase
 {
@@ -39,7 +39,7 @@ class PathsHelperTest extends \PHPUnit_Framework_TestCase
     protected $configFile;
 
     /**
-     * @var \ClickNow\Checker\Console\Helper\PathsHelper
+     * @var \ClickNow\Checker\Helper\PathsHelper
      */
     protected $pathsHelper;
 
@@ -77,7 +77,7 @@ class PathsHelperTest extends \PHPUnit_Framework_TestCase
     {
         $this->filesystem
             ->shouldReceive('makePathRelative')
-            ->with(realpath(__DIR__.'/../../../src'), getcwd())
+            ->with(realpath(__DIR__.'/../..'), getcwd())
             ->once()
             ->andReturn('./');
 
@@ -88,7 +88,7 @@ class PathsHelperTest extends \PHPUnit_Framework_TestCase
     {
         $this->filesystem
             ->shouldReceive('makePathRelative')
-            ->with(realpath(__DIR__.'/../../../src'), getcwd())
+            ->with(realpath(__DIR__.'/../..'), getcwd())
             ->once()
             ->andReturn('./');
 
@@ -99,7 +99,7 @@ class PathsHelperTest extends \PHPUnit_Framework_TestCase
     {
         $this->filesystem
             ->shouldReceive('makePathRelative')
-            ->with(realpath(__DIR__.'/../../../src'), getcwd())
+            ->with(realpath(__DIR__.'/../..'), getcwd())
             ->once()
             ->andReturn('./');
 
@@ -128,7 +128,7 @@ class PathsHelperTest extends \PHPUnit_Framework_TestCase
         $this->filesystem->shouldReceive('exists')->with($tempDirAscii.'foobar')->once()->andReturn(false);
         $this->filesystem
             ->shouldReceive('makePathRelative')
-            ->with(realpath(__DIR__.'/../../../src'), getcwd())
+            ->with(realpath(__DIR__.'/../..'), getcwd())
             ->twice()
             ->andReturn($tempDir.'/');
 
@@ -195,7 +195,7 @@ class PathsHelperTest extends \PHPUnit_Framework_TestCase
     {
         $this->filesystem
             ->shouldReceive('makePathRelative')
-            ->with(realpath(__DIR__.'/../../../src'), getcwd())
+            ->with(realpath(__DIR__.'/../..'), getcwd())
             ->once()
             ->andReturn('./');
 
@@ -204,12 +204,12 @@ class PathsHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testGetBinDir()
     {
-        $this->checker->shouldReceive('getBinDir')->withNoArgs()->once()->andReturn(__DIR__.'/../../../bin');
+        $this->checker->shouldReceive('getBinDir')->withNoArgs()->once()->andReturn(__DIR__.'/../../bin');
 
-        $this->filesystem->shouldReceive('exists')->with(__DIR__.'/../../../bin')->once()->andReturn(true);
+        $this->filesystem->shouldReceive('exists')->with(__DIR__.'/../../bin')->once()->andReturn(true);
         $this->filesystem
             ->shouldReceive('makePathRelative')
-            ->with(realpath(__DIR__.'/../../../bin'), getcwd())
+            ->with(realpath(__DIR__.'/../../bin'), getcwd())
             ->once()
             ->andReturn('bin');
 
@@ -220,10 +220,10 @@ class PathsHelperTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException(DirectoryNotFoundException::class, sprintf(
             'The configured BIN directory `%s` could not be found.',
-            __DIR__.'/../../../bin'
+            __DIR__.'/../../bin'
         ));
 
-        $dir = __DIR__.'/../../../bin';
+        $dir = __DIR__.'/../../bin';
         $this->checker->shouldReceive('getBinDir')->withNoArgs()->once()->andReturn($dir);
 
         $this->filesystem->shouldReceive('exists')->with($dir)->once()->andReturn(false);
@@ -248,7 +248,7 @@ class PathsHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRelativeProjectPath()
     {
-        $path = __DIR__.'/../../..';
+        $path = __DIR__.'/../..';
         $this->checker->shouldReceive('getGitDir')->withNoArgs()->twice()->andReturn('.');
 
         $this->filesystem->shouldReceive('exists')->with('.')->twice()->andReturn(true);

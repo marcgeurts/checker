@@ -55,9 +55,7 @@ class CommandCompilerPass extends AbstractCompilerPass
             ->addArgument($name);
 
         $this->addTasks($definition, isset($config['tasks']) ? (array) $config['tasks'] : []);
-
-        unset($config['tasks'], $config['commands']);
-        $definition->addMethodCall('setConfig', [$config]);
+        $this->setConfig($definition, $config);
 
         return $definition;
     }

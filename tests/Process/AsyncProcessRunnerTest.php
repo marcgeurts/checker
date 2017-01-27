@@ -2,7 +2,7 @@
 
 namespace ClickNow\Checker\Process;
 
-use ClickNow\Checker\Command\CommandInterface;
+use ClickNow\Checker\Runner\RunnerInterface;
 use Mockery as m;
 use Symfony\Component\Process\Process;
 
@@ -29,9 +29,9 @@ class AsyncProcessRunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testRun()
     {
-        $command = m::mock(CommandInterface::class);
-        $command->shouldReceive('getProcessAsyncWait')->withNoArgs()->atLeast()->once()->andReturn(0);
-        $command->shouldReceive('getProcessAsyncLimit')->withNoArgs()->atLeast()->once()->andReturn(5);
+        $runner = m::mock(RunnerInterface::class);
+        $runner->shouldReceive('getProcessAsyncWait')->withNoArgs()->atLeast()->once()->andReturn(0);
+        $runner->shouldReceive('getProcessAsyncLimit')->withNoArgs()->atLeast()->once()->andReturn(5);
 
         for ($i = 0; $i < 20; $i++) {
             $process = $this->prophesize(Process::class);
@@ -62,6 +62,6 @@ class AsyncProcessRunnerTest extends \PHPUnit_Framework_TestCase
             $this->asyncProcessRunner->add($process->reveal());
         }
 
-        $this->asyncProcessRunner->run($command);
+        $this->asyncProcessRunner->run($runner);
     }
 }

@@ -2,26 +2,32 @@
 
 namespace ClickNow\Checker\Console\Command;
 
-use ClickNow\Checker\Command\CommandInterface;
-use ClickNow\Checker\Command\CommandsCollection;
 use ClickNow\Checker\Console\Application;
-use ClickNow\Checker\Console\Helper\RunnerHelper;
-use ClickNow\Checker\Context\ContextInterface;
+use ClickNow\Checker\Context\RunContext;
 use ClickNow\Checker\Exception\CommandInvalidException;
 use ClickNow\Checker\Exception\CommandNotFoundException;
+use ClickNow\Checker\Helper\RunnerHelper;
 use ClickNow\Checker\Repository\FilesCollection;
 use ClickNow\Checker\Repository\Git;
+use ClickNow\Checker\Runner\CommandsCollection;
+use ClickNow\Checker\Runner\RunnerInterface;
 use Mockery as m;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * @group console/command
+ * @group  console/command
  * @covers \ClickNow\Checker\Console\Command\RunCommand
+ * @covers \ClickNow\Checker\Console\Command\AbstractRunnerCommand
  */
 class RunCommandTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \ClickNow\Checker\Command\CommandsCollection
+     * @var \ClickNow\Checker\Runner\RunnerInterface|\Mockery\MockInterface
+     */
+    protected $runner;
+
+    /**
+     * @var \ClickNow\Checker\Runner\CommandsCollection
      */
     protected $commandsCollection;
 
@@ -31,7 +37,7 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
     protected $git;
 
     /**
-     * @var \ClickNow\Checker\Console\Helper\RunnerHelper|\Mockery\MockInterface
+     * @var \ClickNow\Checker\Helper\RunnerHelper|\Mockery\MockInterface
      */
     protected $runnerHelper;
 
@@ -42,6 +48,8 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        $this->runner = m::mock(RunnerInterface::class);
+
         $this->commandsCollection = new CommandsCollection();
         $this->git = m::mock(Git::class);
 
@@ -63,9 +71,9 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testRun()
     {
-        $this->commandsCollection->set('foo', m::spy(CommandInterface::class));
+        $this->commandsCollection->set('foo', $this->runner);
         $this->git->shouldReceive('getRegisteredFiles')->withNoArgs()->once()->andReturn(new FilesCollection());
-        $this->runnerHelper->shouldReceive('run')->with(m::type(ContextInterface::class))->once()->andReturn(0);
+        $this->runnerHelper->shouldReceive('run')->with(m::type(RunContext::class))->once()->andReturn(0);
 
         $this->commandTester->execute(['name' => 'foo']);
 
@@ -74,9 +82,9 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAndReturnError()
     {
-        $this->commandsCollection->set('foo', m::spy(CommandInterface::class));
+        $this->commandsCollection->set('foo', $this->runner);
         $this->git->shouldReceive('getRegisteredFiles')->withNoArgs()->once()->andReturn(new FilesCollection());
-        $this->runnerHelper->shouldReceive('run')->with(m::type(ContextInterface::class))->once()->andReturn(1);
+        $this->runnerHelper->shouldReceive('run')->with(m::type(RunContext::class))->once()->andReturn(1);
 
         $this->commandTester->execute(['name' => 'foo']);
 
@@ -85,13 +93,22 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testRunWithOptions()
     {
-        $this->commandsCollection->set('foo', m::spy(CommandInterface::class));
+        $this->commandsCollection->set('foo', $this->runner);
         $this->git->shouldReceive('getRegisteredFiles')->withNoArgs()->once()->andReturn(new FilesCollection());
-        $this->runnerHelper->shouldReceive('run')->with(m::type(ContextInterface::class))->once()->andReturn(0);
+        $this->runnerHelper->shouldReceive('run')->with(m::type(RunContext::class))->once()->andReturn(0);
+
+        $this->runner->shouldReceive('setProcessTimeout')->with(60)->once()->andReturnNull();
+        $this->runner->shouldReceive('setProcessAsyncWait')->with(1000)->once()->andReturnNull();
+        $this->runner->shouldReceive('setProcessAsyncLimit')->with(10)->once()->andReturnNull();
+        $this->runner->shouldReceive('setStopOnFailure')->with(true)->once()->andReturnNull();
+        $this->runner->shouldReceive('setIgnoreUnstagedChanges')->with(true)->once()->andReturnNull();
+        $this->runner->shouldReceive('setSkipSuccessOutput')->with(true)->once()->andReturnNull();
 
         $this->commandTester->execute([
             'name'                      => 'foo',
-            '--process-timeout'         => 10,
+            '--process-timeout'         => 60,
+            '--process-async-wait'      => 1000,
+            '--process-async-limit'     => 10,
             '--stop-on-failure'         => true,
             '--ignore-unstaged-changes' => true,
             '--skip-success-output'     => true,
@@ -107,15 +124,19 @@ class RunCommandTest extends \PHPUnit_Framework_TestCase
         $this->git->shouldReceive('getRegisteredFiles')->withNoArgs()->never();
 
         $this->commandTester->execute(['name' => 'foo']);
+
+        $this->assertSame(1, $this->commandTester->getStatusCode());
     }
 
     public function testCommandInvalid()
     {
-        $this->setExpectedException(CommandInvalidException::class, 'Command `foo` must implement CommandInterface.');
+        $this->setExpectedException(CommandInvalidException::class, 'Command `foo` must implement RunnerInterface.');
 
         $this->commandsCollection->set('foo', 'bar');
         $this->git->shouldReceive('getRegisteredFiles')->withNoArgs()->never();
 
         $this->commandTester->execute(['name' => 'foo']);
+
+        $this->assertSame(1, $this->commandTester->getStatusCode());
     }
 }

@@ -2,9 +2,9 @@
 
 namespace ClickNow\Checker\Event;
 
-use ClickNow\Checker\Action\ActionsCollection;
 use ClickNow\Checker\Context\ContextInterface;
 use ClickNow\Checker\Result\ResultsCollection;
+use ClickNow\Checker\Runner\ActionsCollection;
 use Symfony\Component\EventDispatcher\Event;
 
 class RunnerEvent extends Event
@@ -19,7 +19,7 @@ class RunnerEvent extends Event
     private $context;
 
     /**
-     * @var \ClickNow\Checker\Action\ActionsCollection
+     * @var \ClickNow\Checker\Runner\ActionsCollection
      */
     private $actions;
 
@@ -32,7 +32,7 @@ class RunnerEvent extends Event
      * Runner event.
      *
      * @param \ClickNow\Checker\Context\ContextInterface      $context
-     * @param \ClickNow\Checker\Action\ActionsCollection      $actions
+     * @param \ClickNow\Checker\Runner\ActionsCollection      $actions
      * @param \ClickNow\Checker\Result\ResultsCollection|null $results
      */
     public function __construct(
@@ -58,7 +58,7 @@ class RunnerEvent extends Event
     /**
      * Get actions.
      *
-     * @return \ClickNow\Checker\Action\ActionsCollection
+     * @return \ClickNow\Checker\Runner\ActionsCollection
      */
     public function getActions()
     {

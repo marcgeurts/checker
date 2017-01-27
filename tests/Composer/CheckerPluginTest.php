@@ -17,7 +17,7 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
- * @group composer
+ * @group  composer
  * @covers \ClickNow\Checker\Composer\CheckerPlugin
  * @runTestsInSeparateProcesses
  */

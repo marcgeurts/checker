@@ -22,37 +22,58 @@ class Git
     private $filesystem;
 
     /**
+     * @var \Symfony\Component\Process\ProcessBuilder
+     */
+    private $processBuilder;
+
+    /**
      * Git.
      *
-     * @param \Gitonomy\Git\Repository                 $repository
-     * @param \Symfony\Component\Filesystem\Filesystem $filesystem
+     * @param \Gitonomy\Git\Repository                  $repository
+     * @param \Symfony\Component\Filesystem\Filesystem  $filesystem
+     * @param \Symfony\Component\Process\ProcessBuilder $processBuilder
      */
-    public function __construct(Repository $repository, Filesystem $filesystem)
+    public function __construct(Repository $repository, Filesystem $filesystem, ProcessBuilder $processBuilder)
     {
         $this->repository = $repository;
         $this->filesystem = $filesystem;
+        $this->processBuilder = $processBuilder->setPrefix('git');
     }
 
+    /**
+     * Get commit message
+     *
+     * @return null|string
+     */
+    public function getCommitMessage()
+    {
+        $commitMessageFile = $this->repository->getGitDir().'/COMMIT_EDITMSG';
+
+        if (!$this->filesystem->exists($commitMessageFile)) {
+            return null;
+        }
+
+        return file_get_contents($commitMessageFile);
+    }
+
+    /**
+     * Get user name.
+     *
+     * @return null|string
+     */
     public function getUserName()
     {
-        $pb = new ProcessBuilder(['git', 'config', 'user.name']);
-        $p = $pb->getProcess();
-        $p->run();
-        if(!$p->isSuccessful()) {
-            return null;
-        }
-        return $p->getOutput();
+        return $this->runProcess(['config', 'user.name']);
     }
 
+    /**
+     * Get user e-mail.
+     *
+     * @return null|string
+     */
     public function getUserEmail()
     {
-        $pb = new ProcessBuilder(['git', 'config', 'user.email']);
-        $p = $pb->getProcess();
-        $p->run();
-        if(!$p->isSuccessful()) {
-            return null;
-        }
-        return $p->getOutput();
+        return $this->runProcess(['config', 'user.email']);
     }
 
     /**
@@ -64,13 +85,8 @@ class Git
     {
         $allFiles = trim($this->repository->run('ls-files'));
         $filePaths = preg_split('/\r\n|\n|\r/', $allFiles);
-        $files = new FilesCollection();
 
-        foreach ($filePaths as $file) {
-            $files->add(new SplFileInfo($file, dirname($file), $file));
-        }
-
-        return $files;
+        return $this->parseFilesPaths($filePaths);
     }
 
     /**
@@ -85,11 +101,9 @@ class Git
         if ($rawDiff) {
             $diff = Diff::parse($rawDiff);
             $diff->setRepository($this->repository);
-
-            return $this->parseFilesFromDiff($diff);
+        } else {
+            $diff = $this->repository->getWorkingCopy()->getDiffStaged();
         }
-
-        $diff = $this->repository->getWorkingCopy()->getDiffStaged();
 
         return $this->parseFilesFromDiff($diff);
     }
@@ -106,13 +120,29 @@ class Git
         if ($rawDiff) {
             $diff = Diff::parse($rawDiff);
             $diff->setRepository($this->repository);
-
-            return $this->parseFilesFromDiff($diff);
+        } else {
+            $diff = $this->repository->getDiff(['@{u}', 'HEAD']);
         }
 
-        $diff = $this->repository->getWorkingCopy()->getDiffStaged();
-
         return $this->parseFilesFromDiff($diff);
+    }
+
+    /**
+     * Parse files paths
+     *
+     * @param array $filePaths
+     *
+     * @return \ClickNow\Checker\Repository\FilesCollection
+     */
+    private function parseFilesPaths(array $filePaths)
+    {
+        $files = new FilesCollection();
+
+        foreach ($filePaths as $file) {
+            $files->add(new SplFileInfo($file, dirname($file), $file));
+        }
+
+        return $files;
     }
 
     /**
@@ -139,7 +169,7 @@ class Git
     }
 
     /**
-     * Get SplFileInfo.
+     * Get spl file info.
      *
      * @param \Gitonomy\Git\Diff\File $file
      *
@@ -150,5 +180,24 @@ class Git
         $name = $file->isRename() ? $file->getNewName() : $file->getName();
 
         return new SplFileInfo($name, dirname($name), $name);
+    }
+
+    /**
+     * Run process.
+     *
+     * @param array $arguments
+     *
+     * @return null|string
+     */
+    private function runProcess(array $arguments)
+    {
+        $process = $this->processBuilder->setArguments($arguments)->getProcess();
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            return null;
+        }
+
+        return $process->getOutput();
     }
 }

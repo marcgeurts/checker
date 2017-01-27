@@ -2,14 +2,14 @@
 
 namespace ClickNow\Checker\Process;
 
-use ClickNow\Checker\Command\CommandInterface;
 use ClickNow\Checker\IO\IOInterface;
+use ClickNow\Checker\Runner\RunnerInterface;
 use Mockery as m;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder as SymfonyProcessBuilder;
 
 /**
- * @group process
+ * @group  process
  * @covers \ClickNow\Checker\Process\ProcessBuilder
  */
 class ProcessBuilderTest extends \PHPUnit_Framework_TestCase
@@ -77,13 +77,13 @@ class ProcessBuilderTest extends \PHPUnit_Framework_TestCase
         $this->io->shouldReceive('log')->with('Command: bin/foo')->once()->andReturnNull();
         $this->platform->shouldReceive('validateCommandLineMaxLength')->with('bin/foo')->once()->andReturnNull();
 
-        $command = m::mock(CommandInterface::class);
-        $command->shouldReceive('getProcessTimeout')->withNoArgs()->once()->andReturnNull();
+        $runner = m::mock(RunnerInterface::class);
+        $runner->shouldReceive('getProcessTimeout')->withNoArgs()->once()->andReturnNull();
 
         $arguments = m::mock(ArgumentsCollection::class);
         $arguments->shouldReceive('getValues')->withNoArgs()->once()->andReturn(['bin/foo']);
 
-        $result = $this->processBuilder->buildProcess($arguments, $command);
+        $result = $this->processBuilder->buildProcess($arguments, $runner);
 
         $this->assertInstanceOf(Process::class, $result);
         $this->assertSame($process, $result);

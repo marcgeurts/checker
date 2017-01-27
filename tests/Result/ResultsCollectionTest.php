@@ -2,22 +2,22 @@
 
 namespace ClickNow\Checker\Result;
 
-use ClickNow\Checker\Action\ActionInterface;
-use ClickNow\Checker\Command\CommandInterface;
 use ClickNow\Checker\Context\ContextInterface;
+use ClickNow\Checker\Runner\ActionInterface;
+use ClickNow\Checker\Runner\RunnerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery as m;
 
 /**
- * @group result
+ * @group  result
  * @covers \ClickNow\Checker\Result\ResultsCollection
  */
 class ResultsCollectionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \ClickNow\Checker\Command\CommandInterface|\Mockery\MockInterface
+     * @var \ClickNow\Checker\Runner\RunnerInterface|\Mockery\MockInterface
      */
-    protected $command;
+    protected $runner;
 
     /**
      * @var \ClickNow\Checker\Context\ContextInterface|\Mockery\MockInterface
@@ -25,7 +25,7 @@ class ResultsCollectionTest extends \PHPUnit_Framework_TestCase
     protected $context;
 
     /**
-     * @var \ClickNow\Checker\Action\ActionInterface|\Mockery\MockInterface
+     * @var \ClickNow\Checker\Runner\ActionInterface|\Mockery\MockInterface
      */
     protected $action;
 
@@ -36,7 +36,7 @@ class ResultsCollectionTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->command = m::mock(CommandInterface::class);
+        $this->runner = m::mock(RunnerInterface::class);
         $this->context = m::mock(ContextInterface::class);
         $this->action = m::mock(ActionInterface::class);
         $this->resultsCollection = new ResultsCollection();
@@ -54,16 +54,16 @@ class ResultsCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testIsSuccessfullyIfItContainsOnlyResultPassed()
     {
-        $this->resultsCollection->add(Result::success($this->command, $this->context, $this->action));
-        $this->resultsCollection->add(Result::skipped($this->command, $this->context, $this->action));
+        $this->resultsCollection->add(Result::success($this->runner, $this->context, $this->action));
+        $this->resultsCollection->add(Result::skipped($this->runner, $this->context, $this->action));
 
         $this->assertTrue($this->resultsCollection->isSuccessfully());
     }
 
     public function testIsFailedIfItContainsAnyResultError()
     {
-        $this->resultsCollection->add(Result::success($this->command, $this->context, $this->action));
-        $this->resultsCollection->add(Result::error($this->command, $this->context, $this->action, 'ERROR'));
+        $this->resultsCollection->add(Result::success($this->runner, $this->context, $this->action));
+        $this->resultsCollection->add(Result::error($this->runner, $this->context, $this->action, 'ERROR'));
 
         $this->assertTrue($this->resultsCollection->isFailed());
     }
@@ -80,10 +80,10 @@ class ResultsCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testFilterByStatus()
     {
-        $resultSkipped = Result::skipped($this->command, $this->context, $this->action);
-        $resultSuccess = Result::success($this->command, $this->context, $this->action);
-        $resultWarning = Result::warning($this->command, $this->context, $this->action, 'WARNING');
-        $resultError = Result::error($this->command, $this->context, $this->action, 'ERROR');
+        $resultSkipped = Result::skipped($this->runner, $this->context, $this->action);
+        $resultSuccess = Result::success($this->runner, $this->context, $this->action);
+        $resultWarning = Result::warning($this->runner, $this->context, $this->action, 'WARNING');
+        $resultError = Result::error($this->runner, $this->context, $this->action, 'ERROR');
 
         $this->resultsCollection->add($resultSkipped);
         $this->resultsCollection->add($resultSuccess);
@@ -122,10 +122,10 @@ class ResultsCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAllMessages()
     {
-        $this->resultsCollection->add(Result::skipped($this->command, $this->context, $this->action));
-        $this->resultsCollection->add(Result::success($this->command, $this->context, $this->action));
-        $this->resultsCollection->add(Result::warning($this->command, $this->context, $this->action, 'WARNING'));
-        $this->resultsCollection->add(Result::error($this->command, $this->context, $this->action, 'ERROR'));
+        $this->resultsCollection->add(Result::skipped($this->runner, $this->context, $this->action));
+        $this->resultsCollection->add(Result::success($this->runner, $this->context, $this->action));
+        $this->resultsCollection->add(Result::warning($this->runner, $this->context, $this->action, 'WARNING'));
+        $this->resultsCollection->add(Result::error($this->runner, $this->context, $this->action, 'ERROR'));
 
         $result = $this->resultsCollection->getAllMessages();
 
@@ -135,8 +135,8 @@ class ResultsCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAllMessagesEmpty()
     {
-        $this->resultsCollection->add(Result::skipped($this->command, $this->context, $this->action));
-        $this->resultsCollection->add(Result::success($this->command, $this->context, $this->action));
+        $this->resultsCollection->add(Result::skipped($this->runner, $this->context, $this->action));
+        $this->resultsCollection->add(Result::success($this->runner, $this->context, $this->action));
 
         $this->assertEmpty($this->resultsCollection->getAllMessages());
     }

@@ -1,16 +1,17 @@
 <?php
 
-namespace ClickNow\Checker\Context;
+namespace ClickNow\Checker\Context\Git;
 
+use ClickNow\Checker\Context\ContextInterface;
 use ClickNow\Checker\Repository\FilesCollection;
 use ClickNow\Checker\Runner\RunnerInterface;
 use Mockery as m;
 
 /**
- * @group  context
- * @covers \ClickNow\Checker\Context\RunContext
+ * @group  context/git
+ * @covers \ClickNow\Checker\Context\Git\PreCommitContext
  */
-class RunContextTest extends \PHPUnit_Framework_TestCase
+class PreCommitContextTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \ClickNow\Checker\Runner\RunnerInterface|\Mockery\MockInterface
@@ -23,15 +24,15 @@ class RunContextTest extends \PHPUnit_Framework_TestCase
     protected $files;
 
     /**
-     * @var \ClickNow\Checker\Context\RunContext
+     * @var \ClickNow\Checker\Context\Git\PreCommitContext
      */
-    protected $runContext;
+    protected $preCommitContext;
 
     protected function setUp()
     {
         $this->runner = m::mock(RunnerInterface::class);
         $this->files = m::mock(FilesCollection::class);
-        $this->runContext = new RunContext($this->runner, $this->files);
+        $this->preCommitContext = new PreCommitContext($this->runner, $this->files);
     }
 
     protected function tearDown()
@@ -41,12 +42,12 @@ class RunContextTest extends \PHPUnit_Framework_TestCase
 
     public function testConstruct()
     {
-        $this->assertInstanceOf(ContextInterface::class, $this->runContext);
+        $this->assertInstanceOf(ContextInterface::class, $this->preCommitContext);
     }
 
     public function testGetRunner()
     {
-        $runner = $this->runContext->getRunner();
+        $runner = $this->preCommitContext->getRunner();
 
         $this->assertInstanceOf(RunnerInterface::class, $runner);
         $this->assertSame($this->runner, $runner);
@@ -54,7 +55,7 @@ class RunContextTest extends \PHPUnit_Framework_TestCase
 
     public function testGetFiles()
     {
-        $files = $this->runContext->getFiles();
+        $files = $this->preCommitContext->getFiles();
 
         $this->assertInstanceOf(FilesCollection::class, $files);
         $this->assertSame($this->files, $files);

@@ -2,19 +2,19 @@
 
 namespace ClickNow\Checker\Task;
 
-use ClickNow\Checker\Command\CommandInterface;
 use ClickNow\Checker\Context\ContextInterface;
 use ClickNow\Checker\Formatter\ProcessFormatterInterface;
 use ClickNow\Checker\Process\ArgumentsCollection;
 use ClickNow\Checker\Process\ProcessBuilder;
 use ClickNow\Checker\Repository\FilesCollection;
 use ClickNow\Checker\Result\ResultInterface;
+use ClickNow\Checker\Runner\RunnerInterface;
 use Mockery as m;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
 
 /**
- * @group task
+ * @group  task
  * @covers \ClickNow\Checker\Task\AbstractExternalTask
  */
 class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
@@ -40,7 +40,7 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
         $this->processFormatter = m::mock(ProcessFormatterInterface::class);
         $this->externalTask = $this->getMockForAbstractClass(AbstractExternalTask::class, [
             $this->processBuilder,
-            $this->processFormatter
+            $this->processFormatter,
         ]);
     }
 
@@ -60,8 +60,8 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
         $files = new FilesCollection([new SplFileInfo('file.php', null, null)]);
         $arguments = m::mock(ArgumentsCollection::class);
 
-        $command = m::mock(CommandInterface::class);
-        $command->shouldReceive('getActionConfig')->with($this->externalTask)->once()->andReturn([]);
+        $runner = m::mock(RunnerInterface::class);
+        $runner->shouldReceive('getActionConfig')->with($this->externalTask)->once()->andReturn([]);
 
         $context = m::mock(ContextInterface::class);
         $context->shouldReceive('getFiles')->withNoArgs()->once()->andReturn($files);
@@ -72,11 +72,11 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
         $process->shouldReceive('isSuccessful')->withNoArgs()->once()->andReturn(true);
 
         $this->processBuilder->shouldReceive('createArgumentsForCommand')->with('foo')->once()->andReturn($arguments);
-        $this->processBuilder->shouldReceive('buildProcess')->with($arguments, $command)->once()->andReturn($process);
+        $this->processBuilder->shouldReceive('buildProcess')->with($arguments, $runner)->once()->andReturn($process);
 
         $this->externalTask->expects($this->once())->method('getName')->willReturn('foo');
 
-        $result = $this->externalTask->run($command, $context);
+        $result = $this->externalTask->run($runner, $context);
 
         $this->assertInstanceOf(ResultInterface::class, $result);
         $this->assertTrue($result->isSuccess());
@@ -88,8 +88,8 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
         $files = new FilesCollection([new SplFileInfo('file.php', null, null)]);
         $arguments = m::mock(ArgumentsCollection::class);
 
-        $command = m::mock(CommandInterface::class);
-        $command->shouldReceive('getActionConfig')->with($this->externalTask)->once()->andReturn([]);
+        $runner = m::mock(RunnerInterface::class);
+        $runner->shouldReceive('getActionConfig')->with($this->externalTask)->once()->andReturn([]);
 
         $context = m::mock(ContextInterface::class);
         $context->shouldReceive('getFiles')->withNoArgs()->once()->andReturn($files);
@@ -100,12 +100,12 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
         $process->shouldReceive('isSuccessful')->withNoArgs()->once()->andReturn(false);
 
         $this->processBuilder->shouldReceive('createArgumentsForCommand')->with('foo')->once()->andReturn($arguments);
-        $this->processBuilder->shouldReceive('buildProcess')->with($arguments, $command)->once()->andReturn($process);
+        $this->processBuilder->shouldReceive('buildProcess')->with($arguments, $runner)->once()->andReturn($process);
 
         $this->processFormatter->shouldReceive('format')->with($process)->once()->andReturn('ERROR');
         $this->externalTask->expects($this->once())->method('getName')->willReturn('foo');
 
-        $result = $this->externalTask->run($command, $context);
+        $result = $this->externalTask->run($runner, $context);
 
         $this->assertInstanceOf(ResultInterface::class, $result);
         $this->assertTrue($result->isError());

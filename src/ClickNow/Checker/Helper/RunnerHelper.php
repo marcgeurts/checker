@@ -2,20 +2,19 @@
 
 namespace ClickNow\Checker\Helper;
 
-use ClickNow\Checker\Action\ActionInterface;
-use ClickNow\Checker\Action\ActionsCollection;
 use ClickNow\Checker\Context\ContextInterface;
 use ClickNow\Checker\Event\ActionEvent;
 use ClickNow\Checker\Event\RunnerEvent;
 use ClickNow\Checker\IO\IOInterface;
 use ClickNow\Checker\Result\ResultsCollection;
+use ClickNow\Checker\Runner\ActionInterface;
+use ClickNow\Checker\Runner\ActionsCollection;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RunnerHelper extends Helper
 {
     const HELPER_NAME = 'runner';
-
     const CODE_SUCCESS = 0;
     const CODE_ERROR = 1;
 
@@ -50,7 +49,7 @@ class RunnerHelper extends Helper
      */
     public function run(ContextInterface $context)
     {
-        $this->io->title(sprintf('Checker is analyzing your code by runner `%s`!', $context->getRunner()->getName()));
+        $this->io->title(sprintf('Checker is analyzing your code by `%s`!', $context->getRunner()->getName()));
 
         $actions = $context->getRunner()->getActionsToRun($context);
 
@@ -67,7 +66,7 @@ class RunnerHelper extends Helper
      * Do run.
      *
      * @param \ClickNow\Checker\Context\ContextInterface $context
-     * @param \ClickNow\Checker\Action\ActionsCollection $actions
+     * @param \ClickNow\Checker\Runner\ActionsCollection $actions
      *
      * @return int
      */
@@ -91,7 +90,7 @@ class RunnerHelper extends Helper
      * Run actions.
      *
      * @param \ClickNow\Checker\Context\ContextInterface $context
-     * @param \ClickNow\Checker\Action\ActionsCollection $actions
+     * @param \ClickNow\Checker\Runner\ActionsCollection $actions
      *
      * @return \ClickNow\Checker\Result\ResultsCollection
      */
@@ -114,7 +113,7 @@ class RunnerHelper extends Helper
      * Run action.
      *
      * @param \ClickNow\Checker\Context\ContextInterface $context
-     * @param \ClickNow\Checker\Action\ActionInterface   $action
+     * @param \ClickNow\Checker\Runner\ActionInterface   $action
      *
      * @return \ClickNow\Checker\Result\ResultInterface
      */
