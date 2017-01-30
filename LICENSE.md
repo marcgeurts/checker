@@ -1,4 +1,4 @@
-MIT License
+# License
 
 Copyright (c) ClickNow
 
@@ -19,3 +19,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+***
+See also:
+
+- [Installation](docs/Installation.md)
+- [Configuration](docs/Configuration.md)
+- [Parameters](docs/Parameters.md)
+- [Tasks](docs/Tasks.md)
+- [Commands](docs/Commands.md)
+- [Events](docs/Events.md)
+- [Contributing](../CONTRIBUTING.md)
