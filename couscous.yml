@@ -16,25 +16,25 @@ menu:
       text: Home
     Installation:
       text: Installation
-      relativeUrl: docs/Installation.html
+      relativeUrl: docs/installation.html
     Configuration:
       text: Configuration
-      relativeUrl: docs/Configuration.html
+      relativeUrl: docs/configuration.html
     Parameters:
       text: Parameters
-      relativeUrl: docs/Parameters.html
+      relativeUrl: docs/parameters.html
     Tasks:
       text: Tasks
-      relativeUrl: docs/Tasks.html
+      relativeUrl: docs/tasks.html
     Commands:
       text: Commands
-      relativeUrl: docs/Commands.html
+      relativeUrl: docs/commands.html
     Events:
       text: Events
-      relativeUrl: docs/Events.html
+      relativeUrl: docs/events.html
     Contributing:
       text: Contributing
-      relativeUrl: CONTRIBUTING.html
+      relativeUrl: contributing.html
     License:
       text: License
-      relativeUrl: LICENSE.html
+      relativeUrl: license.html
