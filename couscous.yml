@@ -1,0 +1,40 @@
+template:
+  url: https://github.com/cknow/couscous
+
+baseUrl: https://cknow.github.io/checker
+
+github:
+  user: cknow
+  repo: checker
+
+title: Checker
+subTitle: A PHP code quality tool with git hooks and custom commands.
+
+menu:
+  items:
+    home:
+      text: Home
+    Installation:
+      text: Installation
+      relativeUrl: docs/Installation.html
+    Configuration:
+      text: Configuration
+      relativeUrl: docs/Configuration.html
+    Parameters:
+      text: Parameters
+      relativeUrl: docs/Parameters.html
+    Tasks:
+      text: Tasks
+      relativeUrl: docs/Tasks.html
+    Commands:
+      text: Commands
+      relativeUrl: docs/Commands.html
+    Events:
+      text: Events
+      relativeUrl: docs/Events.html
+    Contributing:
+      text: Contributing
+      relativeUrl: CONTRIBUTING.html
+    License:
+      text: License
+      relativeUrl: LICENSE.html
