@@ -3,6 +3,10 @@ template:
 
 baseUrl: https://cknow.github.io/checker
 
+exclude:
+  - %gitignore%
+  - resources
+
 github:
   user: cknow
   repo: checker
