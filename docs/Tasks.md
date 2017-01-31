@@ -21,9 +21,7 @@ parameters:
 
 services:
   task.myCustomTask:
-    class: My\Custom\Task
-    arguments:
-      - '@config'
+    class: My\Custom\Task # Must implement `ClickNow\Checker\Task\TaskInterface`
     tags:
       - { name: checker.task, config: myConfigKey }
 ```
