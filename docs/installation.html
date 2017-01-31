@@ -24,12 +24,12 @@
         <div class="row">
                             <nav id="sidebar" class="col-sm-3 col-lg-2" role="navigation">
                     <ul class="nav nav-pills nav-stacked">
-                                                    <li class="active">
+                                                    <li class="">
                                 <a href="https://cknow.github.io/checker/">
                                     Home
                                 </a>
                             </li>
-                                                    <li class="">
+                                                    <li class="active">
                                 <a href="https://cknow.github.io/checker/docs/installation.html">
                                     Installation
                                 </a>
@@ -72,32 +72,55 @@
                                             </ul>
                 </nav>
                         <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
-                <h1 id="checker">Checker</h1>
-<p><a href="https://styleci.io/repos/71817499"><img src="https://styleci.io/repos/71817499/shield?style=flat" alt="StyleCI" /></a>
-<a href="https://travis-ci.org/cknow/checker"><img src="https://img.shields.io/travis/cknow/checker.svg?style=flat" alt="Build Status" /></a>
-<a href="https://insight.sensiolabs.com/projects/638e3fd2-c8bd-4e58-aeb1-76b999abea07"><img src="https://img.shields.io/sensiolabs/i/638e3fd2-c8bd-4e58-aeb1-76b999abea07.svg?style=flat" alt="SensioLabs Insight" /></a>
-<a href="https://ci.appveyor.com/project/cknow/checker"><img src="https://img.shields.io/appveyor/ci/cknow/checker.svg?style=flat" alt="AppVeyor" /></a>
-<a href="https://scrutinizer-ci.com/g/cknow/checker"><img src="https://img.shields.io/scrutinizer/g/cknow/checker.png?style=flat" alt="Scrutinizer Code Quality" /></a>
-<a href="https://codeclimate.com/github/cknow/checker"><img src="https://img.shields.io/codeclimate/github/cknow/checker.png?style=flat" alt="Code Climate" /></a>
-<a href="https://coveralls.io/github/cknow/checker"><img src="https://img.shields.io/coveralls/cknow/checker.png?style=flat" alt="Coverage Status" /></a></p>
-<p><a href="https://packagist.org/packages/cknow/checker/stats"><img src="https://img.shields.io/packagist/dt/cknow/checker.svg?style=flat" alt="Total Downloads" /></a>
-<a href="https://packagist.org/packages/cknow/checker"><img src="https://img.shields.io/packagist/v/cknow/checker.svg?style=flat" alt="Latest Stable Version" /></a>
-<a href="LICENSE.md"><img src="https://img.shields.io/packagist/l/cknow/checker.svg?style=flat" alt="License" /></a></p>
+                <h1 id="installation">Installation</h1>
+<h2 id="locally-composer">Locally (Composer)</h2>
+<p>Use the following command to install on your project locally:</p>
+<pre><code class="language-bash">composer require-dev cknow/checker</code></pre>
+<p>When the package is installed, Checker will attach itself to the git hooks of your project.</p>
+<h2 id="globally-composer">Globally (Composer)</h2>
+<p>Use the following command to install globally:</p>
+<pre><code class="language-bash">composer global require cknow/checker
+composer global update cknow/checker</code></pre>
+<p>Then make sure you have <code>~/.composer/vendor/bin</code> in your <code>PATH</code> and you're good to go:</p>
+<pre><code class="language-bash">$ export PATH="$PATH:$HOME/.composer/vendor/bin"</code></pre>
+<p>That's all! The <code>checker</code> command will be available on your CLI and will be used by default.</p>
 <blockquote>
-<p><strong>Note:</strong> This project is inspired in <a href="https://github.com./phpro/grumphp">GrumPHP</a>!!!</p>
+<p><strong>Important:</strong>
+To make sure your git project hooks it is using the executable global,
+run the command <code>checker git:install</code> in the project directory.</p>
+<p><strong>Note:</strong>
+When you globally installed 3rd party tools like e.g. phpunit,
+those will also be used instead of the composer executables.</p>
 </blockquote>
-<p>Checker was developed for the purpose of configuring and executing your actions in git hooks,
-besides being able to create and execute commands as your wish.</p>
-<h2 id="table-of-contents">Table of contents</h2>
+<h2 id="installation-with-an-exotic-project-structure">Installation with an exotic project structure</h2>
+<p>When your application has a project structure that is not covered by the default configuration settings,
+you will have to create a <code>checker.yml</code> before installing the package and add next config
+into your application's <code>composer.json</code>:</p>
+<pre><code class="language-json"># composer.json
+{
+    "extra": {
+        "checker": {
+            "config": "path/to/checker.yml"
+        }
+    }
+}</code></pre>
+<p>You can also change the configuration after installation.
+The only downfall is that you will have to initialize the git hooks manually:</p>
+<pre><code class="language-bash"># Locally
+php ./vendor/bin/checker git:install --config=path/to/checker.yml
+
+# Globally
+checker git:install --config=path/to/checker.yml</code></pre>
+<hr />
+<p>See also:</p>
 <ul>
-<li><a href="docs/installation.html">Installation</a></li>
-<li><a href="docs/configuration.html">Configuration</a></li>
-<li><a href="docs/parameters.html">Parameters</a></li>
-<li><a href="docs/tasks.html">Tasks</a></li>
-<li><a href="docs/commands.html">Commands</a></li>
-<li><a href="docs/events.html">Events</a></li>
-<li><a href="contributing.html">Contributing</a></li>
-<li><a href="license.html">License</a></li>
+<li><a href="configuration.html">Configuration</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="tasks.html">Tasks</a></li>
+<li><a href="commands.html">Commands</a></li>
+<li><a href="events.html">Events</a></li>
+<li><a href="../contributing.html">Contributing</a></li>
+<li><a href="../license.html">License</a></li>
 </ul>
             </section>
         </div>

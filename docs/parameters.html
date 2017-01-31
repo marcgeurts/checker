@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Checker</title>
+    <link rel="stylesheet" href="https://cknow.github.io/checker/css/bootstrap-3.3.7.min.css">
+    <link rel="stylesheet" href="https://cknow.github.io/checker/css/main.css">
+    <link rel="stylesheet" href="https://cknow.github.io/checker/css/prism.css">
+</head>
+<body>
+    <header class="navbar navbar-default navbar-fixed-top">
+        <a class="navbar-brand" href="https://cknow.github.io/checker/">
+            Checker
+            <small class="hidden-xs hidden-sm">
+                A PHP code quality tool with git hooks and custom commands.
+            </small>
+        </a>
+                    <a href="https://github.com/cknow/checker">
+                <img style="position: absolute;top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+            </a>
+            </header>
+    <main class="container-fluid">
+        <div class="row">
+                            <nav id="sidebar" class="col-sm-3 col-lg-2" role="navigation">
+                    <ul class="nav nav-pills nav-stacked">
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/">
+                                    Home
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/installation.html">
+                                    Installation
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/configuration.html">
+                                    Configuration
+                                </a>
+                            </li>
+                                                    <li class="active">
+                                <a href="https://cknow.github.io/checker/docs/parameters.html">
+                                    Parameters
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/tasks.html">
+                                    Tasks
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/commands.html">
+                                    Commands
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/events.html">
+                                    Events
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/contributing.html">
+                                    Contributing
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/license.html">
+                                    License
+                                </a>
+                            </li>
+                                            </ul>
+                </nav>
+                        <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
+                <h1 id="parameters">Parameters</h1>
+<h2 id="bin-dir">bin-dir</h2>
+<p><em>Default: ./vendor/bin</em></p>
+<p>This parameter will tell you where to find external commands.
+It defaults to the default composer bin directory.</p>
+<h2 id="git-dir">git-dir</h2>
+<p><em>Default: .</em></p>
+<p>This parameter will tell in which folder it can find the .git folder.
+This parameter is used to create the git hooks at the correct location.
+It defaults to the working directory.</p>
+<h2 id="hooks-dir">hooks-dir</h2>
+<p><em>Default: null</em></p>
+<p>This parameter will tell in which folder it can find the git hooks template folder.
+It is used to find the git hooks at a custom location so that you can write your own git hooks.
+It defaults to null, which means that the default folder <code>resources/hooks</code>is used.</p>
+<h2 id="hooks-preset">hooks-preset</h2>
+<p><em>Default: local</em></p>
+<p>This parameter will tell which hooks preset to use.
+Presets are only used when you did NOT specify a custom <code>hooks-dir</code>.
+Comes with following presets:</p>
+<ul>
+<li><code>local</code>: All checks will run on your local computer.</li>
+<li><code>vagrant</code>: All checks will run in your vagrant box.</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong>
+When using the vagrant preset, you are required to set the vagrant SSH home folder to your working directory.
+This can be done by altering the <code>.bashrc</code> or <code>.zshrc</code> inside your vagrant box:</p>
+</blockquote>
+<pre><code class="language-sh">echo 'cd /remote/path/to/your/project' &gt;&gt; ~/.bashrc</code></pre>
+<p>You can also add the <code>.bashrc</code> or <code>.zshrc</code> to your vagrant provision script.
+This way the home directory will be set for all the people who are using your vagrant box.</p>
+<h2 id="process-timeout">process-timeout</h2>
+<p><em>Default: 60</em></p>
+<p>Uses the Symfony Process component to run external actions.
+The component will trigger a timeout after 60 seconds by default.
+If you've got tools that run more then 60 seconds, you can increase this parameter.
+It is also possible to disable the timeout by setting the value to <code>null</code>.</p>
+<h2 id="process-async-wait">process-async-wait</h2>
+<p><em>Default: 1000</em></p>
+<p>This parameter controls how long will wait (in microseconds)
+before checking the status of all asynchronous processes.</p>
+<h2 id="process-async-limit">process-async-limit</h2>
+<p><em>Default: 10</em></p>
+<p>This parameter controls how many asynchronous processes will run simultaneously.
+Please note that not all external tasks uses asynchronous processes,
+nor would they necessarily benefit from using it.</p>
+<h2 id="stop-on-failure">stop-on-failure</h2>
+<p><em>Default: false</em></p>
+<p>This parameter will tell to stop running actions when one of the actions results in an error.
+By default will continue running the configured actions.</p>
+<h2 id="ignore-unstaged-changes">ignore-unstaged-changes</h2>
+<p><em>Default: false</em></p>
+<p>By enabling this option, will stash your unstaged changes in git before running the actions.
+This way the actions will run with the code that is actually committed without the unstaged changes.
+Note that during the commit, the unstaged changes will be stored in git stash.
+This may mess with your working copy and result in unexpected merge conflicts.</p>
+<h2 id="skip-success-output">skip-success-output</h2>
+<p><em>Default: false</em></p>
+<p>This parameter will tell to skip success output.
+By default will continue show success output.</p>
+<h2 id="message">message</h2>
+<p><em>Default: { successfully: successfully.txt, failed: failed.txt }</em></p>
+<p>This parameter will tell where can locate ascii images or display simple text.
+If path is not specified default image from <code>resources/ascii/</code> folder are used.
+Currently, only two images <code>successfully</code> and were <code>failed</code>.</p>
+<p>For example:</p>
+<pre><code class="language-yaml"># checker.yml
+parameters:
+  message:
+    successfully: ~ # To disable
+    failed: FAILED!!! # To display simple text</code></pre>
+<h2 id="extensions">extensions</h2>
+<p><em>Default: []</em></p>
+<p>This parameter will tell which extensions to load.</p>
+<p>You will probably have some custom actions or event listeners that are not included in the default project.
+It is possible to group this additional configuration in an extension.
+This way you can easily create your own extension package and load it whenever you need it.</p>
+<p>The configuration looks like this:</p>
+<pre><code class="language-yaml"># checker.yml
+parameters:
+  extensions:
+    - My\Project\CheckerExtension</code></pre>
+<p>The configured extension class needs to implement <code>ClickNow\Checker\Extension\ExtensionInterface</code>.
+Now you can register the actions or events from your own package in the service container.</p>
+<p>For example:</p>
+<pre><code class="language-php">&lt;?php
+
+namespace My\Project;
+
+use ClickNow\Checker\Extension\ExtensionInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
+class CheckerExtension implements ExtensionInterface
+{
+    public function load(ContainerBuilder $container)
+    {
+        // Register your own stuff to the container!
+    }
+}</code></pre>
+<h2 id="tasks">tasks</h2>
+<p><em>Default: null</em></p>
+<p>This parameter will tell which default config to tasks.
+This configuration is merged in default task configuration.</p>
+<p>For example:</p>
+<pre><code class="language-yaml"># checker.yml
+parameters:
+  tasks:
+    foo:
+      bar: foobar # Default configuration</code></pre>
+<h2 id="git-hooks">git-hooks</h2>
+<p>This parameter will tell which for tasks and commands are executed on the git hooks.
+Below is the list available of git hooks:</p>
+<ul>
+<li>commit-msg</li>
+<li>pre-commit</li>
+<li>pre-push</li>
+</ul>
+<p>You can also override these configurations:</p>
+<ul>
+<li>process-timeout</li>
+<li>process-async-wait</li>
+<li>process-async-limit</li>
+<li>stop-on-failure</li>
+<li>ignore-unstaged-changes</li>
+<li>skip-success-output</li>
+</ul>
+<p>For example:</p>
+<pre><code class="language-yaml"># checker.yml
+parameters:
+  git-hooks:
+    pre-commit:
+      process-timeout: 30
+      process-async-wait: 1000
+      process-async-limit: 30
+      stop-on-failure: true
+      ignore-unstaged-changes: true
+      skip-success-output: true
+      tasks:
+        foo: ~ # Use default configuration
+    pre-push:
+      process-timeout: 60
+      process-async-wait: 2000
+      process-async-limit: 60
+      stop-on-failure: false
+      ignore-unstaged-changes: false
+      skip-success-output: false
+      tasks:
+        foo:
+          bar: value # Custom configuration
+      commands:
+        example: ~ # Execute command already created</code></pre>
+<h2 id="commands">commands</h2>
+<p><em>Default: null</em></p>
+<p>This parameter will tell which for custom commands.
+You can create as many commands as you want with custom names.</p>
+<blockquote>
+<p><strong>Note:</strong> The command name can not be the same as a task!</p>
+</blockquote>
+<p>You can also override these configurations:</p>
+<ul>
+<li>process-timeout</li>
+<li>process-async-wait</li>
+<li>process-async-limit</li>
+<li>stop-on-failure</li>
+<li>ignore-unstaged-changes</li>
+<li>skip-success-output</li>
+</ul>
+<p>For example:</p>
+<pre><code class="language-yaml"># checker.yml
+parameters:
+  commands:
+    name-of-command1:
+      process-timeout: 30
+      process-async-wait: 1000
+      process-async-limit: 30
+      stop-on-failure: true
+      ignore-unstaged-changes: true
+      skip-success-output: true
+      tasks:
+        foo: ~ # Use default configuration
+    name-of-command2:
+      process-timeout: 60
+      process-async-wait: 2000
+      process-async-limit: 60
+      stop-on-failure: false
+      ignore-unstaged-changes: false
+      skip-success-output: false
+      tasks:
+        foo:
+          bar: value # Custom configuration
+      commands:
+        name-of-command1: ~ # Execute other command</code></pre>
+<hr />
+<p>See also:</p>
+<ul>
+<li><a href="installation.html">Installation</a></li>
+<li><a href="configuration.html">Configuration</a></li>
+<li><a href="tasks.html">Tasks</a></li>
+<li><a href="commands.html">Commands</a></li>
+<li><a href="events.html">Events</a></li>
+<li><a href="../contributing.html">Contributing</a></li>
+<li><a href="../license.html">License</a></li>
+</ul>
+            </section>
+        </div>
+    </main>
+    <script src="https://cknow.github.io/checker/js/jquery-3.1.1.min.js"></script>
+    <script src="https://cknow.github.io/checker/js/bootstrap-3.3.7.min.js"></script>
+    <script src="https://cknow.github.io/checker/js/prism.js"></script>
+    <script>
+        $(function(){
+            $("table").addClass("table");
+        });
+
+            </script>
+</body>
+</html>

@@ -24,7 +24,7 @@
         <div class="row">
                             <nav id="sidebar" class="col-sm-3 col-lg-2" role="navigation">
                     <ul class="nav nav-pills nav-stacked">
-                                                    <li class="active">
+                                                    <li class="">
                                 <a href="https://cknow.github.io/checker/">
                                     Home
                                 </a>
@@ -34,7 +34,7 @@
                                     Installation
                                 </a>
                             </li>
-                                                    <li class="">
+                                                    <li class="active">
                                 <a href="https://cknow.github.io/checker/docs/configuration.html">
                                     Configuration
                                 </a>
@@ -72,32 +72,69 @@
                                             </ul>
                 </nav>
                         <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
-                <h1 id="checker">Checker</h1>
-<p><a href="https://styleci.io/repos/71817499"><img src="https://styleci.io/repos/71817499/shield?style=flat" alt="StyleCI" /></a>
-<a href="https://travis-ci.org/cknow/checker"><img src="https://img.shields.io/travis/cknow/checker.svg?style=flat" alt="Build Status" /></a>
-<a href="https://insight.sensiolabs.com/projects/638e3fd2-c8bd-4e58-aeb1-76b999abea07"><img src="https://img.shields.io/sensiolabs/i/638e3fd2-c8bd-4e58-aeb1-76b999abea07.svg?style=flat" alt="SensioLabs Insight" /></a>
-<a href="https://ci.appveyor.com/project/cknow/checker"><img src="https://img.shields.io/appveyor/ci/cknow/checker.svg?style=flat" alt="AppVeyor" /></a>
-<a href="https://scrutinizer-ci.com/g/cknow/checker"><img src="https://img.shields.io/scrutinizer/g/cknow/checker.png?style=flat" alt="Scrutinizer Code Quality" /></a>
-<a href="https://codeclimate.com/github/cknow/checker"><img src="https://img.shields.io/codeclimate/github/cknow/checker.png?style=flat" alt="Code Climate" /></a>
-<a href="https://coveralls.io/github/cknow/checker"><img src="https://img.shields.io/coveralls/cknow/checker.png?style=flat" alt="Coverage Status" /></a></p>
-<p><a href="https://packagist.org/packages/cknow/checker/stats"><img src="https://img.shields.io/packagist/dt/cknow/checker.svg?style=flat" alt="Total Downloads" /></a>
-<a href="https://packagist.org/packages/cknow/checker"><img src="https://img.shields.io/packagist/v/cknow/checker.svg?style=flat" alt="Latest Stable Version" /></a>
-<a href="LICENSE.md"><img src="https://img.shields.io/packagist/l/cknow/checker.svg?style=flat" alt="License" /></a></p>
-<blockquote>
-<p><strong>Note:</strong> This project is inspired in <a href="https://github.com./phpro/grumphp">GrumPHP</a>!!!</p>
-</blockquote>
-<p>Checker was developed for the purpose of configuring and executing your actions in git hooks,
-besides being able to create and execute commands as your wish.</p>
-<h2 id="table-of-contents">Table of contents</h2>
+                <h1 id="configuration">Configuration</h1>
+<p>Some things in Checker can be configured in a <code>checker.yml</code> or <code>checker.yml.dist</code>
+file in the root of your project (the directory where you run the <code>checker</code> command).
+You can specify a custom config filename and location in <code>composer.json</code>
+or in the <code>--config</code> option of the console commands.</p>
+<pre><code class="language-yaml"># cheker.yml
+parameters:
+  bin-dir: "./vendor/bin"
+  git-dir: "."
+  hooks-dir: ~
+  hooks-preset: local
+  process-timeout: 60
+  process-async-wait: 1000
+  process-async-limit: 10
+  stop-on-failure: false
+  ignore-unstaged-changes: false
+  skip-success-output: false
+  message:
+    successfully: successfully.txt
+    failed: failed.txt
+  extensions: []
+  tasks: ~
+  git-hooks:
+    commit-msg: ~
+    pre-commit: ~
+    pre-push: ~
+  commands: ~</code></pre>
+<h2 id="metadata">Metadata</h2>
+<p>Every action has a pre-defined metadata key on which application specific options can be configured.</p>
+<p>For example:</p>
+<pre><code class="language-yaml"># checker.yml
+parameters:
+  git-hooks:
+    pre-commit:
+      tasks:
+        any-task:
+          metadata:
+            blocking: true # Blocking
+            priority: 2 # Second execution
+      commands:
+        any-command:
+          metadata:
+            blocking: false # Non-blocking
+            priority: 1 # First execution</code></pre>
+<h3 id="priority">priority</h3>
+<p><em>Default: 0</em></p>
+<p>This option can be used to specify the order in which the actions will be executed.
+The higher the priority, the sooner the action will be executed.</p>
+<h3 id="blocking">blocking</h3>
+<p><em>Default: true</em></p>
+<p>This option can be used to make a failing action non-blocking.
+By default all actions will be marked as blocking.
+When a action is non-blocking, the errors will be displayed but the tests will pass.</p>
+<hr />
+<p>See also:</p>
 <ul>
-<li><a href="docs/installation.html">Installation</a></li>
-<li><a href="docs/configuration.html">Configuration</a></li>
-<li><a href="docs/parameters.html">Parameters</a></li>
-<li><a href="docs/tasks.html">Tasks</a></li>
-<li><a href="docs/commands.html">Commands</a></li>
-<li><a href="docs/events.html">Events</a></li>
-<li><a href="contributing.html">Contributing</a></li>
-<li><a href="license.html">License</a></li>
+<li><a href="installation.html">Installation</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="tasks.html">Tasks</a></li>
+<li><a href="commands.html">Commands</a></li>
+<li><a href="events.html">Events</a></li>
+<li><a href="../contributing.html">Contributing</a></li>
+<li><a href="../license.html">License</a></li>
 </ul>
             </section>
         </div>

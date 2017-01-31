@@ -24,7 +24,7 @@
         <div class="row">
                             <nav id="sidebar" class="col-sm-3 col-lg-2" role="navigation">
                     <ul class="nav nav-pills nav-stacked">
-                                                    <li class="active">
+                                                    <li class="">
                                 <a href="https://cknow.github.io/checker/">
                                     Home
                                 </a>
@@ -54,7 +54,7 @@
                                     Commands
                                 </a>
                             </li>
-                                                    <li class="">
+                                                    <li class="active">
                                 <a href="https://cknow.github.io/checker/docs/events.html">
                                     Events
                                 </a>
@@ -72,32 +72,87 @@
                                             </ul>
                 </nav>
                         <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
-                <h1 id="checker">Checker</h1>
-<p><a href="https://styleci.io/repos/71817499"><img src="https://styleci.io/repos/71817499/shield?style=flat" alt="StyleCI" /></a>
-<a href="https://travis-ci.org/cknow/checker"><img src="https://img.shields.io/travis/cknow/checker.svg?style=flat" alt="Build Status" /></a>
-<a href="https://insight.sensiolabs.com/projects/638e3fd2-c8bd-4e58-aeb1-76b999abea07"><img src="https://img.shields.io/sensiolabs/i/638e3fd2-c8bd-4e58-aeb1-76b999abea07.svg?style=flat" alt="SensioLabs Insight" /></a>
-<a href="https://ci.appveyor.com/project/cknow/checker"><img src="https://img.shields.io/appveyor/ci/cknow/checker.svg?style=flat" alt="AppVeyor" /></a>
-<a href="https://scrutinizer-ci.com/g/cknow/checker"><img src="https://img.shields.io/scrutinizer/g/cknow/checker.png?style=flat" alt="Scrutinizer Code Quality" /></a>
-<a href="https://codeclimate.com/github/cknow/checker"><img src="https://img.shields.io/codeclimate/github/cknow/checker.png?style=flat" alt="Code Climate" /></a>
-<a href="https://coveralls.io/github/cknow/checker"><img src="https://img.shields.io/coveralls/cknow/checker.png?style=flat" alt="Coverage Status" /></a></p>
-<p><a href="https://packagist.org/packages/cknow/checker/stats"><img src="https://img.shields.io/packagist/dt/cknow/checker.svg?style=flat" alt="Total Downloads" /></a>
-<a href="https://packagist.org/packages/cknow/checker"><img src="https://img.shields.io/packagist/v/cknow/checker.svg?style=flat" alt="Latest Stable Version" /></a>
-<a href="LICENSE.md"><img src="https://img.shields.io/packagist/l/cknow/checker.svg?style=flat" alt="License" /></a></p>
-<blockquote>
-<p><strong>Note:</strong> This project is inspired in <a href="https://github.com./phpro/grumphp">GrumPHP</a>!!!</p>
-</blockquote>
-<p>Checker was developed for the purpose of configuring and executing your actions in git hooks,
-besides being able to create and execute commands as your wish.</p>
-<h2 id="table-of-contents">Table of contents</h2>
+                <h1 id="events">Events</h1>
+<p>It is possible to hook in to Checker with events. Internally the Symfony event dispatcher is being used.</p>
+<p>Following events are triggered during execution:</p>
+<table>
+<thead>
+<tr>
+<th>Event name</th>
+<th>Event class</th>
+<th>Triggered</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>checker.action.run</td>
+<td>ActionEvent</td>
+<td>before a action is executed</td>
+</tr>
+<tr>
+<td>checker.action.successfully</td>
+<td>ActionEvent</td>
+<td>when a action succeeds</td>
+</tr>
+<tr>
+<td>checker.action.failed</td>
+<td>ActionEvent</td>
+<td>when a action fails</td>
+</tr>
+<tr>
+<td>checker.runner.run</td>
+<td>RunnerEvent</td>
+<td>before the actions are executed</td>
+</tr>
+<tr>
+<td>checker.runner.successfully</td>
+<td>RunnerEvent</td>
+<td>when all actions succeed</td>
+</tr>
+<tr>
+<td>checker.runner.failed</td>
+<td>RunnerEvent</td>
+<td>when one action failed</td>
+</tr>
+<tr>
+<td>console.command</td>
+<td>ConsoleCommandEvent</td>
+<td>before a CLI command is ran</td>
+</tr>
+<tr>
+<td>console.terminate</td>
+<td>ConsoleTerminateEvent</td>
+<td>before a CLI command terminates</td>
+</tr>
+<tr>
+<td>console.exception</td>
+<td>ConsoleExceptionEvent</td>
+<td>when a CLI command throws an unhandled exception.</td>
+</tr>
+</tbody>
+</table>
+<p>Configured events just like you would in Symfony:</p>
+<pre><code class="language-yaml"># checker.yml
+services:   
+  listener.some-listener:
+    class: MyNamespace\EventListener\MyListener
+    tags:
+      - { name: checker.event-listener, event: checker.runner.run }
+      - { name: checker.event-listener, event: checker.runner.run, method: customMethod, priority: 10 }
+  listener.some-subscriber:
+    class: MyNamespace\EventSubscriber\MySubscriber
+    tags:
+      - { name: checker.event-subscriber }</code></pre>
+<hr />
+<p>See also:</p>
 <ul>
-<li><a href="docs/installation.html">Installation</a></li>
-<li><a href="docs/configuration.html">Configuration</a></li>
-<li><a href="docs/parameters.html">Parameters</a></li>
-<li><a href="docs/tasks.html">Tasks</a></li>
-<li><a href="docs/commands.html">Commands</a></li>
-<li><a href="docs/events.html">Events</a></li>
-<li><a href="contributing.html">Contributing</a></li>
-<li><a href="license.html">License</a></li>
+<li><a href="installation.html">Installation</a></li>
+<li><a href="configuration.html">Configuration</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="tasks.html">Tasks</a></li>
+<li><a href="commands.html">Commands</a></li>
+<li><a href="../contributing.html">Contributing</a></li>
+<li><a href="../license.html">License</a></li>
 </ul>
             </section>
         </div>
