@@ -1,3 +1,7 @@
+---
+currentMenu: configuration
+---
+
 # Configuration
 
 Some things in Checker can be configured in a `checker.yml` or `checker.yml.dist`
@@ -5,7 +9,7 @@ file in the root of your project (the directory where you run the `checker` comm
 You can specify a custom config filename and location in `composer.json`
 or in the `--config` option of the console commands.
 
-```yml
+```yaml
 # cheker.yml
 parameters:
   bin-dir: "./vendor/bin"
@@ -36,7 +40,7 @@ Every action has a pre-defined metadata key on which application specific option
 
 For example:
 
-```yml
+```yaml
 # checker.yml
 parameters:
   git-hooks:

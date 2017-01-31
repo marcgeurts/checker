@@ -1,3 +1,7 @@
+---
+currentMenu: events
+---
+
 # Events
 
 It is possible to hook in to Checker with events. Internally the Symfony event dispatcher is being used.
@@ -18,7 +22,7 @@ Following events are triggered during execution:
 
 Configured events just like you would in Symfony:
 
-```yml
+```yaml
 # checker.yml
 services:   
   listener.some-listener:

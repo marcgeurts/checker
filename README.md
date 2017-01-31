@@ -1,3 +1,7 @@
+---
+currentMenu: home
+---
+
 # Checker
 
 [![StyleCI](https://styleci.io/repos/71817499/shield?style=flat)](https://styleci.io/repos/71817499)

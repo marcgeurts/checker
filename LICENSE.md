@@ -1,3 +1,7 @@
+---
+currentMenu: license
+---
+
 # License
 
 Copyright (c) ClickNow

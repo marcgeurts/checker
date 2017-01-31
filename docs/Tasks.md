@@ -1,3 +1,7 @@
+---
+currentMenu: tasks
+---
+
 # Tasks
 
 ## Creating a custom task
@@ -8,7 +12,7 @@ Next register it to the service manager and add your task configuration.
 
 For example:
 
-```yml
+```yaml
 # checker.yml
 parameters:
   tasks:

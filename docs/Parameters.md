@@ -1,3 +1,7 @@
+---
+currentMenu: parameters
+---
+
 # Parameters
 
 ## bin-dir
@@ -102,7 +106,7 @@ Currently, only two images `successfully` and were `failed`.
 
 For example:
 
-```yml
+```yaml
 # checker.yml
 parameters:
   message:
@@ -122,7 +126,7 @@ This way you can easily create your own extension package and load it whenever y
 
 The configuration looks like this:
 
-```yml
+```yaml
 # checker.yml
 parameters:
   extensions:
@@ -160,7 +164,7 @@ This configuration is merged in default task configuration.
 
 For example:
 
-```yml
+```yaml
 # checker.yml
 parameters:
   tasks:
@@ -188,7 +192,7 @@ You can also override these configurations:
 
 For example:
 
-```yml
+```yaml
 # checker.yml
 parameters:
   git-hooks:
@@ -235,7 +239,7 @@ You can also override these configurations:
 
 For example:
 
-```yml
+```yaml
 # checker.yml
 parameters:
   commands:

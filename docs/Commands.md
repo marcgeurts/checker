@@ -1,4 +1,8 @@
-# Command-line Interface (CLI)
+---
+currentMenu: commands
+---
+
+# Commands
 
 ## run
 

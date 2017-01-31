@@ -14,27 +14,27 @@ menu:
   items:
     home:
       text: Home
-    Installation:
+    installation:
       text: Installation
       relativeUrl: docs/installation.html
-    Configuration:
+    configuration:
       text: Configuration
       relativeUrl: docs/configuration.html
-    Parameters:
+    parameters:
       text: Parameters
       relativeUrl: docs/parameters.html
-    Tasks:
+    tasks:
       text: Tasks
       relativeUrl: docs/tasks.html
-    Commands:
+    commands:
       text: Commands
       relativeUrl: docs/commands.html
-    Events:
+    events:
       text: Events
       relativeUrl: docs/events.html
-    Contributing:
+    contributing:
       text: Contributing
       relativeUrl: contributing.html
-    License:
+    license:
       text: License
       relativeUrl: license.html
