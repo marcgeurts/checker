@@ -5,7 +5,12 @@ baseUrl: https://cknow.github.io/checker
 
 exclude:
   - %gitignore%
+  - bin
   - resources
+  - src
+  - tests
+  - .editorconfig
+  - .gitattributes
 
 github:
   user: cknow
