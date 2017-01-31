@@ -2,9 +2,9 @@
 
 namespace ClickNow\Checker\Console;
 
+use ClickNow\Checker\Repository\Filesystem;
 use Composer\Package\PackageInterface;
 use Mockery as m;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @group console
@@ -13,7 +13,7 @@ use Symfony\Component\Filesystem\Filesystem;
 class ConfigFileTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Symfony\Component\Filesystem\Filesystem|\Mockery\MockInterface
+     * @var \ClickNow\Checker\Repository\Filesystem|\Mockery\MockInterface
      */
     protected $filesystem;
 

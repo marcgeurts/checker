@@ -5,10 +5,11 @@ namespace ClickNow\Checker\Console\Command\Git;
 use ClickNow\Checker\Config\Checker;
 use ClickNow\Checker\Exception\FileNotFoundException;
 use ClickNow\Checker\IO\IOInterface;
+use ClickNow\Checker\Repository\Filesystem;
+use SplFileInfo;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ProcessBuilder;
 
 class InstallCommand extends Command
@@ -21,7 +22,7 @@ class InstallCommand extends Command
     private $checker;
 
     /**
-     * @var \Symfony\Component\Filesystem\Filesystem
+     * @var \ClickNow\Checker\Repository\Filesystem
      */
     private $filesystem;
 
@@ -49,7 +50,7 @@ class InstallCommand extends Command
      * Install command.
      *
      * @param \ClickNow\Checker\Config\Checker          $checker
-     * @param \Symfony\Component\Filesystem\Filesystem  $filesystem
+     * @param \ClickNow\Checker\Repository\Filesystem   $filesystem
      * @param \ClickNow\Checker\IO\IOInterface          $io
      * @param \Symfony\Component\Process\ProcessBuilder $processBuilder
      * @param array                                     $gitHooks
@@ -120,7 +121,7 @@ class InstallCommand extends Command
      *
      * @throws \ClickNow\Checker\Exception\FileNotFoundException
      *
-     * @return string
+     * @return SplFileInfo
      */
     private function getHookTemplate($name)
     {
@@ -136,7 +137,7 @@ class InstallCommand extends Command
             throw new FileNotFoundException(sprintf('Could not find template for `%s` at `%s`.', $name, $template));
         }
 
-        return $template;
+        return new SplFileInfo($template);
     }
 
     /**
@@ -152,7 +153,7 @@ class InstallCommand extends Command
             return;
         }
 
-        $content = file_get_contents($path);
+        $content = $this->filesystem->readFromFileInfo(new SplFileInfo($path));
 
         if (strpos($content, self::GENERATED_MESSAGE) !== false) {
             return;
@@ -165,17 +166,17 @@ class InstallCommand extends Command
     /**
      * Create git hook.
      *
-     * @param string $name
-     * @param string $path
-     * @param string $template
+     * @param string      $name
+     * @param string      $path
+     * @param SplFileInfo $template
      *
      * @return void
      */
-    private function createGitHook($name, $path, $template)
+    private function createGitHook($name, $path, SplFileInfo $template)
     {
         $this->io->log(sprintf('Checker create git hook `%s`.', $path));
 
-        $content = file_get_contents($template);
+        $content = $this->filesystem->readFromFileInfo($template);
         $replacements = [
             '$(GENERATED_MESSAGE)' => self::GENERATED_MESSAGE,
             '${HOOK_EXEC_PATH}'    => $this->paths()->getGitHookExecutionPath(),

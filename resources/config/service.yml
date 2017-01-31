@@ -12,9 +12,6 @@ services:
   executable-finder:
     class: Symfony\Component\Process\ExecutableFinder
 
-  filesystem:
-    class: Symfony\Component\Filesystem\Filesystem
-
   git.repository:
     class: Gitonomy\Git\Repository
     arguments:

@@ -4,6 +4,7 @@ namespace ClickNow\Checker\Console;
 
 use ClickNow\Checker\Composer\ComposerUtil;
 use ClickNow\Checker\Config\ContainerFactory;
+use ClickNow\Checker\Repository\Filesystem;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Symfony\Component\Console\Application as SymfonyConsole;
@@ -11,7 +12,6 @@ use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Filesystem;
 
 class Application extends SymfonyConsole
 {

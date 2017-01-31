@@ -6,17 +6,17 @@ use ClickNow\Checker\Config\Compiler\CommandCompilerPass;
 use ClickNow\Checker\Config\Compiler\ExtensionCompilerPass;
 use ClickNow\Checker\Config\Compiler\GitHookCompilerPass;
 use ClickNow\Checker\Config\Compiler\TaskCompilerPass;
+use ClickNow\Checker\Repository\Filesystem;
 use Symfony\Bridge\ProxyManager\LazyProxy\Instantiator\RuntimeInstantiator;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
-use Symfony\Component\Filesystem\Filesystem;
 
 final class ContainerFactory
 {
     /**
-     * @var \Symfony\Component\Filesystem\Filesystem
+     * @var \ClickNow\Checker\Repository\Filesystem
      */
     private $filesystem;
 

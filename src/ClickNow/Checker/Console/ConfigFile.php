@@ -2,13 +2,13 @@
 
 namespace ClickNow\Checker\Console;
 
+use ClickNow\Checker\Repository\Filesystem;
 use Composer\Package\PackageInterface;
-use Symfony\Component\Filesystem\Filesystem;
 
 class ConfigFile
 {
     /**
-     * @var \Symfony\Component\Filesystem\Filesystem
+     * @var \ClickNow\Checker\Repository\Filesystem
      */
     private $filesystem;
 
@@ -25,8 +25,8 @@ class ConfigFile
     /**
      * Config file.
      *
-     * @param \Symfony\Component\Filesystem\Filesystem $filesystem
-     * @param \Composer\Package\PackageInterface|null  $package
+     * @param \ClickNow\Checker\Repository\Filesystem $filesystem
+     * @param \Composer\Package\PackageInterface|null $package
      */
     public function __construct(Filesystem $filesystem, PackageInterface $package = null)
     {

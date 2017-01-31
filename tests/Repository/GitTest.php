@@ -6,7 +6,6 @@ use Gitonomy\Git\Diff\Diff;
 use Gitonomy\Git\Diff\File;
 use Gitonomy\Git\Repository;
 use Mockery as m;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
@@ -23,7 +22,7 @@ class GitTest extends \PHPUnit_Framework_TestCase
     protected $repository;
 
     /**
-     * @var \Symfony\Component\Filesystem\Filesystem|\Mockery\MockInterface
+     * @var \ClickNow\Checker\Repository\Filesystem|\Mockery\MockInterface
      */
     protected $filesystem;
 
@@ -53,25 +52,18 @@ class GitTest extends \PHPUnit_Framework_TestCase
 
     public function testGetCommitMessage()
     {
-        $tmpDir = __DIR__.'/tmp/';
-
-        $fs = new Filesystem();
-        $fs->mkdir($tmpDir);
-
-        file_put_contents($tmpDir.'COMMIT_EDITMSG', 'foo');
-
-        $this->repository->shouldReceive('getGitDir')->withNoArgs()->once()->andReturn($tmpDir);
-        $this->filesystem->shouldReceive('exists')->withAnyArgs()->once()->andReturn(true);
+        $type = m::type(\SplFileInfo::class);
+        $this->repository->shouldReceive('getGitDir')->withNoArgs()->once()->andReturn('.');
+        $this->filesystem->shouldReceive('exists')->with('./COMMIT_EDITMSG')->once()->andReturn(true);
+        $this->filesystem->shouldReceive('readFromFileInfo')->with($type)->once()->andReturn('foo');
 
         $this->assertSame('foo', $this->git->getCommitMessage());
-
-        $fs->remove($tmpDir);
     }
 
     public function testGetCommitMessageError()
     {
-        $this->repository->shouldReceive('getGitDir')->withNoArgs()->once()->andReturn('./');
-        $this->filesystem->shouldReceive('exists')->withAnyArgs()->once()->andReturn(false);
+        $this->repository->shouldReceive('getGitDir')->withNoArgs()->once()->andReturn('.');
+        $this->filesystem->shouldReceive('exists')->with('./COMMIT_EDITMSG')->once()->andReturn(false);
 
         $this->assertNull($this->git->getCommitMessage());
     }

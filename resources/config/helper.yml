@@ -3,7 +3,7 @@ services:
     class: ClickNow\Checker\Helper\PathsHelper
     arguments:
       - '@checker'
-      - '@filesystem'
+      - '@repository.filesystem'
       - '@process.executable-finder'
       - '@console.config-file'
 

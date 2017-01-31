@@ -21,7 +21,7 @@ services:
     class: ClickNow\Checker\Console\Command\Git\InstallCommand
     arguments:
       - '@checker'
-      - '@filesystem'
+      - '@repository.filesystem'
       - '@io'
       - '@process-builder'
       - '%git-hooks%'
@@ -31,6 +31,7 @@ services:
     arguments:
       - '@runner.git-hook.commit-msg'
       - '@repository.git'
+      - '@repository.filesystem'
 
   console.command.git.pre-commit:
     class: ClickNow\Checker\Console\Command\Git\PreCommitCommand
@@ -47,6 +48,6 @@ services:
   console.command.git.uninstall:
     class: ClickNow\Checker\Console\Command\Git\UninstallCommand
     arguments:
-      - '@filesystem'
+      - '@repository.filesystem'
       - '@io'
       - '%git-hooks%'

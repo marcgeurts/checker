@@ -5,7 +5,6 @@ namespace ClickNow\Checker\Repository;
 use Gitonomy\Git\Diff\Diff;
 use Gitonomy\Git\Diff\File;
 use Gitonomy\Git\Repository;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\ProcessBuilder;
 
@@ -17,7 +16,7 @@ class Git
     private $repository;
 
     /**
-     * @var \Symfony\Component\Filesystem\Filesystem
+     * @var \ClickNow\Checker\Repository\Filesystem
      */
     private $filesystem;
 
@@ -30,7 +29,7 @@ class Git
      * Git.
      *
      * @param \Gitonomy\Git\Repository                  $repository
-     * @param \Symfony\Component\Filesystem\Filesystem  $filesystem
+     * @param \ClickNow\Checker\Repository\Filesystem   $filesystem
      * @param \Symfony\Component\Process\ProcessBuilder $processBuilder
      */
     public function __construct(Repository $repository, Filesystem $filesystem, ProcessBuilder $processBuilder)
@@ -53,7 +52,7 @@ class Git
             return null;
         }
 
-        return file_get_contents($commitMessageFile);
+        return $this->filesystem->readFromFileInfo(new \SplFileInfo($commitMessageFile));
     }
 
     /**

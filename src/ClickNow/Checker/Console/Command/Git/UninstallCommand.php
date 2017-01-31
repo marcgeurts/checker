@@ -3,15 +3,15 @@
 namespace ClickNow\Checker\Console\Command\Git;
 
 use ClickNow\Checker\IO\IOInterface;
+use ClickNow\Checker\Repository\Filesystem;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Filesystem;
 
 class UninstallCommand extends Command
 {
     /**
-     * @var \Symfony\Component\Filesystem\Filesystem
+     * @var \ClickNow\Checker\Repository\Filesystem
      */
     private $filesystem;
 
@@ -28,7 +28,7 @@ class UninstallCommand extends Command
     /**
      * Uninstall command.
      *
-     * @param \Symfony\Component\Filesystem\Filesystem $filesystem
+     * @param \ClickNow\Checker\Repository\Filesystem  $filesystem
      * @param \ClickNow\Checker\IO\IOInterface         $io
      * @param array                                    $gitHooks
      */

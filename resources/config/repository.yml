@@ -1,7 +1,10 @@
 services:
+  repository.filesystem:
+    class: ClickNow\Checker\Repository\Filesystem
+
   repository.git:
     class: ClickNow\Checker\Repository\Git
     arguments:
       - '@git.repository'
-      - '@filesystem'
+      - '@repository.filesystem'
       - '@process-builder'

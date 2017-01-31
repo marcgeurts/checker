@@ -7,8 +7,9 @@ use ClickNow\Checker\Console\ConfigFile;
 use ClickNow\Checker\Exception\DirectoryNotFoundException;
 use ClickNow\Checker\Exception\FileNotFoundException;
 use ClickNow\Checker\Process\ExecutableFinder;
+use ClickNow\Checker\Repository\Filesystem;
+use SplFileInfo;
 use Symfony\Component\Console\Helper\Helper;
-use Symfony\Component\Filesystem\Filesystem;
 
 class PathsHelper extends Helper
 {
@@ -20,7 +21,7 @@ class PathsHelper extends Helper
     private $checker;
 
     /**
-     * @var \Symfony\Component\Filesystem\Filesystem
+     * @var \ClickNow\Checker\Repository\Filesystem
      */
     private $filesystem;
 
@@ -38,7 +39,7 @@ class PathsHelper extends Helper
      * Paths helper.
      *
      * @param \ClickNow\Checker\Config\Checker           $checker
-     * @param \Symfony\Component\Filesystem\Filesystem   $filesystem
+     * @param \ClickNow\Checker\Repository\Filesystem    $filesystem
      * @param \ClickNow\Checker\Process\ExecutableFinder $executableFinder
      * @param \ClickNow\Checker\Console\ConfigFile       $configFile
      */
@@ -99,13 +100,13 @@ class PathsHelper extends Helper
 
         // File specified by user
         if ($this->filesystem->exists($resource)) {
-            return file_get_contents($resource);
+            return $this->filesystem->readFromFileInfo(new SplFileInfo($resource));
         }
 
         // Embeded ASCII
         $embeddedFile = $this->getAsciiPath().$resource;
         if ($this->filesystem->exists($embeddedFile)) {
-            return file_get_contents($embeddedFile);
+            return $this->filesystem->readFromFileInfo(new SplFileInfo($embeddedFile));
         }
 
         // Simple message text

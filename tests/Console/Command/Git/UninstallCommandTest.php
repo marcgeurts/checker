@@ -5,9 +5,9 @@ namespace ClickNow\Checker\Console\Command\Git;
 use ClickNow\Checker\Console\Application;
 use ClickNow\Checker\Helper\PathsHelper;
 use ClickNow\Checker\IO\IOInterface;
+use ClickNow\Checker\Repository\Filesystem;
 use Mockery as m;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @group  console/command/git
@@ -16,7 +16,7 @@ use Symfony\Component\Filesystem\Filesystem;
 class UninstallCommandTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Symfony\Component\Filesystem\Filesystem|\Mockery\MockInterface
+     * @var \ClickNow\Checker\Repository\Filesystem|\Mockery\MockInterface
      */
     protected $filesystem;
 

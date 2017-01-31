@@ -7,10 +7,11 @@ use ClickNow\Checker\Console\ConfigFile;
 use ClickNow\Checker\Exception\DirectoryNotFoundException;
 use ClickNow\Checker\Exception\FileNotFoundException;
 use ClickNow\Checker\Process\ExecutableFinder;
+use ClickNow\Checker\Repository\Filesystem;
 use Mockery as m;
+use SplFileInfo;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Helper\HelperInterface;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @group  helper
@@ -24,7 +25,7 @@ class PathsHelperTest extends \PHPUnit_Framework_TestCase
     protected $checker;
 
     /**
-     * @var \Symfony\Component\Filesystem\Filesystem|\Mockery\MockInterface
+     * @var \ClickNow\Checker\Repository\Filesystem|\Mockery\MockInterface
      */
     protected $filesystem;
 
@@ -108,36 +109,28 @@ class PathsHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testGetMessage()
     {
-        $tempDir = __DIR__.'/tmp';
-        $tempDirAscii = $tempDir.'/resources/ascii/';
+        $type = m::type(SplFileInfo::class);
 
-        $fs = new Filesystem();
-        $fs->mkdir($tempDirAscii);
+        $this->filesystem->shouldReceive('exists')->with('user')->once()->andReturn(true);
+        $this->filesystem->shouldReceive('readFromFileInfo')->with($type)->once()->andReturn('foo');
 
-        $tempFile = $fs->tempnam($tempDir, 'phpunit');
-        $tempFileAscii = $fs->tempnam($tempDirAscii, 'phpunit');
-        $fileAscii = basename($tempFileAscii);
+        $this->filesystem->shouldReceive('exists')->with('file')->once()->andReturn(false);
+        $this->filesystem->shouldReceive('exists')->with('./resources/ascii/file')->once()->andReturn(true);
+        $this->filesystem->shouldReceive('readFromFileInfo')->with($type)->once()->andReturn('bar');
 
-        $fs->dumpFile($tempFile, 'foo');
-        $fs->dumpFile($tempFileAscii, 'bar');
-
-        $this->filesystem->shouldReceive('exists')->with($tempFile)->once()->andReturn(true);
-        $this->filesystem->shouldReceive('exists')->with($fileAscii)->once()->andReturn(false);
-        $this->filesystem->shouldReceive('exists')->with($tempDirAscii.$fileAscii)->once()->andReturn(true);
         $this->filesystem->shouldReceive('exists')->with('foobar')->once()->andReturn(false);
-        $this->filesystem->shouldReceive('exists')->with($tempDirAscii.'foobar')->once()->andReturn(false);
+        $this->filesystem->shouldReceive('exists')->with('./resources/ascii/foobar')->once()->andReturn(false);
+
         $this->filesystem
             ->shouldReceive('makePathRelative')
             ->with(realpath(__DIR__.'/../..'), getcwd())
             ->twice()
-            ->andReturn($tempDir.'/');
+            ->andReturn('./');
 
         $this->assertNull($this->pathsHelper->getMessage(null));
-        $this->assertSame('foo', $this->pathsHelper->getMessage($tempFile));
-        $this->assertSame('bar', $this->pathsHelper->getMessage($fileAscii));
+        $this->assertSame('foo', $this->pathsHelper->getMessage('user'));
+        $this->assertSame('bar', $this->pathsHelper->getMessage('file'));
         $this->assertSame('foobar', $this->pathsHelper->getMessage('foobar'));
-
-        $fs->remove($tempDir);
     }
 
     public function testGetWorkingDir()
