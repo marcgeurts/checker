@@ -16,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Application extends SymfonyConsole
 {
     const APP_NAME = 'Checker';
-    const APP_VERSION = '1.0.0-1';
+    const APP_VERSION = '1.0.0-2';
 
     /**
      * @var \ClickNow\Checker\Console\ConfigFile
