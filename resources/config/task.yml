@@ -7,6 +7,14 @@ services:
       tags:
         - { name: checker.task, config: ant }
 
+  task.gherkin:
+    class: ClickNow\Checker\Task\Gherkin
+    arguments:
+      - '@process.process-builder'
+      - '@formatter.raw-process'
+    tags:
+      - { name: checker.task, config: gherkin }
+
   task.grunt:
     class: ClickNow\Checker\Task\Grunt
     arguments:
