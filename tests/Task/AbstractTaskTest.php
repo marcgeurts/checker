@@ -106,4 +106,58 @@ class AbstractTaskTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(ResultInterface::class, $result);
         $this->assertTrue($result->isSkipped());
     }
+
+    public function testRunWithAlwaysExecute()
+    {
+        $runner = m::mock(RunnerInterface::class);
+        $runner->shouldReceive('getActionConfig')->with($this->task)->once()->andReturn(['always-execute' => true]);
+
+        $context = m::mock(ContextInterface::class);
+        $context->shouldReceive('getFiles')->withNoArgs()->once()->andReturn(new FilesCollection());
+
+        $this->task
+            ->expects($this->once())
+            ->method('execute')
+            ->willReturn(Result::success($runner, $context, $this->task));
+
+        $result = $this->task->run($runner, $context);
+
+        $this->assertInstanceOf(ResultInterface::class, $result);
+        $this->assertTrue($result->isSuccess());
+    }
+
+    public function testRunWithFinderFiles()
+    {
+        $finder = [
+            'name'       => 'file1.*',
+            'not-name'   => 'file2.*',
+            'path'       => 'path1',
+            'not-path'   => 'path2',
+            'extensions' => ['php'],
+        ];
+
+        $runner = m::mock(RunnerInterface::class);
+        $runner->shouldReceive('getActionConfig')->with($this->task)->once()->andReturn(['finder' => $finder]);
+
+        $files = new FilesCollection([
+            new SplFileInfo('path1/file1.php', 'path1', 'path1/file1.php'),
+            new SplFileInfo('path1/file2.php', 'path1', 'path1/file2.php'),
+            new SplFileInfo('path2/file1.php', 'path2', 'path2/file1.php'),
+            new SplFileInfo('path2/file2.php', 'path2', 'path2/file2.php'),
+            new SplFileInfo('path1/file1.txt', 'path1', 'path1/file1.txt'),
+        ]);
+
+        $context = m::mock(ContextInterface::class);
+        $context->shouldReceive('getFiles')->withNoArgs()->once()->andReturn($files);
+
+        $this->task
+            ->expects($this->once())
+            ->method('execute')
+            ->willReturn(Result::success($runner, $context, $this->task));
+
+        $result = $this->task->run($runner, $context);
+
+        $this->assertInstanceOf(ResultInterface::class, $result);
+        $this->assertTrue($result->isSuccess());
+    }
 }
