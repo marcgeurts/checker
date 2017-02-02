@@ -6,7 +6,7 @@ currentMenu: tasks
 
 http://gruntjs.com/
 
-The Grunt task will run your automated frontend tasks.
+The Grunt task will run your automated workflow tasks.
 It lives under the `grunt` namespace and has following configurable parameters:
 
 ```yml
