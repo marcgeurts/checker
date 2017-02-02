@@ -54,7 +54,7 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAndReturnSuccess()
     {
-        $name = $this->getExternalTaskName();
+        $commandName = $this->getExternalTaskCommandName();
         $files = new FilesCollection([new SplFileInfo('file.php', null, null)]);
         $args = new ArgumentsCollection();
 
@@ -69,7 +69,7 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
         $process->shouldReceive('run')->withNoArgs()->once()->andReturnNull();
         $process->shouldReceive('isSuccessful')->withNoArgs()->once()->andReturn(true);
 
-        $this->processBuilder->shouldReceive('createArgumentsForCommand')->with($name)->once()->andReturn($args);
+        $this->processBuilder->shouldReceive('createArgumentsForCommand')->with($commandName)->once()->andReturn($args);
         $this->processBuilder->shouldReceive('buildProcess')->with($args, $runner)->once()->andReturn($process);
 
         $this->processFormatter->shouldReceive('format')->with($process)->never();
@@ -83,7 +83,7 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAndReturnError()
     {
-        $name = $this->getExternalTaskName();
+        $commandName = $this->getExternalTaskCommandName();
         $files = new FilesCollection([new SplFileInfo('file.php', null, null)]);
         $args = new ArgumentsCollection();
 
@@ -98,7 +98,7 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
         $process->shouldReceive('run')->withNoArgs()->once()->andReturnNull();
         $process->shouldReceive('isSuccessful')->withNoArgs()->once()->andReturn(false);
 
-        $this->processBuilder->shouldReceive('createArgumentsForCommand')->with($name)->once()->andReturn($args);
+        $this->processBuilder->shouldReceive('createArgumentsForCommand')->with($commandName)->once()->andReturn($args);
         $this->processBuilder->shouldReceive('buildProcess')->with($args, $runner)->once()->andReturn($process);
 
         $this->processFormatter->shouldReceive('format')->with($process)->once()->andReturn('ERROR');
@@ -124,15 +124,15 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Get external task name.
+     * Get external task command name.
      *
      * @return string
      */
-    protected function getExternalTaskName()
+    protected function getExternalTaskCommandName()
     {
-        $name = 'foo';
-        $this->externalTask->expects($this->once())->method('getName')->willReturn($name);
+        $commandName = 'foo';
+        $this->externalTask->expects($this->once())->method('getName')->willReturn($commandName);
 
-        return $name;
+        return $commandName;
     }
 }

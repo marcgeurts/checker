@@ -28,11 +28,11 @@ class GulpTest extends AbstractExternalTaskTest
     }
 
     /**
-     * Get external task name.
+     * Get external task command name.
      *
      * @return string
      */
-    protected function getExternalTaskName()
+    protected function getExternalTaskCommandName()
     {
         return $this->externalTask->getName();
     }
