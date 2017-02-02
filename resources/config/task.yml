@@ -1,0 +1,8 @@
+services:
+  task.gulp:
+    class: ClickNow\Checker\Task\Gulp
+    arguments:
+      - '@process.process-builder'
+      - '@formatter.raw-process'
+    tags:
+      - { name: checker.task, config: gulp }

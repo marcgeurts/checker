@@ -4,6 +4,19 @@ currentMenu: tasks
 
 # Tasks
 
+To activate a task, it is sufficient to add an empty task configuration:
+
+```yml
+# checker.yml
+parameters:
+  tasks: # Merged in default task configuration
+    gulp: ~
+```
+
+Every task has it's own default configuration. It is possible to overwrite the parameters per task.
+
+- [Gulp](tasks/gulp.md)
+
 ## Creating a custom task
 
 It is very easy to configure your own project specific task.
