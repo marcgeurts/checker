@@ -22,7 +22,7 @@ class Grunt extends AbstractExternalTask
      *
      * @return \Symfony\Component\OptionsResolver\OptionsResolver
      */
-    protected function getConfigOptions()
+    public function getConfigOptions()
     {
         $resolver = parent::getConfigOptions();
 

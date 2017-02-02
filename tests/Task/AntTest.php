@@ -5,13 +5,20 @@ namespace ClickNow\Checker\Task;
 /**
  * @group  task
  * @covers \ClickNow\Checker\Task\Ant
- * @covers \ClickNow\Checker\Task\AbstractExternalTask
  */
 class AntTest extends AbstractExternalTaskTest
 {
     public function testGetName()
     {
         $this->assertSame('ant', $this->externalTask->getName());
+    }
+
+    public function testConfigOptions()
+    {
+        $options = $this->externalTask->getConfigOptions()->getDefinedOptions();
+
+        $this->assertContains('buildfile', $options);
+        $this->assertContains('task', $options);
     }
 
     /**

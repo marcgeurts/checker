@@ -5,13 +5,20 @@ namespace ClickNow\Checker\Task;
 /**
  * @group  task
  * @covers \ClickNow\Checker\Task\Make
- * @covers \ClickNow\Checker\Task\AbstractExternalTask
  */
 class MakeTest extends AbstractExternalTaskTest
 {
     public function testGetName()
     {
         $this->assertSame('make', $this->externalTask->getName());
+    }
+
+    public function testConfigOptions()
+    {
+        $options = $this->externalTask->getConfigOptions()->getDefinedOptions();
+
+        $this->assertContains('makefile', $options);
+        $this->assertContains('task', $options);
     }
 
     /**

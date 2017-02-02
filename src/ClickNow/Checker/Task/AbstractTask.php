@@ -73,7 +73,7 @@ abstract class AbstractTask implements TaskInterface
      *
      * @return \Symfony\Component\OptionsResolver\OptionsResolver
      */
-    protected function getConfigOptions()
+    public function getConfigOptions()
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([

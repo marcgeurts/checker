@@ -5,13 +5,20 @@ namespace ClickNow\Checker\Task;
 /**
  * @group  task
  * @covers \ClickNow\Checker\Task\Robo
- * @covers \ClickNow\Checker\Task\AbstractExternalTask
  */
 class RoboTest extends AbstractExternalTaskTest
 {
     public function testGetName()
     {
         $this->assertSame('robo', $this->externalTask->getName());
+    }
+
+    public function testConfigOptions()
+    {
+        $options = $this->externalTask->getConfigOptions()->getDefinedOptions();
+
+        $this->assertContains('load-from', $options);
+        $this->assertContains('task', $options);
     }
 
     /**

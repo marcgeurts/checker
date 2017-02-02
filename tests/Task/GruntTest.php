@@ -5,13 +5,20 @@ namespace ClickNow\Checker\Task;
 /**
  * @group  task
  * @covers \ClickNow\Checker\Task\Grunt
- * @covers \ClickNow\Checker\Task\AbstractExternalTask
  */
 class GruntTest extends AbstractExternalTaskTest
 {
     public function testGetName()
     {
         $this->assertSame('grunt', $this->externalTask->getName());
+    }
+
+    public function testConfigOptions()
+    {
+        $options = $this->externalTask->getConfigOptions()->getDefinedOptions();
+
+        $this->assertContains('gruntfile', $options);
+        $this->assertContains('task', $options);
     }
 
     /**
