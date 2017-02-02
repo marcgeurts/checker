@@ -4,7 +4,7 @@ currentMenu: commands
 
 # Commands
 
-## run
+### run
 
 *Parameter:*
 
@@ -41,7 +41,7 @@ php ./vendor/bin/checker run name-of-command --process-timeout=30 --process-asyn
 checker run name-of-command --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --skip-success-output=0
 ```
 
-## git:install
+### git:install
 
 This command install git hooks to Checker.
 
@@ -77,7 +77,7 @@ checker git:install --config=/path/to/checker.yml
 checker git:install -c=/path/to/checker.yml
 ```
 
-## git:uninstall
+### git:uninstall
 
 This command uninstall git hooks to Checker.
 
@@ -93,7 +93,7 @@ php ./vendor/bin/checker git:uninstall
 checker git:uninstall
 ```
 
-## git:commit-msg
+### git:commit-msg
 
 This command will be triggered by git hooks in commit-msg. However, you can run!
 
@@ -129,7 +129,7 @@ php ./vendor/bin/checker git:commit-msg commit-message-file --git-user-name=name
 checker git:commit-msg commit-message-file --git-user-name=name --git-user-email=email --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --skip-success-output=0
 ```
 
-## git:pre-commit
+### git:pre-commit
 
 This command will be triggered by git hooks in pre-commit. However, you can run!
 
@@ -162,7 +162,7 @@ php ./vendor/bin/checker git:pre-commit --process-timeout=30 --process-async-wai
 checker git:pre-commit --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --skip-success-output=0
 ```
 
-## git:pre-push
+### git:pre-push
 
 This command will be triggered by git hooks in pre-push. However, you can run!
 

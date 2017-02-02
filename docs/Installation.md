@@ -4,7 +4,7 @@ currentMenu: installation
 
 # Installation
 
-## Locally (Composer)
+### Locally (Composer)
 
 Use the following command to install on your project locally:
 
@@ -14,7 +14,7 @@ composer require-dev cknow/checker
 
 When the package is installed, Checker will attach itself to the git hooks of your project.
 
-## Globally (Composer)
+### Globally (Composer)
 
 Use the following command to install globally:
 

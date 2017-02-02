@@ -4,14 +4,14 @@ currentMenu: parameters
 
 # Parameters
 
-## bin-dir
+### bin-dir
 
 *Default: ./vendor/bin*
 
 This parameter will tell you where to find external commands.
 It defaults to the default composer bin directory.
 
-## git-dir
+### git-dir
 
 *Default: .*
 
@@ -19,7 +19,7 @@ This parameter will tell in which folder it can find the .git folder.
 This parameter is used to create the git hooks at the correct location.
 It defaults to the working directory.
 
-## hooks-dir
+### hooks-dir
 
 *Default: null*
 
@@ -27,7 +27,7 @@ This parameter will tell in which folder it can find the git hooks template fold
 It is used to find the git hooks at a custom location so that you can write your own git hooks.
 It defaults to null, which means that the default folder `resources/hooks `is used.
 
-## hooks-preset
+### hooks-preset
 
 *Default: local*
 
@@ -49,7 +49,7 @@ echo 'cd /remote/path/to/your/project' >> ~/.bashrc
 You can also add the `.bashrc` or `.zshrc` to your vagrant provision script.
 This way the home directory will be set for all the people who are using your vagrant box.
 
-## process-timeout
+### process-timeout
 
 *Default: 60*
 
@@ -58,14 +58,14 @@ The component will trigger a timeout after 60 seconds by default.
 If you've got tools that run more then 60 seconds, you can increase this parameter.
 It is also possible to disable the timeout by setting the value to `null`.
 
-## process-async-wait
+### process-async-wait
 
 *Default: 1000*
 
 This parameter controls how long will wait (in microseconds)
 before checking the status of all asynchronous processes.
 
-## process-async-limit
+### process-async-limit
 
 *Default: 10*
 
@@ -73,14 +73,14 @@ This parameter controls how many asynchronous processes will run simultaneously.
 Please note that not all external tasks uses asynchronous processes,
 nor would they necessarily benefit from using it.
 
-## stop-on-failure
+### stop-on-failure
 
 *Default: false*
 
 This parameter will tell to stop running actions when one of the actions results in an error.
 By default will continue running the configured actions.
 
-## ignore-unstaged-changes
+### ignore-unstaged-changes
 
 *Default: false*
 
@@ -89,14 +89,14 @@ This way the actions will run with the code that is actually committed without t
 Note that during the commit, the unstaged changes will be stored in git stash.
 This may mess with your working copy and result in unexpected merge conflicts.
 
-## skip-success-output
+### skip-success-output
 
 *Default: false*
 
 This parameter will tell to skip success output.
 By default will continue show success output.
 
-## message
+### message
 
 *Default: { successfully: successfully.txt, failed: failed.txt }*
 
@@ -114,7 +114,7 @@ parameters:
     failed: FAILED!!! # To display simple text
 ```
 
-## extensions
+### extensions
 
 *Default: []*
 
@@ -155,7 +155,7 @@ class CheckerExtension implements ExtensionInterface
 }
 ```
 
-## tasks
+### tasks
 
 *Default: null*
 
@@ -219,7 +219,7 @@ parameters:
         example: ~ # Execute command already created
 ```
 
-## commands
+### commands
 
 *Default: null*
 
@@ -265,6 +265,44 @@ parameters:
       commands:
         name-of-command1: ~ # Execute other command
 ```
+
+## Metadata
+
+Every action has a pre-defined metadata key on which application specific options can be configured.
+
+For example:
+
+```yaml
+# checker.yml
+parameters:
+  git-hooks:
+    pre-commit:
+      tasks:
+        any-task:
+          metadata:
+            blocking: true # Blocking
+            priority: 2 # Second execution
+      commands:
+        any-command:
+          metadata:
+            blocking: false # Non-blocking
+            priority: 1 # First execution
+```
+
+### priority
+
+*Default: 0*
+
+This option can be used to specify the order in which the actions will be executed.
+The higher the priority, the sooner the action will be executed.
+
+### blocking
+
+*Default: true*
+
+This option can be used to make a failing action non-blocking.
+By default all actions will be marked as blocking.
+When a action is non-blocking, the errors will be displayed but the tests will pass.
 
 ***
 See also:

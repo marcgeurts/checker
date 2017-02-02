@@ -19,7 +19,9 @@ currentMenu: home
 > **Note:** This project is inspired in [GrumPHP](https://github.com./phpro/grumphp)!!!
 
 Checker was developed for the purpose of configuring and executing your actions in git hooks,
-besides being able to create and execute commands as your wish.
+besides being able to create and execute commands as you wish,
+without counting the possibility of executing the same task with different configurations.
+Which made it different from GrumPHP!
 
 ## Table of contents
 
