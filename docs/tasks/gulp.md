@@ -20,7 +20,7 @@ parameters:
 
 *Default: null*
 
-If your 'gulpfile.js' file is located at an exotic location,
+If your `gulpfile.js` file is located at an exotic location,
 you can specify your custom gulp file location with this option.
 This option is set to `null` by default.
 This means that `gulpfile.js` is automatically loaded if the file exists in the current directory.
