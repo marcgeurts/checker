@@ -18,6 +18,7 @@ parameters:
 
 Every task has it's own default configuration. It is possible to overwrite the parameters per task.
 
+- [Ant](tasks/ant.md)
 - [Grunt](tasks/grunt.md)
 - [Gulp](tasks/gulp.md)
 - [Make](tasks/make.md)
