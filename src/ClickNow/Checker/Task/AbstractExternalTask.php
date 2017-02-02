@@ -53,10 +53,7 @@ abstract class AbstractExternalTask extends AbstractTask
      *
      * @return void
      */
-    protected function addArguments(ArgumentsCollection $arguments, array $config, FilesCollection $files)
-    {
-        //
-    }
+    abstract protected function addArguments(ArgumentsCollection $arguments, array $config, FilesCollection $files);
 
     /**
      * Execute.

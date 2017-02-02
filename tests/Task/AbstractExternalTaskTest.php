@@ -38,10 +38,7 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
     {
         $this->processBuilder = m::mock(ProcessBuilder::class);
         $this->processFormatter = m::mock(ProcessFormatterInterface::class);
-        $this->externalTask = $this->getMockForAbstractClass(AbstractExternalTask::class, [
-            $this->processBuilder,
-            $this->processFormatter,
-        ]);
+        $this->externalTask = $this->mockExternalTask();
     }
 
     protected function tearDown()
@@ -57,8 +54,9 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAndReturnSuccess()
     {
+        $name = $this->getExternalTaskName();
         $files = new FilesCollection([new SplFileInfo('file.php', null, null)]);
-        $arguments = m::mock(ArgumentsCollection::class);
+        $args = new ArgumentsCollection();
 
         $runner = m::mock(RunnerInterface::class);
         $runner->shouldReceive('getActionConfig')->with($this->externalTask)->once()->andReturn([]);
@@ -71,10 +69,10 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
         $process->shouldReceive('run')->withNoArgs()->once()->andReturnNull();
         $process->shouldReceive('isSuccessful')->withNoArgs()->once()->andReturn(true);
 
-        $this->processBuilder->shouldReceive('createArgumentsForCommand')->with('foo')->once()->andReturn($arguments);
-        $this->processBuilder->shouldReceive('buildProcess')->with($arguments, $runner)->once()->andReturn($process);
+        $this->processBuilder->shouldReceive('createArgumentsForCommand')->with($name)->once()->andReturn($args);
+        $this->processBuilder->shouldReceive('buildProcess')->with($args, $runner)->once()->andReturn($process);
 
-        $this->externalTask->expects($this->once())->method('getName')->willReturn('foo');
+        $this->processFormatter->shouldReceive('format')->with($process)->never();
 
         $result = $this->externalTask->run($runner, $context);
 
@@ -85,8 +83,9 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAndReturnError()
     {
+        $name = $this->getExternalTaskName();
         $files = new FilesCollection([new SplFileInfo('file.php', null, null)]);
-        $arguments = m::mock(ArgumentsCollection::class);
+        $args = new ArgumentsCollection();
 
         $runner = m::mock(RunnerInterface::class);
         $runner->shouldReceive('getActionConfig')->with($this->externalTask)->once()->andReturn([]);
@@ -99,16 +98,41 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
         $process->shouldReceive('run')->withNoArgs()->once()->andReturnNull();
         $process->shouldReceive('isSuccessful')->withNoArgs()->once()->andReturn(false);
 
-        $this->processBuilder->shouldReceive('createArgumentsForCommand')->with('foo')->once()->andReturn($arguments);
-        $this->processBuilder->shouldReceive('buildProcess')->with($arguments, $runner)->once()->andReturn($process);
+        $this->processBuilder->shouldReceive('createArgumentsForCommand')->with($name)->once()->andReturn($args);
+        $this->processBuilder->shouldReceive('buildProcess')->with($args, $runner)->once()->andReturn($process);
 
         $this->processFormatter->shouldReceive('format')->with($process)->once()->andReturn('ERROR');
-        $this->externalTask->expects($this->once())->method('getName')->willReturn('foo');
 
         $result = $this->externalTask->run($runner, $context);
 
         $this->assertInstanceOf(ResultInterface::class, $result);
         $this->assertTrue($result->isError());
         $this->assertSame('ERROR', $result->getMessage());
+    }
+
+    /**
+     * Mock external task.
+     *
+     * @return \ClickNow\Checker\Task\AbstractExternalTask|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function mockExternalTask()
+    {
+        return $this->getMockForAbstractClass(AbstractExternalTask::class, [
+            $this->processBuilder,
+            $this->processFormatter,
+        ]);
+    }
+
+    /**
+     * Get external task name.
+     *
+     * @return string
+     */
+    protected function getExternalTaskName()
+    {
+        $name = 'foo';
+        $this->externalTask->expects($this->once())->method('getName')->willReturn($name);
+
+        return $name;
     }
 }
