@@ -4,6 +4,8 @@ currentMenu: tasks
 
 # Grunt
 
+http://gruntjs.com/
+
 The Grunt task will run your automated frontend tasks.
 It lives under the `grunt` namespace and has following configurable parameters:
 
@@ -20,10 +22,10 @@ parameters:
 
 *Default: null*
 
-If your `gruntfile.js` file is located at an exotic location,
-you can specify your custom grunt file location with this option.
+If your `Gruntfile.js` file is located at an exotic location,
+you can specify your custom location with this option.
 This option is set to `null` by default.
-This means that `gruntfile.js` is automatically loaded if the file exists in the current directory.
+This means that `Gruntfile.js` is automatically loaded if the file exists in the current directory.
 
 ### task
 
