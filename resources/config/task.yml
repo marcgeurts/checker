@@ -14,3 +14,11 @@ services:
       - '@formatter.raw-process'
     tags:
       - { name: checker.task, config: gulp }
+
+  task.robo:
+    class: ClickNow\Checker\Task\Robo
+    arguments:
+      - '@process.process-builder'
+      - '@formatter.raw-process'
+    tags:
+      - { name: checker.task, config: robo }

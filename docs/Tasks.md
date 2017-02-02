@@ -12,12 +12,14 @@ parameters:
   tasks: # Merged in default task configuration
     grunt: ~
     gulp: ~
+    robo: ~
 ```
 
 Every task has it's own default configuration. It is possible to overwrite the parameters per task.
 
 - [Grunt](tasks/grunt.md)
 - [Gulp](tasks/gulp.md)
+- [Robo](tasks/robo.md)
 
 ## Creating a custom task
 
