@@ -12,6 +12,7 @@ parameters:
   tasks: # Merged in default task configuration
     grunt: ~
     gulp: ~
+    make: ~
     robo: ~
 ```
 
@@ -19,6 +20,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 
 - [Grunt](tasks/grunt.md)
 - [Gulp](tasks/gulp.md)
+- [Make](tasks/make.md)
 - [Robo](tasks/robo.md)
 
 ## Creating a custom task

@@ -15,6 +15,14 @@ services:
     tags:
       - { name: checker.task, config: gulp }
 
+  task.make:
+    class: ClickNow\Checker\Task\Make
+    arguments:
+      - '@process.process-builder'
+      - '@formatter.raw-process'
+    tags:
+      - { name: checker.task, config: make }
+
   task.robo:
     class: ClickNow\Checker\Task\Robo
     arguments:
