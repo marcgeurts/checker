@@ -4,6 +4,8 @@ currentMenu: tasks
 
 # Gulp
 
+http://gulpjs.com/
+
 The Gulp task will run your automated frontend tasks.
 It lives under the `gulp` namespace and has following configurable parameters:
 
@@ -21,7 +23,7 @@ parameters:
 *Default: null*
 
 If your `gulpfile.js` file is located at an exotic location,
-you can specify your custom gulp file location with this option.
+you can specify your custom location with this option.
 This option is set to `null` by default.
 This means that `gulpfile.js` is automatically loaded if the file exists in the current directory.
 
