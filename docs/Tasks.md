@@ -10,11 +10,13 @@ To activate a task, it is sufficient to add an empty task configuration:
 # checker.yml
 parameters:
   tasks: # Merged in default task configuration
+    grunt: ~
     gulp: ~
 ```
 
 Every task has it's own default configuration. It is possible to overwrite the parameters per task.
 
+- [Grunt](tasks/grunt.md)
 - [Gulp](tasks/gulp.md)
 
 ## Creating a custom task

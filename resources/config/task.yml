@@ -1,4 +1,12 @@
 services:
+  task.grunt:
+    class: ClickNow\Checker\Task\Grunt
+    arguments:
+      - '@process.process-builder'
+      - '@formatter.raw-process'
+    tags:
+      - { name: checker.task, config: grunt }
+
   task.gulp:
     class: ClickNow\Checker\Task\Gulp
     arguments:
