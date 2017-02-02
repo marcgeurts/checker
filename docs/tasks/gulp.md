@@ -6,7 +6,7 @@ currentMenu: tasks
 
 http://gulpjs.com/
 
-The Gulp task will run your automated frontend tasks.
+The Gulp task will run your automated workflow tasks.
 It lives under the `gulp` namespace and has following configurable parameters:
 
 ```yml
