@@ -4,7 +4,7 @@ currentMenu: tasks
 
 # Gherkin
 
-https://github.com/malukenho/kawaii-gherkin
+[See oficinal documentation](https://github.com/malukenho/kawaii-gherkin)
 
 The Gherkin task will run your Gherkin feature files.
 It lives under the `gherkin` namespace and has following configurable parameters:

@@ -4,7 +4,7 @@ currentMenu: tasks
 
 # Gulp
 
-http://gulpjs.com/
+[See oficinal documentation](http://gulpjs.com/)
 
 The Gulp task will run your automated workflow tasks.
 It lives under the `gulp` namespace and has following configurable parameters:
