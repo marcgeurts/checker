@@ -10,9 +10,12 @@ To activate a task, it is sufficient to add an empty task configuration:
 # checker.yml
 parameters:
   tasks: # Merged in default task configuration
+    ant: ~
+    gherkin: ~
     grunt: ~
     gulp: ~
     make: ~
+    phpunit: ~
     robo: ~
 ```
 
@@ -23,6 +26,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Grunt](tasks/grunt.md)
 - [Gulp](tasks/gulp.md)
 - [Make](tasks/make.md)
+- [PHPUnit](tasks/phpunit.md)
 - [Robo](tasks/robo.md)
 
 ## Creating a custom task

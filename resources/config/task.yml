@@ -39,6 +39,14 @@ services:
     tags:
       - { name: checker.task, config: make }
 
+  task.phpunit:
+    class: ClickNow\Checker\Task\PHPUnit
+    arguments:
+      - '@process.process-builder'
+      - '@formatter.raw-process'
+    tags:
+      - { name: checker.task, config: phpunit }
+
   task.robo:
     class: ClickNow\Checker\Task\Robo
     arguments:
