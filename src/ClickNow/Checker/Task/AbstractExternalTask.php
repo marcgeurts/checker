@@ -4,7 +4,6 @@ namespace ClickNow\Checker\Task;
 
 use ClickNow\Checker\Context\ContextInterface;
 use ClickNow\Checker\Formatter\ProcessFormatterInterface;
-use ClickNow\Checker\Process\ArgumentsCollection;
 use ClickNow\Checker\Process\ProcessBuilder;
 use ClickNow\Checker\Repository\FilesCollection;
 use ClickNow\Checker\Result\Result;
@@ -35,25 +34,14 @@ abstract class AbstractExternalTask extends AbstractTask
     }
 
     /**
-     * Get command name.
+     * Create arguments.
      *
-     * @return string
+     * @param array                                        $config
+     * @param \ClickNow\Checker\Repository\FilesCollection $files
+     *
+     * @return \ClickNow\Checker\Process\ArgumentsCollection
      */
-    protected function getCommandName()
-    {
-        return $this->getName();
-    }
-
-    /**
-     * Add arguments.
-     *
-     * @param \ClickNow\Checker\Process\ArgumentsCollection $arguments
-     * @param array                                         $config
-     * @param \ClickNow\Checker\Repository\FilesCollection  $files
-     *
-     * @return void
-     */
-    abstract protected function addArguments(ArgumentsCollection $arguments, array $config, FilesCollection $files);
+    abstract protected function createArguments(array $config, FilesCollection $files);
 
     /**
      * Execute.
@@ -71,9 +59,7 @@ abstract class AbstractExternalTask extends AbstractTask
         RunnerInterface $runner,
         ContextInterface $context
     ) {
-        $arguments = $this->processBuilder->createArgumentsForCommand($this->getCommandName());
-        $this->addArguments($arguments, $config, $files);
-        $process = $this->processBuilder->buildProcess($arguments, $runner);
+        $process = $this->buildProcess($config, $files, $runner);
         $process->run();
 
         if (!$process->isSuccessful()) {
@@ -81,5 +67,21 @@ abstract class AbstractExternalTask extends AbstractTask
         }
 
         return Result::success($runner, $context, $this);
+    }
+
+    /**
+     * Build process.
+     *
+     * @param array                                        $config
+     * @param \ClickNow\Checker\Repository\FilesCollection $files
+     * @param \ClickNow\Checker\Runner\RunnerInterface     $runner
+     *
+     * @return \Symfony\Component\Process\Process
+     */
+    protected function buildProcess(array $config, FilesCollection $files, RunnerInterface $runner)
+    {
+        $arguments = $this->createArguments($config, $files);
+
+        return $this->processBuilder->buildProcess($arguments, $runner);
     }
 }

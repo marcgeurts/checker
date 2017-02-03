@@ -2,7 +2,6 @@
 
 namespace ClickNow\Checker\Task;
 
-use ClickNow\Checker\Process\ArgumentsCollection;
 use ClickNow\Checker\Repository\FilesCollection;
 
 class PHPUnit extends AbstractExternalTask
@@ -38,15 +37,19 @@ class PHPUnit extends AbstractExternalTask
     }
 
     /**
-     * Add arguments.
+     * Create arguments.
      *
-     * @param \ClickNow\Checker\Process\ArgumentsCollection $arguments
-     * @param array                                         $config
-     * @param \ClickNow\Checker\Repository\FilesCollection  $files
+     * @param array                                        $config
+     * @param \ClickNow\Checker\Repository\FilesCollection $files
+     *
+     * @return \ClickNow\Checker\Process\ArgumentsCollection
      */
-    protected function addArguments(ArgumentsCollection $arguments, array $config, FilesCollection $files)
+    protected function createArguments(array $config, FilesCollection $files)
     {
+        $arguments = $this->processBuilder->createArgumentsForCommand('phpunit');
         $arguments->addOptionalArgument('--configuration=%s', $config['configuration']);
         $arguments->addOptionalCommaSeparatedArgument('--group=%s', $config['group']);
+
+        return $arguments;
     }
 }

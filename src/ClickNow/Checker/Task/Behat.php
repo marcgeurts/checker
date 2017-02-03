@@ -2,7 +2,6 @@
 
 namespace ClickNow\Checker\Task;
 
-use ClickNow\Checker\Process\ArgumentsCollection;
 use ClickNow\Checker\Repository\FilesCollection;
 
 class Behat extends AbstractExternalTask
@@ -42,16 +41,20 @@ class Behat extends AbstractExternalTask
     }
 
     /**
-     * Add arguments.
+     * Create arguments.
      *
-     * @param \ClickNow\Checker\Process\ArgumentsCollection $arguments
-     * @param array                                         $config
-     * @param \ClickNow\Checker\Repository\FilesCollection  $files
+     * @param array                                        $config
+     * @param \ClickNow\Checker\Repository\FilesCollection $files
+     *
+     * @return \ClickNow\Checker\Process\ArgumentsCollection
      */
-    protected function addArguments(ArgumentsCollection $arguments, array $config, FilesCollection $files)
+    protected function createArguments(array $config, FilesCollection $files)
     {
+        $arguments = $this->processBuilder->createArgumentsForCommand('behat');
         $arguments->addOptionalArgumentWithSeparatedValue('--config', $config['config']);
         $arguments->addArgumentArray('--format=%s', $config['format']);
         $arguments->addOptionalArgument('--suite=%s', $config['suite']);
+
+        return $arguments;
     }
 }

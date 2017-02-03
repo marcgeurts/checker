@@ -2,6 +2,8 @@
 
 namespace ClickNow\Checker\Task;
 
+use ClickNow\Checker\Process\ArgumentsCollection;
+
 /**
  * @group  task
  * @covers \ClickNow\Checker\Task\Gulp
@@ -35,12 +37,14 @@ class GulpTest extends AbstractExternalTaskTest
     }
 
     /**
-     * Get external task command name.
+     * Mock arguments
      *
-     * @return string
+     * @param \ClickNow\Checker\Process\ArgumentsCollection $args
+     *
+     * @return void
      */
-    protected function getExternalTaskCommandName()
+    protected function mockArguments(ArgumentsCollection $args)
     {
-        return $this->externalTask->getName();
+        $this->processBuilder->shouldReceive('createArgumentsForCommand')->with('gulp')->once()->andReturn($args);
     }
 }
