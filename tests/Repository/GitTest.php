@@ -41,7 +41,6 @@ class GitTest extends \PHPUnit_Framework_TestCase
         $this->repository = m::mock(Repository::class);
         $this->filesystem = m::mock(Filesystem::class);
         $this->processBuilder = m::mock(ProcessBuilder::class);
-        $this->processBuilder->shouldReceive('setPrefix')->with('git')->once()->andReturnSelf();
         $this->git = new Git($this->repository, $this->filesystem, $this->processBuilder);
     }
 
@@ -76,7 +75,8 @@ class GitTest extends \PHPUnit_Framework_TestCase
         $process->shouldReceive('isSuccessful')->withNoArgs()->once()->andReturn(true);
         $process->shouldReceive('getOutput')->withNoArgs()->once()->andReturn('foo');
 
-        $this->processBuilder->shouldReceive('setArguments')->with(['config', 'user.name'])->once()->andReturnSelf();
+        $args = ['git', 'config', 'user.name'];
+        $this->processBuilder->shouldReceive('setArguments')->with($args)->once()->andReturnSelf();
         $this->processBuilder->shouldReceive('getProcess')->withNoArgs()->once()->andReturn($process);
 
         $this->assertSame('foo', $this->git->getUserName());
@@ -90,7 +90,8 @@ class GitTest extends \PHPUnit_Framework_TestCase
         $process->shouldReceive('isSuccessful')->withNoArgs()->once()->andReturn(false);
         $process->shouldReceive('getOutput')->withNoArgs()->never();
 
-        $this->processBuilder->shouldReceive('setArguments')->with(['config', 'user.name'])->once()->andReturnSelf();
+        $args = ['git', 'config', 'user.name'];
+        $this->processBuilder->shouldReceive('setArguments')->with($args)->once()->andReturnSelf();
         $this->processBuilder->shouldReceive('getProcess')->withNoArgs()->once()->andReturn($process);
 
         $this->assertNull($this->git->getUserName());
@@ -101,10 +102,26 @@ class GitTest extends \PHPUnit_Framework_TestCase
         $process = m::mock(Process::class);
         $process->shouldReceive('stop')->withAnyArgs()->atMost()->once()->andReturnNull();
         $process->shouldReceive('run')->withNoArgs()->once()->andReturnNull();
+        $process->shouldReceive('isSuccessful')->withNoArgs()->once()->andReturn(true);
+        $process->shouldReceive('getOutput')->withNoArgs()->once()->andReturn('foo@bar');
+
+        $args = ['git', 'config', 'user.email'];
+        $this->processBuilder->shouldReceive('setArguments')->with($args)->once()->andReturnSelf();
+        $this->processBuilder->shouldReceive('getProcess')->withNoArgs()->once()->andReturn($process);
+
+        $this->assertSame('foo@bar', $this->git->getUserEmail());
+    }
+
+    public function testGetUserEmailError()
+    {
+        $process = m::mock(Process::class);
+        $process->shouldReceive('stop')->withAnyArgs()->atMost()->once()->andReturnNull();
+        $process->shouldReceive('run')->withNoArgs()->once()->andReturnNull();
         $process->shouldReceive('isSuccessful')->withNoArgs()->once()->andReturn(false);
         $process->shouldReceive('getOutput')->withNoArgs()->never();
 
-        $this->processBuilder->shouldReceive('setArguments')->with(['config', 'user.email'])->once()->andReturnSelf();
+        $args = ['git', 'config', 'user.email'];
+        $this->processBuilder->shouldReceive('setArguments')->with($args)->once()->andReturnSelf();
         $this->processBuilder->shouldReceive('getProcess')->withNoArgs()->once()->andReturn($process);
 
         $this->assertNull($this->git->getUserEmail());

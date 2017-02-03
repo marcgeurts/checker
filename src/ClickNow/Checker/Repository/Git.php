@@ -36,7 +36,7 @@ class Git
     {
         $this->repository = $repository;
         $this->filesystem = $filesystem;
-        $this->processBuilder = $processBuilder->setPrefix('git');
+        $this->processBuilder = $processBuilder;
     }
 
     /**
@@ -62,7 +62,7 @@ class Git
      */
     public function getUserName()
     {
-        return $this->runProcess(['config', 'user.name']);
+        return $this->runProcess(['git', 'config', 'user.name']);
     }
 
     /**
@@ -72,7 +72,7 @@ class Git
      */
     public function getUserEmail()
     {
-        return $this->runProcess(['config', 'user.email']);
+        return $this->runProcess(['git', 'config', 'user.email']);
     }
 
     /**
