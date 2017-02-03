@@ -12,6 +12,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 /**
  * @group  console/command/git
  * @covers \ClickNow\Checker\Console\Command\Git\UninstallCommand
+ * @runTestsInSeparateProcesses
  */
 class UninstallCommandTest extends \PHPUnit_Framework_TestCase
 {

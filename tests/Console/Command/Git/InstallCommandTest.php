@@ -16,6 +16,7 @@ use Symfony\Component\Process\ProcessBuilder;
 /**
  * @group  console/command/git
  * @covers \ClickNow\Checker\Console\Command\Git\InstallCommand
+ * @runTestsInSeparateProcesses
  */
 class InstallCommandTest extends \PHPUnit_Framework_TestCase
 {

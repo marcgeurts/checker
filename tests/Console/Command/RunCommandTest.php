@@ -18,6 +18,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @group  console/command
  * @covers \ClickNow\Checker\Console\Command\RunCommand
  * @covers \ClickNow\Checker\Console\Command\AbstractRunnerCommand
+ * @runTestsInSeparateProcesses
  */
 class RunCommandTest extends \PHPUnit_Framework_TestCase
 {
