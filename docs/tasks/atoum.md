@@ -14,23 +14,13 @@ It lives under the `atoum` namespace and has following configurable parameters:
 parameters:
   tasks:
     atoum:
-      configuration: .atoum.php
-      bootstrap-file: tests/units/bootstrap.php
-      directories:
-        - tests/units/db/
-        - tests/units/entities/
-      files
-        - tests/units/db/mysql.php
-        - tests/units/db/pgsql.php
-      namespaces
-        - mageekguy\\atoum\\tests\\units\\asserters
-      methods:
-        - vendor\\project\\test\\units\\myClass::testMyMethod
-        - vendor\\project\\test\\units\\myClass::*
-        - *::testMyMethod
-      tags
-        - OneTag
-        - TwoTag
+      configuration: ~
+      bootstrap-file: ~
+      directories: []
+      files: []
+      namespaces: []
+      methods: []
+      tags: []
 ```
 
 ### configuration
