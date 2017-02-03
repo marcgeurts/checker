@@ -21,7 +21,7 @@ currentMenu: home
 Checker was developed for the purpose of configuring and executing your actions in git hooks,
 besides being able to create and execute commands as you wish,
 without counting the possibility of executing the same task with different configurations.
-Which made it different from GrumPHP!
+What makes it more powerful than GrumPHP!
 
 ## Table of contents
 
