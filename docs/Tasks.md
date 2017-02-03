@@ -11,6 +11,7 @@ To activate a task, it is sufficient to add an empty task configuration:
 parameters:
   tasks: # Merged in default task configuration
     ant: ~
+    atoum: ~
     gherkin: ~
     grunt: ~
     gulp: ~
@@ -22,6 +23,7 @@ parameters:
 Every task has it's own default configuration. It is possible to overwrite the parameters per task.
 
 - [Ant](tasks/ant.md)
+- [Atoum](tasks/atoum.md)
 - [Gherkin](tasks/gherkin.md)
 - [Grunt](tasks/grunt.md)
 - [Gulp](tasks/gulp.md)

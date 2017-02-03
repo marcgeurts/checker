@@ -1,11 +1,19 @@
 services:
   task.ant:
-      class: ClickNow\Checker\Task\Ant
-      arguments:
-        - '@process.process-builder'
-        - '@formatter.raw-process'
-      tags:
-        - { name: checker.task, config: ant }
+    class: ClickNow\Checker\Task\Ant
+    arguments:
+      - '@process.process-builder'
+      - '@formatter.raw-process'
+    tags:
+      - { name: checker.task, config: ant }
+
+  task.atoum:
+    class: ClickNow\Checker\Task\Atoum
+    arguments:
+      - '@process.process-builder'
+      - '@formatter.raw-process'
+    tags:
+      - { name: checker.task, config: atoum }
 
   task.gherkin:
     class: ClickNow\Checker\Task\Gherkin
