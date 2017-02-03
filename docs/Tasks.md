@@ -17,6 +17,7 @@ parameters:
     grunt: ~
     gulp: ~
     make: ~
+    npm-script: ~
     phpunit: ~
     robo: ~
 ```
@@ -30,6 +31,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Grunt](tasks/grunt.md)
 - [Gulp](tasks/gulp.md)
 - [Make](tasks/make.md)
+- [NPM script](tasks/npm-script.md)
 - [PHPUnit](tasks/phpunit.md)
 - [Robo](tasks/robo.md)
 

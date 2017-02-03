@@ -55,6 +55,14 @@ services:
     tags:
       - { name: checker.task, config: make }
 
+  task.npm-script:
+    class: ClickNow\Checker\Task\NPMScript
+    arguments:
+      - '@process.process-builder'
+      - '@formatter.raw-process'
+    tags:
+      - { name: checker.task, config: npm-script }
+
   task.phpunit:
     class: ClickNow\Checker\Task\PHPUnit
     arguments:
