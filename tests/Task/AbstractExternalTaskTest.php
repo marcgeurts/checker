@@ -54,18 +54,17 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAndReturnSuccess()
     {
+        $config = $this->getActionConfig();
         $files = new FilesCollection([new SplFileInfo('file.php', null, null)]);
         $args = new ArgumentsCollection();
 
         $runner = m::mock(RunnerInterface::class);
-        $runner->shouldReceive('getActionConfig')->with($this->externalTask)->once()->andReturn([]);
+        $runner->shouldReceive('getActionConfig')->with($this->externalTask)->once()->andReturn($config);
 
         $context = m::mock(ContextInterface::class);
         $context->shouldReceive('getFiles')->withNoArgs()->once()->andReturn($files);
 
-        $process = m::mock(Process::class);
-        $process->shouldReceive('stop')->withAnyArgs()->atMost()->once()->andReturnNull();
-        $process->shouldReceive('run')->withNoArgs()->once()->andReturnNull();
+        $process = m::spy(Process::class);
         $process->shouldReceive('isSuccessful')->withNoArgs()->once()->andReturn(true);
 
         $this->mockArguments($args);
@@ -81,18 +80,17 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAndReturnError()
     {
+        $config = $this->getActionConfig();
         $files = new FilesCollection([new SplFileInfo('file.php', null, null)]);
         $args = new ArgumentsCollection();
 
         $runner = m::mock(RunnerInterface::class);
-        $runner->shouldReceive('getActionConfig')->with($this->externalTask)->once()->andReturn([]);
+        $runner->shouldReceive('getActionConfig')->with($this->externalTask)->once()->andReturn($config);
 
         $context = m::mock(ContextInterface::class);
         $context->shouldReceive('getFiles')->withNoArgs()->once()->andReturn($files);
 
-        $process = m::mock(Process::class);
-        $process->shouldReceive('stop')->withAnyArgs()->atMost()->once()->andReturnNull();
-        $process->shouldReceive('run')->withNoArgs()->once()->andReturnNull();
+        $process = m::spy(Process::class);
         $process->shouldReceive('isSuccessful')->withNoArgs()->once()->andReturn(false);
 
         $this->mockArguments($args);
@@ -129,5 +127,15 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
     protected function mockArguments(ArgumentsCollection $args)
     {
         $this->externalTask->expects($this->once())->method('createArguments')->willReturn($args);
+    }
+
+    /**
+     * Get action config.
+     *
+     * @return array
+     */
+    protected function getActionConfig()
+    {
+        return [];
     }
 }
