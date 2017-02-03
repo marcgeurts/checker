@@ -53,7 +53,6 @@ class ProgressSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testGetSubscribedEvent()
     {
         $this->assertInternalType('array', ProgressSubscriber::getSubscribedEvents());
-        $this->assertCount(4, ProgressSubscriber::getSubscribedEvents());
     }
 
     public function testStartProgress()

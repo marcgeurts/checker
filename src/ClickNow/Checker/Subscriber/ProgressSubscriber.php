@@ -39,7 +39,8 @@ class ProgressSubscriber implements EventSubscriberInterface
     {
         return [
             RunnerEvent::RUNNER_RUN          => 'startProgress',
-            ActionEvent::ACTION_RUN          => 'advanceProgress',
+            ActionEvent::ACTION_FAILED       => 'advanceProgress',
+            ActionEvent::ACTION_SUCCESSFULLY => 'advanceProgress',
             RunnerEvent::RUNNER_SUCCESSFULLY => 'finishProgress',
             RunnerEvent::RUNNER_FAILED       => 'finishProgress',
         ];
