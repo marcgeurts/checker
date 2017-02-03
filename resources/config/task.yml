@@ -15,6 +15,14 @@ services:
     tags:
       - { name: checker.task, config: atoum }
 
+  task.behat:
+    class: ClickNow\Checker\Task\Behat
+    arguments:
+      - '@process.process-builder'
+      - '@formatter.raw-process'
+    tags:
+      - { name: checker.task, config: behat }
+
   task.gherkin:
     class: ClickNow\Checker\Task\Gherkin
     arguments:

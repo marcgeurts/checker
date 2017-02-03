@@ -12,6 +12,7 @@ parameters:
   tasks: # Merged in default task configuration
     ant: ~
     atoum: ~
+    behat: ~
     gherkin: ~
     grunt: ~
     gulp: ~
@@ -24,6 +25,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 
 - [Ant](tasks/ant.md)
 - [Atoum](tasks/atoum.md)
+- [Behat](tasks/behat.md)
 - [Gherkin](tasks/gherkin.md)
 - [Grunt](tasks/grunt.md)
 - [Gulp](tasks/gulp.md)
