@@ -85,7 +85,7 @@ final class ContainerFactory
      */
     private function loadServices($configPath)
     {
-        $loader = new YamlFileLoader($this->containerBuilder, new FileLocator(__DIR__.'/../../../../resources/config'));
+        $loader = new YamlFileLoader($this->containerBuilder, new FileLocator(__DIR__.'/../../resources/config/'));
         $loader->load('config.yml');
 
         if ($this->filesystem->exists($configPath)) {

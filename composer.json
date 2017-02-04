@@ -62,7 +62,7 @@
   },
   "autoload": {
     "psr-4": {
-      "ClickNow\\": "src/ClickNow"
+      "ClickNow\\Checker\\": "src"
     }
   },
   "minimum-stability": "stable",
