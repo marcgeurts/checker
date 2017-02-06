@@ -19,9 +19,9 @@ class NpmScriptTest extends AbstractExternalTaskTest
     {
         $options = $this->externalTask->getConfigOptions()->getDefinedOptions();
 
+        $this->assertContains('is-run-task', $options);
         $this->assertContains('script', $options);
         $this->assertContains('working-directory', $options);
-        $this->assertContains('is-run-task', $options);
     }
 
     /**

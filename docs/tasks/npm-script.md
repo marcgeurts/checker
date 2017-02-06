@@ -14,10 +14,16 @@ It lives under the `npm-script` namespace and has following configurable paramet
 parameters:
   tasks:
     npm-script:
+      is-run-task: false
       script: ~
       working-directory: './'
-      is-run-task: false
 ```
+
+### is-run-task
+
+*Default: false*
+
+This option will append `run` to the npm command to make it possible to run custom npm scripts.
 
 ### script
 
@@ -34,9 +40,3 @@ It is also possible to alter code during commit, but this is surely **NOT** reco
 *Default: './'*
 
 This option specifies in which directory the NPM script should be run.
-
-### is-run-task
-
-*Default: false*
-
-This option will append `run` to the npm command to make it possible to run custom npm scripts.
