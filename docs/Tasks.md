@@ -18,6 +18,7 @@ parameters:
     gulp: ~
     make: ~
     npm-script: ~
+    phpmd: ~
     phpunit: ~
     robo: ~
 ```
@@ -33,6 +34,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Make](tasks/make.md)
 - [NPM script](tasks/npm-script.md)
 - [PhpUnit](tasks/phpunit.md)
+- [PhpMd](tasks/phpmd.md)
 - [Robo](tasks/robo.md)
 
 ## Creating a custom task
