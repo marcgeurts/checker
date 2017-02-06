@@ -2,11 +2,11 @@
 currentMenu: tasks
 ---
 
-# PHPUnit
+# PhpUnit
 
 [See oficinal documentation](https://phpunit.de/)
 
-The PHPUnit task will run your unit tests.
+The PhpUnit task will run your unit tests.
 It lives under the `phpunit` namespace and has following configurable parameters:
 
 ```yml

@@ -6,9 +6,9 @@ use ClickNow\Checker\Process\ArgumentsCollection;
 
 /**
  * @group  task
- * @covers \ClickNow\Checker\Task\PHPUnit
+ * @covers \ClickNow\Checker\Task\PhpUnit
  */
-class PHPUnitTest extends AbstractExternalTaskTest
+class PhpUnitTest extends AbstractExternalTaskTest
 {
     public function testGetName()
     {
@@ -26,11 +26,11 @@ class PHPUnitTest extends AbstractExternalTaskTest
     /**
      * Mock external task.
      *
-     * @return \ClickNow\Checker\Task\PHPUnit|\PHPUnit_Framework_MockObject_MockObject
+     * @return \ClickNow\Checker\Task\PhpUnit|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function mockExternalTask()
     {
-        return $this->getMock(PHPUnit::class, null, [
+        return $this->getMock(PhpUnit::class, null, [
             $this->processBuilder,
             $this->processFormatter,
         ]);

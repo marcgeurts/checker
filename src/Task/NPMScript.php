@@ -5,7 +5,7 @@ namespace ClickNow\Checker\Task;
 use ClickNow\Checker\Repository\FilesCollection;
 use ClickNow\Checker\Runner\RunnerInterface;
 
-class NPMScript extends AbstractExternalTask
+class NpmScript extends AbstractExternalTask
 {
     /**
      * Get name.

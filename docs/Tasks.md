@@ -32,7 +32,7 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Gulp](tasks/gulp.md)
 - [Make](tasks/make.md)
 - [NPM script](tasks/npm-script.md)
-- [PHPUnit](tasks/phpunit.md)
+- [PhpUnit](tasks/phpunit.md)
 - [Robo](tasks/robo.md)
 
 ## Creating a custom task

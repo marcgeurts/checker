@@ -6,9 +6,9 @@ use ClickNow\Checker\Process\ArgumentsCollection;
 
 /**
  * @group  task
- * @covers \ClickNow\Checker\Task\NPMScript
+ * @covers \ClickNow\Checker\Task\NpmScript
  */
-class NPMScriptTest extends AbstractExternalTaskTest
+class NpmScriptTest extends AbstractExternalTaskTest
 {
     public function testGetName()
     {
@@ -27,11 +27,11 @@ class NPMScriptTest extends AbstractExternalTaskTest
     /**
      * Mock external task.
      *
-     * @return \ClickNow\Checker\Task\NPMScript|\PHPUnit_Framework_MockObject_MockObject
+     * @return \ClickNow\Checker\Task\NpmScript|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function mockExternalTask()
     {
-        return $this->getMock(NPMScript::class, null, [
+        return $this->getMock(NpmScript::class, null, [
             $this->processBuilder,
             $this->processFormatter,
         ]);

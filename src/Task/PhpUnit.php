@@ -4,7 +4,7 @@ namespace ClickNow\Checker\Task;
 
 use ClickNow\Checker\Repository\FilesCollection;
 
-class PHPUnit extends AbstractExternalTask
+class PhpUnit extends AbstractExternalTask
 {
     /**
      * Get name.
