@@ -100,9 +100,11 @@ class Git
         if ($rawDiff) {
             $diff = Diff::parse($rawDiff);
             $diff->setRepository($this->repository);
-        } else {
-            $diff = $this->repository->getWorkingCopy()->getDiffStaged();
+
+            return $this->parseFilesFromDiff($diff);
         }
+
+        $diff = $this->repository->getWorkingCopy()->getDiffStaged();
 
         return $this->parseFilesFromDiff($diff);
     }
@@ -119,9 +121,11 @@ class Git
         if ($rawDiff) {
             $diff = Diff::parse($rawDiff);
             $diff->setRepository($this->repository);
-        } else {
-            $diff = $this->repository->getDiff(['@{u}', 'HEAD']);
+
+            return $this->parseFilesFromDiff($diff);
         }
+
+        $diff = $this->repository->getDiff(['@{u}', 'HEAD']);
 
         return $this->parseFilesFromDiff($diff);
     }
