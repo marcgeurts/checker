@@ -142,7 +142,7 @@ class AbstractTaskTest extends \PHPUnit_Framework_TestCase
             'not-name'   => 'file2.*',
             'path'       => 'path1',
             'not-path'   => 'path2',
-            'extensions' => ['php'],
+            'extensions' => 'php',
         ];
 
         $runner = m::mock(RunnerInterface::class);

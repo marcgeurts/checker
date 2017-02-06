@@ -128,7 +128,7 @@ abstract class AbstractTask implements TaskInterface
         $resolver->addAllowedTypes('not-name', ['array', 'string']);
         $resolver->addAllowedTypes('path', ['array', 'string']);
         $resolver->addAllowedTypes('not-path', ['array', 'string']);
-        $resolver->addAllowedTypes('extensions', ['array']);
+        $resolver->addAllowedTypes('extensions', ['array', 'string']);
 
         return $resolver->resolve($finder);
     }
@@ -148,7 +148,7 @@ abstract class AbstractTask implements TaskInterface
             ->filterByNotName($finder['not-name'])
             ->filterByPath($finder['path'])
             ->filterByNotPath($finder['not-path'])
-            ->filterByExtensions($finder['extensions']);
+            ->filterByExtensions((array) $finder['extensions']);
     }
 
     /**
