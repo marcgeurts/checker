@@ -53,6 +53,9 @@ class Atoum extends AbstractExternalTask
         $resolver->setDefault('tags', []);
         $resolver->addAllowedTypes('tags', ['array']);
 
+        // finder -> extensions
+        $resolver->setDefault('finder', ['extensions' => 'php']);
+
         return $resolver;
     }
 

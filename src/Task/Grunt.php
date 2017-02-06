@@ -33,6 +33,9 @@ class Grunt extends AbstractExternalTask
         $resolver->setDefault('task', null);
         $resolver->addAllowedTypes('task', ['null', 'string']);
 
+        // finder -> extensions
+        $resolver->setDefault('finder', ['extensions' => ['js', 'jsx', 'coffee', 'ts', 'less', 'sass', 'scss']]);
+
         return $resolver;
     }
 

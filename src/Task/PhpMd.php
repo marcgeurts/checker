@@ -41,6 +41,9 @@ class PhpMd extends AbstractExternalTask
         $resolver->setDefault('strict', false);
         $resolver->addAllowedTypes('strict', ['bool']);
 
+        // finder -> extensions
+        $resolver->setDefault('finder', ['extensions' => 'php']);
+
         return $resolver;
     }
 

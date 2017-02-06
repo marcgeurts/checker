@@ -34,6 +34,9 @@ class Gherkin extends AbstractExternalTask
         $resolver->setDefault('directory', 'features');
         $resolver->addAllowedTypes('directory', ['string']);
 
+        // finder -> extensions
+        $resolver->setDefault('finder', ['extensions' => 'feature']);
+
         return $resolver;
     }
 

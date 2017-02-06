@@ -33,6 +33,9 @@ class PhpUnit extends AbstractExternalTask
         $resolver->setDefault('group', []);
         $resolver->addAllowedTypes('group', ['array']);
 
+        // finder -> extensions
+        $resolver->setDefault('finder', ['extensions' => 'php']);
+
         return $resolver;
     }
 

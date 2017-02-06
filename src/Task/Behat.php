@@ -37,6 +37,9 @@ class Behat extends AbstractExternalTask
         $resolver->setDefault('suite', null);
         $resolver->addAllowedTypes('suite', ['null', 'string']);
 
+        // finder -> extensions
+        $resolver->setDefault('finder', ['extensions' => 'php']);
+
         return $resolver;
     }
 
