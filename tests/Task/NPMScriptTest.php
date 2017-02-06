@@ -56,6 +56,6 @@ class NpmScriptTest extends AbstractExternalTaskTest
      */
     protected function getActionConfig()
     {
-        return ['script' => 'foo'];
+        return array_merge(['script' => 'foo'], parent::getActionConfig());
     }
 }

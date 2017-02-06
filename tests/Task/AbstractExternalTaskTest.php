@@ -55,14 +55,13 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
     public function testRunAndReturnSuccess()
     {
         $config = $this->getActionConfig();
-        $files = new FilesCollection([new SplFileInfo('file.php', null, null)]);
         $args = new ArgumentsCollection();
 
         $runner = m::mock(RunnerInterface::class);
         $runner->shouldReceive('getActionConfig')->with($this->externalTask)->once()->andReturn($config);
 
         $context = m::mock(ContextInterface::class);
-        $context->shouldReceive('getFiles')->withNoArgs()->once()->andReturn($files);
+        $context->shouldReceive('getFiles')->withNoArgs()->once()->andReturn(new FilesCollection());
 
         $process = m::spy(Process::class);
         $process->shouldReceive('isSuccessful')->withNoArgs()->once()->andReturn(true);
@@ -81,14 +80,13 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
     public function testRunAndReturnError()
     {
         $config = $this->getActionConfig();
-        $files = new FilesCollection([new SplFileInfo('file.php', null, null)]);
         $args = new ArgumentsCollection();
 
         $runner = m::mock(RunnerInterface::class);
         $runner->shouldReceive('getActionConfig')->with($this->externalTask)->once()->andReturn($config);
 
         $context = m::mock(ContextInterface::class);
-        $context->shouldReceive('getFiles')->withNoArgs()->once()->andReturn($files);
+        $context->shouldReceive('getFiles')->withNoArgs()->once()->andReturn(new FilesCollection());
 
         $process = m::spy(Process::class);
         $process->shouldReceive('isSuccessful')->withNoArgs()->once()->andReturn(false);
@@ -136,6 +134,6 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
      */
     protected function getActionConfig()
     {
-        return [];
+        return ['always-execute' => true];
     }
 }
