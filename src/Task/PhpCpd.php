@@ -25,24 +25,21 @@ class PhpCpd extends AbstractExternalTask
     {
         $resolver = parent::getConfigOptions();
 
-        // values
-        $resolver->setDefault('values', '.');
-        $resolver->addAllowedTypes('values', ['string', 'array']);
+        $resolver->setDefaults([
+            'paths'      => '.',
+            'min-lines'  => null,
+            'min-tokens' => null,
+            'fuzzy'      => false,
+            'finder'     => [
+                'name'     => ['*.php'],
+                'not-path' => ['vendor'],
+            ],
+        ]);
 
-        // min-lines
-        $resolver->setDefault('min-lines', null);
+        $resolver->addAllowedTypes('paths', ['string', 'array']);
         $resolver->addAllowedTypes('min-lines', ['null', 'int']);
-
-        // min-tokens
-        $resolver->setDefault('min-tokens', null);
         $resolver->addAllowedTypes('min-tokens', ['null', 'int']);
-
-        // fuzzy
-        $resolver->setDefault('fuzzy', false);
         $resolver->addAllowedTypes('fuzzy', ['bool']);
-
-        // finder
-        $resolver->setDefault('finder', ['name' => ['*.php']]);
 
         return $resolver;
     }
@@ -58,7 +55,7 @@ class PhpCpd extends AbstractExternalTask
     protected function createArguments(array $config, FilesCollection $files)
     {
         $arguments = $this->processBuilder->createArgumentsForCommand('phpcpd');
-        $arguments->addArgumentArray('%s', (array) $config['values']);
+        $arguments->addArgumentArray('%s', (array) $config['paths']);
         $arguments->addOptionalCommaSeparatedArgument('--names=%s', $config['finder']['name']);
         $arguments->addArgumentArray('--names-exclude=%s', $config['finder']['not-name']);
         $arguments->addArgumentArray('--exclude=%s', $config['finder']['not-path']);

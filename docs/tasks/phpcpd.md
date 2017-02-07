@@ -14,15 +14,16 @@ It lives under the `phpcpd` namespace and has following configurable parameters:
 parameters:
   tasks:
     phpcpd:
-      values: '.'
+      paths: '.'
       min-lines: ~
       min-tokens: ~
       fuzzy: false
       finder:
         name: ['*.php']
+        not-path: ['vendor']
 ```
 
-### values
+### paths
 
 *Default: '.'*
 

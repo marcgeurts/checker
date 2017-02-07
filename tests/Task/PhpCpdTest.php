@@ -19,7 +19,7 @@ class PhpCpdTest extends AbstractExternalTaskTest
     {
         $options = $this->externalTask->getConfigOptions()->getDefinedOptions();
 
-        $this->assertContains('values', $options);
+        $this->assertContains('paths', $options);
         $this->assertContains('min-lines', $options);
         $this->assertContains('min-tokens', $options);
         $this->assertContains('fuzzy', $options);
