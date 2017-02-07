@@ -17,6 +17,8 @@ parameters:
       config: ~
       format: []
       suite: ~
+      finder:
+        extensions: ['php']
 ```
 
 ### config
@@ -25,17 +27,23 @@ parameters:
 
 If your `behat.yml` file is located at an exotic location,
 you can specify your custom location with this option.
-This option is set to `null` by default.
-This means that `behat.yml` is automatically loaded if the file exists in the current directory.
+This means that `behat.yml` or `behat.yml.dist` is automatically loaded
+if the file exists in the current directory.
 
 ### format
 
 *Default: []*
 
-If you want to use a different formatter than the default one, list them here.
+This option specify to use a different formatter than the default.
 
 ### suite
 
 *Default: []*
 
-If you want to run a particular suite only, specify it with this option.
+This option specify to run a particular suite only.
+
+### finder
+
+*Default: {extensions: ['php']}*
+
+[See documentation](../tasks.md#finder)

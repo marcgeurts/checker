@@ -16,18 +16,26 @@ parameters:
     gherkin:
       align: ~
       directory: 'features'
+      finder:
+        extensions: ['feature']
 ```
 
 ### align
 
 *Default: null*
 
-This option will specify the alignment of your file.
+This option specifies which the alignment of your file.
 Possible values can be `left` or `right`.
 
 ### directory
 
 *Default: 'features'*
 
-This option will specify the location of your Gherkin feature files.
+This option specifies which the location of your Gherkin feature files.
 By default the Behat prefered `features` folder is chosen.
+
+### finder
+
+*Default: {extensions: ['feature']}*
+
+[See documentation](../tasks.md#finder)

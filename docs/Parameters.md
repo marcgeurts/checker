@@ -307,10 +307,10 @@ When a action is non-blocking, the errors will be displayed but the tests will p
 ***
 See also:
 
-- [Installation](Installation.md)
-- [Configuration](Configuration.md)
-- [Tasks](Tasks.md)
-- [Commands](Commands.md)
-- [Events](Events.md)
+- [Installation](installation.md)
+- [Configuration](configuration.md)
+- [Tasks](tasks.md)
+- [Command-Line](command-line.md)
+- [Events](events.md)
 - [Contributing](../CONTRIBUTING.md)
 - [License](../LICENSE.md)

@@ -39,10 +39,10 @@ services:
 ***
 See also:
 
-- [Installation](Installation.md)
-- [Configuration](Configuration.md)
-- [Parameters](Parameters.md)
-- [Tasks](Tasks.md)
-- [Commands](Commands.md)
+- [Installation](installation.md)
+- [Configuration](configuration.md)
+- [Parameters](parameters.md)
+- [Tasks](tasks.md)
+- [Command-Line](command-line.md)
 - [Contributing](../CONTRIBUTING.md)
 - [License](../LICENSE.md)

@@ -20,10 +20,10 @@ enforced by [StyleCI](https://styleci.io/).
 ***
 See also:
 
-- [Installation](docs/Installation.md)
-- [Configuration](docs/Configuration.md)
-- [Parameters](docs/Parameters.md)
-- [Tasks](docs/Tasks.md)
-- [Commands](docs/Commands.md)
-- [Events](docs/Events.md)
+- [Installation](docs/installation.md)
+- [Configuration](docs/configuration.md)
+- [Parameters](docs/parameters.md)
+- [Tasks](docs/tasks.md)
+- [Command-Line](docs/command-line.md)
+- [Events](docs/events.md)
 - [License](../LICENSE.md)

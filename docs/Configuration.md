@@ -37,10 +37,10 @@ parameters:
 ***
 See also:
 
-- [Installation](Installation.md)
-- [Parameters](Parameters.md)
-- [Tasks](Tasks.md)
-- [Commands](Commands.md)
-- [Events](Events.md)
+- [Installation](installation.md)
+- [Parameters](parameters.md)
+- [Tasks](tasks.md)
+- [Command-Line](command-line.md)
+- [Events](events.md)
 - [Contributing](../CONTRIBUTING.md)
 - [License](../LICENSE.md)

@@ -4,7 +4,7 @@ currentMenu: tasks
 
 # PhpUnit
 
-[See oficinal documentation](https://phpunit.de/)
+[See oficinal documentation](http://phpunit.de/)
 
 The PhpUnit task will run your unit tests.
 It lives under the `phpunit` namespace and has following configurable parameters:
@@ -16,6 +16,8 @@ parameters:
     phpunit:
       configuration: ~
       group: []
+      finder:
+        extensions: ['php']
 ```
 
 ### configuration
@@ -24,7 +26,6 @@ parameters:
 
 If your `phpunit.xml` file is located at an exotic location,
 you can specify your custom config file location with this option.
-This option is set to `null` by default.
 This means that `phpunit.xml` or `phpunit.xml.dist` are automatically loaded
 if one of them exist in the current directory.
 
@@ -32,4 +33,10 @@ if one of them exist in the current directory.
 
 *Default: []*
 
-If you wish to only run tests from a certain Group. group: [fast,quick,small]
+This option specifies to only run tests from a certain group.
+
+### finder
+
+*Default: {extensions: ['php']}*
+
+[See documentation](../tasks.md#finder)

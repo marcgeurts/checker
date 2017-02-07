@@ -1,8 +1,8 @@
 ---
-currentMenu: commands
+currentMenu: command-line
 ---
 
-# Commands
+# Command-Line
 
 ### run
 
@@ -198,10 +198,10 @@ checker git:pre-push --process-timeout=0 --process-async-wait=2000 --process-asy
 ***
 See also:
 
-- [Installation](Installation.md)
-- [Configuration](Configuration.md)
-- [Parameters](Parameters.md)
-- [Tasks](Tasks.md)
-- [Events](Events.md)
+- [Installation](installation.md)
+- [Configuration](configuration.md)
+- [Parameters](parameters.md)
+- [Tasks](tasks.md)
+- [Events](events.md)
 - [Contributing](../CONTRIBUTING.md)
 - [License](../LICENSE.md)

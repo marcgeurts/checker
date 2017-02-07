@@ -18,12 +18,14 @@ parameters:
     gulp: ~
     make: ~
     npm-script: ~
+    phpcpd: ~
     phpmd: ~
     phpunit: ~
     robo: ~
 ```
 
-Every task has it's own default configuration. It is possible to overwrite the parameters per task.
+Every task has it's own default configuration.
+It is possible to overwrite the parameters per task.
 
 - [Ant](tasks/ant.md)
 - [Atoum](tasks/atoum.md)
@@ -33,9 +35,51 @@ Every task has it's own default configuration. It is possible to overwrite the p
 - [Gulp](tasks/gulp.md)
 - [Make](tasks/make.md)
 - [NPM script](tasks/npm-script.md)
-- [PhpUnit](tasks/phpunit.md)
+- [PhpCpd](tasks/phpcpd.md)
 - [PhpMd](tasks/phpmd.md)
+- [PhpUnit](tasks/phpunit.md)
 - [Robo](tasks/robo.md)
+
+> **Note:** Some options of the tasks related to files and/or directory 
+do not exist because the `finder` option abstracts the majority.
+
+The above tasks also have the following configuration options:
+
+### can-run-in
+
+*Default: true*
+
+This option allows you to run such a task in a particular context or command.
+You can also specify an array with the names of contexts or commands to can run in.
+
+### always-execute
+
+*Default: false*
+
+This option always run the whole task, even if no files were found.
+
+### finder
+
+*Default: []*
+
+This option to allow finder specify files and directories to be found.
+Options available: `name`, `not-name`, `path`, `not-path`, `extensions`.
+All options accepts only `array`.
+
+For example:
+
+```yml
+# checker.yml
+parameters:
+  tasks:
+    name_of_task:
+      finder:
+        name: ['name1']
+        not-name: ['name2', 'name3']
+        path: ['path1', 'path2']
+        not-path: ['path3']
+        extensions: ['php', 'phtml']
+```
 
 ## Creating a custom task
 
@@ -66,10 +110,10 @@ This example just shows you how to do it.
 ***
 See also:
 
-- [Installation](Installation.md)
-- [Configuration](Configuration.md)
-- [Parameters](Parameters.md)
-- [Commands](Commands.md)
-- [Events](Events.md)
+- [Installation](installation.md)
+- [Configuration](configuration.md)
+- [Parameters](parameters.md)
+- [Command-Line](command-line.md)
+- [Events](events.md)
 - [Contributing](../CONTRIBUTING.md)
 - [License](../LICENSE.md)

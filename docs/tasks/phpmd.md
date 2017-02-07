@@ -4,7 +4,7 @@ currentMenu: tasks
 
 # PhpMd
 
-[See oficinal documentation](https://phpmd.org/)
+[See oficinal documentation](http://phpmd.org/)
 
 The PhpMd task will sniff your code for bad coding standards.
 It lives under the `phpmd` namespace and has following configurable parameters:
@@ -16,16 +16,17 @@ parameters:
     phpmd:
       ruleset: ['cleancode', 'codesize', 'controversial', 'design', 'naming', 'unusedcode']
       minimum-priority: null
-      exclude: []
       strict: false
+      finder:
+        extensions: ['php']
 ```
 
 ### ruleset
 
 *Default: ['cleancode', 'codesize', 'controversial', 'design', 'naming', 'unusedcode']*
 
-With this parameter you will be able to configure the rule/rulesets you want to use.
-You can use the standard sets provided by PhpMd or you can configure your own xml.
+This option specifies which rule/rulesets you want to use.
+You can use the standard sets provided or you can configure your own xml.
 
 ### minimum-priority
 
@@ -33,16 +34,14 @@ You can use the standard sets provided by PhpMd or you can configure your own xm
 
 This option specifies rules with lower priority than they will not be used.
 
-### exclude
-
-*Default: []*
-
-This is a list of patterns that will be ignored by phpmd.
-With this option you can skip directories like tests.
-Leave this option blank to run phpmd for every php file.
-
 ### strict
 
 *Default: false*
 
-This option specifies to include in report those nodes with a @SuppressWarnings annotation.
+This option specifies to include in report those nodes with a `@SuppressWarnings` annotation.
+
+### finder
+
+*Default: {extensions: ['php']}*
+
+[See documentation](../tasks.md#finder)
