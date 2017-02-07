@@ -63,6 +63,14 @@ services:
     tags:
       - { name: checker.task, config: npm-script }
 
+  task.phpcpd:
+    class: ClickNow\Checker\Task\PhpCpd
+    arguments:
+      - '@process.process-builder'
+      - '@formatter.raw-process'
+    tags:
+      - { name: checker.task, config: phpcpd }
+
   task.phpmd:
     class: ClickNow\Checker\Task\PhpMd
     arguments:
