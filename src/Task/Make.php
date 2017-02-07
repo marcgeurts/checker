@@ -25,12 +25,12 @@ class Make extends AbstractExternalTask
     {
         $resolver = parent::getConfigOptions();
 
-        // makefile
-        $resolver->setDefault('makefile', null);
-        $resolver->addAllowedTypes('makefile', ['null', 'string']);
+        $resolver->setDefaults([
+            'makefile' => null,
+            'task'     => null,
+        ]);
 
-        // task
-        $resolver->setDefault('task', null);
+        $resolver->addAllowedTypes('makefile', ['null', 'string']);
         $resolver->addAllowedTypes('task', ['null', 'string']);
 
         return $resolver;

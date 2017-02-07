@@ -25,12 +25,12 @@ class Ant extends AbstractExternalTask
     {
         $resolver = parent::getConfigOptions();
 
-        // buildfile
-        $resolver->setDefault('buildfile', null);
-        $resolver->addAllowedTypes('buildfile', ['null', 'string']);
+        $resolver->setDefaults([
+            'buildfile' => null,
+            'task'      => null,
+        ]);
 
-        // task
-        $resolver->setDefault('task', null);
+        $resolver->addAllowedTypes('buildfile', ['null', 'string']);
         $resolver->addAllowedTypes('task', ['null', 'string']);
 
         return $resolver;

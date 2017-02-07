@@ -25,16 +25,14 @@ class PhpUnit extends AbstractExternalTask
     {
         $resolver = parent::getConfigOptions();
 
-        // configuration
-        $resolver->setDefault('configuration', null);
+        $resolver->setDefaults([
+            'configuration' => null,
+            'group'         => [],
+            'finder'        => ['extensions' => ['php']],
+        ]);
+
         $resolver->addAllowedTypes('configuration', ['null', 'string']);
-
-        // group
-        $resolver->setDefault('group', []);
         $resolver->addAllowedTypes('group', ['array']);
-
-        // finder
-        $resolver->setDefault('finder', ['extensions' => ['php']]);
 
         return $resolver;
     }

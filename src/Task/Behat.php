@@ -25,20 +25,16 @@ class Behat extends AbstractExternalTask
     {
         $resolver = parent::getConfigOptions();
 
-        // config
-        $resolver->setDefault('config', null);
+        $resolver->setDefaults([
+            'config' => null,
+            'format' => [],
+            'suite'  => null,
+            'finder' => ['extensions' => ['php']],
+        ]);
+
         $resolver->addAllowedTypes('config', ['null', 'string']);
-
-        // format
-        $resolver->setDefault('format', []);
         $resolver->addAllowedTypes('format', ['array']);
-
-        // suite
-        $resolver->setDefault('suite', null);
         $resolver->addAllowedTypes('suite', ['null', 'string']);
-
-        // finder
-        $resolver->setDefault('finder', ['extensions' => ['php']]);
 
         return $resolver;
     }

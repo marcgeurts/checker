@@ -25,12 +25,12 @@ class Gulp extends AbstractExternalTask
     {
         $resolver = parent::getConfigOptions();
 
-        // gulpfile
-        $resolver->setDefault('gulpfile', null);
-        $resolver->addAllowedTypes('gulpfile', ['null', 'string']);
+        $resolver->setDefaults([
+            'gulpfile' => null,
+            'task'     => null,
+        ]);
 
-        // task
-        $resolver->setDefault('task', null);
+        $resolver->addAllowedTypes('gulpfile', ['null', 'string']);
         $resolver->addAllowedTypes('task', ['null', 'string']);
 
         return $resolver;

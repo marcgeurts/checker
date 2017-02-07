@@ -25,12 +25,12 @@ class Grunt extends AbstractExternalTask
     {
         $resolver = parent::getConfigOptions();
 
-        // gruntfile
-        $resolver->setDefault('gruntfile', null);
-        $resolver->addAllowedTypes('gruntfile', ['null', 'string']);
+        $resolver->setDefaults([
+            'gruntfile' => null,
+            'task'      => null,
+        ]);
 
-        // task
-        $resolver->setDefault('task', null);
+        $resolver->addAllowedTypes('gruntfile', ['null', 'string']);
         $resolver->addAllowedTypes('task', ['null', 'string']);
 
         return $resolver;

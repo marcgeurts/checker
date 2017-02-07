@@ -26,16 +26,14 @@ class NpmScript extends AbstractExternalTask
     {
         $resolver = parent::getConfigOptions();
 
-        // is-run-task
-        $resolver->setDefault('is-run-task', false);
+        $resolver->setDefaults([
+            'is-run-task'       => false,
+            'script'            => null,
+            'working-directory' => './',
+        ]);
+
         $resolver->addAllowedTypes('is-run-task', ['bool']);
-
-        // script
-        $resolver->setDefault('script', null);
         $resolver->addAllowedTypes('script', ['string']);
-
-        // working-directory
-        $resolver->setDefault('working-directory', './');
         $resolver->addAllowedTypes('working-directory', ['string']);
 
         return $resolver;

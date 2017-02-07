@@ -25,12 +25,12 @@ class Robo extends AbstractExternalTask
     {
         $resolver = parent::getConfigOptions();
 
-        // load-from
-        $resolver->setDefault('load-from', null);
-        $resolver->addAllowedTypes('load-from', ['null', 'string']);
+        $resolver->setDefaults([
+            'load-from' => null,
+            'task'      => null,
+        ]);
 
-        // task
-        $resolver->setDefault('task', null);
+        $resolver->addAllowedTypes('load-from', ['null', 'string']);
         $resolver->addAllowedTypes('task', ['null', 'string']);
 
         return $resolver;

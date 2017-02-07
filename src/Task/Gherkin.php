@@ -25,17 +25,15 @@ class Gherkin extends AbstractExternalTask
     {
         $resolver = parent::getConfigOptions();
 
-        // align
-        $resolver->setDefault('align', null);
+        $resolver->setDefaults([
+            'align'     => null,
+            'directory' => 'features',
+            'finder'    => ['extensions' => ['feature']],
+        ]);
+
         $resolver->addAllowedTypes('align', ['null', 'string']);
         $resolver->addAllowedValues('align', [null, 'left', 'right']);
-
-        // directory
-        $resolver->setDefault('directory', 'features');
         $resolver->addAllowedTypes('directory', ['string']);
-
-        // finder
-        $resolver->setDefault('finder', ['extensions' => ['feature']]);
 
         return $resolver;
     }

@@ -25,28 +25,20 @@ class Atoum extends AbstractExternalTask
     {
         $resolver = parent::getConfigOptions();
 
-        // configuration
-        $resolver->setDefault('configuration', null);
+        $resolver->setDefaults([
+            'configuration'  => null,
+            'bootstrap-file' => null,
+            'namespaces'     => [],
+            'methods'        => [],
+            'tags'           => [],
+            'finder'         => ['extensions' => ['php']],
+        ]);
+
         $resolver->addAllowedTypes('configuration', ['null', 'string']);
-
-        // bootstrap-file
-        $resolver->setDefault('bootstrap-file', null);
         $resolver->addAllowedTypes('bootstrap-file', ['null', 'string']);
-
-        // namespaces
-        $resolver->setDefault('namespaces', []);
         $resolver->addAllowedTypes('namespaces', ['array']);
-
-        // methods
-        $resolver->setDefault('methods', []);
         $resolver->addAllowedTypes('methods', ['array']);
-
-        // tags
-        $resolver->setDefault('tags', []);
         $resolver->addAllowedTypes('tags', ['array']);
-
-        // finder
-        $resolver->setDefault('finder', ['extensions' => ['php']]);
 
         return $resolver;
     }

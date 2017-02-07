@@ -25,20 +25,16 @@ class PhpMd extends AbstractExternalTask
     {
         $resolver = parent::getConfigOptions();
 
-        // ruleset
-        $resolver->setDefault('ruleset', ['cleancode', 'codesize', 'controversial', 'design', 'naming', 'unusedcode']);
+        $resolver->setDefaults([
+            'ruleset'          => ['cleancode', 'codesize', 'controversial', 'design', 'naming', 'unusedcode'],
+            'minimum-priority' => null,
+            'strict'           => false,
+            'finder'           => ['extensions' => ['php']],
+        ]);
+
         $resolver->addAllowedTypes('ruleset', ['string', 'array']);
-
-        // minimum-priority
-        $resolver->setDefault('minimum-priority', null);
         $resolver->addAllowedTypes('minimum-priority', ['null', 'int']);
-
-        // strict
-        $resolver->setDefault('strict', false);
         $resolver->addAllowedTypes('strict', ['bool']);
-
-        // finder
-        $resolver->setDefault('finder', ['extensions' => ['php']]);
 
         return $resolver;
     }
