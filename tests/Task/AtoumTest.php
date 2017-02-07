@@ -21,11 +21,10 @@ class AtoumTest extends AbstractExternalTaskTest
 
         $this->assertContains('configuration', $options);
         $this->assertContains('bootstrap-file', $options);
-        $this->assertContains('directories', $options);
-        $this->assertContains('files', $options);
         $this->assertContains('namespaces', $options);
         $this->assertContains('methods', $options);
         $this->assertContains('tags', $options);
+        $this->assertContains('finder', $options);
     }
 
     /**

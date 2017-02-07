@@ -21,8 +21,8 @@ class PhpMdTest extends AbstractExternalTaskTest
 
         $this->assertContains('ruleset', $options);
         $this->assertContains('minimum-priority', $options);
-        $this->assertContains('exclude', $options);
         $this->assertContains('strict', $options);
+        $this->assertContains('finder', $options);
     }
 
     /**

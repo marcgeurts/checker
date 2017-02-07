@@ -21,6 +21,7 @@ class PhpUnitTest extends AbstractExternalTaskTest
 
         $this->assertContains('configuration', $options);
         $this->assertContains('group', $options);
+        $this->assertContains('finder', $options);
     }
 
     /**

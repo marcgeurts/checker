@@ -38,9 +38,6 @@ class NpmScript extends AbstractExternalTask
         $resolver->setDefault('working-directory', './');
         $resolver->addAllowedTypes('working-directory', ['string']);
 
-        // finder -> extensions
-        $resolver->setDefault('finder', ['extensions' => ['js', 'jsx', 'coffee', 'ts', 'less', 'sass', 'scss']]);
-
         return $resolver;
     }
 

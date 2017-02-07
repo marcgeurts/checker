@@ -58,8 +58,8 @@ abstract class AbstractTask implements TaskInterface
     public function run(RunnerInterface $runner, ContextInterface $context)
     {
         $config = $this->getConfig($runner);
-        $finder = $this->getFinder(isset($config['finder']) ? (array) $config['finder'] : []);
-        $files = $this->finderFiles($context->getFiles(), $finder);
+        $config['finder'] = $this->getFinder(isset($config['finder']) ? (array) $config['finder'] : []);
+        $files = $this->finderFiles($context->getFiles(), $config['finder']);
 
         if ($this->isSkipped($files, $config)) {
             return Result::skipped($runner, $context, $this);
@@ -124,11 +124,11 @@ abstract class AbstractTask implements TaskInterface
             'extensions' => [],
         ]);
 
-        $resolver->addAllowedTypes('name', ['array', 'string']);
-        $resolver->addAllowedTypes('not-name', ['array', 'string']);
-        $resolver->addAllowedTypes('path', ['array', 'string']);
-        $resolver->addAllowedTypes('not-path', ['array', 'string']);
-        $resolver->addAllowedTypes('extensions', ['array', 'string']);
+        $resolver->addAllowedTypes('name', ['array']);
+        $resolver->addAllowedTypes('not-name', ['array']);
+        $resolver->addAllowedTypes('path', ['array']);
+        $resolver->addAllowedTypes('not-path', ['array']);
+        $resolver->addAllowedTypes('extensions', ['array']);
 
         return $resolver->resolve($finder);
     }
@@ -148,7 +148,7 @@ abstract class AbstractTask implements TaskInterface
             ->filterByNotName($finder['not-name'])
             ->filterByPath($finder['path'])
             ->filterByNotPath($finder['not-path'])
-            ->filterByExtensions((array) $finder['extensions']);
+            ->filterByExtensions($finder['extensions']);
     }
 
     /**

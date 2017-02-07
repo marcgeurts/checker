@@ -138,11 +138,11 @@ class AbstractTaskTest extends \PHPUnit_Framework_TestCase
     public function testRunWithFinderFiles()
     {
         $finder = [
-            'name'       => 'file1.*',
-            'not-name'   => 'file2.*',
-            'path'       => 'path1',
-            'not-path'   => 'path2',
-            'extensions' => 'php',
+            'name'       => ['file1.*'],
+            'not-name'   => ['file2.*'],
+            'path'       => ['path1'],
+            'not-path'   => ['path2'],
+            'extensions' => ['php'],
         ];
 
         $runner = m::mock(RunnerInterface::class);

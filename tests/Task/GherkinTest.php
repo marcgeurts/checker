@@ -21,6 +21,7 @@ class GherkinTest extends AbstractExternalTaskTest
 
         $this->assertContains('align', $options);
         $this->assertContains('directory', $options);
+        $this->assertContains('finder', $options);
     }
 
     /**

@@ -33,14 +33,6 @@ class Atoum extends AbstractExternalTask
         $resolver->setDefault('bootstrap-file', null);
         $resolver->addAllowedTypes('bootstrap-file', ['null', 'string']);
 
-        // directories
-        $resolver->setDefault('directories', []);
-        $resolver->addAllowedTypes('directories', ['array']);
-
-        // files
-        $resolver->setDefault('files', []);
-        $resolver->addAllowedTypes('files', ['array']);
-
         // namespaces
         $resolver->setDefault('namespaces', []);
         $resolver->addAllowedTypes('namespaces', ['array']);
@@ -53,8 +45,8 @@ class Atoum extends AbstractExternalTask
         $resolver->setDefault('tags', []);
         $resolver->addAllowedTypes('tags', ['array']);
 
-        // finder -> extensions
-        $resolver->setDefault('finder', ['extensions' => 'php']);
+        // finder
+        $resolver->setDefault('finder', ['extensions' => ['php']]);
 
         return $resolver;
     }
@@ -72,11 +64,12 @@ class Atoum extends AbstractExternalTask
         $arguments = $this->processBuilder->createArgumentsForCommand('atoum');
         $arguments->addOptionalArgumentWithSeparatedValue('--configuration', $config['configuration']);
         $arguments->addOptionalArgumentWithSeparatedValue('--bootstrap-file', $config['bootstrap-file']);
-        $arguments->addSeparatedArgumentArray('--directories', $config['directories']);
-        $arguments->addSeparatedArgumentArray('--files', $config['files']);
+        $arguments->addSeparatedArgumentArray('--directories', $config['finder']['path']);
+        $arguments->addSeparatedArgumentArray('--files', $config['finder']['name']);
         $arguments->addSeparatedArgumentArray('--namespaces', $config['namespaces']);
         $arguments->addSeparatedArgumentArray('--methods', $config['methods']);
         $arguments->addSeparatedArgumentArray('--tags', $config['tags']);
+        $arguments->addSeparatedArgumentArray('--test-file-extensions', $config['finder']['extensions']);
 
         return $arguments;
     }

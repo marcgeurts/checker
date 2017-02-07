@@ -22,6 +22,7 @@ class BehatTest extends AbstractExternalTaskTest
         $this->assertContains('config', $options);
         $this->assertContains('format', $options);
         $this->assertContains('suite', $options);
+        $this->assertContains('finder', $options);
     }
 
     /**

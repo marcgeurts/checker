@@ -33,9 +33,6 @@ class Ant extends AbstractExternalTask
         $resolver->setDefault('task', null);
         $resolver->addAllowedTypes('task', ['null', 'string']);
 
-        // finder -> extensions
-        $resolver->setDefault('finder', ['extensions' => 'php']);
-
         return $resolver;
     }
 

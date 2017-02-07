@@ -33,16 +33,12 @@ class PhpMd extends AbstractExternalTask
         $resolver->setDefault('minimum-priority', null);
         $resolver->addAllowedTypes('minimum-priority', ['null', 'int']);
 
-        // exclude
-        $resolver->setDefault('exclude', []);
-        $resolver->addAllowedTypes('exclude', ['array']);
-
         // strict
         $resolver->setDefault('strict', false);
         $resolver->addAllowedTypes('strict', ['bool']);
 
-        // finder -> extensions
-        $resolver->setDefault('finder', ['extensions' => 'php']);
+        // finder
+        $resolver->setDefault('finder', ['extensions' => ['php']]);
 
         return $resolver;
     }
@@ -62,8 +58,6 @@ class PhpMd extends AbstractExternalTask
         $arguments->add('text');
         $arguments->addOptionalCommaSeparatedArgument('%s', (array) $config['ruleset']);
         $arguments->addOptionalArgumentWithSeparatedValue('--minimumpriority', $config['minimum-priority']);
-        $arguments->addOptionalArgument('--exclude', !empty($config['exclude']));
-        $arguments->addOptionalCommaSeparatedArgument('%s', $config['exclude']);
         $arguments->addOptionalArgument('--strict', $config['strict']);
 
         return $arguments;
