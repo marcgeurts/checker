@@ -18,6 +18,7 @@ parameters:
     gulp: ~
     make: ~
     npm-script: ~
+    php7cc: ~
     phpcpd: ~
     phpmd: ~
     phpunit: ~
@@ -35,6 +36,7 @@ It is possible to overwrite the parameters per task.
 - [Gulp](tasks/gulp.md)
 - [Make](tasks/make.md)
 - [NPM script](tasks/npm-script.md)
+- [Php7cc](tasks/php7cc.md)
 - [PhpCpd](tasks/phpcpd.md)
 - [PhpMd](tasks/phpmd.md)
 - [PhpUnit](tasks/phpunit.md)
