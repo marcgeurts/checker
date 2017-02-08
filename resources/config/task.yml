@@ -39,6 +39,14 @@ services:
     tags:
       - { name: checker.task, config: codeception }
 
+  task.doctrine-orm:
+    class: ClickNow\Checker\Task\DoctrineOrm
+    arguments:
+      - '@process.process-builder'
+      - '@formatter.raw-process'
+    tags:
+      - { name: checker.task, config: doctrine-orm }
+
   task.gherkin:
     class: ClickNow\Checker\Task\Gherkin
     arguments:
