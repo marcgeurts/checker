@@ -27,6 +27,7 @@ parameters:
 
 If your `behat.yml` file is located at an exotic location,
 you can specify your custom location with this option.
+This option is set to `null` by default. 
 This means that `behat.yml` or `behat.yml.dist` is automatically loaded
 if the file exists in the current directory.
 

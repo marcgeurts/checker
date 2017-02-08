@@ -24,15 +24,16 @@ parameters:
 
 *Default: null*
 
-This option specifies which the alignment of your file.
+This option specify which the alignment of your file.
 Possible values can be `left` or `right`.
 
 ### directory
 
 *Default: 'features'*
 
-This option specifies which the location of your Gherkin feature files.
-By default the Behat prefered `features` folder is chosen.
+This option specify which the location of your feature files.
+This option is set to `features` by default.
+This means that will run in `features` directory.
 
 ### finder
 

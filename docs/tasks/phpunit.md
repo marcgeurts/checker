@@ -26,6 +26,7 @@ parameters:
 
 If your `phpunit.xml` file is located at an exotic location,
 you can specify your custom config file location with this option.
+This option is set to `null` by default.
 This means that `phpunit.xml` or `phpunit.xml.dist` are automatically loaded
 if one of them exist in the current directory.
 
@@ -33,7 +34,7 @@ if one of them exist in the current directory.
 
 *Default: []*
 
-This option specifies to only run tests from a certain group.
+This option specify to only run tests from a certain group.
 
 ### finder
 

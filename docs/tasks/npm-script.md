@@ -23,19 +23,20 @@ parameters:
 
 *Default: false*
 
-This option will append `run` to the npm command to make it possible to run custom npm scripts.
+This option will append `run` to the command to make it possible to run custom scripts.
 
 ### script
 
 *Default: null*
 
-This option specifies which NPM script you want to run.
+This option specify which script you want to run.
+This option is set to `null` by default.
 This means that will stop immediately.
-Note that this script should be used to verify things.
-It is also possible to alter code during commit, but this is surely **NOT** recommended!
 
 ### working-directory
 
 *Default: './'*
 
-This option specifies which directory the NPM script should be run.
+This option specify which directory should be run.
+This option is set to `./` by default.
+This means that we will run in the root.

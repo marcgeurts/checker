@@ -23,7 +23,7 @@ parameters:
 
 *Default: null*
 
-This option specifies which the minimum issue level.
+This option specify which the minimum issue level.
 There are 3 issue levels: "info", "warning" and "error".
 "info" is reserved for future use and is the same as "warning".
 

@@ -25,20 +25,20 @@ parameters:
 
 *Default: ['cleancode', 'codesize', 'controversial', 'design', 'naming', 'unusedcode']*
 
-This option specifies which rule/rulesets you want to use.
+This option specify which rule/rulesets you want to use.
 You can use the standard sets provided or you can configure your own xml.
 
 ### minimum-priority
 
 *Default: null*
 
-This option specifies rules with lower priority than they will not be used.
+This option specify rules with lower priority than they will not be used.
 
 ### strict
 
 *Default: false*
 
-This option specifies to include in report those nodes with a `@SuppressWarnings` annotation.
+This option specify to include in report those nodes with a `@SuppressWarnings` annotation.
 
 ### finder
 

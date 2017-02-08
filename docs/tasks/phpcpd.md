@@ -28,6 +28,8 @@ parameters:
 *Default: '.'*
 
 This option specify which files or directory you want to run (must be relative to cwd).
+This option is set to `.` by default.
+This means that we will run in the root.
 
 ### min-lines
 
@@ -49,6 +51,6 @@ This option specify to fuzz variable names.
 
 ### finder
 
-*Default: {name: ['*.php']}*
+*Default: {name: ['*.php'], not-path: ['vendor']}*
 
 [See documentation](../tasks.md#finder)
