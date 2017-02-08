@@ -33,6 +33,8 @@ parameters:
 
 *Default: []*
 
+This option specify which will config values override.
+
 ### config
 
 *Default: null*

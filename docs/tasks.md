@@ -15,6 +15,7 @@ parameters:
     behat: ~
     brunch: ~
     codeception: ~
+    doctrine-orm: ~
     gherkin: ~
     grunt: ~
     gulp: ~
@@ -35,6 +36,7 @@ It is possible to overwrite the parameters per task.
 - [Behat](tasks/behat.md)
 - [Brunch](tasks/brunch.md)
 - [Codeception](tasks/codeception.md)
+- [Doctrine ORM](tasks/doctrine-orm.md)
 - [Gherkin](tasks/gherkin.md)
 - [Grunt](tasks/grunt.md)
 - [Gulp](tasks/gulp.md)
