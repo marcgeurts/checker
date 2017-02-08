@@ -15,7 +15,7 @@ parameters:
   tasks:
     phpmd:
       ruleset: ['cleancode', 'codesize', 'controversial', 'design', 'naming', 'unusedcode']
-      minimum-priority: null
+      minimum-priority: ~
       strict: false
       finder:
         extensions: ['php']
