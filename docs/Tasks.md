@@ -31,6 +31,7 @@ It is possible to overwrite the parameters per task.
 - [Ant](tasks/ant.md)
 - [Atoum](tasks/atoum.md)
 - [Behat](tasks/behat.md)
+- [Brunch](tasks/brunch.md)
 - [Gherkin](tasks/gherkin.md)
 - [Grunt](tasks/grunt.md)
 - [Gulp](tasks/gulp.md)

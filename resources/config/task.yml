@@ -23,6 +23,14 @@ services:
     tags:
       - { name: checker.task, config: behat }
 
+  task.brunch:
+    class: ClickNow\Checker\Task\Brunch
+    arguments:
+      - '@process.process-builder'
+      - '@formatter.raw-process'
+    tags:
+      - { name: checker.task, config: brunch }
+
   task.gherkin:
     class: ClickNow\Checker\Task\Gherkin
     arguments:
