@@ -13,6 +13,8 @@ parameters:
     ant: ~
     atoum: ~
     behat: ~
+    brunch: ~
+    codeception: ~
     gherkin: ~
     grunt: ~
     gulp: ~
@@ -32,6 +34,7 @@ It is possible to overwrite the parameters per task.
 - [Atoum](tasks/atoum.md)
 - [Behat](tasks/behat.md)
 - [Brunch](tasks/brunch.md)
+- [Codeception](tasks/codeception.md)
 - [Gherkin](tasks/gherkin.md)
 - [Grunt](tasks/grunt.md)
 - [Gulp](tasks/gulp.md)
