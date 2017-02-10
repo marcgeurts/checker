@@ -10,33 +10,11 @@ use ClickNow\Checker\Process\ArgumentsCollection;
  */
 class PhpCpdTest extends AbstractExternalTaskTest
 {
+    protected $class = PhpCpd::class;
+
     public function testGetName()
     {
-        $this->assertSame('phpcpd', $this->externalTask->getName());
-    }
-
-    public function testConfigOptions()
-    {
-        $options = $this->externalTask->getConfigOptions()->getDefinedOptions();
-
-        $this->assertContains('paths', $options);
-        $this->assertContains('min-lines', $options);
-        $this->assertContains('min-tokens', $options);
-        $this->assertContains('fuzzy', $options);
-        $this->assertContains('finder', $options);
-    }
-
-    /**
-     * Mock external task.
-     *
-     * @return \ClickNow\Checker\Task\PhpCpd|\PHPUnit_Framework_MockObject_MockObject
-     */
-    protected function mockExternalTask()
-    {
-        return $this->getMock(PhpCpd::class, null, [
-            $this->processBuilder,
-            $this->processFormatter,
-        ]);
+        $this->assertSame('PHP Copy/Paste Detector (phpcpd)', $this->externalTask->getName());
     }
 
     /**

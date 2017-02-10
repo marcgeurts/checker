@@ -144,7 +144,8 @@ class ReportSubscriber implements EventSubscriberInterface
 
         foreach ($errors as $error) {
             /* @var \ClickNow\Checker\Result\ResultInterface $error */
-            $this->io->error($error->getMessage());
+            $this->io->error($error->getAction()->getName());
+            $this->io->text(sprintf('<fg=red>%s</fg=red>', $error->getMessage()));
         }
     }
 }

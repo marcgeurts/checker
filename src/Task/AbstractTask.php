@@ -71,9 +71,11 @@ abstract class AbstractTask implements TaskInterface
     /**
      * Get config options.
      *
+     * @param \ClickNow\Checker\Runner\RunnerInterface $runner
+     *
      * @return \Symfony\Component\OptionsResolver\OptionsResolver
      */
-    public function getConfigOptions()
+    protected function getConfigOptions(RunnerInterface $runner)
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -100,7 +102,7 @@ abstract class AbstractTask implements TaskInterface
     {
         $config = $runner->getActionConfig($this);
 
-        $resolver = $this->getConfigOptions();
+        $resolver = $this->getConfigOptions($runner);
         $resolver->setDefaults($this->defaultConfig);
 
         return $resolver->resolve($config);

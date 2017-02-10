@@ -10,32 +10,11 @@ use ClickNow\Checker\Process\ArgumentsCollection;
  */
 class PhpMdTest extends AbstractExternalTaskTest
 {
+    protected $class = PhpMd::class;
+
     public function testGetName()
     {
-        $this->assertSame('phpmd', $this->externalTask->getName());
-    }
-
-    public function testConfigOptions()
-    {
-        $options = $this->externalTask->getConfigOptions()->getDefinedOptions();
-
-        $this->assertContains('ruleset', $options);
-        $this->assertContains('minimum-priority', $options);
-        $this->assertContains('strict', $options);
-        $this->assertContains('finder', $options);
-    }
-
-    /**
-     * Mock external task.
-     *
-     * @return \ClickNow\Checker\Task\PhpMd|\PHPUnit_Framework_MockObject_MockObject
-     */
-    protected function mockExternalTask()
-    {
-        return $this->getMock(PhpMd::class, null, [
-            $this->processBuilder,
-            $this->processFormatter,
-        ]);
+        $this->assertSame('PHP Mess Detector (phpmd)', $this->externalTask->getName());
     }
 
     /**

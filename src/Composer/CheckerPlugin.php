@@ -172,7 +172,7 @@ class CheckerPlugin implements PluginInterface, EventSubscriberInterface
      */
     private function runProcess(Process $process)
     {
-        if ($this->io->isVeryVerbose()) {
+        if ($this->io->isVerbose()) {
             $this->io->write('Running process: '.$process->getCommandLine());
         }
 

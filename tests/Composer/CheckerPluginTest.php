@@ -158,7 +158,7 @@ class CheckerPluginTest extends \PHPUnit_Framework_TestCase
         $process->shouldReceive('getOutput')->withNoArgs()->once()->andReturn('bar');
 
         $io = m::mock(IOInterface::class);
-        $io->shouldReceive('isVeryVerbose')->withNoArgs()->once()->andReturn(true);
+        $io->shouldReceive('isVerbose')->withNoArgs()->once()->andReturn(true);
         $io->shouldReceive('write')->with('/foo$/')->once()->andReturnNull();
         $io->shouldReceive('write')->with('<fg=yellow>bar</fg=yellow>')->once()->andReturnNull();
 
@@ -177,7 +177,7 @@ class CheckerPluginTest extends \PHPUnit_Framework_TestCase
         $process->shouldReceive('getErrorOutput')->withNoArgs()->once()->andReturn('bar');
 
         $io = m::mock(IOInterface::class);
-        $io->shouldReceive('isVeryVerbose')->withNoArgs()->once()->andReturn(true);
+        $io->shouldReceive('isVerbose')->withNoArgs()->once()->andReturn(true);
         $io->shouldReceive('write')->with('/foo$/')->once()->andReturnNull();
         $io->shouldReceive('write')->withAnyArgs()->once()->andReturnNull();
         $io->shouldReceive('write')->with('<fg=red>bar</fg=red>')->once()->andReturnNull();

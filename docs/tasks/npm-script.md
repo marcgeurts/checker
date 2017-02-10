@@ -23,13 +23,13 @@ parameters:
 
 *Default: false*
 
-This option will append `run` to the command to make it possible to run custom scripts.
+This option specify if will append `run` to the command to make it possible to run custom scripts.
 
 ### script
 
 *Default: null*
 
-This option specify which script you want to run.
+This option specify which will script you want to run.
 This option is set to `null` by default.
 This means that will stop immediately.
 
@@ -37,6 +37,6 @@ This means that will stop immediately.
 
 *Default: './'*
 
-This option specify which directory should be run.
+This option specify which will working directory.
 This option is set to `./` by default.
 This means that we will run in the root.

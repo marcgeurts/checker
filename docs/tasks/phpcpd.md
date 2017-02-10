@@ -2,7 +2,7 @@
 currentMenu: tasks
 ---
 
-# PhpCpd
+# PHP Copy/Paste Detector (phpcpd)
 
 [See oficinal documentation](https://github.com/sebastianbergmann/phpcpd)
 
@@ -15,9 +15,14 @@ parameters:
   tasks:
     phpcpd:
       paths: '.'
+      log-pmd: ~
       min-lines: ~
       min-tokens: ~
       fuzzy: false
+      quiet: false
+      verbose: false
+      ansi: false
+      no-ansi: false
       finder:
         name: ['*.php']
         not-path: ['vendor']
@@ -27,27 +32,57 @@ parameters:
 
 *Default: '.'*
 
-This option specify which files or directory you want to run (must be relative to cwd).
+This option specify which will files or directory you want to run (must be relative to cwd).
 This option is set to `.` by default.
 This means that we will run in the root.
+
+### log-pmd
+
+*Default: null*
+
+This option specify to write result in PMD-CPD XML format to file.
 
 ### min-lines
 
 *Default: null*
 
-This option specify minimum number of identical lines.
+This option specify which will minimum number of identical lines.
 
 ### min-tokens
 
 *Default: null*
 
-This option specify minimum number of identical tokens.
+This option specify which will minimum number of identical tokens.
 
 ### fuzzy
 
 *Default: false*
 
-This option specify to fuzz variable names.
+This option specify if will fuzz variable names.
+
+### quiet
+
+*Default: false*
+
+This option specify if will quiet mode.
+
+### verbose
+
+*Default: false*
+
+This option specify if will verbose mode.
+
+### ansi
+
+*Default: false*
+
+This option specify if will force ANSI.
+
+### no-ansi
+
+*Default: false*
+
+This option specify if will disable ANSI.
 
 ### finder
 

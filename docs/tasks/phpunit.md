@@ -2,7 +2,7 @@
 currentMenu: tasks
 ---
 
-# PhpUnit
+# PHPUnit
 
 [See oficinal documentation](http://phpunit.de/)
 

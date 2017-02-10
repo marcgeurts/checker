@@ -10,30 +10,11 @@ use ClickNow\Checker\Process\ArgumentsCollection;
  */
 class RoboTest extends AbstractExternalTaskTest
 {
+    protected $class = Robo::class;
+
     public function testGetName()
     {
-        $this->assertSame('robo', $this->externalTask->getName());
-    }
-
-    public function testConfigOptions()
-    {
-        $options = $this->externalTask->getConfigOptions()->getDefinedOptions();
-
-        $this->assertContains('load-from', $options);
-        $this->assertContains('task', $options);
-    }
-
-    /**
-     * Mock external task.
-     *
-     * @return \ClickNow\Checker\Task\Robo|\PHPUnit_Framework_MockObject_MockObject
-     */
-    protected function mockExternalTask()
-    {
-        return $this->getMock(Robo::class, null, [
-            $this->processBuilder,
-            $this->processFormatter,
-        ]);
+        $this->assertSame('Robo', $this->externalTask->getName());
     }
 
     /**

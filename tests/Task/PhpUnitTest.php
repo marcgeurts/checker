@@ -10,31 +10,11 @@ use ClickNow\Checker\Process\ArgumentsCollection;
  */
 class PhpUnitTest extends AbstractExternalTaskTest
 {
+    protected $class = PhpUnit::class;
+
     public function testGetName()
     {
-        $this->assertSame('phpunit', $this->externalTask->getName());
-    }
-
-    public function testConfigOptions()
-    {
-        $options = $this->externalTask->getConfigOptions()->getDefinedOptions();
-
-        $this->assertContains('configuration', $options);
-        $this->assertContains('group', $options);
-        $this->assertContains('finder', $options);
-    }
-
-    /**
-     * Mock external task.
-     *
-     * @return \ClickNow\Checker\Task\PhpUnit|\PHPUnit_Framework_MockObject_MockObject
-     */
-    protected function mockExternalTask()
-    {
-        return $this->getMock(PhpUnit::class, null, [
-            $this->processBuilder,
-            $this->processFormatter,
-        ]);
+        $this->assertSame('PHPUnit', $this->externalTask->getName());
     }
 
     /**

@@ -16,6 +16,10 @@ parameters:
     doctrine-orm:
       skip-mapping: false
       skip-sync: false
+      quiet: false
+      verbose: false
+      ansi: false
+      no-ansi: false
       finder:
         extensions: ['php', 'xml', 'yml']
 ```
@@ -24,13 +28,37 @@ parameters:
 
 *Default: []*
 
-This option specify to skip the mapping validation check.
+This option specify if will skip the mapping validation check.
 
 ### skip-sync
 
 *Default: []*
 
-This option specify to skip checking if the mapping is in sync with the database.
+This option specify if will skip checking if the mapping is in sync with the database.
+
+### quiet
+
+*Default: false*
+
+This option specify if will quiet mode.
+
+### verbose
+
+*Default: false*
+
+This option specify if will verbose mode.
+
+### ansi
+
+*Default: false*
+
+This option specify if will force ANSI.
+
+### no-ansi
+
+*Default: false*
+
+This option specify if will disable ANSI.
 
 ### finder
 

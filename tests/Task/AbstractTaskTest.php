@@ -43,15 +43,6 @@ class AbstractTaskTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('foo', $this->task->getName());
     }
 
-    public function testConfigOptions()
-    {
-        $options = $this->task->getConfigOptions()->getDefinedOptions();
-
-        $this->assertContains('can-run-in', $options);
-        $this->assertContains('always-execute', $options);
-        $this->assertContains('finder', $options);
-    }
-
     public function testCanRunInContext()
     {
         $runner = m::mock(RunnerInterface::class);

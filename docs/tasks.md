@@ -31,7 +31,7 @@ parameters:
 Every task has it's own default configuration.
 It is possible to overwrite the parameters per task.
 
-- [Ant](tasks/ant.md)
+- [Apache Ant](tasks/ant.md)
 - [Atoum](tasks/atoum.md)
 - [Behat](tasks/behat.md)
 - [Brunch](tasks/brunch.md)
@@ -42,10 +42,10 @@ It is possible to overwrite the parameters per task.
 - [Gulp](tasks/gulp.md)
 - [Make](tasks/make.md)
 - [NPM script](tasks/npm-script.md)
-- [Php7cc](tasks/php7cc.md)
-- [PhpCpd](tasks/phpcpd.md)
-- [PhpMd](tasks/phpmd.md)
-- [PhpUnit](tasks/phpunit.md)
+- [PHP 7 Compatibility Checker (php7cc)](tasks/php7cc.md)
+- [PHP Copy/Paste Detector (phpcpd)](tasks/phpcpd.md)
+- [PHP Mess Detector (phpmd)](tasks/phpmd.md)
+- [PHPUnit](tasks/phpunit.md)
 - [Robo](tasks/robo.md)
 
 > **Note:** Some options of the tasks related to files and/or directory 

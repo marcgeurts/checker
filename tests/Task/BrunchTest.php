@@ -10,32 +10,11 @@ use ClickNow\Checker\Process\ArgumentsCollection;
  */
 class BrunchTest extends AbstractExternalTaskTest
 {
+    protected $class = Brunch::class;
+
     public function testGetName()
     {
-        $this->assertSame('brunch', $this->externalTask->getName());
-    }
-
-    public function testConfigOptions()
-    {
-        $options = $this->externalTask->getConfigOptions()->getDefinedOptions();
-
-        $this->assertContains('task', $options);
-        $this->assertContains('env', $options);
-        $this->assertContains('jobs', $options);
-        $this->assertContains('debug', $options);
-    }
-
-    /**
-     * Mock external task.
-     *
-     * @return \ClickNow\Checker\Task\Brunch|\PHPUnit_Framework_MockObject_MockObject
-     */
-    protected function mockExternalTask()
-    {
-        return $this->getMock(Brunch::class, null, [
-            $this->processBuilder,
-            $this->processFormatter,
-        ]);
+        $this->assertSame('Brunch', $this->externalTask->getName());
     }
 
     /**

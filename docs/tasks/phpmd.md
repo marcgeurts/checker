@@ -2,7 +2,7 @@
 currentMenu: tasks
 ---
 
-# PhpMd
+# PHP Mess Detector (phpmd)
 
 [See oficinal documentation](http://phpmd.org/)
 
@@ -17,6 +17,11 @@ parameters:
       ruleset: ['cleancode', 'codesize', 'controversial', 'design', 'naming', 'unusedcode']
       minimum-priority: ~
       strict: false
+      coverage: ~
+      reportfile: ~
+      reportfile-html: ~
+      reportfile-text: ~
+      reportfile-xml: ~
       finder:
         extensions: ['php']
 ```
@@ -25,20 +30,50 @@ parameters:
 
 *Default: ['cleancode', 'codesize', 'controversial', 'design', 'naming', 'unusedcode']*
 
-This option specify which rule/rulesets you want to use.
+This option specify which will rule/rulesets you want to use.
 You can use the standard sets provided or you can configure your own xml.
 
 ### minimum-priority
 
 *Default: null*
 
-This option specify rules with lower priority than they will not be used.
+This option specify which will rules with lower priority than they will not be used.
 
 ### strict
 
 *Default: false*
 
-This option specify to include in report those nodes with a `@SuppressWarnings` annotation.
+This option specify if will include to report those nodes with a `@SuppressWarnings` annotation.
+
+### coverage
+
+*Default: null*
+
+This option specify which will code coverage report.
+
+### reportfile
+
+*Default: null*
+
+This option specify which will report file.
+
+### reportfile-html
+
+*Default: null*
+
+This option specify which will report html file.
+
+### reportfile-text
+
+*Default: null*
+
+This option specify which will report text file.
+
+### reportfile-xml
+
+*Default: null*
+
+This option specify which will report xml file.
 
 ### finder
 

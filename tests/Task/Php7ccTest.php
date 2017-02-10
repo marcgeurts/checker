@@ -10,30 +10,11 @@ use ClickNow\Checker\Process\ArgumentsCollection;
  */
 class Php7ccTest extends AbstractExternalTaskTest
 {
+    protected $class = Php7cc::class;
+
     public function testGetName()
     {
-        $this->assertSame('php7cc', $this->externalTask->getName());
-    }
-
-    public function testConfigOptions()
-    {
-        $options = $this->externalTask->getConfigOptions()->getDefinedOptions();
-
-        $this->assertContains('level', $options);
-        $this->assertContains('finder', $options);
-    }
-
-    /**
-     * Mock external task.
-     *
-     * @return \ClickNow\Checker\Task\Php7cc|\PHPUnit_Framework_MockObject_MockObject
-     */
-    protected function mockExternalTask()
-    {
-        return $this->getMock(Php7cc::class, null, [
-            $this->processBuilder,
-            $this->processFormatter,
-        ]);
+        $this->assertSame('PHP 7 Compatibility Checker (php7cc)', $this->externalTask->getName());
     }
 
     /**

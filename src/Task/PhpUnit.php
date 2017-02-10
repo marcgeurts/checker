@@ -3,6 +3,7 @@
 namespace ClickNow\Checker\Task;
 
 use ClickNow\Checker\Repository\FilesCollection;
+use ClickNow\Checker\Runner\RunnerInterface;
 
 class PhpUnit extends AbstractExternalTask
 {
@@ -13,17 +14,19 @@ class PhpUnit extends AbstractExternalTask
      */
     public function getName()
     {
-        return 'phpunit';
+        return 'PHPUnit';
     }
 
     /**
      * Get config options.
      *
+     * @param \ClickNow\Checker\Runner\RunnerInterface $runner
+     *
      * @return \Symfony\Component\OptionsResolver\OptionsResolver
      */
-    public function getConfigOptions()
+    protected function getConfigOptions(RunnerInterface $runner)
     {
-        $resolver = parent::getConfigOptions();
+        $resolver = parent::getConfigOptions($runner);
 
         $resolver->setDefaults([
             'configuration' => null,

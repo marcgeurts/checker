@@ -10,30 +10,11 @@ use ClickNow\Checker\Process\ArgumentsCollection;
  */
 class AntTest extends AbstractExternalTaskTest
 {
+    protected $class = Ant::class;
+
     public function testGetName()
     {
-        $this->assertSame('ant', $this->externalTask->getName());
-    }
-
-    public function testConfigOptions()
-    {
-        $options = $this->externalTask->getConfigOptions()->getDefinedOptions();
-
-        $this->assertContains('buildfile', $options);
-        $this->assertContains('task', $options);
-    }
-
-    /**
-     * Mock external task.
-     *
-     * @return \ClickNow\Checker\Task\Ant|\PHPUnit_Framework_MockObject_MockObject
-     */
-    protected function mockExternalTask()
-    {
-        return $this->getMock(Ant::class, null, [
-            $this->processBuilder,
-            $this->processFormatter,
-        ]);
+        $this->assertSame('Apache Ant', $this->externalTask->getName());
     }
 
     /**

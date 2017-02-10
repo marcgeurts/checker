@@ -14,26 +14,54 @@ It lives under the `gherkin` namespace and has following configurable parameters
 parameters:
   tasks:
     gherkin:
-      align: ~
       directory: 'features'
+      align: ~
+      quiet: false
+      verbose: false
+      ansi: false
+      no-ansi: false
       finder:
         extensions: ['feature']
 ```
-
-### align
-
-*Default: null*
-
-This option specify which the alignment of your file.
-Possible values can be `left` or `right`.
 
 ### directory
 
 *Default: 'features'*
 
-This option specify which the location of your feature files.
+This option specify which will location of your feature files.
 This option is set to `features` by default.
 This means that will run in `features` directory.
+
+### align
+
+*Default: null*
+
+This option specify which will alignment of your file.
+Possible values can be `left` or `right`.
+
+### quiet
+
+*Default: false*
+
+This option specify if will quiet mode.
+
+### verbose
+
+*Default: false*
+
+This option specify if will verbose mode.
+
+### ansi
+
+*Default: false*
+
+This option specify if will force ANSI.
+
+### no-ansi
+
+*Default: false*
+
+This option specify if will disable ANSI.
 
 ### finder
 

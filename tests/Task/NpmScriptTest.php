@@ -10,31 +10,11 @@ use ClickNow\Checker\Process\ArgumentsCollection;
  */
 class NpmScriptTest extends AbstractExternalTaskTest
 {
+    protected $class = NpmScript::class;
+
     public function testGetName()
     {
-        $this->assertSame('npm-script', $this->externalTask->getName());
-    }
-
-    public function testConfigOptions()
-    {
-        $options = $this->externalTask->getConfigOptions()->getDefinedOptions();
-
-        $this->assertContains('is-run-task', $options);
-        $this->assertContains('script', $options);
-        $this->assertContains('working-directory', $options);
-    }
-
-    /**
-     * Mock external task.
-     *
-     * @return \ClickNow\Checker\Task\NpmScript|\PHPUnit_Framework_MockObject_MockObject
-     */
-    protected function mockExternalTask()
-    {
-        return $this->getMock(NpmScript::class, null, [
-            $this->processBuilder,
-            $this->processFormatter,
-        ]);
+        $this->assertSame('NPM script', $this->externalTask->getName());
     }
 
     /**

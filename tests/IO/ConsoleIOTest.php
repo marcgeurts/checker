@@ -62,7 +62,7 @@ class ConsoleIOTest extends \PHPUnit_Framework_TestCase
 
     public function testLog()
     {
-        $this->output->shouldReceive('isVeryVerbose')->withNoArgs()->once()->andReturn(true);
+        $this->output->shouldReceive('isVerbose')->withNoArgs()->once()->andReturn(true);
         $this->output->shouldReceive('write')->withAnyArgs()->twice()->andReturnNull();
         $this->output->shouldReceive('writeln')->with(' foo', m::any())->once()->andReturnNull();
 
@@ -71,7 +71,7 @@ class ConsoleIOTest extends \PHPUnit_Framework_TestCase
 
     public function testLogIsNotVeryVerbose()
     {
-        $this->output->shouldReceive('isVeryVerbose')->withNoArgs()->once()->andReturn(false);
+        $this->output->shouldReceive('isVerbose')->withNoArgs()->once()->andReturn(false);
         $this->output->shouldReceive('write')->withAnyArgs()->never();
         $this->output->shouldReceive('writeln')->withAnyArgs()->never();
 
@@ -80,7 +80,7 @@ class ConsoleIOTest extends \PHPUnit_Framework_TestCase
 
     public function testLogWithoutMessage()
     {
-        $this->output->shouldReceive('isVeryVerbose')->withNoArgs()->once()->andReturn(true);
+        $this->output->shouldReceive('isVerbose')->withNoArgs()->once()->andReturn(true);
         $this->output->shouldReceive('write')->withAnyArgs()->never();
         $this->output->shouldReceive('writeln')->withAnyArgs()->never();
 

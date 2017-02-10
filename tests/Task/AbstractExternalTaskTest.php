@@ -4,13 +4,14 @@ namespace ClickNow\Checker\Task;
 
 use ClickNow\Checker\Context\ContextInterface;
 use ClickNow\Checker\Formatter\ProcessFormatterInterface;
+use ClickNow\Checker\IO\IOInterface;
 use ClickNow\Checker\Process\ArgumentsCollection;
 use ClickNow\Checker\Process\ProcessBuilder;
 use ClickNow\Checker\Repository\FilesCollection;
+use ClickNow\Checker\Repository\Filesystem;
 use ClickNow\Checker\Result\ResultInterface;
 use ClickNow\Checker\Runner\RunnerInterface;
 use Mockery as m;
-use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
 
 /**
@@ -19,6 +20,16 @@ use Symfony\Component\Process\Process;
  */
 class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var \ClickNow\Checker\IO\IOInterface|\Mockery\MockInterface
+     */
+    protected $io;
+
+    /**
+     * @var \ClickNow\Checker\Repository\Filesystem|\Mockery\MockInterface
+     */
+    protected $filesystem;
+
     /**
      * @var \ClickNow\Checker\Process\ProcessBuilder|\Mockery\MockInterface
      */
@@ -34,8 +45,19 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
      */
     protected $externalTask;
 
+    /**
+     * @var string
+     */
+    protected $class = AbstractExternalTask::class;
+
     protected function setUp()
     {
+        $this->io = m::mock(IOInterface::class);
+        $this->io->shouldReceive('isQuiet')->withNoArgs()->andReturn(false);
+        $this->io->shouldReceive('isVerbose')->withNoArgs()->andReturn(false);
+        $this->io->shouldReceive('isDecorated')->withNoArgs()->andReturn(true);
+
+        $this->filesystem = m::mock(Filesystem::class);
         $this->processBuilder = m::mock(ProcessBuilder::class);
         $this->processFormatter = m::mock(ProcessFormatterInterface::class);
         $this->externalTask = $this->mockExternalTask();
@@ -58,6 +80,7 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
         $args = new ArgumentsCollection();
 
         $runner = m::mock(RunnerInterface::class);
+        $runner->shouldReceive('isStopOnFailure')->withNoArgs()->andReturn(false);
         $runner->shouldReceive('getActionConfig')->with($this->externalTask)->once()->andReturn($config);
 
         $context = m::mock(ContextInterface::class);
@@ -83,6 +106,7 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
         $args = new ArgumentsCollection();
 
         $runner = m::mock(RunnerInterface::class);
+        $runner->shouldReceive('isStopOnFailure')->withNoArgs()->andReturn(false);
         $runner->shouldReceive('getActionConfig')->with($this->externalTask)->once()->andReturn($config);
 
         $context = m::mock(ContextInterface::class);
@@ -109,7 +133,18 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
      */
     protected function mockExternalTask()
     {
-        return $this->getMockForAbstractClass(AbstractExternalTask::class, [
+        if ($this->class === AbstractExternalTask::class) {
+            return $this->getMockForAbstractClass($this->class, [
+                $this->io,
+                $this->filesystem,
+                $this->processBuilder,
+                $this->processFormatter,
+            ]);
+        }
+
+        return $this->getMock($this->class, null, [
+            $this->io,
+            $this->filesystem,
             $this->processBuilder,
             $this->processFormatter,
         ]);

@@ -51,7 +51,7 @@ class ConsoleIO extends SymfonyStyle implements IOInterface
      */
     public function log($message)
     {
-        if (!$this->isVeryVerbose() || !$message) {
+        if (!$this->isVerbose() || !$message) {
             return;
         }
 

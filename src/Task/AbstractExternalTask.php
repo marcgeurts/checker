@@ -4,13 +4,25 @@ namespace ClickNow\Checker\Task;
 
 use ClickNow\Checker\Context\ContextInterface;
 use ClickNow\Checker\Formatter\ProcessFormatterInterface;
+use ClickNow\Checker\IO\IOInterface;
 use ClickNow\Checker\Process\ProcessBuilder;
 use ClickNow\Checker\Repository\FilesCollection;
+use ClickNow\Checker\Repository\Filesystem;
 use ClickNow\Checker\Result\Result;
 use ClickNow\Checker\Runner\RunnerInterface;
 
 abstract class AbstractExternalTask extends AbstractTask
 {
+    /**
+     * @var \ClickNow\Checker\IO\IOInterface
+     */
+    protected $io;
+
+    /**
+     * @var \ClickNow\Checker\Repository\Filesystem
+     */
+    protected $filesystem;
+
     /**
      * @var \ClickNow\Checker\Process\ProcessBuilder
      */
@@ -24,11 +36,19 @@ abstract class AbstractExternalTask extends AbstractTask
     /**
      * Abstract external task.
      *
+     * @param \ClickNow\Checker\IO\IOInterface                      $io
+     * @param \ClickNow\Checker\Repository\Filesystem               $filesystem
      * @param \ClickNow\Checker\Process\ProcessBuilder              $processBuilder
      * @param \ClickNow\Checker\Formatter\ProcessFormatterInterface $processFormatter
      */
-    public function __construct(ProcessBuilder $processBuilder, ProcessFormatterInterface $processFormatter)
-    {
+    public function __construct(
+        IOInterface $io,
+        Filesystem $filesystem,
+        ProcessBuilder $processBuilder,
+        ProcessFormatterInterface $processFormatter
+    ) {
+        $this->io = $io;
+        $this->filesystem = $filesystem;
         $this->processBuilder = $processBuilder;
         $this->processFormatter = $processFormatter;
     }

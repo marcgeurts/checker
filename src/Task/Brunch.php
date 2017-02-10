@@ -3,6 +3,7 @@
 namespace ClickNow\Checker\Task;
 
 use ClickNow\Checker\Repository\FilesCollection;
+use ClickNow\Checker\Runner\RunnerInterface;
 
 class Brunch extends AbstractExternalTask
 {
@@ -13,28 +14,30 @@ class Brunch extends AbstractExternalTask
      */
     public function getName()
     {
-        return 'brunch';
+        return 'Brunch';
     }
 
     /**
      * Get config options.
      *
+     * @param \ClickNow\Checker\Runner\RunnerInterface $runner
+     *
      * @return \Symfony\Component\OptionsResolver\OptionsResolver
      */
-    public function getConfigOptions()
+    protected function getConfigOptions(RunnerInterface $runner)
     {
-        $resolver = parent::getConfigOptions();
+        $resolver = parent::getConfigOptions($runner);
 
         $resolver->setDefaults([
             'task'  => 'build',
-            'env'   => 'production',
-            'jobs'  => 4,
+            'env'   => null,
+            'jobs'  => null,
             'debug' => false,
         ]);
 
         $resolver->addAllowedTypes('task', ['string']);
-        $resolver->addAllowedTypes('env', ['string']);
-        $resolver->addAllowedTypes('jobs', ['int']);
+        $resolver->addAllowedTypes('env', ['null', 'string']);
+        $resolver->addAllowedTypes('jobs', ['null', 'int']);
         $resolver->addAllowedTypes('debug', ['bool']);
 
         return $resolver;

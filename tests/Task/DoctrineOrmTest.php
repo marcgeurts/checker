@@ -10,31 +10,11 @@ use ClickNow\Checker\Process\ArgumentsCollection;
  */
 class DoctrineOrmTest extends AbstractExternalTaskTest
 {
+    protected $class = DoctrineOrm::class;
+
     public function testGetName()
     {
-        $this->assertSame('doctrine-orm', $this->externalTask->getName());
-    }
-
-    public function testConfigOptions()
-    {
-        $options = $this->externalTask->getConfigOptions()->getDefinedOptions();
-
-        $this->assertContains('skip-mapping', $options);
-        $this->assertContains('skip-sync', $options);
-        $this->assertContains('finder', $options);
-    }
-
-    /**
-     * Mock external task.
-     *
-     * @return \ClickNow\Checker\Task\DoctrineOrm|\PHPUnit_Framework_MockObject_MockObject
-     */
-    protected function mockExternalTask()
-    {
-        return $this->getMock(DoctrineOrm::class, null, [
-            $this->processBuilder,
-            $this->processFormatter,
-        ]);
+        $this->assertSame('Doctrine ORM', $this->externalTask->getName());
     }
 
     /**

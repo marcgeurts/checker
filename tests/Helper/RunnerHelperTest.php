@@ -16,7 +16,7 @@ use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * @group  helper1
+ * @group  helper
  * @covers \ClickNow\Checker\Helper\RunnerHelper
  */
 class RunnerHelperTest extends \PHPUnit_Framework_TestCase

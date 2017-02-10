@@ -32,6 +32,6 @@ if the file exists in the current directory.
 
 *Default: null*
 
-This option specify which task you want to run.
+This option specify which will task you want to run.
 This option is set to `null` by default.
 This means that will run the `default` task.

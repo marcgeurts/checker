@@ -10,31 +10,11 @@ use ClickNow\Checker\Process\ArgumentsCollection;
  */
 class GherkinTest extends AbstractExternalTaskTest
 {
+    protected $class = Gherkin::class;
+
     public function testGetName()
     {
-        $this->assertSame('gherkin', $this->externalTask->getName());
-    }
-
-    public function testConfigOptions()
-    {
-        $options = $this->externalTask->getConfigOptions()->getDefinedOptions();
-
-        $this->assertContains('align', $options);
-        $this->assertContains('directory', $options);
-        $this->assertContains('finder', $options);
-    }
-
-    /**
-     * Mock external task.
-     *
-     * @return \ClickNow\Checker\Task\Gherkin|\PHPUnit_Framework_MockObject_MockObject
-     */
-    protected function mockExternalTask()
-    {
-        return $this->getMock(Gherkin::class, null, [
-            $this->processBuilder,
-            $this->processFormatter,
-        ]);
+        $this->assertSame('Gherkin', $this->externalTask->getName());
     }
 
     /**

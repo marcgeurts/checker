@@ -14,20 +14,53 @@ It lives under the `codeception` namespace and has following configurable parame
 parameters:
   tasks:
     codeception:
+      suite: ~
+      test: ~
       override: []
       config: ~
       report: false
+      html: ~
+      xml: ~
+      tap: ~
+      json: ~
+      colors: false
+      no-colors: false
       silent: false
       steps: false
       debug: false
+      coverage: ~
+      coverage-html: ~
+      coverage-xml: ~
+      coverage-text: ~
+      coverage-crap4j: ~
       group: []
       skip: []
       skip-group: []
       env: []
       fail-fast: false
-      suite: ~
-      test: ~
+      no-rebuild: false
+      quiet: false
+      verbose: false
+      ansi: false
+      no-ansi: false
 ```
+
+### suite: ~
+
+*Default: null*
+
+This option specify which will suite to be tested.
+This option is set to `null` by default.
+This means that it will run tests for your full test suite.
+
+### test: ~
+
+*Default: null*
+
+This option specify which will test to be run.
+This option is set to `null` by default.
+This means that it will run all tests within the suite.
+Note that this option can only be used in combination with a suite.
 
 ### override
 
@@ -49,70 +82,149 @@ if one of them exist in the current directory.
 
 *Default: false*
 
-This option specify to show output in compact style.
+This option specify if will show output in compact style.
+
+### html
+
+*Default: null*
+
+This option specify which will html file with results.
+
+### xml
+
+*Default: null*
+
+This option specify which will xml file with results.
+
+### tap
+
+*Default: null*
+
+This option specify which will tap file with results.
+
+### json
+
+*Default: null*
+
+This option specify which will json file with results.
+
+### colors
+
+*Default: false*
+
+This option specify if will color.
+
+### no-colors
+
+*Default: false*
+
+This option specify will to don't color.
 
 ### silent
 
 *Default: false*
 
-This option specify to only outputs suite names and final results.
+This option specify if will only outputs suite names and final results.
 
 ### steps
 
 *Default: false*
 
-This option specify to show steps in output.
+This option specify if will show steps in output.
 
 ### debug
 
 *Default: false*
 
-This option specify to show debug and scenario output.
+This option specify if will show debug and scenario output.
+
+### coverage
+
+*Default: null*
+
+This option specify which will run with code coverage.
+
+### coverage-html
+
+*Default: null*
+
+This option specify which will html report path of code coverage.
+
+### coverage-xml
+
+*Default: null*
+
+This option specify which will xml report path of code coverage.
+
+### coverage-text
+
+*Default: null*
+
+This option specify which will text report path of code coverage.
+
+### coverage-crap4j
+
+*Default: null*
+
+This option specify which will crap4j xml report path of code coverage.
 
 ### group
 
 *Default: []*
 
-This option specify which groups of tests to be executed.
+This option specify which will groups of tests to be executed.
 
 ### skip
 
 *Default: []*
 
-This option specify to skip selected suites.
+This option specify which will skip selected suites.
 
 ### skip-group
 
 *Default: []*
 
-This option specify to skip selected groups.
+This option specify which will skip selected groups.
 
 ### env
 
 *Default: []*
 
-This option specify to run tests in selected environments.
+This option specify which will run tests in selected environments.
 
 ### fail-fast
 
 *Default: false*
 
-This option specify to stop at the first error.
+This option specify if will stop processing on first failed.
 This means that it will not run your full test suite when an error occurs.
 
-### suite: ~
+### no-rebuild
 
-*Default: null*
+*Default: false*
 
-This option specify which suite to be tested.
-This option is set to `null` by default.
-This means that it will run tests for your full test suite.
+This option specify if will do not rebuild actor classes on start.
 
-### test: ~
+### quiet
 
-*Default: null*
+*Default: false*
 
-This option specify which test to be run.
-This option is set to `null` by default.
-This means that it will run all tests within the suite.
-Note that this option can only be used in combination with a suite.
+This option specify if will quiet mode.
+
+### verbose
+
+*Default: false*
+
+This option specify if will verbose mode.
+
+### ansi
+
+*Default: false*
+
+This option specify if will force ANSI.
+
+### no-ansi
+
+*Default: false*
+
+This option specify if will disable ANSI.
