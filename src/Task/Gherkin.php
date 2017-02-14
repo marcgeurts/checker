@@ -40,11 +40,12 @@ class Gherkin extends AbstractExternalTask
 
         $resolver->addAllowedTypes('directory', ['string']);
         $resolver->addAllowedTypes('align', ['null', 'string']);
-        $resolver->addAllowedValues('align', [null, 'left', 'right']);
         $resolver->addAllowedTypes('quiet', ['bool']);
         $resolver->addAllowedTypes('verbose', ['bool']);
         $resolver->addAllowedTypes('ansi', ['bool']);
         $resolver->addAllowedTypes('no-ansi', ['bool']);
+
+        $resolver->addAllowedValues('align', [null, 'left', 'right']);
 
         return $resolver;
     }

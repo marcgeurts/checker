@@ -3,7 +3,6 @@
 namespace ClickNow\Checker\Process;
 
 use ClickNow\Checker\Exception\PlatformException;
-use ClickNow\Checker\IO\IOInterface;
 use Mockery as m;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder as SymfonyProcessBuilder;
@@ -20,11 +19,6 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     protected $builder;
 
     /**
-     * @var \ClickNow\Checker\IO\IOInterface|\Mockery\MockInterface
-     */
-    protected $io;
-
-    /**
      * @var \ClickNow\Checker\Process\Platform|\Mockery\MockInterface
      */
     protected $platform;
@@ -32,8 +26,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->builder = m::mock(SymfonyProcessBuilder::class);
-        $this->io = m::mock(IOInterface::class);
-        $this->platform = new Platform($this->builder, $this->io);
+        $this->platform = new Platform($this->builder);
     }
 
     protected function tearDown()
@@ -53,8 +46,6 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $this->builder->shouldReceive('setArguments')->with(['getconf', 'ARG_MAX'])->once()->andReturnSelf();
         $this->builder->shouldReceive('getProcess')->withNoArgs()->once()->andReturn($process);
 
-        $this->io->shouldReceive('note')->withAnyArgs()->never();
-
         $this->platform->validateCommandLineMaxLength('foo');
     }
 
@@ -71,8 +62,6 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
         $this->builder->shouldReceive('setArguments')->with(['getconf', 'ARG_MAX'])->once()->andReturnSelf();
         $this->builder->shouldReceive('getProcess')->withNoArgs()->once()->andReturn($process);
-
-        $this->io->shouldReceive('note')->withAnyArgs()->twice()->andReturnNull();
 
         $this->platform->validateCommandLineMaxLength('foo');
     }

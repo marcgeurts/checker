@@ -60,6 +60,54 @@ class ConsoleIO extends SymfonyStyle implements IOInterface
     }
 
     /**
+     * Warning.
+     *
+     * @param string|array $message
+     *
+     * @return void
+     */
+    public function warning($message)
+    {
+        $this->block($message, 'WARNING', 'fg=white;bg=yellow', ' ', true);
+    }
+
+    /**
+     * Success text.
+     *
+     * @param string $message
+     *
+     * @return void
+     */
+    public function successText($message)
+    {
+        $this->text(sprintf('<fg=green>%s</fg=green>', $message));
+    }
+
+    /**
+     * Warning text.
+     *
+     * @param string $message
+     *
+     * @return void
+     */
+    public function warningText($message)
+    {
+        $this->text(sprintf('<fg=yellow>%s</fg=yellow>', $message));
+    }
+
+    /**
+     * Error text.
+     *
+     * @param string $message
+     *
+     * @return void
+     */
+    public function errorText($message)
+    {
+        $this->text(sprintf('<fg=red>%s</fg=red>', $message));
+    }
+
+    /**
      * Read command input.
      *
      * @param mixed $handle

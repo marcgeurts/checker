@@ -53,6 +53,7 @@ class AbstractExternalTaskTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->io = m::mock(IOInterface::class);
+        $this->io->shouldReceive('isDebug')->withNoArgs()->andReturn(false);
         $this->io->shouldReceive('isQuiet')->withNoArgs()->andReturn(false);
         $this->io->shouldReceive('isVerbose')->withNoArgs()->andReturn(false);
         $this->io->shouldReceive('isDecorated')->withNoArgs()->andReturn(true);

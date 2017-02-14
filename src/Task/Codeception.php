@@ -42,7 +42,7 @@ class Codeception extends AbstractExternalTask
             'no-colors'       => false,
             'silent'          => false,
             'steps'           => false,
-            'debug'           => false,
+            'debug'           => $this->io->isDebug(),
             'coverage'        => null,
             'coverage-html'   => null,
             'coverage-xml'    => null,

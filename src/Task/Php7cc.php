@@ -40,13 +40,14 @@ class Php7cc extends AbstractExternalTask
         ]);
 
         $resolver->addAllowedTypes('level', ['null', 'string']);
-        $resolver->addAllowedValues('level', [null, 'info', 'warning', 'error']);
         $resolver->addAllowedTypes('relative-paths', ['bool']);
         $resolver->addAllowedTypes('integer-size', ['null', 'int']);
         $resolver->addAllowedTypes('quiet', ['bool']);
         $resolver->addAllowedTypes('verbose', ['bool']);
         $resolver->addAllowedTypes('ansi', ['bool']);
         $resolver->addAllowedTypes('no-ansi', ['bool']);
+
+        $resolver->addAllowedValues('level', [null, 'info', 'warning', 'error']);
 
         return $resolver;
     }

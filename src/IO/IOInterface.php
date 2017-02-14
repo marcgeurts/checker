@@ -31,4 +31,31 @@ interface IOInterface extends OutputInterface, StyleInterface
      * @return void
      */
     public function log($message);
+
+    /**
+     * Success text.
+     *
+     * @param string $message
+     *
+     * @return void
+     */
+    public function successText($message);
+
+    /**
+     * Warning text.
+     *
+     * @param string $message
+     *
+     * @return void
+     */
+    public function warningText($message);
+
+    /**
+     * Error text.
+     *
+     * @param string $message
+     *
+     * @return void
+     */
+    public function errorText($message);
 }

@@ -47,4 +47,4 @@ Try different WORKERS amount to see which one works best for your system.
 
 *Default: false*
 
-This option specify if will verbose debug output.
+This option specify if will enable debug mode.

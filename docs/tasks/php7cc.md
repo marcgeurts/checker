@@ -19,7 +19,7 @@ parameters:
       integer-size: ~
       quiet: false
       verbose: false
-      ansi: false
+      ansi: true
       no-ansi: false
       finder:
         extensions: ['php']
@@ -30,8 +30,8 @@ parameters:
 *Default: null*
 
 This option specify which will minimum issue level.
-There are 3 issue levels: "info", "warning" and "error".
-"info" is reserved for future use and is the same as "warning".
+There are 3 issue levels: `info`, `warning` and `error`.
+`info` is reserved for future use and is the same as `warning`.
 
 ### relative-paths
 
@@ -60,15 +60,15 @@ This option specify if will verbose mode.
 
 ### ansi
 
-*Default: false*
+*Default: true*
 
-This option specify if will force ANSI.
+This option specify if will force ansi.
 
 ### no-ansi
 
 *Default: false*
 
-This option specify if will disable ANSI.
+This option specify if will disable ansi.
 
 ### finder
 

@@ -18,7 +18,7 @@ parameters:
       align: ~
       quiet: false
       verbose: false
-      ansi: false
+      ansi: true
       no-ansi: false
       finder:
         extensions: ['feature']
@@ -53,15 +53,15 @@ This option specify if will verbose mode.
 
 ### ansi
 
-*Default: false*
+*Default: true*
 
-This option specify if will force ANSI.
+This option specify if will force ansi.
 
 ### no-ansi
 
 *Default: false*
 
-This option specify if will disable ANSI.
+This option specify if will disable ansi.
 
 ### finder
 

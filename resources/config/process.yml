@@ -12,7 +12,6 @@ services:
     class: ClickNow\Checker\Process\Platform
     arguments:
       - '@process-builder'
-      - '@io'
 
   process.process-builder:
     class: ClickNow\Checker\Process\ProcessBuilder

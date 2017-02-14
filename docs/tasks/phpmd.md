@@ -61,19 +61,19 @@ This option specify which will report file.
 
 *Default: null*
 
-This option specify which will report html file.
+This option specify which will html report file.
 
 ### reportfile-text
 
 *Default: null*
 
-This option specify which will report text file.
+This option specify which will text report file.
 
 ### reportfile-xml
 
 *Default: null*
 
-This option specify which will report xml file.
+This option specify which will xml report file.
 
 ### finder
 

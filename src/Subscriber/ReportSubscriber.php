@@ -103,7 +103,7 @@ class ReportSubscriber implements EventSubscriberInterface
     {
         $successMessage = $this->paths->getMessage($runner->getMessage('successfully'));
         if ($successMessage !== null) {
-            $this->io->text(sprintf('<fg=green>%s</fg=green>', $successMessage));
+            $this->io->successText($successMessage);
         }
 
         $this->reportWarning($warnings);
@@ -120,7 +120,8 @@ class ReportSubscriber implements EventSubscriberInterface
     {
         foreach ($warnings as $warning) {
             /* @var \ClickNow\Checker\Result\ResultInterface $warning */
-            $this->io->note($warning->getMessage());
+            $this->io->warning($warning->getAction()->getName());
+            $this->io->warningText($warning->getMessage());
         }
     }
 
@@ -137,7 +138,7 @@ class ReportSubscriber implements EventSubscriberInterface
     {
         $errorMessage = $this->paths->getMessage($runner->getMessage('failed'));
         if ($errorMessage !== null) {
-            $this->io->text(sprintf('<fg=red>%s</fg=red>', $errorMessage));
+            $this->io->errorText($errorMessage);
         }
 
         $this->reportWarning($warnings);
@@ -145,7 +146,7 @@ class ReportSubscriber implements EventSubscriberInterface
         foreach ($errors as $error) {
             /* @var \ClickNow\Checker\Result\ResultInterface $error */
             $this->io->error($error->getAction()->getName());
-            $this->io->text(sprintf('<fg=red>%s</fg=red>', $error->getMessage()));
+            $this->io->errorText($error->getMessage());
         }
     }
 }

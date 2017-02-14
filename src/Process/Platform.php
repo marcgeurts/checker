@@ -3,7 +3,6 @@
 namespace ClickNow\Checker\Process;
 
 use ClickNow\Checker\Exception\PlatformException;
-use ClickNow\Checker\IO\IOInterface;
 use Symfony\Component\Process\ProcessBuilder as SymfonyProcessBuilder;
 
 class Platform
@@ -14,20 +13,13 @@ class Platform
     private $processBuilder;
 
     /**
-     * @var \ClickNow\Checker\IO\IOInterface
-     */
-    private $io;
-
-    /**
      * Platform.
      *
      * @param \Symfony\Component\Process\ProcessBuilder $processBuilder
-     * @param \ClickNow\Checker\IO\IOInterface          $io
      */
-    public function __construct(SymfonyProcessBuilder $processBuilder, IOInterface $io)
+    public function __construct(SymfonyProcessBuilder $processBuilder)
     {
         $this->processBuilder = $processBuilder;
-        $this->io = $io;
     }
 
     /**
@@ -45,9 +37,6 @@ class Platform
         if (strlen($commandLine) <= $maxLength) {
             return;
         }
-
-        $this->io->note('Oh no, we hit the input limit!');
-        $this->io->note('Skipping task ...');
 
         throw new PlatformException(sprintf(
             'The maximum amount of `%s` input characters exceeded while running process: %s ...',

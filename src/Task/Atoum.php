@@ -40,6 +40,9 @@ class Atoum extends AbstractExternalTask
             'no-code-coverage-for-classes'    => [],
             'no-code-coverage-for-methods'    => [],
             'enable-branch-and-path-coverage' => false,
+            'files'                           => [],
+            'directories'                     => [],
+            'test-file-extensions' => [],
             'glob'                            => [],
             'tags'                            => [],
             'methods'                         => [],
@@ -53,6 +56,7 @@ class Atoum extends AbstractExternalTask
             'xdebug-config'                   => false,
             'fail-if-void-methods'            => false,
             'fail-if-skipped-methods'         => false,
+            'verbose'                         => $this->io->isVerbose(),
             'finder'                          => ['extensions' => ['php']],
         ]);
 
@@ -67,6 +71,9 @@ class Atoum extends AbstractExternalTask
         $resolver->addAllowedTypes('no-code-coverage-for-classes', ['array']);
         $resolver->addAllowedTypes('no-code-coverage-for-methods', ['array']);
         $resolver->addAllowedTypes('enable-branch-and-path-coverage', ['bool']);
+        $resolver->addAllowedTypes('files', ['array']);
+        $resolver->addAllowedTypes('directories', ['array']);
+        $resolver->addAllowedTypes('test-file-extensions', ['array']);
         $resolver->addAllowedTypes('glob', ['array']);
         $resolver->addAllowedTypes('tags', ['array']);
         $resolver->addAllowedTypes('methods', ['array']);
@@ -80,6 +87,7 @@ class Atoum extends AbstractExternalTask
         $resolver->addAllowedTypes('xdebug-config', ['bool']);
         $resolver->addAllowedTypes('fail-if-void-methods', ['bool']);
         $resolver->addAllowedTypes('fail-if-skipped-methods', ['bool']);
+        $resolver->addAllowedTypes('verbose', ['bool']);
 
         return $resolver;
     }
@@ -121,9 +129,9 @@ class Atoum extends AbstractExternalTask
             '--enable-branch-and-path-coverage',
             $config['enable-branch-and-path-coverage']
         );
-        $arguments->addSeparatedArgumentArray('--files', $config['finder']['name']);
-        $arguments->addSeparatedArgumentArray('--directories', $config['finder']['path']);
-        $arguments->addSeparatedArgumentArray('--test-file-extensions', $config['finder']['extensions']);
+        $arguments->addSeparatedArgumentArray('--files', $config['files']);
+        $arguments->addSeparatedArgumentArray('--directories', $config['directories']);
+        $arguments->addSeparatedArgumentArray('--test-file-extensions', $config['test-file-extensions']);
         $arguments->addSeparatedArgumentArray('--glob', $config['glob']);
         $arguments->addSeparatedArgumentArray('--tags', $config['tags']);
         $arguments->addSeparatedArgumentArray('--methods', $config['methods']);
@@ -137,6 +145,7 @@ class Atoum extends AbstractExternalTask
         $arguments->addOptionalArgument('--xdebug-config', $config['xdebug-config']);
         $arguments->addOptionalArgument('--fail-if-void-methods', $config['fail-if-void-methods']);
         $arguments->addOptionalArgument('--fail-if-skipped-methods', $config['fail-if-skipped-methods']);
+        $arguments->addOptionalArgument('--verbose', $config['verbose']);
 
         return $arguments;
     }

@@ -15,21 +15,19 @@ if (!ini_get('date.timezone')) {
 }
 
 $autoloads = [
-    getcwd().'/vendor/autoload.php',
-    getcwd().'/../../autoload.php',
+    __DIR__.'/vendor/autoload.php',
     __DIR__.'/../vendor/autoload.php',
     __DIR__.'/../../../autoload.php',
 ];
 
-$loaded = false;
 foreach ($autoloads as $autoload) {
     if (file_exists($autoload)) {
-        require_once($autoload);
-        $loaded = true;
+        define('CHECKER_COMPOSER_INSTALL', $autoload);
+        break;
     }
 }
 
-if (!$loaded) {
+if (!defined('CHECKER_COMPOSER_INSTALL')) {
     fwrite(
         STDERR,
         'You must set up the project dependencies, run the following commands:'.PHP_EOL.
@@ -38,6 +36,8 @@ if (!$loaded) {
     );
     exit(1);
 }
+
+require CHECKER_COMPOSER_INSTALL;
 
 use ClickNow\Checker\Console\Application;
 

@@ -41,6 +41,21 @@ class NullIOTest extends \PHPUnit_Framework_TestCase
         $this->nullIO->log('');
     }
 
+    public function testSuccessText()
+    {
+        $this->nullIO->successText('');
+    }
+
+    public function testWarningText()
+    {
+        $this->nullIO->warningText('');
+    }
+
+    public function testErrorText()
+    {
+        $this->nullIO->errorText('');
+    }
+
     public function testTitle()
     {
         $this->nullIO->title('');

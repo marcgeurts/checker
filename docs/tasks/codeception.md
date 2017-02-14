@@ -41,7 +41,7 @@ parameters:
       no-rebuild: false
       quiet: false
       verbose: false
-      ansi: false
+      ansi: true
       no-ansi: false
 ```
 
@@ -136,7 +136,7 @@ This option specify if will show steps in output.
 
 *Default: false*
 
-This option specify if will show debug and scenario output.
+This option specify if will enable debug mode.
 
 ### coverage
 
@@ -219,12 +219,12 @@ This option specify if will verbose mode.
 
 ### ansi
 
-*Default: false*
+*Default: true*
 
-This option specify if will force ANSI.
+This option specify if will force ansi.
 
 ### no-ansi
 
 *Default: false*
 
-This option specify if will disable ANSI.
+This option specify if will disable ansi.

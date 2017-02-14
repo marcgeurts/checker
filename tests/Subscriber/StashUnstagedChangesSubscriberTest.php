@@ -88,8 +88,8 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->repository->shouldReceive('run')->with('stash', m::contains('save'))->once()->andReturnNull();
         $this->repository->shouldReceive('run')->with('stash', m::contains('pop'))->once()->andReturnNull();
 
-        $this->io->shouldReceive('note')->withAnyArgs()->twice()->andReturnNull();
-        $this->io->shouldReceive('warning')->withAnyArgs()->never();
+        $this->io->shouldReceive('warning')->withAnyArgs()->twice()->andReturnNull();
+        $this->io->shouldReceive('errorText')->withAnyArgs()->never();
 
         $this->stashUnstagedChangesSubscriber->saveStash($this->mockEvent($runner));
         $this->stashUnstagedChangesSubscriber->popStash();
@@ -106,8 +106,8 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->repository->shouldReceive('run')->with('stash', m::contains('save'))->once()->andThrow(Exception::class);
         $this->repository->shouldReceive('run')->with('stash', m::contains('pop'))->never();
 
-        $this->io->shouldReceive('note')->withAnyArgs()->once()->andReturnNull();
         $this->io->shouldReceive('warning')->withAnyArgs()->once()->andReturnNull();
+        $this->io->shouldReceive('errorText')->withAnyArgs()->once()->andReturnNull();
 
         $this->stashUnstagedChangesSubscriber->saveStash($this->mockEvent($runner));
         $this->stashUnstagedChangesSubscriber->popStash();
@@ -126,8 +126,8 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->repository->shouldReceive('run')->with('stash', m::contains('save'))->once()->andReturnNull();
         $this->repository->shouldReceive('run')->with('stash', m::contains('pop'))->once()->andThrow(Exception::class);
 
-        $this->io->shouldReceive('note')->withAnyArgs()->twice()->andReturnNull();
-        $this->io->shouldReceive('warning')->withAnyArgs()->never();
+        $this->io->shouldReceive('warning')->withAnyArgs()->twice()->andReturnNull();
+        $this->io->shouldReceive('errorText')->withAnyArgs()->never();
 
         $this->stashUnstagedChangesSubscriber->saveStash($this->mockEvent($runner));
         $this->stashUnstagedChangesSubscriber->popStash();

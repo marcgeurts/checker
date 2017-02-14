@@ -37,8 +37,8 @@ class ConsoleIOTest extends \PHPUnit_Framework_TestCase
         $formatter = m::spy(OutputFormatterInterface::class);
 
         $this->output = m::mock(OutputInterface::class);
-        $this->output->shouldReceive('getVerbosity')->withNoArgs()->once()->andReturn($verbosity);
-        $this->output->shouldReceive('getFormatter')->withNoArgs()->once()->andReturn($formatter);
+        $this->output->shouldReceive('getVerbosity')->withNoArgs()->atLeast()->once()->andReturn($verbosity);
+        $this->output->shouldReceive('getFormatter')->withNoArgs()->atLeast()->once()->andReturn($formatter);
 
         $this->consoleIO = new ConsoleIO($this->input, $this->output);
     }
@@ -57,6 +57,7 @@ class ConsoleIOTest extends \PHPUnit_Framework_TestCase
     public function testIsInteractive()
     {
         $this->input->shouldReceive('isInteractive')->withNoArgs()->once()->andReturn(false);
+
         $this->assertFalse($this->consoleIO->isInteractive());
     }
 
@@ -85,6 +86,39 @@ class ConsoleIOTest extends \PHPUnit_Framework_TestCase
         $this->output->shouldReceive('writeln')->withAnyArgs()->never();
 
         $this->consoleIO->log('');
+    }
+
+    public function testWarning()
+    {
+        $this->output->shouldReceive('isDecorated')->withNoArgs()->once()->andReturn(true);
+        $this->output->shouldReceive('write')->withAnyArgs()->twice()->andReturnNull();
+        $this->output->shouldReceive('writeln')->withAnyArgs()->once()->andReturnNull();
+
+        $this->consoleIO->warning('warning');
+    }
+
+    public function testSuccessText()
+    {
+        $this->output->shouldReceive('write')->withAnyArgs()->once()->andReturnNull();
+        $this->output->shouldReceive('writeln')->with('/success/', m::any())->once()->andReturnNull();
+
+        $this->consoleIO->successText('success');
+    }
+
+    public function testWarningText()
+    {
+        $this->output->shouldReceive('write')->withAnyArgs()->once()->andReturnNull();
+        $this->output->shouldReceive('writeln')->with('/warning/', m::any())->once()->andReturnNull();
+
+        $this->consoleIO->warningText('warning');
+    }
+
+    public function testErrorText()
+    {
+        $this->output->shouldReceive('write')->withAnyArgs()->once()->andReturnNull();
+        $this->output->shouldReceive('writeln')->with('/error/', m::any())->once()->andReturnNull();
+
+        $this->consoleIO->errorText('error');
     }
 
     public function testReadyCommandInput()

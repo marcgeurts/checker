@@ -32,7 +32,7 @@ class Brunch extends AbstractExternalTask
             'task'  => 'build',
             'env'   => null,
             'jobs'  => null,
-            'debug' => false,
+            'debug' => $this->io->isDebug(),
         ]);
 
         $resolver->addAllowedTypes('task', ['string']);

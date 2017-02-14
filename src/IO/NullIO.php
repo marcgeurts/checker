@@ -33,6 +33,30 @@ class NullIO extends NullOutput implements IOInterface
     /**
      * {@inheritdoc}
      */
+    public function successText($message)
+    {
+        // do nothing
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function warningText($message)
+    {
+        // do nothing
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function errorText($message)
+    {
+        // do nothing
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function title($message)
     {
         // do nothing

@@ -118,10 +118,10 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
     private function runSaveStash()
     {
         try {
-            $this->io->note('Detected unstaged changes... Stashing them!');
+            $this->io->warning('Detected unstaged changes... Stashing them!');
             $this->repository->run('stash', ['save', '--quiet', '--keep-index', uniqid('checker')]);
         } catch (Exception $e) {
-            $this->io->warning(sprintf('Failed stashing changes: %s', $e->getMessage()));
+            $this->io->errorText(sprintf('Failed stashing changes: %s', $e->getMessage()));
 
             return;
         }
@@ -138,7 +138,7 @@ class StashUnstagedChangesSubscriber implements EventSubscriberInterface
     private function runPopStash()
     {
         try {
-            $this->io->note('Reapplying unstaged changes from stash.');
+            $this->io->warning('Reapplying unstaged changes from stash.');
             $this->repository->run('stash', ['pop', '--quiet']);
         } catch (Exception $e) {
             throw new RuntimeException(sprintf(

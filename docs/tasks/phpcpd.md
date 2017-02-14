@@ -21,7 +21,7 @@ parameters:
       fuzzy: false
       quiet: false
       verbose: false
-      ansi: false
+      ansi: true
       no-ansi: false
       finder:
         name: ['*.php']
@@ -32,7 +32,8 @@ parameters:
 
 *Default: '.'*
 
-This option specify which will files or directory you want to run (must be relative to cwd).
+This option specify which will files or directory 
+you want to run (must be relative to cwd).
 This option is set to `.` by default.
 This means that we will run in the root.
 
@@ -40,7 +41,7 @@ This means that we will run in the root.
 
 *Default: null*
 
-This option specify to write result in PMD-CPD XML format to file.
+This option specify which will log file.
 
 ### min-lines
 
@@ -74,15 +75,15 @@ This option specify if will verbose mode.
 
 ### ansi
 
-*Default: false*
+*Default: true*
 
-This option specify if will force ANSI.
+This option specify if will force ansi.
 
 ### no-ansi
 
 *Default: false*
 
-This option specify if will disable ANSI.
+This option specify if will disable ansi.
 
 ### finder
 
