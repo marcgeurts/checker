@@ -13,13 +13,19 @@
     </rule>
 
     <rule ref="rulesets/codesize.xml">
+        <exclude name="ExcessiveMethodLength"/>
         <exclude name="TooManyFields"/>
         <exclude name="TooManyMethods"/>
         <exclude name="TooManyPublicMethods"/>
     </rule>
+    <rule ref="rulesets/codesize.xml/ExcessiveMethodLength">
+        <properties>
+            <property name="minimum" value="150" />
+        </properties>
+    </rule>
     <rule ref="rulesets/codesize.xml/TooManyFields">
         <properties>
-            <property name="maxfields" value="20" />
+            <property name="maxfields" value="50" />
         </properties>
     </rule>
     <rule ref="rulesets/codesize.xml/TooManyMethods">
@@ -29,7 +35,7 @@
     </rule>
     <rule ref="rulesets/codesize.xml/TooManyPublicMethods">
         <properties>
-            <property name="maxmethods" value="30" />
+            <property name="maxmethods" value="50" />
         </properties>
     </rule>
 
@@ -62,7 +68,7 @@
     </rule>
     <rule ref="rulesets/naming.xml/LongVariable">
         <properties>
-            <property name="maximum" value="40" />
+            <property name="maximum" value="50" />
         </properties>
     </rule>
     <rule ref="rulesets/naming.xml/ShortMethodName">
