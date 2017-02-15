@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Checker</title>
+    <link rel="stylesheet" href="https://cknow.github.io/checker/css/bootstrap-3.3.7.min.css">
+    <link rel="stylesheet" href="https://cknow.github.io/checker/css/main.css">
+    <link rel="stylesheet" href="https://cknow.github.io/checker/css/prism.css">
+</head>
+<body>
+    <header class="navbar navbar-default navbar-fixed-top">
+        <a class="navbar-brand" href="https://cknow.github.io/checker/">
+            Checker
+            <small class="hidden-xs hidden-sm">
+                A PHP code quality tool with git hooks and custom commands.
+            </small>
+        </a>
+                    <a href="https://github.com/cknow/checker">
+                <img style="position: absolute;top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+            </a>
+            </header>
+    <main class="container-fluid">
+        <div class="row">
+                            <nav id="sidebar" class="col-sm-3 col-lg-2" role="navigation">
+                    <ul class="nav nav-pills nav-stacked">
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/">
+                                    Home
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/installation.html">
+                                    Installation
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/configuration.html">
+                                    Configuration
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/parameters.html">
+                                    Parameters
+                                </a>
+                            </li>
+                                                    <li class="active">
+                                <a href="https://cknow.github.io/checker/docs/tasks.html">
+                                    Tasks
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/commands.html">
+                                    Commands
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/events.html">
+                                    Events
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/contributing.html">
+                                    Contributing
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/license.html">
+                                    License
+                                </a>
+                            </li>
+                                            </ul>
+                </nav>
+                        <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
+                <h1 id="atoum">Atoum</h1>
+<p><a href="http://atoum.org/">See oficinal documentation</a></p>
+<p>The Atoum task will run your unit tests.
+It lives under the <code>atoum</code> namespace and has following configurable parameters:</p>
+<pre><code class="language-yml"># checker.yml
+parameters:
+  tasks:
+    atoum:
+      configuration: ~
+      php: ~
+      default-report-title: ~
+      score-file: ~
+      max-children-number: ~
+      no-code-coverage: false
+      no-code-coverage-in-directories: []
+      no-code-coverage-for-namespaces: []
+      no-code-coverage-for-classes: []
+      no-code-coverage-for-methods: []
+      enable-branch-and-path-coverage: false
+      files: []
+      directories: []
+      test-file-extensions: []
+      glob: []
+      tags: []
+      methods: []
+      namespaces: []
+      force-terminal: false
+      autoloader-file: ~
+      bootstrap-file: ~
+      use-light-report: false
+      use-tap-report: false
+      debug: false
+      xdebug-config: false
+      fail-if-void-methods: false
+      fail-if-skipped-methods: false
+      verbose: false
+      finder:
+        extensions: ['php']</code></pre>
+<h3 id="configuration">configuration</h3>
+<p><em>Default: null</em></p>
+<p>If your <code>.atoum.php</code> file is located at an exotic location,
+you can specify your custom location with this option.
+This option is set to <code>null</code> by default.
+This means that <code>.atoum.php</code> is automatically loaded
+if the file exists in the current directory.</p>
+<h3 id="php">php</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will path to
+PHP binary which must be used to run tests.</p>
+<h3 id="default-report-title">default-report-title</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will default report title.</p>
+<h3 id="score-file">score-file</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will file save score.</p>
+<h3 id="max-children-number">max-children-number</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will maximum number
+of sub-process which will be run simultaneously.</p>
+<h3 id="no-code-coverage">no-code-coverage</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will disable code coverage.</p>
+<h3 id="no-code-coverage-in-directories">no-code-coverage-in-directories</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will the directories
+to disable the code coverage.</p>
+<h3 id="no-code-coverage-for-namespaces">no-code-coverage-for-namespaces</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will the namespaces
+to disable the code coverage.</p>
+<h3 id="no-code-coverage-for-classes">no-code-coverage-for-classes</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will the classes
+to disable the code coverage.</p>
+<h3 id="no-code-coverage-for-methods">no-code-coverage-for-methods</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will the methods
+to disable the code coverage.</p>
+<h3 id="enable-branch-and-path-coverage">enable-branch-and-path-coverage</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will enable branch and path coverage.</p>
+<h3 id="files">files</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will execution unit test files.</p>
+<h3 id="directories">directories</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will limit the execution
+of the unit tests files in directories.</p>
+<h3 id="test-file-extensions">test-file-extensions</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will the extensions
+of test files to run.</p>
+<h3 id="glob">glob</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will limit the execution
+of the unit tests files which match pattern.</p>
+<h3 id="tags">tags</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will limit the execution
+of the unit tests to certain tags.</p>
+<h3 id="methods">methods</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will limit the execution
+of the unit tests to certain methods or classes.</p>
+<h3 id="namespaces">namespaces</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will limit the execution
+of the unit tests to certain namespaces.</p>
+<h3 id="force-terminal">force-terminal</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will force output as in terminal.</p>
+<h3 id="autoloader-file">autoloader-file</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will the path to your autoloader file.</p>
+<h3 id="bootstrap-file">bootstrap-file</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will the path to your bootstrap file.</p>
+<h3 id="use-light-report">use-light-report</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will use lighter report.</p>
+<h3 id="use-tap-report">use-tap-report</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will use tap report.</p>
+<h3 id="debug">debug</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will enable debug mode.</p>
+<h3 id="xdebug-config">xdebug-config</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will set <code>XDEBUG_CONFIG</code> variable.</p>
+<h3 id="fail-if-void-methods">fail-if-void-methods</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will make the test suite
+fail if there is at least one void tests method.</p>
+<h3 id="fail-if-skipped-methods">fail-if-skipped-methods</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will make the test suite
+fail if there is at least one skipped tests method.</p>
+<h3 id="verbose">verbose</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will verbose mode.</p>
+<h3 id="finder">finder</h3>
+<p><em>Default: {extensions: ['php']}</em></p>
+<p><a href="../tasks.html#finder">See documentation</a></p>
+            </section>
+        </div>
+    </main>
+    <script src="https://cknow.github.io/checker/js/jquery-3.1.1.min.js"></script>
+    <script src="https://cknow.github.io/checker/js/bootstrap-3.3.7.min.js"></script>
+    <script src="https://cknow.github.io/checker/js/prism.js"></script>
+    <script>
+        $(function(){
+            $("table").addClass("table");
+        });
+
+            </script>
+</body>
+</html>

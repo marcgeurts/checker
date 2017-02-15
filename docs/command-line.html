@@ -49,7 +49,7 @@
                                     Tasks
                                 </a>
                             </li>
-                                                    <li class="active">
+                                                    <li class="">
                                 <a href="https://cknow.github.io/checker/docs/commands.html">
                                     Commands
                                 </a>
@@ -72,8 +72,8 @@
                                             </ul>
                 </nav>
                         <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
-                <h1 id="commands">Commands</h1>
-<h2 id="run">run</h2>
+                <h1 id="command-line">Command-Line</h1>
+<h3 id="run">run</h3>
 <p><em>Parameter:</em></p>
 <table>
 <thead>
@@ -112,7 +112,7 @@ php ./vendor/bin/checker run name-of-command --process-timeout=30 --process-asyn
 
 # Globally
 checker run name-of-command --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --skip-success-output=0</code></pre>
-<h2 id="gitinstall">git:install</h2>
+<h3 id="gitinstall">git:install</h3>
 <p>This command install git hooks to Checker.</p>
 <blockquote>
 <p><strong>Note:</strong> If you have custom git hooks they will be stored backup.</p>
@@ -153,7 +153,7 @@ php ./vendor/bin/checker git:install -c=/path/to/checker.yml
 # Globally
 checker git:install --config=/path/to/checker.yml
 checker git:install -c=/path/to/checker.yml</code></pre>
-<h2 id="gituninstall">git:uninstall</h2>
+<h3 id="gituninstall">git:uninstall</h3>
 <p>This command uninstall git hooks to Checker.</p>
 <blockquote>
 <p><strong>Note:</strong> If you have git hooks stored in backup, they will be restored.</p>
@@ -164,7 +164,7 @@ php ./vendor/bin/checker git:uninstall
 
 # Globally
 checker git:uninstall</code></pre>
-<h2 id="gitcommit-msg">git:commit-msg</h2>
+<h3 id="gitcommit-msg">git:commit-msg</h3>
 <p>This command will be triggered by git hooks in commit-msg. However, you can run!</p>
 <p>For example:</p>
 <pre><code class="language-bash"># Locally
@@ -190,7 +190,7 @@ php ./vendor/bin/checker git:commit-msg commit-message-file --git-user-name=name
 
 # Globally
 checker git:commit-msg commit-message-file --git-user-name=name --git-user-email=email --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --skip-success-output=0</code></pre>
-<h2 id="gitpre-commit">git:pre-commit</h2>
+<h3 id="gitpre-commit">git:pre-commit</h3>
 <p>This command will be triggered by git hooks in pre-commit. However, you can run!</p>
 <p>For example:</p>
 <pre><code class="language-bash"># Locally
@@ -213,7 +213,7 @@ php ./vendor/bin/checker git:pre-commit --process-timeout=30 --process-async-wai
 
 # Globally
 checker git:pre-commit --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --skip-success-output=0</code></pre>
-<h2 id="gitpre-push">git:pre-push</h2>
+<h3 id="gitpre-push">git:pre-push</h3>
 <p>This command will be triggered by git hooks in pre-push. However, you can run!</p>
 <p>For example:</p>
 <pre><code class="language-bash"># Locally

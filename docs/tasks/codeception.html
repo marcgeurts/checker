@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Checker</title>
+    <link rel="stylesheet" href="https://cknow.github.io/checker/css/bootstrap-3.3.7.min.css">
+    <link rel="stylesheet" href="https://cknow.github.io/checker/css/main.css">
+    <link rel="stylesheet" href="https://cknow.github.io/checker/css/prism.css">
+</head>
+<body>
+    <header class="navbar navbar-default navbar-fixed-top">
+        <a class="navbar-brand" href="https://cknow.github.io/checker/">
+            Checker
+            <small class="hidden-xs hidden-sm">
+                A PHP code quality tool with git hooks and custom commands.
+            </small>
+        </a>
+                    <a href="https://github.com/cknow/checker">
+                <img style="position: absolute;top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+            </a>
+            </header>
+    <main class="container-fluid">
+        <div class="row">
+                            <nav id="sidebar" class="col-sm-3 col-lg-2" role="navigation">
+                    <ul class="nav nav-pills nav-stacked">
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/">
+                                    Home
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/installation.html">
+                                    Installation
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/configuration.html">
+                                    Configuration
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/parameters.html">
+                                    Parameters
+                                </a>
+                            </li>
+                                                    <li class="active">
+                                <a href="https://cknow.github.io/checker/docs/tasks.html">
+                                    Tasks
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/commands.html">
+                                    Commands
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/events.html">
+                                    Events
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/contributing.html">
+                                    Contributing
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/license.html">
+                                    License
+                                </a>
+                            </li>
+                                            </ul>
+                </nav>
+                        <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
+                <h1 id="codeception">Codeception</h1>
+<p><a href="http://http://codeception.com/">See oficinal documentation</a></p>
+<p>The Codeception task will run your full-stack tests.
+It lives under the <code>codeception</code> namespace and has following configurable parameters:</p>
+<pre><code class="language-yml"># checker.yml
+parameters:
+  tasks:
+    codeception:
+      suite: ~
+      test: ~
+      override: []
+      config: ~
+      report: false
+      html: ~
+      xml: ~
+      tap: ~
+      json: ~
+      colors: false
+      no-colors: false
+      silent: false
+      steps: false
+      debug: false
+      coverage: ~
+      coverage-html: ~
+      coverage-xml: ~
+      coverage-text: ~
+      coverage-crap4j: ~
+      group: []
+      skip: []
+      skip-group: []
+      env: []
+      fail-fast: false
+      no-rebuild: false
+      quiet: false
+      verbose: false
+      ansi: true
+      no-ansi: false</code></pre>
+<h3 id="suite-">suite: ~</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will suite to be tested.
+This option is set to <code>null</code> by default.
+This means that it will run tests for your full test suite.</p>
+<h3 id="test-">test: ~</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will test to be run.
+This option is set to <code>null</code> by default.
+This means that it will run all tests within the suite.
+Note that this option can only be used in combination with a suite.</p>
+<h3 id="override">override</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will config values override.</p>
+<h3 id="config">config</h3>
+<p><em>Default: null</em></p>
+<p>If your <code>codeception.yml</code> file is located at an exotic location,
+you can specify your custom config file location with this option.
+This option is set to <code>null</code> by default.
+This means that <code>codeception.yml</code> or <code>codeception.dist.yml</code> are automatically loaded
+if one of them exist in the current directory.</p>
+<h3 id="report">report</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will show output in compact style.</p>
+<h3 id="html">html</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will html file with results.</p>
+<h3 id="xml">xml</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will xml file with results.</p>
+<h3 id="tap">tap</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will tap file with results.</p>
+<h3 id="json">json</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will json file with results.</p>
+<h3 id="colors">colors</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will color.</p>
+<h3 id="no-colors">no-colors</h3>
+<p><em>Default: false</em></p>
+<p>This option specify will to don't color.</p>
+<h3 id="silent">silent</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will only outputs suite names and final results.</p>
+<h3 id="steps">steps</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will show steps in output.</p>
+<h3 id="debug">debug</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will enable debug mode.</p>
+<h3 id="coverage">coverage</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will run with code coverage.</p>
+<h3 id="coverage-html">coverage-html</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will html report path of code coverage.</p>
+<h3 id="coverage-xml">coverage-xml</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will xml report path of code coverage.</p>
+<h3 id="coverage-text">coverage-text</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will text report path of code coverage.</p>
+<h3 id="coverage-crap4j">coverage-crap4j</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will crap4j xml report path of code coverage.</p>
+<h3 id="group">group</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will groups of tests to be executed.</p>
+<h3 id="skip">skip</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will skip selected suites.</p>
+<h3 id="skip-group">skip-group</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will skip selected groups.</p>
+<h3 id="env">env</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will run tests in selected environments.</p>
+<h3 id="fail-fast">fail-fast</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will stop processing on first failed.
+This means that it will not run your full test suite when an error occurs.</p>
+<h3 id="no-rebuild">no-rebuild</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will do not rebuild actor classes on start.</p>
+<h3 id="quiet">quiet</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will quiet mode.</p>
+<h3 id="verbose">verbose</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will verbose mode.</p>
+<h3 id="ansi">ansi</h3>
+<p><em>Default: true</em></p>
+<p>This option specify if will force ansi.</p>
+<h3 id="no-ansi">no-ansi</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will disable ansi.</p>
+            </section>
+        </div>
+    </main>
+    <script src="https://cknow.github.io/checker/js/jquery-3.1.1.min.js"></script>
+    <script src="https://cknow.github.io/checker/js/bootstrap-3.3.7.min.js"></script>
+    <script src="https://cknow.github.io/checker/js/prism.js"></script>
+    <script>
+        $(function(){
+            $("table").addClass("table");
+        });
+
+            </script>
+</body>
+</html>

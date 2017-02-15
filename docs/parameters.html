@@ -73,21 +73,21 @@
                 </nav>
                         <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
                 <h1 id="parameters">Parameters</h1>
-<h2 id="bin-dir">bin-dir</h2>
+<h3 id="bin-dir">bin-dir</h3>
 <p><em>Default: ./vendor/bin</em></p>
 <p>This parameter will tell you where to find external commands.
 It defaults to the default composer bin directory.</p>
-<h2 id="git-dir">git-dir</h2>
+<h3 id="git-dir">git-dir</h3>
 <p><em>Default: .</em></p>
 <p>This parameter will tell in which folder it can find the .git folder.
 This parameter is used to create the git hooks at the correct location.
 It defaults to the working directory.</p>
-<h2 id="hooks-dir">hooks-dir</h2>
+<h3 id="hooks-dir">hooks-dir</h3>
 <p><em>Default: null</em></p>
 <p>This parameter will tell in which folder it can find the git hooks template folder.
 It is used to find the git hooks at a custom location so that you can write your own git hooks.
 It defaults to null, which means that the default folder <code>resources/hooks</code>is used.</p>
-<h2 id="hooks-preset">hooks-preset</h2>
+<h3 id="hooks-preset">hooks-preset</h3>
 <p><em>Default: local</em></p>
 <p>This parameter will tell which hooks preset to use.
 Presets are only used when you did NOT specify a custom <code>hooks-dir</code>.
@@ -104,36 +104,36 @@ This can be done by altering the <code>.bashrc</code> or <code>.zshrc</code> ins
 <pre><code class="language-sh">echo 'cd /remote/path/to/your/project' &gt;&gt; ~/.bashrc</code></pre>
 <p>You can also add the <code>.bashrc</code> or <code>.zshrc</code> to your vagrant provision script.
 This way the home directory will be set for all the people who are using your vagrant box.</p>
-<h2 id="process-timeout">process-timeout</h2>
+<h3 id="process-timeout">process-timeout</h3>
 <p><em>Default: 60</em></p>
 <p>Uses the Symfony Process component to run external actions.
 The component will trigger a timeout after 60 seconds by default.
 If you've got tools that run more then 60 seconds, you can increase this parameter.
 It is also possible to disable the timeout by setting the value to <code>null</code>.</p>
-<h2 id="process-async-wait">process-async-wait</h2>
+<h3 id="process-async-wait">process-async-wait</h3>
 <p><em>Default: 1000</em></p>
 <p>This parameter controls how long will wait (in microseconds)
 before checking the status of all asynchronous processes.</p>
-<h2 id="process-async-limit">process-async-limit</h2>
+<h3 id="process-async-limit">process-async-limit</h3>
 <p><em>Default: 10</em></p>
 <p>This parameter controls how many asynchronous processes will run simultaneously.
 Please note that not all external tasks uses asynchronous processes,
 nor would they necessarily benefit from using it.</p>
-<h2 id="stop-on-failure">stop-on-failure</h2>
+<h3 id="stop-on-failure">stop-on-failure</h3>
 <p><em>Default: false</em></p>
 <p>This parameter will tell to stop running actions when one of the actions results in an error.
 By default will continue running the configured actions.</p>
-<h2 id="ignore-unstaged-changes">ignore-unstaged-changes</h2>
+<h3 id="ignore-unstaged-changes">ignore-unstaged-changes</h3>
 <p><em>Default: false</em></p>
 <p>By enabling this option, will stash your unstaged changes in git before running the actions.
 This way the actions will run with the code that is actually committed without the unstaged changes.
 Note that during the commit, the unstaged changes will be stored in git stash.
 This may mess with your working copy and result in unexpected merge conflicts.</p>
-<h2 id="skip-success-output">skip-success-output</h2>
+<h3 id="skip-success-output">skip-success-output</h3>
 <p><em>Default: false</em></p>
 <p>This parameter will tell to skip success output.
 By default will continue show success output.</p>
-<h2 id="message">message</h2>
+<h3 id="message">message</h3>
 <p><em>Default: { successfully: successfully.txt, failed: failed.txt }</em></p>
 <p>This parameter will tell where can locate ascii images or display simple text.
 If path is not specified default image from <code>resources/ascii/</code> folder are used.
@@ -144,7 +144,7 @@ parameters:
   message:
     successfully: ~ # To disable
     failed: FAILED!!! # To display simple text</code></pre>
-<h2 id="extensions">extensions</h2>
+<h3 id="extensions">extensions</h3>
 <p><em>Default: []</em></p>
 <p>This parameter will tell which extensions to load.</p>
 <p>You will probably have some custom actions or event listeners that are not included in the default project.
@@ -172,7 +172,7 @@ class CheckerExtension implements ExtensionInterface
         // Register your own stuff to the container!
     }
 }</code></pre>
-<h2 id="tasks">tasks</h2>
+<h3 id="tasks">tasks</h3>
 <p><em>Default: null</em></p>
 <p>This parameter will tell which default config to tasks.
 This configuration is merged in default task configuration.</p>
@@ -224,7 +224,7 @@ parameters:
           bar: value # Custom configuration
       commands:
         example: ~ # Execute command already created</code></pre>
-<h2 id="commands">commands</h2>
+<h3 id="commands">commands</h3>
 <p><em>Default: null</em></p>
 <p>This parameter will tell which for custom commands.
 You can create as many commands as you want with custom names.</p>
@@ -265,13 +265,39 @@ parameters:
           bar: value # Custom configuration
       commands:
         name-of-command1: ~ # Execute other command</code></pre>
+<h2 id="metadata">Metadata</h2>
+<p>Every action has a pre-defined metadata key on which application specific options can be configured.</p>
+<p>For example:</p>
+<pre><code class="language-yaml"># checker.yml
+parameters:
+  git-hooks:
+    pre-commit:
+      tasks:
+        any-task:
+          metadata:
+            blocking: true # Blocking
+            priority: 2 # Second execution
+      commands:
+        any-command:
+          metadata:
+            blocking: false # Non-blocking
+            priority: 1 # First execution</code></pre>
+<h3 id="priority">priority</h3>
+<p><em>Default: 0</em></p>
+<p>This option can be used to specify the order in which the actions will be executed.
+The higher the priority, the sooner the action will be executed.</p>
+<h3 id="blocking">blocking</h3>
+<p><em>Default: true</em></p>
+<p>This option can be used to make a failing action non-blocking.
+By default all actions will be marked as blocking.
+When a action is non-blocking, the errors will be displayed but the tests will pass.</p>
 <hr />
 <p>See also:</p>
 <ul>
 <li><a href="installation.html">Installation</a></li>
 <li><a href="configuration.html">Configuration</a></li>
 <li><a href="tasks.html">Tasks</a></li>
-<li><a href="commands.html">Commands</a></li>
+<li><a href="command-line.html">Command-Line</a></li>
 <li><a href="events.html">Events</a></li>
 <li><a href="../contributing.html">Contributing</a></li>
 <li><a href="../license.html">License</a></li>

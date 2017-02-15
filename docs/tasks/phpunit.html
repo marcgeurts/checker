@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Checker</title>
+    <link rel="stylesheet" href="https://cknow.github.io/checker/css/bootstrap-3.3.7.min.css">
+    <link rel="stylesheet" href="https://cknow.github.io/checker/css/main.css">
+    <link rel="stylesheet" href="https://cknow.github.io/checker/css/prism.css">
+</head>
+<body>
+    <header class="navbar navbar-default navbar-fixed-top">
+        <a class="navbar-brand" href="https://cknow.github.io/checker/">
+            Checker
+            <small class="hidden-xs hidden-sm">
+                A PHP code quality tool with git hooks and custom commands.
+            </small>
+        </a>
+                    <a href="https://github.com/cknow/checker">
+                <img style="position: absolute;top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+            </a>
+            </header>
+    <main class="container-fluid">
+        <div class="row">
+                            <nav id="sidebar" class="col-sm-3 col-lg-2" role="navigation">
+                    <ul class="nav nav-pills nav-stacked">
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/">
+                                    Home
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/installation.html">
+                                    Installation
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/configuration.html">
+                                    Configuration
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/parameters.html">
+                                    Parameters
+                                </a>
+                            </li>
+                                                    <li class="active">
+                                <a href="https://cknow.github.io/checker/docs/tasks.html">
+                                    Tasks
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/commands.html">
+                                    Commands
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/events.html">
+                                    Events
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/contributing.html">
+                                    Contributing
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/license.html">
+                                    License
+                                </a>
+                            </li>
+                                            </ul>
+                </nav>
+                        <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
+                <h1 id="phpunit">PHPUnit</h1>
+<p><a href="http://phpunit.de/">See oficinal documentation</a></p>
+<p>The PhpUnit task will run your unit tests.
+It lives under the <code>phpunit</code> namespace and has following configurable parameters:</p>
+<pre><code class="language-yml"># checker.yml
+parameters:
+  tasks:
+    phpunit:
+      coverage-clover: ~
+      coverage-crap4j: ~
+      coverage-html: ~
+      coverage-php: ~
+      coverage-text: ~
+      coverage-xml: ~
+      log-junit: ~
+      log-tap: ~
+      log-json: ~
+      testdox-html: ~
+      testdox-text: ~
+      filter: ~
+      testsuite: ~
+      group: []
+      exclude-group: []
+      test-suffix: []
+      report-useless-tests: false
+      strict-coverage: false
+      strict-global-state: false
+      disallow-test-output: false
+      enforce-time-limit: false
+      disallow-todo-tests: false
+      process-isolation: false
+      no-globals-backup: false
+      static-backup: false
+      colors: ~
+      columns: ~
+      stderr: false
+      stop-on-error: false
+      stop-on-failure: false
+      stop-on-risky: false
+      stop-on-skipped: false
+      stop-on-incomplete: false
+      verbose: false
+      debug: false
+      loader: ~
+      repeat: ~
+      tap: false
+      testdox: false
+      printer: ~
+      bootstrap: ~
+      configuration: ~
+      no-configuration: false
+      no-coverage: false
+      include-path: ~
+      finder:
+        extensions: ['php']</code></pre>
+<h3 id="coverage-clover">coverage-clover</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will clover report path of code coverage.</p>
+<h3 id="coverage-crap4j">coverage-crap4j</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will crap4j xml report path of code coverage.</p>
+<h3 id="coverage-html">coverage-html</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will html report path of code coverage.</p>
+<h3 id="coverage-php">coverage-php</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will path file to object <code>PHP_CodeCoverage</code>.</p>
+<h3 id="coverage-text">coverage-text</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will text report path of code coverage.</p>
+<h3 id="coverage-xml">coverage-xml</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will xml report path of code coverage.</p>
+<h3 id="log-junit">log-junit</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will log file in junit xml format.</p>
+<h3 id="log-tap">log-tap</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will log file in tap format.</p>
+<h3 id="log-json">log-json</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will log file in json format.</p>
+<h3 id="testdox-html">testdox-html</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will file write with agile documentation in html format.</p>
+<h3 id="testdox-text">testdox-text</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will file write with agile documentation in text format.</p>
+<h3 id="filter">filter</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will filter which tests to run.</p>
+<h3 id="testsuite">testsuite</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will filter which testsuite to run.</p>
+<h3 id="group">group</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will groups to run.</p>
+<h3 id="exclude-group">exclude-group</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will exclude groups.</p>
+<h3 id="test-suffix">test-suffix</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will only search for test in files with specified suffixes.</p>
+<h3 id="report-useless-tests">report-useless-tests</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will be strict about tests that do not test anything.</p>
+<h3 id="strict-coverage">strict-coverage</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will be strict about unintentionally covered code.</p>
+<h3 id="strict-global-state">strict-global-state</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will be strict about changes to global state.</p>
+<h3 id="disallow-test-output">disallow-test-output</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will be strict about output during tests.</p>
+<h3 id="enforce-time-limit">enforce-time-limit</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will enforce time limit based on test size.</p>
+<h3 id="disallow-todo-tests">disallow-todo-tests</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will disallow <code>@todo-annotated</code> tests.</p>
+<h3 id="process-isolation">process-isolation</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will run each test in a separate process.</p>
+<h3 id="no-globals-backup">no-globals-backup</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will do not backup and restore <code>$GLOBALS</code> for each test.</p>
+<h3 id="static-backup">static-backup</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will backup and restore static attributes for each test.</p>
+<h3 id="colors">colors</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will use colors in output.</p>
+<h3 id="columns">columns</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will number of columns to use for progress output.</p>
+<h3 id="stderr">stderr</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will write to <code>STDERR</code> instead of <code>STDOUT</code>.</p>
+<h3 id="stop-on-error">stop-on-error</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will stop execution on first error.</p>
+<h3 id="stop-on-failure">stop-on-failure</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will stop execution on first error or failure.</p>
+<h3 id="stop-on-risky">stop-on-risky</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will stop execution on first risky test.</p>
+<h3 id="stop-on-skipped">stop-on-skipped</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will stop execution on first skipped test.</p>
+<h3 id="stop-on-incomplete">stop-on-incomplete</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will stop execution on first incomplete test.</p>
+<h3 id="verbose">verbose</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will verbose mode.</p>
+<h3 id="debug">debug</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will enable debug mode.</p>
+<h3 id="loader">loader</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will <code>TestSuiteLoader</code> implementation to use.</p>
+<h3 id="repeat">repeat</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will number of times tests runs repeatedly.</p>
+<h3 id="tap">tap</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will report test execution progress in tap format.</p>
+<h3 id="testdox">testdox</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will report test execution progress in testdox format.</p>
+<h3 id="printer">printer</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will <code>TestListener</code> implementation to use.</p>
+<h3 id="bootstrap">bootstrap</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will the path to your bootstrap file.</p>
+<h3 id="configuration">configuration</h3>
+<p><em>Default: null</em></p>
+<p>If your <code>phpunit.xml</code> file is located at an exotic location,
+you can specify your custom config file location with this option.
+This option is set to <code>null</code> by default.
+This means that <code>phpunit.xml</code> or <code>phpunit.xml.dist</code> are automatically loaded
+if one of them exist in the current directory.</p>
+<h3 id="no-configuration">no-configuration</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will ignore default configuration file.</p>
+<h3 id="no-coverage">no-coverage</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will ignore code coverage configuration.</p>
+<h3 id="include-path">include-path</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will include path.</p>
+<h3 id="finder">finder</h3>
+<p><em>Default: {extensions: ['php']}</em></p>
+<p><a href="../tasks.html#finder">See documentation</a></p>
+            </section>
+        </div>
+    </main>
+    <script src="https://cknow.github.io/checker/js/jquery-3.1.1.min.js"></script>
+    <script src="https://cknow.github.io/checker/js/bootstrap-3.3.7.min.js"></script>
+    <script src="https://cknow.github.io/checker/js/prism.js"></script>
+    <script>
+        $(function(){
+            $("table").addClass("table");
+        });
+
+            </script>
+</body>
+</html>

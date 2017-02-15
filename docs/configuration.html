@@ -99,39 +99,13 @@ parameters:
     pre-commit: ~
     pre-push: ~
   commands: ~</code></pre>
-<h2 id="metadata">Metadata</h2>
-<p>Every action has a pre-defined metadata key on which application specific options can be configured.</p>
-<p>For example:</p>
-<pre><code class="language-yaml"># checker.yml
-parameters:
-  git-hooks:
-    pre-commit:
-      tasks:
-        any-task:
-          metadata:
-            blocking: true # Blocking
-            priority: 2 # Second execution
-      commands:
-        any-command:
-          metadata:
-            blocking: false # Non-blocking
-            priority: 1 # First execution</code></pre>
-<h3 id="priority">priority</h3>
-<p><em>Default: 0</em></p>
-<p>This option can be used to specify the order in which the actions will be executed.
-The higher the priority, the sooner the action will be executed.</p>
-<h3 id="blocking">blocking</h3>
-<p><em>Default: true</em></p>
-<p>This option can be used to make a failing action non-blocking.
-By default all actions will be marked as blocking.
-When a action is non-blocking, the errors will be displayed but the tests will pass.</p>
 <hr />
 <p>See also:</p>
 <ul>
 <li><a href="installation.html">Installation</a></li>
 <li><a href="parameters.html">Parameters</a></li>
 <li><a href="tasks.html">Tasks</a></li>
-<li><a href="commands.html">Commands</a></li>
+<li><a href="command-line.html">Command-Line</a></li>
 <li><a href="events.html">Events</a></li>
 <li><a href="../contributing.html">Contributing</a></li>
 <li><a href="../license.html">License</a></li>

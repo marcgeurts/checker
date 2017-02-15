@@ -44,7 +44,7 @@
                                     Parameters
                                 </a>
                             </li>
-                                                    <li class="">
+                                                    <li class="active">
                                 <a href="https://cknow.github.io/checker/docs/tasks.html">
                                     Tasks
                                 </a>
@@ -54,7 +54,7 @@
                                     Commands
                                 </a>
                             </li>
-                                                    <li class="active">
+                                                    <li class="">
                                 <a href="https://cknow.github.io/checker/docs/events.html">
                                     Events
                                 </a>
@@ -72,88 +72,28 @@
                                             </ul>
                 </nav>
                         <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
-                <h1 id="events">Events</h1>
-<p>It is possible to hook in to Checker with events. Internally the Symfony event dispatcher is being used.</p>
-<p>Following events are triggered during execution:</p>
-<table>
-<thead>
-<tr>
-<th>Event name</th>
-<th>Event class</th>
-<th>Triggered</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>checker.action.run</td>
-<td>ActionEvent</td>
-<td>before a action is executed</td>
-</tr>
-<tr>
-<td>checker.action.successfully</td>
-<td>ActionEvent</td>
-<td>when a action succeeds</td>
-</tr>
-<tr>
-<td>checker.action.failed</td>
-<td>ActionEvent</td>
-<td>when a action fails</td>
-</tr>
-<tr>
-<td>checker.runner.run</td>
-<td>RunnerEvent</td>
-<td>before the actions are executed</td>
-</tr>
-<tr>
-<td>checker.runner.successfully</td>
-<td>RunnerEvent</td>
-<td>when all actions succeed</td>
-</tr>
-<tr>
-<td>checker.runner.failed</td>
-<td>RunnerEvent</td>
-<td>when one action failed</td>
-</tr>
-<tr>
-<td>console.command</td>
-<td>ConsoleCommandEvent</td>
-<td>before a CLI command is ran</td>
-</tr>
-<tr>
-<td>console.terminate</td>
-<td>ConsoleTerminateEvent</td>
-<td>before a CLI command terminates</td>
-</tr>
-<tr>
-<td>console.exception</td>
-<td>ConsoleExceptionEvent</td>
-<td>when a CLI command throws an unhandled exception.</td>
-</tr>
-</tbody>
-</table>
-<p>Configured events just like you would in Symfony:</p>
-<pre><code class="language-yaml"># checker.yml
-services:   
-  listener.some-listener:
-    class: MyNamespace\EventListener\MyListener
-    tags:
-      - { name: checker.event-listener, event: checker.runner.run }
-      - { name: checker.event-listener, event: checker.runner.run, method: customMethod, priority: 10 }
-  listener.some-subscriber:
-    class: MyNamespace\EventSubscriber\MySubscriber
-    tags:
-      - { name: checker.event-subscriber }</code></pre>
-<hr />
-<p>See also:</p>
-<ul>
-<li><a href="installation.html">Installation</a></li>
-<li><a href="configuration.html">Configuration</a></li>
-<li><a href="parameters.html">Parameters</a></li>
-<li><a href="tasks.html">Tasks</a></li>
-<li><a href="command-line.html">Command-Line</a></li>
-<li><a href="../contributing.html">Contributing</a></li>
-<li><a href="../license.html">License</a></li>
-</ul>
+                <h1 id="robo">Robo</h1>
+<p><a href="http://robo.li/">See oficinal documentation</a></p>
+<p>The Robo task will run your automated PHP tasks.
+It lives under the <code>robo</code> namespace and has following configurable parameters:</p>
+<pre><code class="language-yml"># checker.yml
+parameters:
+  tasks:
+    robo:
+      load-from: ~
+      task: ~</code></pre>
+<h3 id="load-from">load-from</h3>
+<p><em>Default: null</em></p>
+<p>If your <code>Robofile.php</code> file is located at an exotic location,
+you can specify your custom location with this option.
+This option is set to <code>null</code> by default.
+This means that <code>Robofile.php</code> is automatically loaded
+if the file exists in the current directory.</p>
+<h3 id="task">task</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will task you want to run.
+This option is set to <code>null</code> by default.
+This means that will run the <code>default</code> task.</p>
             </section>
         </div>
     </main>

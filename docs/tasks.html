@@ -73,6 +73,74 @@
                 </nav>
                         <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
                 <h1 id="tasks">Tasks</h1>
+<p>To activate a task, it is sufficient to add an empty task configuration:</p>
+<pre><code class="language-yml"># checker.yml
+parameters:
+  tasks: # Merged in default task configuration
+    ant: ~
+    atoum: ~
+    behat: ~
+    brunch: ~
+    codeception: ~
+    doctrine-orm: ~
+    gherkin: ~
+    grunt: ~
+    gulp: ~
+    make: ~
+    npm-script: ~
+    php7cc: ~
+    phpcpd: ~
+    phpmd: ~
+    phpunit: ~
+    robo: ~</code></pre>
+<p>Every task has it's own default configuration.
+It is possible to overwrite the parameters per task.</p>
+<ul>
+<li><a href="tasks/ant.html">Apache Ant</a></li>
+<li><a href="tasks/atoum.html">Atoum</a></li>
+<li><a href="tasks/behat.html">Behat</a></li>
+<li><a href="tasks/brunch.html">Brunch</a></li>
+<li><a href="tasks/codeception.html">Codeception</a></li>
+<li><a href="tasks/doctrine-orm.html">Doctrine ORM</a></li>
+<li><a href="tasks/gherkin.html">Gherkin</a></li>
+<li><a href="tasks/grunt.html">Grunt</a></li>
+<li><a href="tasks/gulp.html">Gulp</a></li>
+<li><a href="tasks/make.html">Make</a></li>
+<li><a href="tasks/npm-script.html">NPM script</a></li>
+<li><a href="tasks/php7cc.html">PHP 7 Compatibility Checker (php7cc)</a></li>
+<li><a href="tasks/phpcpd.html">PHP Copy/Paste Detector (phpcpd)</a></li>
+<li><a href="tasks/phpmd.html">PHP Mess Detector (phpmd)</a></li>
+<li><a href="tasks/phpunit.html">PHPUnit</a></li>
+<li><a href="tasks/robo.html">Robo</a></li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> Some options of the tasks related to files and/or directory
+do not exist because the <code>finder</code> option abstracts the majority.</p>
+</blockquote>
+<p>The above tasks also have the following configuration options:</p>
+<h3 id="can-run-in">can-run-in</h3>
+<p><em>Default: true</em></p>
+<p>This option allows you to run such a task in a particular context or command.
+You can also specify an array with the names of contexts or commands to can run in.</p>
+<h3 id="always-execute">always-execute</h3>
+<p><em>Default: false</em></p>
+<p>This option always run the whole task, even if no files were found.</p>
+<h3 id="finder">finder</h3>
+<p><em>Default: []</em></p>
+<p>This option to allow finder specify files and directories to be found.
+Options available: <code>name</code>, <code>not-name</code>, <code>path</code>, <code>not-path</code>, <code>extensions</code>.
+All options accepts only <code>array</code>.</p>
+<p>For example:</p>
+<pre><code class="language-yml"># checker.yml
+parameters:
+  tasks:
+    name_of_task:
+      finder:
+        name: ['name1']
+        not-name: ['name2', 'name3']
+        path: ['path1', 'path2']
+        not-path: ['path3']
+        extensions: ['php', 'phtml']</code></pre>
 <h2 id="creating-a-custom-task">Creating a custom task</h2>
 <p>It is very easy to configure your own project specific task.
 You just have to create a class that implements the <code>ClickNow\Checker\Task\TaskInterface</code>.
@@ -86,9 +154,7 @@ parameters:
 
 services:
   task.myCustomTask:
-    class: My\Custom\Task
-    arguments:
-      - '@config'
+    class: My\Custom\Task # Must implement `ClickNow\Checker\Task\TaskInterface`
     tags:
       - { name: checker.task, config: myConfigKey }</code></pre>
 <blockquote>
@@ -102,7 +168,7 @@ This example just shows you how to do it.</p>
 <li><a href="installation.html">Installation</a></li>
 <li><a href="configuration.html">Configuration</a></li>
 <li><a href="parameters.html">Parameters</a></li>
-<li><a href="commands.html">Commands</a></li>
+<li><a href="command-line.html">Command-Line</a></li>
 <li><a href="events.html">Events</a></li>
 <li><a href="../contributing.html">Contributing</a></li>
 <li><a href="../license.html">License</a></li>
