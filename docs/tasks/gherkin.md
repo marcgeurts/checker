@@ -9,7 +9,7 @@ currentMenu: tasks
 The Gherkin task will run your Gherkin feature files.
 It lives under the `gherkin` namespace and has following configurable parameters:
 
-```yml
+```yaml
 # checker.yml
 parameters:
   tasks:

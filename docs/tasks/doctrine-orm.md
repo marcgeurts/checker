@@ -9,7 +9,7 @@ currentMenu: tasks
 The Doctrine ORM task will validate that your mapping files and check if the mapping is in sync with the database.
 It lives under the `doctrine` namespace and has following configurable parameters:
 
-```yml
+```yaml
 # checker.yml
 parameters:
   tasks:

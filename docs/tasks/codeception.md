@@ -9,7 +9,7 @@ currentMenu: tasks
 The Codeception task will run your full-stack tests.
 It lives under the `codeception` namespace and has following configurable parameters:
 
-```yml
+```yaml
 # checker.yml
 parameters:
   tasks:

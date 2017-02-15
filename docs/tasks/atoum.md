@@ -9,7 +9,7 @@ currentMenu: tasks
 The Atoum task will run your unit tests.
 It lives under the `atoum` namespace and has following configurable parameters:
 
-```yml
+```yaml
 # checker.yml
 parameters:
   tasks:

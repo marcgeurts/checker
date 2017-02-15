@@ -9,7 +9,7 @@ currentMenu: tasks
 The NPM script task will run your configured npm script.
 It lives under the `npm-script` namespace and has following configurable parameters:
 
-```yml
+```yaml
 # checker.yml
 parameters:
   tasks:

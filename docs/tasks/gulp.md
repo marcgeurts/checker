@@ -9,7 +9,7 @@ currentMenu: tasks
 The Gulp task will run your automated workflow tasks.
 It lives under the `gulp` namespace and has following configurable parameters:
 
-```yml
+```yaml
 # checker.yml
 parameters:
   tasks:

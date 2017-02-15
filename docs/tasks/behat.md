@@ -9,7 +9,7 @@ currentMenu: tasks
 The Behat task will run your Behat tests.
 It lives under the `behat` namespace and has following configurable parameters:
 
-```yml
+```yaml
 # checker.yml
 parameters:
   tasks:

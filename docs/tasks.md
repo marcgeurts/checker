@@ -6,7 +6,7 @@ currentMenu: tasks
 
 To activate a task, it is sufficient to add an empty task configuration:
 
-```yml
+```yaml
 # checker.yml
 parameters:
   tasks: # Merged in default task configuration
@@ -76,7 +76,7 @@ All options accepts only `array`.
 
 For example:
 
-```yml
+```yaml
 # checker.yml
 parameters:
   tasks:

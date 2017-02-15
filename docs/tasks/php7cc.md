@@ -9,7 +9,7 @@ currentMenu: tasks
 The Php7cc task will check PHP 5.3 - 5.6 code compatibility with PHP 7.
 It lives under the `php7cc` namespace and has following configurable parameters:
 
-```yml
+```yaml
 # checker.yml
 parameters:
   tasks:

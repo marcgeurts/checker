@@ -7,7 +7,7 @@ currentMenu: tasks
 The Make task will run your automated make tasks.
 It lives under the `make` namespace and has following configurable parameters:
 
-```yml
+```yaml
 # checker.yml
 parameters:
   tasks:

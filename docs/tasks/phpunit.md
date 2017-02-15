@@ -9,7 +9,7 @@ currentMenu: tasks
 The PhpUnit task will run your unit tests.
 It lives under the `phpunit` namespace and has following configurable parameters:
 
-```yml
+```yaml
 # checker.yml
 parameters:
   tasks:

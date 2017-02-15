@@ -9,7 +9,7 @@ currentMenu: tasks
 The Ant task will run your automated Ant tasks.
 It lives under the `ant` namespace and has following configurable parameters:
 
-```yml
+```yaml
 # checker.yml
 parameters:
   tasks:

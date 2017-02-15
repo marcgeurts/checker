@@ -9,7 +9,7 @@ currentMenu: tasks
 The PhpCpd task will sniff your code for duplicated lines.
 It lives under the `phpcpd` namespace and has following configurable parameters:
 
-```yml
+```yaml
 # checker.yml
 parameters:
   tasks:

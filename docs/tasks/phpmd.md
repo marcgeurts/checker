@@ -9,7 +9,7 @@ currentMenu: tasks
 The PhpMd task will sniff your code for bad coding standards.
 It lives under the `phpmd` namespace and has following configurable parameters:
 
-```yml
+```yaml
 # checker.yml
 parameters:
   tasks:

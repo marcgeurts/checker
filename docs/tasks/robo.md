@@ -9,7 +9,7 @@ currentMenu: tasks
 The Robo task will run your automated PHP tasks.
 It lives under the `robo` namespace and has following configurable parameters:
 
-```yml
+```yaml
 # checker.yml
 parameters:
   tasks:
