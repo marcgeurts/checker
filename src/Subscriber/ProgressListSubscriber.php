@@ -42,8 +42,8 @@ class ProgressListSubscriber implements EventSubscriberInterface
         return [
             RunnerEvent::RUNNER_RUN          => 'startProgress',
             ActionEvent::ACTION_RUN          => 'advanceProgress',
-            ActionEvent::ACTION_FAILED       => 'advanceProgress',
-            ActionEvent::ACTION_SUCCESSFULLY => 'advanceProgress',
+            ActionEvent::ACTION_FAILED       => 'changeProgress',
+            ActionEvent::ACTION_SUCCESSFULLY => 'changeProgress',
             RunnerEvent::RUNNER_SUCCESSFULLY => 'finishProgress',
             RunnerEvent::RUNNER_FAILED       => 'finishProgress',
         ];
@@ -76,11 +76,10 @@ class ProgressListSubscriber implements EventSubscriberInterface
 
         $this->progressBar->setFormat('<fg=cyan>Running %current%/%max%:</fg=cyan> %message% %status%');
         $this->progressBar->start($runnerEvent->getActions()->count());
-
     }
 
     /**
-     * Advanced progress.
+     * Advance progress.
      *
      * @param \ClickNow\Checker\Event\ActionEvent $actionEvent
      *
@@ -92,19 +91,28 @@ class ProgressListSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $result = $actionEvent->getResult();
         $this->progressBar->setMessage(str_pad($actionEvent->getAction()->getName(), 50, '.', STR_PAD_RIGHT));
+        $this->progressBar->setMessage('<fg=magenta>In progress</fg=magenta>', 'status');
+        $this->progressBar->advance();
+    }
 
-        if (!$result instanceof ResultInterface) {
-            $this->progressBar->setMessage('<fg=magenta>In progress</fg=magenta>', 'status');
-            $this->progressBar->advance();
-
+    /**
+     * Change progress.
+     *
+     * @param \ClickNow\Checker\Event\ActionEvent $actionEvent
+     *
+     * @return void
+     */
+    public function changeProgress(ActionEvent $actionEvent)
+    {
+        if (!$this->isEnabled($actionEvent->getContext()->getRunner())) {
             return;
         }
 
+        $this->progressBar->setMessage(str_pad($actionEvent->getAction()->getName(), 50, '.', STR_PAD_RIGHT));
         $this->progressBar->setOverwrite(true);
 
-        switch ($result->getStatus()) {
+        switch ($actionEvent->getResult()->getStatus()) {
             case ResultInterface::SUCCESS:
                 $status = '<fg=green>Ok</fg=green>';
                 break;

@@ -85,17 +85,16 @@ class ProgressListSubscriberTest extends \PHPUnit_Framework_TestCase
     {
         $actionEvent = m::mock(ActionEvent::class);
         $actionEvent->shouldReceive('getContext->getRunner')->withNoArgs()->once()->andReturn($this->mockRunner(false));
-        $actionEvent->shouldReceive('getResult')->withNoArgs()->never();
-        $actionEvent->shouldReceive('getAction')->withNoArgs()->never();
+
+        $this->progressBar->shouldReceive('advance')->withNoArgs()->never();
 
         $this->progressListSubscriber->advanceProgress($actionEvent);
     }
 
-    public function testAdvanceProgressEnabledInProgress()
+    public function testAdvanceProgressEnabled()
     {
         $actionEvent = m::mock(ActionEvent::class);
         $actionEvent->shouldReceive('getContext->getRunner')->withNoArgs()->once()->andReturn($this->mockRunner());
-        $actionEvent->shouldReceive('getResult')->withNoArgs()->once()->andReturnNull();
         $actionEvent->shouldReceive('getAction->getName')->withNoArgs()->once()->andReturn('ACTION');
 
         $this->progressBar->shouldReceive('setMessage')->with('/ACTION/')->once()->andReturnNull();
@@ -105,17 +104,24 @@ class ProgressListSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->progressListSubscriber->advanceProgress($actionEvent);
     }
 
+    public function testChangeProgressDisabled()
+    {
+        $actionEvent = m::mock(ActionEvent::class);
+        $actionEvent->shouldReceive('getContext->getRunner')->withNoArgs()->once()->andReturn($this->mockRunner(false));
+
+        $this->progressBar->shouldReceive('display')->withAnyArgs()->never();
+
+        $this->progressListSubscriber->changeProgress($actionEvent);
+    }
+
     /**
      * @dataProvider actionStatus
      */
-    public function testAdvanceProgressEnabled($status, $message)
+    public function testChangeProgressEnabled($status, $message)
     {
-        $result = m::mock(ResultInterface::class);
-        $result->shouldReceive('getStatus')->withNoArgs()->once()->andReturn($status);
-
         $actionEvent = m::mock(ActionEvent::class);
         $actionEvent->shouldReceive('getContext->getRunner')->withNoArgs()->once()->andReturn($this->mockRunner());
-        $actionEvent->shouldReceive('getResult')->withNoArgs()->once()->andReturn($result);
+        $actionEvent->shouldReceive('getResult->getStatus')->withNoArgs()->once()->andReturn($status);
         $actionEvent->shouldReceive('getAction->getName')->withNoArgs()->once()->andReturn('ACTION');
 
         $this->progressBar->shouldReceive('setMessage')->with('/ACTION/')->once()->andReturnNull();
@@ -124,7 +130,7 @@ class ProgressListSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->progressBar->shouldReceive('display')->withNoArgs()->once()->andReturnNull();
         $this->progressBar->shouldReceive('setOverwrite')->with(false)->once()->andReturnNull();
 
-        $this->progressListSubscriber->advanceProgress($actionEvent);
+        $this->progressListSubscriber->changeProgress($actionEvent);
     }
 
     public function actionStatus()
