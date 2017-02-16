@@ -21,6 +21,7 @@ abstract class AbstractRunnerCommand extends Command
         'stop-on-failure'         => 'Stop on failure.',
         'ignore-unstaged-changes' => 'Ignore unstaged changes.',
         'skip-success-output'     => 'Skip success output.',
+        'strict'                  => 'Strict',
     ];
 
     /**

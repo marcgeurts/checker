@@ -28,7 +28,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->runner = new Runner(m::mock(Checker::class), 'foo');
+        $this->runner = new Runner(m::spy(Checker::class), 'foo');
         $this->context = m::mock(ContextInterface::class);
     }
 
@@ -97,12 +97,27 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->runner->addAction($action1);
         $this->runner->addAction($action2);
 
-        $this->runner->setStopOnFailure(false);
         $result = $this->runner->run($this->runner, $this->context);
 
         $this->assertInstanceOf(ResultInterface::class, $result);
         $this->assertTrue($result->isError());
         $this->assertSame('ERROR', $result->getMessage());
+    }
+
+    public function testRunAndReturnAErrorWithStrict()
+    {
+        $action1 = $this->mockAction('action1', Result::WARNING, 'WARNING');
+        $action2 = $this->mockAction('action2');
+
+        $this->runner->addAction($action1);
+        $this->runner->addAction($action2);
+
+        $this->runner->setStrict(true);
+        $result = $this->runner->run($this->runner, $this->context);
+
+        $this->assertInstanceOf(ResultInterface::class, $result);
+        $this->assertTrue($result->isError());
+        $this->assertSame('WARNING', $result->getMessage());
     }
 
     public function testRunAndReturnAWarning()
@@ -128,7 +143,6 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->runner->addAction($action1);
         $this->runner->addAction($action2);
 
-        $this->runner->setStopOnFailure(false);
         $result = $this->runner->run($this->runner, $this->context);
 
         $this->assertInstanceOf(ResultInterface::class, $result);
@@ -170,7 +184,6 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->runner->addAction($action3);
         $this->runner->addAction($action4);
 
-        $this->runner->setStopOnFailure(false);
         $result = $this->runner->run($this->runner, $this->context);
 
         $this->assertInstanceOf(ResultInterface::class, $result);
@@ -223,7 +236,6 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->runner->addAction($action1);
         $this->runner->addAction($action2);
 
-        $this->runner->setStopOnFailure(false);
         $result = $this->runner->run($this->runner, $this->context);
 
         $this->assertInstanceOf(ResultInterface::class, $result);

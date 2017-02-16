@@ -16,6 +16,7 @@ trait ConfigRunner
         'process-async-limit'     => 'setProcessAsyncLimit',
         'stop-on-failure'         => 'setStopOnFailure',
         'ignore-unstaged-changes' => 'setIgnoreUnstagedChanges',
+        'strict'                  => 'setStrict',
         'skip-success-output'     => 'setSkipSuccessOutput',
         'message'                 => 'setMessage',
         'can-run-in'              => 'setCanRunIn',
@@ -55,6 +56,11 @@ trait ConfigRunner
      * @var bool
      */
     private $ignoreUnstagedChanges;
+
+    /**
+     * @var bool
+     */
+    private $strict;
 
     /**
      * @var bool
@@ -235,6 +241,32 @@ trait ConfigRunner
     public function setIgnoreUnstagedChanges($ignoreUnstagedChanges)
     {
         $this->ignoreUnstagedChanges = (bool) $ignoreUnstagedChanges;
+    }
+
+    /**
+     * Is strict?
+     *
+     * @return bool
+     */
+    public function isStrict()
+    {
+        if (!isset($this->strict)) {
+            $this->setStrict($this->checker->isStrict());
+        }
+
+        return (bool) $this->strict;
+    }
+
+    /**
+     * Set strict.
+     *
+     * @param bool $strict
+     *
+     * @return void
+     */
+    public function setStrict($strict)
+    {
+        $this->strict = (bool) $strict;
     }
 
     /**

@@ -121,6 +121,7 @@ class CommitMsgCommandTest extends \PHPUnit_Framework_TestCase
         $this->runner->shouldReceive('setProcessAsyncLimit')->with(10)->once()->andReturnNull();
         $this->runner->shouldReceive('setStopOnFailure')->with(true)->once()->andReturnNull();
         $this->runner->shouldReceive('setIgnoreUnstagedChanges')->with(true)->once()->andReturnNull();
+        $this->runner->shouldReceive('setStrict')->with(true)->once()->andReturnNull();
         $this->runner->shouldReceive('setSkipSuccessOutput')->with(true)->once()->andReturnNull();
 
         $this->commandTester->execute([
@@ -132,6 +133,7 @@ class CommitMsgCommandTest extends \PHPUnit_Framework_TestCase
             '--process-async-limit'     => 10,
             '--stop-on-failure'         => true,
             '--ignore-unstaged-changes' => true,
+            '--strict'                  => true,
             '--skip-success-output'     => true,
         ]);
 

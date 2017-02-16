@@ -7,31 +7,19 @@ use Doctrine\Common\Collections\ArrayCollection;
 class ResultsCollection extends ArrayCollection
 {
     /**
-     * Is successfully?
-     *
-     * @return bool
-     */
-    public function isSuccessfully()
-    {
-        if ($this->isEmpty()) {
-            return false;
-        }
-
-        return !($this->filterByError()->count() > 0 || $this->filterByWarning()->count() > 0);
-    }
-
-    /**
      * Is failed?
      *
+     * @param bool $strict
+     *
      * @return bool
      */
-    public function isFailed()
+    public function isFailed($strict = false)
     {
         if ($this->isEmpty()) {
             return false;
         }
 
-        return $this->filterByError()->count() > 0;
+        return !$this->filterByError()->isEmpty() || ($strict && !$this->filterByWarning()->isEmpty());
     }
 
     /**

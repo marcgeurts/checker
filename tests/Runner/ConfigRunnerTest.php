@@ -116,6 +116,18 @@ class ConfigRunnerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->configRunner->isIgnoreUnstagedChanges());
     }
 
+    public function testStrict()
+    {
+        $this->checker->shouldReceive('isStrict')->withNoArgs()->once()->andReturn(true);
+        $this->assertTrue($this->configRunner->isStrict());
+
+        $this->configRunner->setStrict(null);
+        $this->assertFalse($this->configRunner->isStrict());
+
+        $this->configRunner->setStrict(true);
+        $this->assertTrue($this->configRunner->isStrict());
+    }
+
     public function testSkipSuccessOutput()
     {
         $this->checker->shouldReceive('isSkipSuccessOutput')->withNoArgs()->once()->andReturn(true);

@@ -52,14 +52,6 @@ class ResultsCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(ArrayCollection::class, $this->resultsCollection);
     }
 
-    public function testIsSuccessfullyIfItContainsOnlyResultPassed()
-    {
-        $this->resultsCollection->add(Result::success($this->runner, $this->context, $this->action));
-        $this->resultsCollection->add(Result::skipped($this->runner, $this->context, $this->action));
-
-        $this->assertTrue($this->resultsCollection->isSuccessfully());
-    }
-
     public function testIsFailedIfItContainsAnyResultError()
     {
         $this->resultsCollection->add(Result::success($this->runner, $this->context, $this->action));
@@ -68,9 +60,11 @@ class ResultsCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->resultsCollection->isFailed());
     }
 
-    public function testIsNotSuccessfullyIfResultIsEmpty()
+    public function testIsFailedWithStrict()
     {
-        $this->assertFalse($this->resultsCollection->isSuccessfully());
+        $this->resultsCollection->add(Result::warning($this->runner, $this->context, $this->action, 'WARNING'));
+
+        $this->assertTrue($this->resultsCollection->isFailed(true));
     }
 
     public function testIsNotFailedIfResultIsEmpty()

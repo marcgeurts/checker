@@ -139,15 +139,15 @@ class Runner implements RunnerInterface
      */
     private function getResultStatusFromResults(ResultsCollection $results)
     {
-        if ($results->isSuccessfully()) {
-            return Result::SUCCESS;
-        }
-
-        if ($results->isFailed()) {
+        if ($results->isFailed($this->isStrict())) {
             return Result::ERROR;
         }
 
-        return Result::WARNING;
+        if (!$results->filterByWarning()->isEmpty()) {
+            return Result::WARNING;
+        }
+
+        return Result::SUCCESS;
     }
 
     /**

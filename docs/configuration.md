@@ -21,6 +21,7 @@ parameters:
   process-async-limit: 10
   stop-on-failure: false
   ignore-unstaged-changes: false
+  strict: false
   skip-success-output: false
   message:
     successfully: successfully.txt

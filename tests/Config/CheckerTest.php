@@ -86,6 +86,12 @@ class CheckerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->checker->isIgnoreUnstagedChanges());
     }
 
+    public function testIsStrict()
+    {
+        $this->container->shouldReceive('getParameter')->with('strict')->once()->andReturn(true);
+        $this->assertTrue($this->checker->isStrict());
+    }
+
     public function testIsSkipSuccessOutput()
     {
         $this->container->shouldReceive('getParameter')->with('skip-success-output')->once()->andReturn(true);

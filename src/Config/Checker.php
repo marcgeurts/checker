@@ -112,6 +112,16 @@ class Checker
     }
 
     /**
+     * Is strict?
+     *
+     * @return bool
+     */
+    public function isStrict()
+    {
+        return (bool) $this->container->getParameter('strict');
+    }
+
+    /**
      * Is skip success output?
      *
      * @return bool

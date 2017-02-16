@@ -53,12 +53,13 @@ class RunnerHelperTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->dispatcher = m::mock(EventDispatcherInterface::class);
-        $this->io = m::mock(IOInterface::class);
-        $this->runnerHelper = new RunnerHelper($this->dispatcher, $this->io);
         $this->context = m::mock(ContextInterface::class);
         $this->runner = m::mock(RunnerInterface::class);
         $this->actions = new ActionsCollection();
+
+        $this->dispatcher = m::mock(EventDispatcherInterface::class);
+        $this->io = m::mock(IOInterface::class);
+        $this->runnerHelper = new RunnerHelper($this->dispatcher, $this->io);
 
         $this->context->shouldReceive('getRunner')->withNoArgs()->andReturn($this->runner);
         $this->runner->shouldReceive('getName')->withNoArgs()->andReturn('foo');
@@ -97,6 +98,7 @@ class RunnerHelperTest extends \PHPUnit_Framework_TestCase
     public function testRunAndReturnCodeSuccess()
     {
         $this->io->shouldReceive('title')->with('/`foo`/')->atMost()->once()->andReturnNull();
+        $this->runner->shouldReceive('isStrict')->withNoArgs()->once()->andReturn(false);
 
         $this->createAction('action1', Result::SUCCESS);
         $this->createAction('action2', Result::WARNING);
@@ -115,6 +117,7 @@ class RunnerHelperTest extends \PHPUnit_Framework_TestCase
     {
         $this->io->shouldReceive('title')->with('/`foo`/')->atMost()->once()->andReturnNull();
         $this->runner->shouldReceive('isStopOnFailure')->withNoArgs()->andReturn(false);
+        $this->runner->shouldReceive('isStrict')->withNoArgs()->once()->andReturn(false);
 
         $this->createAction('action1', Result::SUCCESS);
         $this->createAction('action2', Result::WARNING);
@@ -130,10 +133,29 @@ class RunnerHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(1, $this->runnerHelper->run($this->context));
     }
 
+    public function testRunAndReturnCodeErrorWithStrict()
+    {
+        $this->io->shouldReceive('title')->with('/`foo`/')->atMost()->once()->andReturnNull();
+        $this->runner->shouldReceive('isStopOnFailure')->withNoArgs()->andReturn(true);
+        $this->runner->shouldReceive('isStrict')->withNoArgs()->once()->andReturn(true);
+
+        $this->createAction('action1', Result::SUCCESS);
+        $this->createAction('action2', Result::WARNING);
+
+        $runnerType = m::type(RunnerEvent::class);
+
+        $this->dispatcher->shouldReceive('dispatch')->with(RunnerEvent::RUNNER_RUN, $runnerType)->once();
+        $this->dispatcher->shouldReceive('dispatch')->with(RunnerEvent::RUNNER_FAILED, $runnerType)->once();
+        $this->dispatcher->shouldReceive('dispatch')->with(RunnerEvent::RUNNER_SUCCESSFULLY, $runnerType)->never();
+
+        $this->assertSame(1, $this->runnerHelper->run($this->context));
+    }
+
     public function testRunWithStopOnFailure()
     {
         $this->io->shouldReceive('title')->with('/`foo`/')->atMost()->once()->andReturnNull();
         $this->runner->shouldReceive('isStopOnFailure')->withNoArgs()->andReturn(true);
+        $this->runner->shouldReceive('isStrict')->withNoArgs()->once()->andReturn(false);
 
         $this->createAction('action1', Result::ERROR);
         $this->createAction('action2', Result::ERROR, 0);

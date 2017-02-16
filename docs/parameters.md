@@ -89,6 +89,14 @@ This way the actions will run with the code that is actually committed without t
 Note that during the commit, the unstaged changes will be stored in git stash.
 This may mess with your working copy and result in unexpected merge conflicts.
 
+### strict
+
+*Default: false*
+
+This parameter will tell to use strict mode.
+This means that warnings will be considered as errors.
+By default will strict mode is disabled.
+
 ### skip-success-output
 
 *Default: false*
@@ -188,6 +196,7 @@ You can also override these configurations:
 - process-async-limit
 - stop-on-failure
 - ignore-unstaged-changes
+- strict
 - skip-success-output
 
 For example:
@@ -202,6 +211,7 @@ parameters:
       process-async-limit: 30
       stop-on-failure: true
       ignore-unstaged-changes: true
+      strict: true
       skip-success-output: true
       tasks:
         foo: ~ # Use default configuration
@@ -211,6 +221,7 @@ parameters:
       process-async-limit: 60
       stop-on-failure: false
       ignore-unstaged-changes: false
+      strict: false
       skip-success-output: false
       tasks:
         foo:
@@ -235,6 +246,7 @@ You can also override these configurations:
 - process-async-limit
 - stop-on-failure
 - ignore-unstaged-changes
+- strict
 - skip-success-output
 
 For example:
@@ -249,6 +261,7 @@ parameters:
       process-async-limit: 30
       stop-on-failure: true
       ignore-unstaged-changes: true
+      strict: true
       skip-success-output: true
       tasks:
         foo: ~ # Use default configuration
@@ -258,6 +271,7 @@ parameters:
       process-async-limit: 60
       stop-on-failure: false
       ignore-unstaged-changes: false
+      strict: false
       skip-success-output: false
       tasks:
         foo:

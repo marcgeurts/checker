@@ -76,7 +76,7 @@ class ReportSubscriber implements EventSubscriberInterface
     {
         $warning = $results->filterByWarning();
 
-        if ($results->isFailed()) {
+        if ($results->isFailed($runner->isStrict())) {
             $this->reportError($runner, $results->filterByError(), $warning);
 
             return;

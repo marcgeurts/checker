@@ -75,7 +75,7 @@ class RunnerHelper extends Helper
         $this->dispatcher->dispatch(RunnerEvent::RUNNER_RUN, new RunnerEvent($context, $actions));
         $results = $this->runActions($context, $actions);
 
-        if ($results->isFailed()) {
+        if ($results->isFailed($context->getRunner()->isStrict())) {
             $this->dispatcher->dispatch(RunnerEvent::RUNNER_FAILED, new RunnerEvent($context, $actions, $results));
 
             return self::CODE_ERROR;

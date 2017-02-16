@@ -7,6 +7,13 @@ use ClickNow\Checker\Context\ContextInterface;
 interface RunnerInterface extends ActionInterface
 {
     /**
+     * Get process timeout.
+     *
+     * @return null|float
+     */
+    public function getProcessTimeout();
+
+    /**
      * Set process timeout.
      *
      * @param null|float $processTimeout
@@ -16,11 +23,11 @@ interface RunnerInterface extends ActionInterface
     public function setProcessTimeout($processTimeout);
 
     /**
-     * Get process timeout.
+     * Get process async wait.
      *
-     * @return null|float
+     * @return int
      */
-    public function getProcessTimeout();
+    public function getProcessAsyncWait();
 
     /**
      * Set process async wait.
@@ -32,11 +39,11 @@ interface RunnerInterface extends ActionInterface
     public function setProcessAsyncWait($processAsyncWait);
 
     /**
-     * Get process async wait.
+     * Get process async limit.
      *
      * @return int
      */
-    public function getProcessAsyncWait();
+    public function getProcessAsyncLimit();
 
     /**
      * Set process async limit.
@@ -48,11 +55,11 @@ interface RunnerInterface extends ActionInterface
     public function setProcessAsyncLimit($processAsyncLimit);
 
     /**
-     * Get process async limit.
+     * Is stop on failure?
      *
-     * @return int
+     * @return bool
      */
-    public function getProcessAsyncLimit();
+    public function isStopOnFailure();
 
     /**
      * Set stop on failure.
@@ -64,11 +71,11 @@ interface RunnerInterface extends ActionInterface
     public function setStopOnFailure($stopOnFailure);
 
     /**
-     * Is stop on failure?
+     * Is ignore unstaged changes?
      *
      * @return bool
      */
-    public function isStopOnFailure();
+    public function isIgnoreUnstagedChanges();
 
     /**
      * Set ignore unstaged changes.
@@ -80,11 +87,27 @@ interface RunnerInterface extends ActionInterface
     public function setIgnoreUnstagedChanges($ignoreUnstagedChanges);
 
     /**
-     * Is ignore unstaged changes?
+     * Is strict?
      *
      * @return bool
      */
-    public function isIgnoreUnstagedChanges();
+    public function isStrict();
+
+    /**
+     * Set strict.
+     *
+     * @param bool $strict
+     *
+     * @return void
+     */
+    public function setStrict($strict);
+
+    /**
+     * Is skip success output?
+     *
+     * @return bool
+     */
+    public function isSkipSuccessOutput();
 
     /**
      * Set skip success output.
@@ -96,11 +119,13 @@ interface RunnerInterface extends ActionInterface
     public function setSkipSuccessOutput($skipSuccessOutput);
 
     /**
-     * Is skip success output?
+     * Get message.
      *
-     * @return bool
+     * @param string $resource
+     *
+     * @return null|string
      */
-    public function isSkipSuccessOutput();
+    public function getMessage($resource);
 
     /**
      * Set message.
@@ -110,15 +135,6 @@ interface RunnerInterface extends ActionInterface
      * @return void
      */
     public function setMessage(array $message);
-
-    /**
-     * Get message.
-     *
-     * @param string $resource
-     *
-     * @return null|string
-     */
-    public function getMessage($resource);
 
     /**
      * Get actions.

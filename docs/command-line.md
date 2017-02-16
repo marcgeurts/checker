@@ -29,16 +29,17 @@ You can also override these configurations:
 - process-async-limit
 - stop-on-failure
 - ignore-unstaged-changes
+- strict
 - skip-success-output
 
 For example:
 
 ```bash
 # Locally
-php ./vendor/bin/checker run name-of-command --process-timeout=30 --process-async-wait=1000 --process-async-limit=30 --stop-on-failure=1 --ignore-unstaged-changes=1 --skip-success-output=1
+php ./vendor/bin/checker run name-of-command --process-timeout=30 --process-async-wait=1000 --process-async-limit=30 --stop-on-failure=1 --ignore-unstaged-changes=1 --strict=1 --skip-success-output=1
 
 # Globally
-checker run name-of-command --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --skip-success-output=0
+checker run name-of-command --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --strict=0 --skip-success-output=0
 ```
 
 ### git:install
@@ -117,16 +118,17 @@ You can also override these configurations:
 - process-async-limit
 - stop-on-failure
 - ignore-unstaged-changes
+- strict
 - skip-success-output
 
 For example:
 
 ```bash
 # Locally
-php ./vendor/bin/checker git:commit-msg commit-message-file --git-user-name=name --git-user-email=email --process-timeout=30 --process-async-wait=1000 --process-async-limit=30 --stop-on-failure=1 --ignore-unstaged-changes=1 --skip-success-output=1
+php ./vendor/bin/checker git:commit-msg commit-message-file --git-user-name=name --git-user-email=email --process-timeout=30 --process-async-wait=1000 --process-async-limit=30 --stop-on-failure=1 --ignore-unstaged-changes=1 --strict=1 --skip-success-output=1
 
 # Globally
-checker git:commit-msg commit-message-file --git-user-name=name --git-user-email=email --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --skip-success-output=0
+checker git:commit-msg commit-message-file --git-user-name=name --git-user-email=email --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --strict=0 --skip-success-output=0
 ```
 
 ### git:pre-commit
@@ -150,16 +152,17 @@ You can also override these configurations:
 - process-async-limit
 - stop-on-failure
 - ignore-unstaged-changes
+- strict
 - skip-success-output
 
 For example:
 
 ```bash
 # Locally
-php ./vendor/bin/checker git:pre-commit --process-timeout=30 --process-async-wait=1000 --process-async-limit=30 --stop-on-failure=1 --ignore-unstaged-changes=1 --skip-success-output=1
+php ./vendor/bin/checker git:pre-commit --process-timeout=30 --process-async-wait=1000 --process-async-limit=30 --stop-on-failure=1 --ignore-unstaged-changes=1 --strict=1 --skip-success-output=1
 
 # Globally
-checker git:pre-commit --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --skip-success-output=0
+checker git:pre-commit --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --strict=0 --skip-success-output=0
 ```
 
 ### git:pre-push
@@ -183,16 +186,17 @@ You can also override these configurations:
 - process-async-limit
 - stop-on-failure
 - ignore-unstaged-changes
+- strict
 - skip-success-output
 
 For example:
 
 ```bash
 # Locally
-php ./vendor/bin/checker git:pre-push --process-timeout=30 --process-async-wait=1000 --process-async-limit=30 --stop-on-failure=1 --ignore-unstaged-changes=1 --skip-success-output=1
+php ./vendor/bin/checker git:pre-push --process-timeout=30 --process-async-wait=1000 --process-async-limit=30 --stop-on-failure=1 --ignore-unstaged-changes=1 --strict=1 --skip-success-output=1
 
 # Globally
-checker git:pre-push --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --skip-success-output=0
+checker git:pre-push --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --strict=0 --skip-success-output=0
 ```
 
 ***
