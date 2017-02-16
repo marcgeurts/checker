@@ -91,8 +91,8 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAndReturnSkipped()
     {
-        $action1 = $this->mockAction('action1', Result::SKIPPED);
-        $action2 = $this->mockAction('action2', Result::SKIPPED);
+        $action1 = $this->mockAction('action1', ResultInterface::SKIPPED);
+        $action2 = $this->mockAction('action2', ResultInterface::SKIPPED);
 
         $this->runner->addAction($action1);
         $this->runner->addAction($action2);
@@ -106,7 +106,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAndReturnAError()
     {
-        $action1 = $this->mockAction('action1', Result::ERROR, 'ERROR');
+        $action1 = $this->mockAction('action1', ResultInterface::ERROR, 'ERROR');
         $action2 = $this->mockAction('action2');
 
         $this->runner->addAction($action1);
@@ -121,7 +121,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAndReturnAErrorWithStrict()
     {
-        $action1 = $this->mockAction('action1', Result::WARNING, 'WARNING');
+        $action1 = $this->mockAction('action1', ResultInterface::WARNING, 'WARNING');
         $action2 = $this->mockAction('action2');
 
         $this->runner->addAction($action1);
@@ -137,7 +137,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAndReturnAWarning()
     {
-        $action1 = $this->mockAction('action1', Result::WARNING, 'WARNING');
+        $action1 = $this->mockAction('action1', ResultInterface::WARNING, 'WARNING');
         $action2 = $this->mockAction('action2');
 
         $this->runner->addAction($action1);
@@ -152,8 +152,8 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAndReturnSomeErrors()
     {
-        $action1 = $this->mockAction('action1', Result::ERROR, 'ERROR1');
-        $action2 = $this->mockAction('action2', Result::ERROR, 'ERROR2');
+        $action1 = $this->mockAction('action1', ResultInterface::ERROR, 'ERROR1');
+        $action2 = $this->mockAction('action2', ResultInterface::ERROR, 'ERROR2');
 
         $this->runner->addAction($action1);
         $this->runner->addAction($action2);
@@ -167,8 +167,8 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAndReturnSomeWarnings()
     {
-        $action1 = $this->mockAction('action1', Result::WARNING, 'WARNING1');
-        $action2 = $this->mockAction('action2', Result::WARNING, 'WARNING2');
+        $action1 = $this->mockAction('action1', ResultInterface::WARNING, 'WARNING1');
+        $action2 = $this->mockAction('action2', ResultInterface::WARNING, 'WARNING2');
         $action3 = $this->mockAction('action3');
 
         $action3->shouldReceive('run')
@@ -189,10 +189,10 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAndReturnSomeErrorsAndWarnings()
     {
-        $action1 = $this->mockAction('action1', Result::ERROR, 'ERROR1');
-        $action2 = $this->mockAction('action2', Result::ERROR, 'ERROR2');
-        $action3 = $this->mockAction('action3', Result::WARNING, 'WARNING1');
-        $action4 = $this->mockAction('action4', Result::WARNING, 'WARNING2');
+        $action1 = $this->mockAction('action1', ResultInterface::ERROR, 'ERROR1');
+        $action2 = $this->mockAction('action2', ResultInterface::ERROR, 'ERROR2');
+        $action3 = $this->mockAction('action3', ResultInterface::WARNING, 'WARNING1');
+        $action4 = $this->mockAction('action4', ResultInterface::WARNING, 'WARNING2');
 
         $this->runner->addAction($action1);
         $this->runner->addAction($action2);
@@ -208,7 +208,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testRunWithStopOnFailure()
     {
-        $action1 = $this->mockAction('action1', Result::ERROR, 'ERROR');
+        $action1 = $this->mockAction('action1', ResultInterface::ERROR, 'ERROR');
         $action2 = $this->mockAction('action2', null);
 
         $this->runner->addAction($action1);
@@ -224,8 +224,8 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAndDoNotStopOnFailureIfTheActionIsNonABlocking()
     {
-        $action1 = $this->mockAction('action1', Result::ERROR, 'ERROR', true);
-        $action2 = $this->mockAction('action2', Result::WARNING, 'WARNING', true);
+        $action1 = $this->mockAction('action1', ResultInterface::ERROR, 'ERROR', true);
+        $action2 = $this->mockAction('action2', ResultInterface::WARNING, 'WARNING', true);
 
         $this->runner->addAction($action1, ['metadata' => ['blocking' => false]]);
         $this->runner->addAction($action2);
@@ -268,7 +268,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
      *
      * @return \ClickNow\Checker\Runner\ActionInterface|\Mockery\MockInterface
      */
-    protected function mockAction($name, $status = Result::SUCCESS, $message = null, $canRunIn = true)
+    protected function mockAction($name, $status = ResultInterface::SUCCESS, $message = null, $canRunIn = true)
     {
         $action = m::mock(ActionInterface::class);
         $action->shouldReceive('getName')->withNoArgs()->atLeast()->once()->andReturn($name);

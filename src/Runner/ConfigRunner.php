@@ -17,6 +17,7 @@ trait ConfigRunner
         'stop-on-failure'         => 'setStopOnFailure',
         'ignore-unstaged-changes' => 'setIgnoreUnstagedChanges',
         'strict'                  => 'setStrict',
+        'progress'                => 'setProgress',
         'skip-success-output'     => 'setSkipSuccessOutput',
         'message'                 => 'setMessage',
         'can-run-in'              => 'setCanRunIn',
@@ -33,7 +34,7 @@ trait ConfigRunner
     private $canRunIn;
 
     /**
-     * @var null|float
+     * @var float
      */
     private $processTimeout;
 
@@ -61,6 +62,11 @@ trait ConfigRunner
      * @var bool
      */
     private $strict;
+
+    /**
+     * @var string
+     */
+    private $progress;
 
     /**
      * @var bool
@@ -293,6 +299,32 @@ trait ConfigRunner
     public function setSkipSuccessOutput($skipSuccessOutput)
     {
         $this->skipSuccessOutput = (bool) $skipSuccessOutput;
+    }
+
+    /**
+     * Get progress.
+     *
+     * @return string
+     */
+    public function getProgress()
+    {
+        if (!isset($this->progress)) {
+            $this->setProgress($this->checker->getProgress());
+        }
+
+        return $this->progress;
+    }
+
+    /**
+     * Set progress.
+     *
+     * @param string $progress
+     *
+     * @return void
+     */
+    public function setProgress($progress)
+    {
+        $this->progress = (string) $progress;
     }
 
     /**

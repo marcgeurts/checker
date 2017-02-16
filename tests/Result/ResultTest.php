@@ -45,7 +45,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $result = Result::skipped($this->runner, $this->context, $this->action);
 
         $this->assertInstanceOf(ResultInterface::class, $result);
-        $this->assertSame(Result::SKIPPED, $result->getStatus());
+        $this->assertSame(ResultInterface::SKIPPED, $result->getStatus());
         $this->assertInstanceOf(RunnerInterface::class, $result->getRunner());
         $this->assertSame($this->runner, $result->getRunner());
         $this->assertInstanceOf(ContextInterface::class, $result->getContext());
@@ -64,7 +64,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $result = Result::success($this->runner, $this->context, $this->action);
 
         $this->assertInstanceOf(ResultInterface::class, $result);
-        $this->assertSame(Result::SUCCESS, $result->getStatus());
+        $this->assertSame(ResultInterface::SUCCESS, $result->getStatus());
         $this->assertInstanceOf(RunnerInterface::class, $result->getRunner());
         $this->assertSame($this->runner, $result->getRunner());
         $this->assertInstanceOf(ContextInterface::class, $result->getContext());
@@ -83,7 +83,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $result = Result::warning($this->runner, $this->context, $this->action, 'WARNING');
 
         $this->assertInstanceOf(ResultInterface::class, $result);
-        $this->assertSame(Result::WARNING, $result->getStatus());
+        $this->assertSame(ResultInterface::WARNING, $result->getStatus());
         $this->assertInstanceOf(RunnerInterface::class, $result->getRunner());
         $this->assertSame($this->runner, $result->getRunner());
         $this->assertInstanceOf(ContextInterface::class, $result->getContext());
@@ -102,7 +102,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $result = Result::error($this->runner, $this->context, $this->action, 'ERROR');
 
         $this->assertInstanceOf(ResultInterface::class, $result);
-        $this->assertSame(Result::ERROR, $result->getStatus());
+        $this->assertSame(ResultInterface::ERROR, $result->getStatus());
         $this->assertInstanceOf(RunnerInterface::class, $result->getRunner());
         $this->assertSame($this->runner, $result->getRunner());
         $this->assertInstanceOf(ContextInterface::class, $result->getContext());

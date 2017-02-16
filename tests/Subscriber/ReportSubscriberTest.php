@@ -7,6 +7,7 @@ use ClickNow\Checker\Event\RunnerEvent;
 use ClickNow\Checker\Helper\PathsHelper;
 use ClickNow\Checker\IO\IOInterface;
 use ClickNow\Checker\Result\Result;
+use ClickNow\Checker\Result\ResultInterface;
 use ClickNow\Checker\Result\ResultsCollection;
 use ClickNow\Checker\Runner\ActionInterface;
 use ClickNow\Checker\Runner\RunnerInterface;
@@ -59,22 +60,22 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function testOnReportNull()
     {
-        $event = m::mock(RunnerEvent::class);
-        $event->shouldReceive('getResults')->withNoArgs()->once()->andReturnNull();
-        $event->shouldReceive('getContext')->withNoArgs()->never();
+        $runnerEvent = m::mock(RunnerEvent::class);
+        $runnerEvent->shouldReceive('getResults')->withNoArgs()->once()->andReturnNull();
+        $runnerEvent->shouldReceive('getContext')->withNoArgs()->never();
 
-        $this->reportSubscriber->onReport($event);
+        $this->reportSubscriber->onReport($runnerEvent);
     }
 
     public function testOnReportEmpty()
     {
         $results = new ResultsCollection();
 
-        $event = m::mock(RunnerEvent::class);
-        $event->shouldReceive('getResults')->withNoArgs()->once()->andReturn($results);
-        $event->shouldReceive('getContext')->withNoArgs()->never();
+        $runnerEvent = m::mock(RunnerEvent::class);
+        $runnerEvent->shouldReceive('getResults')->withNoArgs()->once()->andReturn($results);
+        $runnerEvent->shouldReceive('getContext')->withNoArgs()->never();
 
-        $this->reportSubscriber->onReport($event);
+        $this->reportSubscriber->onReport($runnerEvent);
     }
 
     public function testOnReportSuccessWithMessage()
@@ -85,8 +86,8 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
         $runner->shouldReceive('getMessage')->with('successfully')->once()->andReturn('successfully');
 
         $results = new ResultsCollection();
-        $results->add($this->mockResult(Result::SUCCESS));
-        $results->add($this->mockResult(Result::SUCCESS));
+        $results->add($this->mockResult(ResultInterface::SUCCESS));
+        $results->add($this->mockResult(ResultInterface::SUCCESS));
 
         $this->paths->shouldReceive('getMessage')->with('successfully')->once()->andReturn('successfully');
         $this->io->shouldReceive('successText')->with('successfully')->once()->andReturnNull();
@@ -102,8 +103,8 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
         $runner->shouldReceive('getMessage')->with('successfully')->once()->andReturnNull();
 
         $results = new ResultsCollection();
-        $results->add($this->mockResult(Result::SUCCESS));
-        $results->add($this->mockResult(Result::SUCCESS));
+        $results->add($this->mockResult(ResultInterface::SUCCESS));
+        $results->add($this->mockResult(ResultInterface::SUCCESS));
 
         $this->paths->shouldReceive('getMessage')->with(null)->once()->andReturnNull();
         $this->io->shouldReceive('text')->withAnyArgs()->never();
@@ -125,10 +126,10 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
         $action2->shouldReceive('getName')->withNoArgs()->once()->andReturn('ACTION2');
 
         $results = new ResultsCollection();
-        $results->add($this->mockResult(Result::SUCCESS));
-        $results->add($this->mockResult(Result::SUCCESS));
-        $results->add($this->mockResult(Result::WARNING, $action1, 'WARNING1'));
-        $results->add($this->mockResult(Result::WARNING, $action2, 'WARNING2'));
+        $results->add($this->mockResult(ResultInterface::SUCCESS));
+        $results->add($this->mockResult(ResultInterface::SUCCESS));
+        $results->add($this->mockResult(ResultInterface::WARNING, $action1, 'WARNING1'));
+        $results->add($this->mockResult(ResultInterface::WARNING, $action2, 'WARNING2'));
 
         $this->paths->shouldReceive('getMessage')->with(null)->once()->andReturnNull();
 
@@ -153,10 +154,10 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
         $action2->shouldReceive('getName')->withNoArgs()->once()->andReturn('ACTION2');
 
         $results = new ResultsCollection();
-        $results->add($this->mockResult(Result::SUCCESS));
-        $results->add($this->mockResult(Result::SUCCESS));
-        $results->add($this->mockResult(Result::WARNING, $action1, 'WARNING1'));
-        $results->add($this->mockResult(Result::WARNING, $action2, 'WARNING2'));
+        $results->add($this->mockResult(ResultInterface::SUCCESS));
+        $results->add($this->mockResult(ResultInterface::SUCCESS));
+        $results->add($this->mockResult(ResultInterface::WARNING, $action1, 'WARNING1'));
+        $results->add($this->mockResult(ResultInterface::WARNING, $action2, 'WARNING2'));
 
         $this->paths->shouldReceive('getMessage')->withAnyArgs()->never();
 
@@ -182,8 +183,8 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
         $action2->shouldReceive('getName')->withNoArgs()->once()->andReturn('ACTION2');
 
         $results = new ResultsCollection();
-        $results->add($this->mockResult(Result::ERROR, $action1, 'ERROR1'));
-        $results->add($this->mockResult(Result::ERROR, $action2, 'ERROR2'));
+        $results->add($this->mockResult(ResultInterface::ERROR, $action1, 'ERROR1'));
+        $results->add($this->mockResult(ResultInterface::ERROR, $action2, 'ERROR2'));
 
         $this->paths->shouldReceive('getMessage')->with('failed')->once()->andReturn('failed');
 
@@ -210,8 +211,8 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
         $action2->shouldReceive('getName')->withNoArgs()->once()->andReturn('ACTION2');
 
         $results = new ResultsCollection();
-        $results->add($this->mockResult(Result::ERROR, $action1, 'ERROR1'));
-        $results->add($this->mockResult(Result::ERROR, $action2, 'ERROR2'));
+        $results->add($this->mockResult(ResultInterface::ERROR, $action1, 'ERROR1'));
+        $results->add($this->mockResult(ResultInterface::ERROR, $action2, 'ERROR2'));
 
         $this->paths->shouldReceive('getMessage')->with(null)->once()->andReturnNull();
 
@@ -238,10 +239,10 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
         $action2->shouldReceive('getName')->withNoArgs()->twice()->andReturn('ACTION2');
 
         $results = new ResultsCollection();
-        $results->add($this->mockResult(Result::WARNING, $action1, 'WARNING1'));
-        $results->add($this->mockResult(Result::WARNING, $action2, 'WARNING2'));
-        $results->add($this->mockResult(Result::ERROR, $action1, 'ERROR1'));
-        $results->add($this->mockResult(Result::ERROR, $action2, 'ERROR2'));
+        $results->add($this->mockResult(ResultInterface::WARNING, $action1, 'WARNING1'));
+        $results->add($this->mockResult(ResultInterface::WARNING, $action2, 'WARNING2'));
+        $results->add($this->mockResult(ResultInterface::ERROR, $action1, 'ERROR1'));
+        $results->add($this->mockResult(ResultInterface::ERROR, $action2, 'ERROR2'));
 
         $this->paths->shouldReceive('getMessage')->with(null)->once()->andReturnNull();
 
@@ -268,8 +269,8 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
         $action1->shouldReceive('getName')->withNoArgs()->once()->andReturn('ACTION1');
 
         $results = new ResultsCollection();
-        $results->add($this->mockResult(Result::SUCCESS));
-        $results->add($this->mockResult(Result::WARNING, $action1, 'WARNING1'));
+        $results->add($this->mockResult(ResultInterface::SUCCESS));
+        $results->add($this->mockResult(ResultInterface::WARNING, $action1, 'WARNING1'));
 
         $this->paths->shouldReceive('getMessage')->with('failed')->once()->andReturn('failed');
 
@@ -293,11 +294,11 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
         $context = m::mock(ContextInterface::class);
         $context->shouldReceive('getRunner')->withNoArgs()->once()->andReturn($runner);
 
-        $event = m::mock(RunnerEvent::class);
-        $event->shouldReceive('getResults')->withNoArgs()->once()->andReturn($results);
-        $event->shouldReceive('getContext')->withNoArgs()->once()->andReturn($context);
+        $runnerEvent = m::mock(RunnerEvent::class);
+        $runnerEvent->shouldReceive('getResults')->withNoArgs()->once()->andReturn($results);
+        $runnerEvent->shouldReceive('getContext')->withNoArgs()->once()->andReturn($context);
 
-        return $event;
+        return $runnerEvent;
     }
 
     /**

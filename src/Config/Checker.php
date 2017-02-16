@@ -122,6 +122,16 @@ class Checker
     }
 
     /**
+     * Get progress.
+     *
+     * @return string
+     */
+    public function getProgress()
+    {
+        return (string) $this->container->getParameter('progress');
+    }
+
+    /**
      * Is skip success output?
      *
      * @return bool

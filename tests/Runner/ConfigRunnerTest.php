@@ -128,6 +128,18 @@ class ConfigRunnerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->configRunner->isStrict());
     }
 
+    public function testProgress()
+    {
+        $this->checker->shouldReceive('getProgress')->withNoArgs()->once()->andReturn('list');
+        $this->assertSame('list', $this->configRunner->getProgress());
+
+        $this->configRunner->setProgress('bar');
+        $this->assertSame('bar', $this->configRunner->getProgress());
+
+        $this->configRunner->setProgress('');
+        $this->assertEmpty($this->configRunner->getProgress());
+    }
+
     public function testSkipSuccessOutput()
     {
         $this->checker->shouldReceive('isSkipSuccessOutput')->withNoArgs()->once()->andReturn(true);

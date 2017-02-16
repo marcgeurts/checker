@@ -6,14 +6,14 @@ currentMenu: parameters
 
 ### bin-dir
 
-*Default: ./vendor/bin*
+*Default: './vendor/bin'*
 
 This parameter will tell you where to find external commands.
 It defaults to the default composer bin directory.
 
 ### git-dir
 
-*Default: .*
+*Default: '.'*
 
 This parameter will tell in which folder it can find the .git folder.
 This parameter is used to create the git hooks at the correct location.
@@ -29,7 +29,7 @@ It defaults to null, which means that the default folder `resources/hooks `is us
 
 ### hooks-preset
 
-*Default: local*
+*Default: 'local'*
 
 This parameter will tell which hooks preset to use.
 Presets are only used when you did NOT specify a custom `hooks-dir`.
@@ -97,6 +97,14 @@ This parameter will tell to use strict mode.
 This means that warnings will be considered as errors.
 By default will strict mode is disabled.
 
+### progress
+
+*Default: 'list'*
+
+This parameter will tell which progress type to use while are running your actions.
+Currently, exists two types `list` and `bar`.
+By default will progress is `list`.
+
 ### skip-success-output
 
 *Default: false*
@@ -106,7 +114,7 @@ By default will continue show success output.
 
 ### message
 
-*Default: { successfully: successfully.txt, failed: failed.txt }*
+*Default: {successfully: 'successfully.txt', failed: 'failed.txt'}*
 
 This parameter will tell where can locate ascii images or display simple text.
 If path is not specified default image from `resources/ascii/` folder are used.
@@ -119,7 +127,7 @@ For example:
 parameters:
   message:
     successfully: ~ # To disable
-    failed: FAILED!!! # To display simple text
+    failed: 'FAILED!!!' # To display simple text, because file do not exists!
 ```
 
 ### extensions
@@ -197,6 +205,7 @@ You can also override these configurations:
 - stop-on-failure
 - ignore-unstaged-changes
 - strict
+- progress
 - skip-success-output
 
 For example:
@@ -212,6 +221,7 @@ parameters:
       stop-on-failure: true
       ignore-unstaged-changes: true
       strict: true
+      progress: 'bar'
       skip-success-output: true
       tasks:
         foo: ~ # Use default configuration
@@ -222,6 +232,7 @@ parameters:
       stop-on-failure: false
       ignore-unstaged-changes: false
       strict: false
+      progress: 'list'
       skip-success-output: false
       tasks:
         foo:
@@ -247,6 +258,7 @@ You can also override these configurations:
 - stop-on-failure
 - ignore-unstaged-changes
 - strict
+- progress
 - skip-success-output
 
 For example:
@@ -262,6 +274,7 @@ parameters:
       stop-on-failure: true
       ignore-unstaged-changes: true
       strict: true
+      progress: 'bar'
       skip-success-output: true
       tasks:
         foo: ~ # Use default configuration
@@ -272,6 +285,7 @@ parameters:
       stop-on-failure: false
       ignore-unstaged-changes: false
       strict: false
+      progress: 'list'
       skip-success-output: false
       tasks:
         foo:

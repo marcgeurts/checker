@@ -75,6 +75,8 @@ class CommandCompilerPassTest extends \PHPUnit_Framework_TestCase
         $command->shouldReceive('addMethodCall')->with('setProcessAsyncLimit', [1000])->once()->andReturnSelf();
         $command->shouldReceive('addMethodCall')->with('setStopOnFailure', [false])->once()->andReturnSelf();
         $command->shouldReceive('addMethodCall')->with('setIgnoreUnstagedChanges', [false])->once()->andReturnSelf();
+        $command->shouldReceive('addMethodCall')->with('setStrict', [false])->once()->andReturnSelf();
+        $command->shouldReceive('addMethodCall')->with('setProgress', ['list'])->once()->andReturnSelf();
         $command->shouldReceive('addMethodCall')->with('setSkipSuccessOutput', [false])->once()->andReturnSelf();
         $command->shouldReceive('addMethodCall')->with('setMessage', [['failed' => 'ERROR']])->once()->andReturnSelf();
         $command->shouldReceive('addMethodCall')->with('setCanRunIn', [true])->once()->andReturnSelf();
@@ -101,6 +103,8 @@ class CommandCompilerPassTest extends \PHPUnit_Framework_TestCase
                     'process-async-limit'     => 1000,
                     'stop-on-failure'         => false,
                     'ignore-unstaged-changes' => false,
+                    'strict'                  => false,
+                    'progress'                => 'list',
                     'skip-success-output'     => false,
                     'message'                 => ['failed' => 'ERROR'],
                     'can-run-in'              => true,

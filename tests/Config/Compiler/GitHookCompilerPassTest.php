@@ -70,6 +70,8 @@ class GitHookCompilerPassTest extends \PHPUnit_Framework_TestCase
         $hook->shouldReceive('addMethodCall')->with('setProcessAsyncLimit', [1000])->once()->andReturnSelf();
         $hook->shouldReceive('addMethodCall')->with('setStopOnFailure', [false])->once()->andReturnSelf();
         $hook->shouldReceive('addMethodCall')->with('setIgnoreUnstagedChanges', [false])->once()->andReturnSelf();
+        $hook->shouldReceive('addMethodCall')->with('setStrict', [false])->once()->andReturnSelf();
+        $hook->shouldReceive('addMethodCall')->with('setProgress', ['list'])->once()->andReturnSelf();
         $hook->shouldReceive('addMethodCall')->with('setSkipSuccessOutput', [false])->once()->andReturnSelf();
         $hook->shouldReceive('addMethodCall')->with('setMessage', [['failed' => 'ERROR']])->once()->andReturnSelf();
         $hook->shouldReceive('addMethodCall')->with('setCanRunIn', [true])->once()->andReturnSelf();
@@ -87,6 +89,8 @@ class GitHookCompilerPassTest extends \PHPUnit_Framework_TestCase
                     'process-async-limit'     => 1000,
                     'stop-on-failure'         => false,
                     'ignore-unstaged-changes' => false,
+                    'strict'                  => false,
+                    'progress'                => 'list',
                     'skip-success-output'     => false,
                     'message'                 => ['failed' => 'ERROR'],
                     'can-run-in'              => true,

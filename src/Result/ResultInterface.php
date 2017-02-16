@@ -4,6 +4,11 @@ namespace ClickNow\Checker\Result;
 
 interface ResultInterface
 {
+    const SKIPPED = -1;
+    const SUCCESS = 0;
+    const WARNING = 1;
+    const ERROR = 2;
+
     /**
      * Get status.
      *

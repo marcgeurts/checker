@@ -1,6 +1,13 @@
 services:
-  subscriber.progress:
-    class: ClickNow\Checker\Subscriber\ProgressSubscriber
+  subscriber.progress-list:
+    class: ClickNow\Checker\Subscriber\ProgressListSubscriber
+    arguments:
+      - '@io'
+    tags:
+      - { name: checker.event-subscriber }
+
+  subscriber.progress-bar:
+    class: ClickNow\Checker\Subscriber\ProgressBarSubscriber
     arguments:
       - '@io'
     tags:

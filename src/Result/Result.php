@@ -8,10 +8,7 @@ use ClickNow\Checker\Runner\RunnerInterface;
 
 class Result implements ResultInterface
 {
-    const SKIPPED = -1;
-    const SUCCESS = 0;
-    const WARNING = 1;
-    const ERROR = 2;
+
 
     /**
      * @var int
@@ -75,7 +72,7 @@ class Result implements ResultInterface
         ContextInterface $context,
         ActionInterface $action
     ) {
-        return new self(self::SKIPPED, $runner, $context, $action);
+        return new self(ResultInterface::SKIPPED, $runner, $context, $action);
     }
 
     /**
@@ -92,7 +89,7 @@ class Result implements ResultInterface
         ContextInterface $context,
         ActionInterface $action
     ) {
-        return new self(self::SUCCESS, $runner, $context, $action);
+        return new self(ResultInterface::SUCCESS, $runner, $context, $action);
     }
 
     /**
@@ -111,7 +108,7 @@ class Result implements ResultInterface
         ActionInterface $action,
         $message
     ) {
-        return new self(self::WARNING, $runner, $context, $action, $message);
+        return new self(ResultInterface::WARNING, $runner, $context, $action, $message);
     }
 
     /**
@@ -130,7 +127,7 @@ class Result implements ResultInterface
         ActionInterface $action,
         $message
     ) {
-        return new self(self::ERROR, $runner, $context, $action, $message);
+        return new self(ResultInterface::ERROR, $runner, $context, $action, $message);
     }
 
     /**
@@ -190,7 +187,7 @@ class Result implements ResultInterface
      */
     public function isSkipped()
     {
-        return $this->getStatus() === self::SKIPPED;
+        return $this->getStatus() === ResultInterface::SKIPPED;
     }
 
     /**
@@ -200,7 +197,7 @@ class Result implements ResultInterface
      */
     public function isSuccess()
     {
-        return $this->getStatus() === self::SUCCESS;
+        return $this->getStatus() === ResultInterface::SUCCESS;
     }
 
     /**
@@ -210,7 +207,7 @@ class Result implements ResultInterface
      */
     public function isWarning()
     {
-        return $this->getStatus() === self::WARNING;
+        return $this->getStatus() === ResultInterface::WARNING;
     }
 
     /**
@@ -220,6 +217,6 @@ class Result implements ResultInterface
      */
     public function isError()
     {
-        return $this->getStatus() === self::ERROR;
+        return $this->getStatus() === ResultInterface::ERROR;
     }
 }

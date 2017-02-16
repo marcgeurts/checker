@@ -22,6 +22,7 @@ abstract class AbstractRunnerCommand extends Command
         'ignore-unstaged-changes' => 'Ignore unstaged changes.',
         'skip-success-output'     => 'Skip success output.',
         'strict'                  => 'Strict',
+        'progress'                => 'Progress',
     ];
 
     /**

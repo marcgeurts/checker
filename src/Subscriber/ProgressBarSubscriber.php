@@ -5,9 +5,10 @@ namespace ClickNow\Checker\Subscriber;
 use ClickNow\Checker\Event\ActionEvent;
 use ClickNow\Checker\Event\RunnerEvent;
 use ClickNow\Checker\IO\IOInterface;
+use ClickNow\Checker\Runner\RunnerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class ProgressSubscriber implements EventSubscriberInterface
+class ProgressBarSubscriber implements EventSubscriberInterface
 {
     /**
      * @var \ClickNow\Checker\IO\IOInterface
@@ -20,7 +21,7 @@ class ProgressSubscriber implements EventSubscriberInterface
     private $progressBar;
 
     /**
-     * Progress subscriber.
+     * Progress bar subscriber.
      *
      * @param \ClickNow\Checker\IO\IOInterface $io
      */
@@ -47,34 +48,62 @@ class ProgressSubscriber implements EventSubscriberInterface
     }
 
     /**
+     * Is enabled?
+     *
+     * @param \ClickNow\Checker\Runner\RunnerInterface $runner
+     *
+     * @return bool
+     */
+    private function isEnabled(RunnerInterface $runner)
+    {
+        return $runner->getProgress() === 'bar';
+    }
+
+    /**
      * Start progress.
      *
-     * @param \ClickNow\Checker\Event\RunnerEvent $event
+     * @param \ClickNow\Checker\Event\RunnerEvent $runnerEvent
      *
      * @return void
      */
-    public function startProgress(RunnerEvent $event)
+    public function startProgress(RunnerEvent $runnerEvent)
     {
-        $this->progressBar->start($event->getActions()->count());
+        if (!$this->isEnabled($runnerEvent->getContext()->getRunner())) {
+            return;
+        }
+
+        $this->progressBar->start($runnerEvent->getActions()->count());
     }
 
     /**
      * Advance progress.
      *
+     * @param \ClickNow\Checker\Event\ActionEvent $actionEvent
+     *
      * @return void
      */
-    public function advanceProgress()
+    public function advanceProgress(ActionEvent $actionEvent)
     {
+        if (!$this->isEnabled($actionEvent->getContext()->getRunner())) {
+            return;
+        }
+
         $this->progressBar->advance();
     }
 
     /**
      * Finish progress.
      *
+     * @param \ClickNow\Checker\Event\RunnerEvent $runnerEvent
+     *
      * @return void
      */
-    public function finishProgress()
+    public function finishProgress(RunnerEvent $runnerEvent)
     {
+        if (!$this->isEnabled($runnerEvent->getContext()->getRunner())) {
+            return;
+        }
+
         if ($this->progressBar->getProgress() != $this->progressBar->getMaxSteps()) {
             $this->io->newLine(2);
             $this->io->caution('Aborted...');

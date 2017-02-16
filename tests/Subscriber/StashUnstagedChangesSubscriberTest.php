@@ -160,9 +160,9 @@ class StashUnstagedChangesSubscriberTest extends \PHPUnit_Framework_TestCase
         $context = m::mock(ContextInterface::class);
         $context->shouldReceive('getRunner')->withNoArgs()->once()->andReturn($runner);
 
-        $event = m::mock(RunnerEvent::class);
-        $event->shouldReceive('getContext')->withNoArgs()->once()->andReturn($context);
+        $runnerEvent = m::mock(RunnerEvent::class);
+        $runnerEvent->shouldReceive('getContext')->withNoArgs()->once()->andReturn($context);
 
-        return $event;
+        return $runnerEvent;
     }
 }

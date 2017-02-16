@@ -92,6 +92,12 @@ class CheckerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->checker->isStrict());
     }
 
+    public function testGetProgress()
+    {
+        $this->container->shouldReceive('getParameter')->with('progress')->once()->andReturn('list');
+        $this->assertSame('list', $this->checker->getProgress());
+    }
+
     public function testIsSkipSuccessOutput()
     {
         $this->container->shouldReceive('getParameter')->with('skip-success-output')->once()->andReturn(true);

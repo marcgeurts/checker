@@ -7,6 +7,7 @@ use ClickNow\Checker\Event\ActionEvent;
 use ClickNow\Checker\Event\RunnerEvent;
 use ClickNow\Checker\IO\IOInterface;
 use ClickNow\Checker\Result\Result;
+use ClickNow\Checker\Result\ResultInterface;
 use ClickNow\Checker\Runner\ActionInterface;
 use ClickNow\Checker\Runner\ActionsCollection;
 use ClickNow\Checker\Runner\RunnerInterface;
@@ -100,9 +101,9 @@ class RunnerHelperTest extends \PHPUnit_Framework_TestCase
         $this->io->shouldReceive('title')->with('/`foo`/')->atMost()->once()->andReturnNull();
         $this->runner->shouldReceive('isStrict')->withNoArgs()->twice()->andReturn(false);
 
-        $this->createAction('action1', Result::SUCCESS);
-        $this->createAction('action2', Result::WARNING);
-        $this->createAction('action3', Result::SKIPPED);
+        $this->createAction('action1', ResultInterface::SUCCESS);
+        $this->createAction('action2', ResultInterface::WARNING);
+        $this->createAction('action3', ResultInterface::SKIPPED);
 
         $runnerType = m::type(RunnerEvent::class);
 
@@ -119,10 +120,10 @@ class RunnerHelperTest extends \PHPUnit_Framework_TestCase
         $this->runner->shouldReceive('isStopOnFailure')->withNoArgs()->andReturn(false);
         $this->runner->shouldReceive('isStrict')->withNoArgs()->twice()->andReturn(false);
 
-        $this->createAction('action1', Result::SUCCESS);
-        $this->createAction('action2', Result::WARNING);
-        $this->createAction('action3', Result::SKIPPED);
-        $this->createAction('action4', Result::ERROR);
+        $this->createAction('action1', ResultInterface::SUCCESS);
+        $this->createAction('action2', ResultInterface::WARNING);
+        $this->createAction('action3', ResultInterface::SKIPPED);
+        $this->createAction('action4', ResultInterface::ERROR);
 
         $runnerType = m::type(RunnerEvent::class);
 
@@ -139,9 +140,9 @@ class RunnerHelperTest extends \PHPUnit_Framework_TestCase
         $this->runner->shouldReceive('isStopOnFailure')->withNoArgs()->andReturn(true);
         $this->runner->shouldReceive('isStrict')->withNoArgs()->twice()->andReturn(true);
 
-        $this->createAction('action1', Result::SUCCESS);
-        $this->createAction('action2', Result::WARNING, 1, true);
-        $this->createAction('action3', Result::SKIPPED);
+        $this->createAction('action1', ResultInterface::SUCCESS);
+        $this->createAction('action2', ResultInterface::WARNING, 1, true);
+        $this->createAction('action3', ResultInterface::SKIPPED);
 
         $runnerType = m::type(RunnerEvent::class);
 
@@ -158,8 +159,8 @@ class RunnerHelperTest extends \PHPUnit_Framework_TestCase
         $this->runner->shouldReceive('isStopOnFailure')->withNoArgs()->andReturn(true);
         $this->runner->shouldReceive('isStrict')->withNoArgs()->once()->andReturn(false);
 
-        $this->createAction('action1', Result::ERROR);
-        $this->createAction('action2', Result::ERROR, 0);
+        $this->createAction('action1', ResultInterface::ERROR);
+        $this->createAction('action2', ResultInterface::ERROR, 0);
 
         $runnerType = m::type(RunnerEvent::class);
 

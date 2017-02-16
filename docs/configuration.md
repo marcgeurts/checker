@@ -12,20 +12,21 @@ or in the `--config` option of the console commands.
 ```yaml
 # cheker.yml
 parameters:
-  bin-dir: "./vendor/bin"
-  git-dir: "."
+  bin-dir: './vendor/bin'
+  git-dir: '.'
   hooks-dir: ~
-  hooks-preset: local
+  hooks-preset: 'local'
   process-timeout: 60
   process-async-wait: 1000
   process-async-limit: 10
   stop-on-failure: false
   ignore-unstaged-changes: false
   strict: false
+  progress: 'list'
   skip-success-output: false
   message:
-    successfully: successfully.txt
-    failed: failed.txt
+    successfully: 'successfully.txt'
+    failed: 'failed.txt'
   extensions: []
   tasks: ~
   git-hooks:

@@ -140,18 +140,18 @@ class Runner implements RunnerInterface
     private function getResultStatusFromResults(ResultsCollection $results)
     {
         if ($results->isFailed($this->isStrict())) {
-            return Result::ERROR;
+            return ResultInterface::ERROR;
         }
 
         if (!$results->filterByWarning()->isEmpty()) {
-            return Result::WARNING;
+            return ResultInterface::WARNING;
         }
 
         if (!$results->filterBySuccess()->isEmpty()) {
-            return Result::SUCCESS;
+            return ResultInterface::SUCCESS;
         }
 
-        return Result::SKIPPED;
+        return ResultInterface::SKIPPED;
     }
 
     /**

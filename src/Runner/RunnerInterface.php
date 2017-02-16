@@ -9,14 +9,14 @@ interface RunnerInterface extends ActionInterface
     /**
      * Get process timeout.
      *
-     * @return null|float
+     * @return float
      */
     public function getProcessTimeout();
 
     /**
      * Set process timeout.
      *
-     * @param null|float $processTimeout
+     * @param float $processTimeout
      *
      * @return void
      */
@@ -117,6 +117,22 @@ interface RunnerInterface extends ActionInterface
      * @return void
      */
     public function setSkipSuccessOutput($skipSuccessOutput);
+
+    /**
+     * Get progress.
+     *
+     * @return string
+     */
+    public function getProgress();
+
+    /**
+     * Set progress.
+     *
+     * @param string $progress
+     *
+     * @return void
+     */
+    public function setProgress($progress);
 
     /**
      * Get message.
