@@ -84,37 +84,41 @@ class PreCommitCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(1, $this->commandTester->getStatusCode());
     }
 
-    /**
-     * @dataProvider options
-     */
-    public function testRunWithOptions($option, $function, $valueFunction, $valueOption)
+    public function testRunWithOptions()
     {
         $this->git->shouldReceive('getChangedFiles')->with(null)->once()->andReturn(new FilesCollection());
         $this->runnerHelper->shouldReceive('run')->with(m::type(PreCommitContext::class))->once()->andReturn(0);
 
-        $this->runner->shouldReceive($function)->with($valueFunction)->once()->andReturnNull();
+        $this->runner->shouldReceive('setProcessTimeout')->with(60)->once()->andReturnNull();
+        $this->runner->shouldReceive('setProcessAsyncWait')->with(1000)->once()->andReturnNull();
+        $this->runner->shouldReceive('setProcessAsyncLimit')->with(10)->once()->andReturnNull();
+        $this->runner->shouldReceive('setStopOnFailure')->with(true)->once()->andReturnNull();
+        $this->runner->shouldReceive('setStopOnFailure')->with(false)->once()->andReturnNull();
+        $this->runner->shouldReceive('setIgnoreUnstagedChanges')->with(true)->once()->andReturnNull();
+        $this->runner->shouldReceive('setIgnoreUnstagedChanges')->with(false)->once()->andReturnNull();
+        $this->runner->shouldReceive('setStrict')->with(true)->once()->andReturnNull();
+        $this->runner->shouldReceive('setStrict')->with(false)->once()->andReturnNull();
+        $this->runner->shouldReceive('setProgress')->with('bar')->once()->andReturnNull();
+        $this->runner->shouldReceive('setProgress')->with(null)->once()->andReturnNull();
+        $this->runner->shouldReceive('setSkipSuccessOutput')->with(true)->once()->andReturnNull();
+        $this->runner->shouldReceive('setSkipSuccessOutput')->with(false)->once()->andReturnNull();
 
-        $this->commandTester->execute(['--'.$option => $valueOption]);
+        $this->commandTester->execute([
+            '--process-timeout'            => 60,
+            '--process-async-wait'         => 1000,
+            '--process-async-limit'        => 10,
+            '--stop-on-failure'            => true,
+            '--no-stop-on-failure'         => true,
+            '--ignore-unstaged-changes'    => true,
+            '--no-ignore-unstaged-changes' => true,
+            '--strict'                     => true,
+            '--no-strict'                  => true,
+            '--progress'                   => 'bar',
+            '--no-progress'                => true,
+            '--skip-success-output'        => true,
+            '--no-skip-success-output'     => true,
+        ]);
 
         $this->assertSame(0, $this->commandTester->getStatusCode());
-    }
-
-    public function options()
-    {
-        return [
-            ['process-timeout', 'setProcessTimeout', 60, 60],
-            ['process-async-wait', 'setProcessAsyncWait', 1000, 1000],
-            ['process-async-limit', 'setProcessAsyncLimit', 10, 10],
-            ['stop-on-failure', 'setStopOnFailure', true, true],
-            ['no-stop-on-failure', 'setStopOnFailure', false, true],
-            ['ignore-unstaged-changes', 'setIgnoreUnstagedChanges', true, true],
-            ['no-ignore-unstaged-changes', 'setIgnoreUnstagedChanges', false, true],
-            ['strict', 'setStrict', true, true],
-            ['no-strict', 'setStrict', false, true],
-            ['progress', 'setProgress', 'bar', 'bar'],
-            ['no-progress', 'setProgress', null, true],
-            ['skip-success-output', 'setSkipSuccessOutput', true, true],
-            ['no-skip-success-output', 'setSkipSuccessOutput', false, true],
-        ];
     }
 }
