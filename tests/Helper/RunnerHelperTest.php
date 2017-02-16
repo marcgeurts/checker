@@ -98,7 +98,7 @@ class RunnerHelperTest extends \PHPUnit_Framework_TestCase
     public function testRunAndReturnCodeSuccess()
     {
         $this->io->shouldReceive('title')->with('/`foo`/')->atMost()->once()->andReturnNull();
-        $this->runner->shouldReceive('isStrict')->withNoArgs()->once()->andReturn(false);
+        $this->runner->shouldReceive('isStrict')->withNoArgs()->twice()->andReturn(false);
 
         $this->createAction('action1', Result::SUCCESS);
         $this->createAction('action2', Result::WARNING);
@@ -117,7 +117,7 @@ class RunnerHelperTest extends \PHPUnit_Framework_TestCase
     {
         $this->io->shouldReceive('title')->with('/`foo`/')->atMost()->once()->andReturnNull();
         $this->runner->shouldReceive('isStopOnFailure')->withNoArgs()->andReturn(false);
-        $this->runner->shouldReceive('isStrict')->withNoArgs()->once()->andReturn(false);
+        $this->runner->shouldReceive('isStrict')->withNoArgs()->twice()->andReturn(false);
 
         $this->createAction('action1', Result::SUCCESS);
         $this->createAction('action2', Result::WARNING);
@@ -137,10 +137,11 @@ class RunnerHelperTest extends \PHPUnit_Framework_TestCase
     {
         $this->io->shouldReceive('title')->with('/`foo`/')->atMost()->once()->andReturnNull();
         $this->runner->shouldReceive('isStopOnFailure')->withNoArgs()->andReturn(true);
-        $this->runner->shouldReceive('isStrict')->withNoArgs()->once()->andReturn(true);
+        $this->runner->shouldReceive('isStrict')->withNoArgs()->twice()->andReturn(true);
 
         $this->createAction('action1', Result::SUCCESS);
-        $this->createAction('action2', Result::WARNING);
+        $this->createAction('action2', Result::WARNING, 1, true);
+        $this->createAction('action3', Result::SKIPPED);
 
         $runnerType = m::type(RunnerEvent::class);
 
@@ -175,10 +176,11 @@ class RunnerHelperTest extends \PHPUnit_Framework_TestCase
      * @param string $name
      * @param int    $status
      * @param int    $times
+     * @param bool   $strict
      *
      * @return void
      */
-    protected function createAction($name, $status, $times = 1)
+    protected function createAction($name, $status, $times = 1, $strict = false)
     {
         $action = m::mock(ActionInterface::class);
         $action->shouldReceive('getName')->withNoArgs()->times($times)->andReturn($name);
@@ -198,13 +200,13 @@ class RunnerHelperTest extends \PHPUnit_Framework_TestCase
         $this->dispatcher
             ->shouldReceive('dispatch')
             ->with(ActionEvent::ACTION_FAILED, m::type(ActionEvent::class))
-            ->times($result->isSuccess() ? 0 : $times)
+            ->times($result->isError() || ($result->isWarning() && $strict) ? $times : 0)
             ->andReturn(m::mock(ActionEvent::class));
 
         $this->dispatcher
             ->shouldReceive('dispatch')
             ->with(ActionEvent::ACTION_SUCCESSFULLY, m::type(ActionEvent::class))
-            ->times($result->isSuccess() ? $times : 0)
+            ->times($result->isError() || ($result->isWarning() && $strict) ? 0 : $times)
             ->andReturn(m::mock(ActionEvent::class));
     }
 }

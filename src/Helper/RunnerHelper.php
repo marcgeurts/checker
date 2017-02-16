@@ -125,7 +125,7 @@ class RunnerHelper extends Helper
 
         $result = $context->getRunner()->runAction($context, $action);
 
-        if (!$result->isSuccess()) {
+        if ($result->isError() || ($result->isWarning() && $context->getRunner()->isStrict())) {
             $this->dispatcher->dispatch(ActionEvent::ACTION_FAILED, new ActionEvent($context, $action, $result));
 
             return $result;
