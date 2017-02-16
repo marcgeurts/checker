@@ -147,7 +147,11 @@ class Runner implements RunnerInterface
             return Result::WARNING;
         }
 
-        return Result::SUCCESS;
+        if (!$results->filterBySuccess()->isEmpty()) {
+            return Result::SUCCESS;
+        }
+
+        return Result::SKIPPED;
     }
 
     /**
@@ -160,7 +164,7 @@ class Runner implements RunnerInterface
      */
     private function parseActionResult(ActionInterface $action, ResultInterface $result)
     {
-        if (!$result->isSuccess() && !$this->isActionBlocking($action)) {
+        if ($result->isError() && !$this->isActionBlocking($action)) {
             return Result::warning(
                 $result->getRunner(),
                 $result->getContext(),

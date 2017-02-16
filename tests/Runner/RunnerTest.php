@@ -89,6 +89,21 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($result->getMessage());
     }
 
+    public function testRunAndReturnSkipped()
+    {
+        $action1 = $this->mockAction('action1', Result::SKIPPED);
+        $action2 = $this->mockAction('action2', Result::SKIPPED);
+
+        $this->runner->addAction($action1);
+        $this->runner->addAction($action2);
+
+        $result = $this->runner->run($this->runner, $this->context);
+
+        $this->assertInstanceOf(ResultInterface::class, $result);
+        $this->assertTrue($result->isSkipped());
+        $this->assertNull($result->getMessage());
+    }
+
     public function testRunAndReturnAError()
     {
         $action1 = $this->mockAction('action1', Result::ERROR, 'ERROR');
