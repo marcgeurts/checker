@@ -6,41 +6,40 @@ currentMenu: command-line
 
 ### run
 
+This command execute the command with name specified.
+
 *Parameter:*
 
 | Name        | Required     | Description
 | ----------- | ------------ | -----------
 | name        | true         | The command name to be executed
 
-For example:
+*Options:*
 
-```bash
-# Locally
-php ./vendor/bin/checker run name-of-command
-
-# Globally
-checker run name-of-command
-```
-
-You can also override these configurations:
-
-- process-timeout
-- process-async-wait
-- process-async-limit
-- stop-on-failure
-- ignore-unstaged-changes
-- strict
-- progress
-- skip-success-output
+| Name                              | Required  | Description
+| --------------------------------- | --------- | ---------------------------
+| process-timeout                   | true      | Specify process timeout
+| process-async-wait                | true      | Specify process async wait
+| process-async-limit               | true      | Specify process async limit
+| stop-on-failure                   | ---       | Stop on failure
+| no-stop-on-failure                | ---       | Non stop on failure
+| ignore-unstaged-changes           | ---       | Ignore unstaged changes
+| no-ignore-unstaged-changes        | ---       | No ignore unstaged changes
+| strict                            | ---       | Enable strict mode
+| no-strict                         | ---       | Disable strict mode
+| progress                          | true      | Specify process style
+| no-progress                       | ---       | Disable process style
+| skip-success-output               | ---       | Skip success output
+| no-skip-success-output            | ---       | No skip success output
 
 For example:
 
 ```bash
 # Locally
-php ./vendor/bin/checker run name-of-command --process-timeout=30 --process-async-wait=1000 --process-async-limit=30 --stop-on-failure=1 --ignore-unstaged-changes=1 --strict=1 --progress=bar --skip-success-output=1
+php ./vendor/bin/checker run name-of-command [--options]
 
 # Globally
-checker run name-of-command --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --strict=0 --progress=list --skip-success-output=0
+checker run name-of-command [--options]
 ```
 
 ### git:install
@@ -83,8 +82,6 @@ checker git:install -c=/path/to/checker.yml
 
 This command uninstall git hooks to Checker.
 
-> **Note:** If you have git hooks stored in backup, they will be restored.
-
 For example:
 
 ```bash
@@ -95,112 +92,110 @@ php ./vendor/bin/checker git:uninstall
 checker git:uninstall
 ```
 
+> **Note:** If you have git hooks stored in backup, they will be restored.
+
 ### git:commit-msg
 
 This command will be triggered by git hooks in commit-msg. However, you can run!
 
+*Argument:*
+
+| Name                              | Required  | Description
+| --------------------------------- | --------- | ---------------------------
+| commit-message-file               | false     | If not set, Checker find for you!
+
+*Options:*
+
+| Name                              | Required  | Description
+| --------------------------------- | --------- | ---------------------------
+| git-user-name                     | false     | If not set, Checker find for you!
+| git-user-email                    | false     | If not set, Checker find for you!
+| process-timeout                   | true      | Specify process timeout
+| process-async-wait                | true      | Specify process async wait
+| process-async-limit               | true      | Specify process async limit
+| stop-on-failure                   | ---       | Stop on failure
+| no-stop-on-failure                | ---       | Non stop on failure
+| ignore-unstaged-changes           | ---       | Ignore unstaged changes
+| no-ignore-unstaged-changes        | ---       | No ignore unstaged changes
+| strict                            | ---       | Enable strict mode
+| no-strict                         | ---       | Disable strict mode
+| progress                          | true      | Specify process style
+| no-progress                       | ---       | Disable process style
+| skip-success-output               | ---       | Skip success output
+| no-skip-success-output            | ---       | No skip success output
+
 For example:
 
 ```bash
 # Locally
-php ./vendor/bin/checker git:commit-msg
+php ./vendor/bin/checker git:commit-msg [commit-message-file] [--options]
 
 # Globally
-checker git:commit-msg
-```
-
-You can also override these configurations:
-
-- commit-message-file `If not set, Checker find for you!`
-- git-user-name `If not set, Checker find for you!`
-- git-user-email `If not set, Checker find for you!`
-- process-timeout
-- process-async-wait
-- process-async-limit
-- stop-on-failure
-- ignore-unstaged-changes
-- strict
-- progress
-- skip-success-output
-
-For example:
-
-```bash
-# Locally
-php ./vendor/bin/checker git:commit-msg commit-message-file --git-user-name=name --git-user-email=email --process-timeout=30 --process-async-wait=1000 --process-async-limit=30 --stop-on-failure=1 --ignore-unstaged-changes=1 --strict=1 --progress=bar --skip-success-output=1
-
-# Globally
-checker git:commit-msg commit-message-file --git-user-name=name --git-user-email=email --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --strict=0 --progress=list --skip-success-output=0
+checker git:commit-msg [commit-message-file] [--options]
 ```
 
 ### git:pre-commit
 
 This command will be triggered by git hooks in pre-commit. However, you can run!
 
-For example:
+*Options:*
 
-```bash
-# Locally
-php ./vendor/bin/checker git:pre-commit
-
-# Globally
-checker git:pre-commit
-```
-
-You can also override these configurations:
-
-- process-timeout
-- process-async-wait
-- process-async-limit
-- stop-on-failure
-- ignore-unstaged-changes
-- strict
-- progress
-- skip-success-output
+| Name                              | Required  | Description
+| --------------------------------- | --------- | ---------------------------
+| process-timeout                   | true      | Specify process timeout
+| process-async-wait                | true      | Specify process async wait
+| process-async-limit               | true      | Specify process async limit
+| stop-on-failure                   | ---       | Stop on failure
+| no-stop-on-failure                | ---       | Non stop on failure
+| ignore-unstaged-changes           | ---       | Ignore unstaged changes
+| no-ignore-unstaged-changes        | ---       | No ignore unstaged changes
+| strict                            | ---       | Enable strict mode
+| no-strict                         | ---       | Disable strict mode
+| progress                          | true      | Specify process style
+| no-progress                       | ---       | Disable process style
+| skip-success-output               | ---       | Skip success output
+| no-skip-success-output            | ---       | No skip success output
 
 For example:
 
 ```bash
 # Locally
-php ./vendor/bin/checker git:pre-commit --process-timeout=30 --process-async-wait=1000 --process-async-limit=30 --stop-on-failure=1 --ignore-unstaged-changes=1 --strict=1 --progress=bar --skip-success-output=1
+php ./vendor/bin/checker git:pre-commit [--options]
 
 # Globally
-checker git:pre-commit --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --strict=0 --progress=list --skip-success-output=0
+checker git:pre-commit [--options]
 ```
 
 ### git:pre-push
 
 This command will be triggered by git hooks in pre-push. However, you can run!
 
-For example:
+*Options:*
 
-```bash
-# Locally
-php ./vendor/bin/checker git:pre-push
-
-# Globally
-checker git:pre-push
-```
-
-You can also override these configurations:
-
-- process-timeout
-- process-async-wait
-- process-async-limit
-- stop-on-failure
-- ignore-unstaged-changes
-- strict
-- progress
-- skip-success-output
+| Name                              | Required  | Description
+| --------------------------------- | --------- | ---------------------------
+| process-timeout                   | true      | Specify process timeout
+| process-async-wait                | true      | Specify process async wait
+| process-async-limit               | true      | Specify process async limit
+| stop-on-failure                   | ---       | Stop on failure
+| no-stop-on-failure                | ---       | Non stop on failure
+| ignore-unstaged-changes           | ---       | Ignore unstaged changes
+| no-ignore-unstaged-changes        | ---       | No ignore unstaged changes
+| strict                            | ---       | Enable strict mode
+| no-strict                         | ---       | Disable strict mode
+| progress                          | true      | Specify process style
+| no-progress                       | ---       | Disable process style
+| skip-success-output               | ---       | Skip success output
+| no-skip-success-output            | ---       | No skip success output
 
 For example:
 
 ```bash
 # Locally
-php ./vendor/bin/checker git:pre-push --process-timeout=30 --process-async-wait=1000 --process-async-limit=30 --stop-on-failure=1 --ignore-unstaged-changes=1 --strict=1 --progress=bar --skip-success-output=1
+php ./vendor/bin/checker git:pre-push [--options]
 
 # Globally
-checker git:pre-push --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --strict=0 --progress=list --skip-success-output=0
+checker git:pre-push [--options]
 ```
 
 ***

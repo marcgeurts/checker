@@ -103,6 +103,22 @@ interface RunnerInterface extends ActionInterface
     public function setStrict($strict);
 
     /**
+     * Get progress.
+     *
+     * @return null|string
+     */
+    public function getProgress();
+
+    /**
+     * Set progress.
+     *
+     * @param null|string $progress
+     *
+     * @return void
+     */
+    public function setProgress($progress);
+
+    /**
      * Is skip success output?
      *
      * @return bool
@@ -117,22 +133,6 @@ interface RunnerInterface extends ActionInterface
      * @return void
      */
     public function setSkipSuccessOutput($skipSuccessOutput);
-
-    /**
-     * Get progress.
-     *
-     * @return string
-     */
-    public function getProgress();
-
-    /**
-     * Set progress.
-     *
-     * @param string $progress
-     *
-     * @return void
-     */
-    public function setProgress($progress);
 
     /**
      * Get message.

@@ -101,7 +101,7 @@ By default will strict mode is disabled.
 
 *Default: 'list'*
 
-This parameter will tell which progress type to use while are running your actions.
+This parameter will tell which progress st to use while are running your actions.
 Currently, exists two types `list` and `bar`.
 By default will progress is `list`.
 
@@ -232,7 +232,7 @@ parameters:
       stop-on-failure: false
       ignore-unstaged-changes: false
       strict: false
-      progress: 'list'
+      progress: ~
       skip-success-output: false
       tasks:
         foo:
@@ -285,7 +285,7 @@ parameters:
       stop-on-failure: false
       ignore-unstaged-changes: false
       strict: false
-      progress: 'list'
+      progress: ~
       skip-success-output: false
       tasks:
         foo:

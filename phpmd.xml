@@ -13,10 +13,16 @@
     </rule>
 
     <rule ref="rulesets/codesize.xml">
+        <exclude name="CyclomaticComplexity"/>
         <exclude name="ExcessiveMethodLength"/>
         <exclude name="TooManyFields"/>
         <exclude name="TooManyMethods"/>
         <exclude name="TooManyPublicMethods"/>
+    </rule>
+    <rule ref="rulesets/codesize.xml/CyclomaticComplexity">
+        <properties>
+            <property name="reportLevel" value="20" />
+        </properties>
     </rule>
     <rule ref="rulesets/codesize.xml/ExcessiveMethodLength">
         <properties>

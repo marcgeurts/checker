@@ -103,7 +103,10 @@ class CommitMsgCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(1, $this->commandTester->getStatusCode());
     }
 
-    public function testRunWithOptions()
+    /**
+     * @dataProvider options
+     */
+    public function testRunWithOptions($option, $function, $valueFunction, $valueOption)
     {
         $this->git->shouldReceive('getCommitMessage')->withNoArgs()->never();
         $this->git->shouldReceive('getUserName')->withNoArgs()->never();
@@ -116,29 +119,34 @@ class CommitMsgCommandTest extends \PHPUnit_Framework_TestCase
         $this->filesystem->shouldReceive('exists')->with('foo')->once()->andReturn(true);
         $this->filesystem->shouldReceive('readFromFileInfo')->with($type)->once()->andReturn('bar');
 
-        $this->runner->shouldReceive('setProcessTimeout')->with(60)->once()->andReturnNull();
-        $this->runner->shouldReceive('setProcessAsyncWait')->with(1000)->once()->andReturnNull();
-        $this->runner->shouldReceive('setProcessAsyncLimit')->with(10)->once()->andReturnNull();
-        $this->runner->shouldReceive('setStopOnFailure')->with(true)->once()->andReturnNull();
-        $this->runner->shouldReceive('setIgnoreUnstagedChanges')->with(true)->once()->andReturnNull();
-        $this->runner->shouldReceive('setStrict')->with(true)->once()->andReturnNull();
-        $this->runner->shouldReceive('setProgress')->with('bar')->once()->andReturnNull();
-        $this->runner->shouldReceive('setSkipSuccessOutput')->with(true)->once()->andReturnNull();
+        $this->runner->shouldReceive($function)->with($valueFunction)->once()->andReturnNull();
 
         $this->commandTester->execute([
-            'commit-message-file'       => 'foo',
-            '--git-user-name'           => 'bar',
-            '--git-user-email'          => 'foo@bar',
-            '--process-timeout'         => 60,
-            '--process-async-wait'      => 1000,
-            '--process-async-limit'     => 10,
-            '--stop-on-failure'         => true,
-            '--ignore-unstaged-changes' => true,
-            '--strict'                  => true,
-            '--progress'                => 'bar',
-            '--skip-success-output'     => true,
+            'commit-message-file' => 'foo',
+            '--git-user-name'     => 'bar',
+            '--git-user-email'    => 'foo@bar',
+            '--'.$option          => $valueOption,
         ]);
 
         $this->assertSame(0, $this->commandTester->getStatusCode());
+    }
+
+    public function options()
+    {
+        return [
+            ['process-timeout', 'setProcessTimeout', 60, 60],
+            ['process-async-wait', 'setProcessAsyncWait', 1000, 1000],
+            ['process-async-limit', 'setProcessAsyncLimit', 10, 10],
+            ['stop-on-failure', 'setStopOnFailure', true, true],
+            ['no-stop-on-failure', 'setStopOnFailure', false, true],
+            ['ignore-unstaged-changes', 'setIgnoreUnstagedChanges', true, true],
+            ['no-ignore-unstaged-changes', 'setIgnoreUnstagedChanges', false, true],
+            ['strict', 'setStrict', true, true],
+            ['no-strict', 'setStrict', false, true],
+            ['progress', 'setProgress', 'bar', 'bar'],
+            ['no-progress', 'setProgress', null, true],
+            ['skip-success-output', 'setSkipSuccessOutput', true, true],
+            ['no-skip-success-output', 'setSkipSuccessOutput', false, true],
+        ];
     }
 }

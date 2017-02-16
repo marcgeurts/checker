@@ -64,7 +64,7 @@ trait ConfigRunner
     private $strict;
 
     /**
-     * @var string
+     * @var null|string
      */
     private $progress;
 
@@ -276,6 +276,32 @@ trait ConfigRunner
     }
 
     /**
+     * Get progress.
+     *
+     * @return null|string
+     */
+    public function getProgress()
+    {
+        if (!isset($this->progress)) {
+            $this->setProgress($this->checker->getProgress());
+        }
+
+        return $this->progress;
+    }
+
+    /**
+     * Set progress.
+     *
+     * @param null|string $progress
+     *
+     * @return void
+     */
+    public function setProgress($progress)
+    {
+        $this->progress = (string) $progress;
+    }
+
+    /**
      * Is skip success output?
      *
      * @return bool
@@ -299,32 +325,6 @@ trait ConfigRunner
     public function setSkipSuccessOutput($skipSuccessOutput)
     {
         $this->skipSuccessOutput = (bool) $skipSuccessOutput;
-    }
-
-    /**
-     * Get progress.
-     *
-     * @return string
-     */
-    public function getProgress()
-    {
-        if (!isset($this->progress)) {
-            $this->setProgress($this->checker->getProgress());
-        }
-
-        return $this->progress;
-    }
-
-    /**
-     * Set progress.
-     *
-     * @param string $progress
-     *
-     * @return void
-     */
-    public function setProgress($progress)
-    {
-        $this->progress = (string) $progress;
     }
 
     /**
