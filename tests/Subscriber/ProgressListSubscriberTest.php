@@ -5,7 +5,6 @@ namespace ClickNow\Checker\Subscriber;
 use ClickNow\Checker\Event\ActionEvent;
 use ClickNow\Checker\Event\RunnerEvent;
 use ClickNow\Checker\IO\IOInterface;
-use ClickNow\Checker\Result\ResultInterface;
 use ClickNow\Checker\Runner\RunnerInterface;
 use Mockery as m;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -75,7 +74,6 @@ class ProgressListSubscriberTest extends \PHPUnit_Framework_TestCase
         $runnerEvent->shouldReceive('getContext->getRunner')->withNoArgs()->once()->andReturn($this->mockRunner());
         $runnerEvent->shouldReceive('getActions->count')->withNoArgs()->once()->andReturn(3);
 
-        $this->progressBar->shouldReceive('setFormat')->with('/Running/')->once()->andReturnNull();
         $this->progressBar->shouldReceive('start')->with(3)->once()->andReturnNull();
 
         $this->progressListSubscriber->startProgress($runnerEvent);
@@ -97,9 +95,10 @@ class ProgressListSubscriberTest extends \PHPUnit_Framework_TestCase
         $actionEvent->shouldReceive('getContext->getRunner')->withNoArgs()->once()->andReturn($this->mockRunner());
         $actionEvent->shouldReceive('getAction->getName')->withNoArgs()->once()->andReturn('ACTION');
 
+        $this->progressBar->shouldReceive('setFormat')->with('/Running/')->once()->andReturnNull();
         $this->progressBar->shouldReceive('setMessage')->with('/ACTION/')->once()->andReturnNull();
-        $this->progressBar->shouldReceive('setMessage')->with('/In progress/', 'status')->once()->andReturnNull();
         $this->progressBar->shouldReceive('advance')->withNoArgs()->once()->andReturnNull();
+        $this->progressBar->shouldReceive('setOverwrite')->with(false)->once()->andReturnNull();
 
         $this->progressListSubscriber->advanceProgress($actionEvent);
     }
@@ -109,38 +108,29 @@ class ProgressListSubscriberTest extends \PHPUnit_Framework_TestCase
         $actionEvent = m::mock(ActionEvent::class);
         $actionEvent->shouldReceive('getContext->getRunner')->withNoArgs()->once()->andReturn($this->mockRunner(false));
 
-        $this->progressBar->shouldReceive('display')->withAnyArgs()->never();
+        $this->io->shouldReceive('write')->withAnyArgs()->never();
 
-        $this->progressListSubscriber->changeProgress($actionEvent);
+        $this->progressListSubscriber->changeProgress($actionEvent, null);
     }
 
-    /**
-     * @dataProvider actionStatus
-     */
-    public function testChangeProgressEnabled($status, $message)
+    public function testChangeProgressEnabledWithStatusSuccessfully()
     {
         $actionEvent = m::mock(ActionEvent::class);
         $actionEvent->shouldReceive('getContext->getRunner')->withNoArgs()->once()->andReturn($this->mockRunner());
-        $actionEvent->shouldReceive('getResult->getStatus')->withNoArgs()->once()->andReturn($status);
-        $actionEvent->shouldReceive('getAction->getName')->withNoArgs()->once()->andReturn('ACTION');
 
-        $this->progressBar->shouldReceive('setMessage')->with('/ACTION/')->once()->andReturnNull();
-        $this->progressBar->shouldReceive('setOverwrite')->with(true)->once()->andReturnNull();
-        $this->progressBar->shouldReceive('setMessage')->with($message, 'status')->once()->andReturnNull();
-        $this->progressBar->shouldReceive('display')->withNoArgs()->once()->andReturnNull();
-        $this->progressBar->shouldReceive('setOverwrite')->with(false)->once()->andReturnNull();
+        $this->io->shouldReceive('write')->with('<fg=green>Ok</fg=green>')->once()->andReturnNull();
 
-        $this->progressListSubscriber->changeProgress($actionEvent);
+        $this->progressListSubscriber->changeProgress($actionEvent, ActionEvent::ACTION_SUCCESSFULLY);
     }
 
-    public function actionStatus()
+    public function testChangeProgressEnabledWithStatusFailed()
     {
-        return [
-            [ResultInterface::SUCCESS, '<fg=green>Ok</fg=green>'],
-            [ResultInterface::WARNING, '<fg=yellow>Warning</fg=yellow>'],
-            [ResultInterface::ERROR, '<fg=red>Error</fg=red>'],
-            [ResultInterface::SKIPPED, '<fg=cyan>Skipped</fg=cyan>'],
-        ];
+        $actionEvent = m::mock(ActionEvent::class);
+        $actionEvent->shouldReceive('getContext->getRunner')->withNoArgs()->once()->andReturn($this->mockRunner());
+
+        $this->io->shouldReceive('write')->with('<fg=red>Failed</fg=red>')->once()->andReturnNull();
+
+        $this->progressListSubscriber->changeProgress($actionEvent, ActionEvent::ACTION_FAILED);
     }
 
     public function testFinishProgressDisabled()

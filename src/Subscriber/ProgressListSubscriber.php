@@ -5,7 +5,6 @@ namespace ClickNow\Checker\Subscriber;
 use ClickNow\Checker\Event\ActionEvent;
 use ClickNow\Checker\Event\RunnerEvent;
 use ClickNow\Checker\IO\IOInterface;
-use ClickNow\Checker\Result\ResultInterface;
 use ClickNow\Checker\Runner\RunnerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -74,7 +73,6 @@ class ProgressListSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->progressBar->setFormat('<fg=cyan>Running %current%/%max%:</fg=cyan> %message% %status%');
         $this->progressBar->start($runnerEvent->getActions()->count());
     }
 
@@ -91,48 +89,34 @@ class ProgressListSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $this->progressBar->setFormat('<fg=cyan>Running %current%/%max%:</fg=cyan> %message% ');
         $this->progressBar->setMessage(str_pad($actionEvent->getAction()->getName(), 50, '.', STR_PAD_RIGHT));
-        $this->progressBar->setMessage('<fg=magenta>In progress</fg=magenta>', 'status');
         $this->progressBar->advance();
+        $this->progressBar->setOverwrite(false);
     }
 
     /**
      * Change progress.
      *
      * @param \ClickNow\Checker\Event\ActionEvent $actionEvent
+     * @param string                              $event
      *
      * @return void
      */
-    public function changeProgress(ActionEvent $actionEvent)
+    public function changeProgress(ActionEvent $actionEvent, $event)
     {
         if (!$this->isEnabled($actionEvent->getContext()->getRunner())) {
             return;
         }
 
-        $this->progressBar->setMessage(str_pad($actionEvent->getAction()->getName(), 50, '.', STR_PAD_RIGHT));
-        $this->progressBar->setOverwrite(true);
-
-        switch ($actionEvent->getResult()->getStatus()) {
-            case ResultInterface::SUCCESS:
-                $status = '<fg=green>Ok</fg=green>';
+        switch ($event) {
+            case ActionEvent::ACTION_SUCCESSFULLY:
+                $this->io->write('<fg=green>Ok</fg=green>');
                 break;
-
-            case ResultInterface::WARNING:
-                $status = '<fg=yellow>Warning</fg=yellow>';
-                break;
-
-            case ResultInterface::ERROR:
-                $status = '<fg=red>Error</fg=red>';
-                break;
-
-            default:
-                $status = '<fg=cyan>Skipped</fg=cyan>';
+            case ActionEvent::ACTION_FAILED:
+                $this->io->write('<fg=red>Failed</fg=red>');
                 break;
         }
-
-        $this->progressBar->setMessage($status, 'status');
-        $this->progressBar->display();
-        $this->progressBar->setOverwrite(false);
     }
 
     /**
@@ -148,7 +132,7 @@ class ProgressListSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($this->progressBar->getProgress() != $this->progressBar->getMaxSteps()) {
+        if ($this->progressBar->getProgress() !== $this->progressBar->getMaxSteps()) {
             $this->io->newLine(2);
             $this->io->caution('Aborted...');
 
