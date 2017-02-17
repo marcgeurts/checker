@@ -50,8 +50,8 @@
                                 </a>
                             </li>
                                                     <li class="">
-                                <a href="https://cknow.github.io/checker/docs/commands.html">
-                                    Commands
+                                <a href="https://cknow.github.io/checker/docs/command-line.html">
+                                    Command-Line
                                 </a>
                             </li>
                                                     <li class="">
@@ -79,19 +79,21 @@ You can specify a custom config filename and location in <code>composer.json</co
 or in the <code>--config</code> option of the console commands.</p>
 <pre><code class="language-yaml"># cheker.yml
 parameters:
-  bin-dir: "./vendor/bin"
-  git-dir: "."
+  bin-dir: './vendor/bin'
+  git-dir: '.'
   hooks-dir: ~
-  hooks-preset: local
+  hooks-preset: 'local'
   process-timeout: 60
   process-async-wait: 1000
   process-async-limit: 10
   stop-on-failure: false
   ignore-unstaged-changes: false
+  strict: false
+  progress: 'list'
   skip-success-output: false
   message:
-    successfully: successfully.txt
-    failed: failed.txt
+    successfully: 'successfully.txt'
+    failed: 'failed.txt'
   extensions: []
   tasks: ~
   git-hooks:
@@ -110,6 +112,14 @@ parameters:
 <li><a href="../contributing.html">Contributing</a></li>
 <li><a href="../license.html">License</a></li>
 </ul>
+<p>Adicione uma linha de pacotes de compositores necessários na documentação da tarefa. Desta forma,
+você pode apenas navegar para a configuração da tarefa e obter feedback completo sobre como implementá-lo.
+(Sim, eu tendem a esquecer de exigir o pacote :))</p>
+<p>Use o sinalizador --no-verify( -n) quando você confirmar que ignora os ganchos pré-commit e commit-msg.</p>
+<p>Ao executar ./vendor/bin/grumphp runtodos os arquivos no repositório são verificados e durante o
+gancho pré-commit depende da tarefa. A maioria das tarefas (afaik) só verifica arquivos phpcpdalterados,
+mas algumas tarefas ( por exemplo) irão analisar todo o projeto, uma vez que não seria útil se não.</p>
+<p>Adicionar informações sobre limitações atuais do Windows </p>
             </section>
         </div>
     </main>

@@ -50,8 +50,8 @@
                                 </a>
                             </li>
                                                     <li class="">
-                                <a href="https://cknow.github.io/checker/docs/commands.html">
-                                    Commands
+                                <a href="https://cknow.github.io/checker/docs/command-line.html">
+                                    Command-Line
                                 </a>
                             </li>
                                                     <li class="">
@@ -74,11 +74,11 @@
                         <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
                 <h1 id="parameters">Parameters</h1>
 <h3 id="bin-dir">bin-dir</h3>
-<p><em>Default: ./vendor/bin</em></p>
+<p><em>Default: './vendor/bin'</em></p>
 <p>This parameter will tell you where to find external commands.
 It defaults to the default composer bin directory.</p>
 <h3 id="git-dir">git-dir</h3>
-<p><em>Default: .</em></p>
+<p><em>Default: '.'</em></p>
 <p>This parameter will tell in which folder it can find the .git folder.
 This parameter is used to create the git hooks at the correct location.
 It defaults to the working directory.</p>
@@ -88,7 +88,7 @@ It defaults to the working directory.</p>
 It is used to find the git hooks at a custom location so that you can write your own git hooks.
 It defaults to null, which means that the default folder <code>resources/hooks</code>is used.</p>
 <h3 id="hooks-preset">hooks-preset</h3>
-<p><em>Default: local</em></p>
+<p><em>Default: 'local'</em></p>
 <p>This parameter will tell which hooks preset to use.
 Presets are only used when you did NOT specify a custom <code>hooks-dir</code>.
 Comes with following presets:</p>
@@ -129,12 +129,22 @@ By default will continue running the configured actions.</p>
 This way the actions will run with the code that is actually committed without the unstaged changes.
 Note that during the commit, the unstaged changes will be stored in git stash.
 This may mess with your working copy and result in unexpected merge conflicts.</p>
+<h3 id="strict">strict</h3>
+<p><em>Default: false</em></p>
+<p>This parameter will tell to use strict mode.
+This means that warnings will be considered as errors.
+By default will strict mode is disabled.</p>
+<h3 id="progress">progress</h3>
+<p><em>Default: 'list'</em></p>
+<p>This parameter will tell which progress st to use while are running your actions.
+Currently, exists two types <code>list</code> and <code>bar</code>.
+By default will progress is <code>list</code>.</p>
 <h3 id="skip-success-output">skip-success-output</h3>
 <p><em>Default: false</em></p>
 <p>This parameter will tell to skip success output.
 By default will continue show success output.</p>
 <h3 id="message">message</h3>
-<p><em>Default: { successfully: successfully.txt, failed: failed.txt }</em></p>
+<p><em>Default: {successfully: 'successfully.txt', failed: 'failed.txt'}</em></p>
 <p>This parameter will tell where can locate ascii images or display simple text.
 If path is not specified default image from <code>resources/ascii/</code> folder are used.
 Currently, only two images <code>successfully</code> and were <code>failed</code>.</p>
@@ -143,7 +153,7 @@ Currently, only two images <code>successfully</code> and were <code>failed</code
 parameters:
   message:
     successfully: ~ # To disable
-    failed: FAILED!!! # To display simple text</code></pre>
+    failed: 'FAILED!!!' # To display simple text, because file do not exists!</code></pre>
 <h3 id="extensions">extensions</h3>
 <p><em>Default: []</em></p>
 <p>This parameter will tell which extensions to load.</p>
@@ -197,6 +207,8 @@ Below is the list available of git hooks:</p>
 <li>process-async-limit</li>
 <li>stop-on-failure</li>
 <li>ignore-unstaged-changes</li>
+<li>strict</li>
+<li>progress</li>
 <li>skip-success-output</li>
 </ul>
 <p>For example:</p>
@@ -209,6 +221,8 @@ parameters:
       process-async-limit: 30
       stop-on-failure: true
       ignore-unstaged-changes: true
+      strict: true
+      progress: 'bar'
       skip-success-output: true
       tasks:
         foo: ~ # Use default configuration
@@ -218,6 +232,8 @@ parameters:
       process-async-limit: 60
       stop-on-failure: false
       ignore-unstaged-changes: false
+      strict: false
+      progress: ~
       skip-success-output: false
       tasks:
         foo:
@@ -238,6 +254,8 @@ You can create as many commands as you want with custom names.</p>
 <li>process-async-limit</li>
 <li>stop-on-failure</li>
 <li>ignore-unstaged-changes</li>
+<li>strict</li>
+<li>progress</li>
 <li>skip-success-output</li>
 </ul>
 <p>For example:</p>
@@ -250,6 +268,8 @@ parameters:
       process-async-limit: 30
       stop-on-failure: true
       ignore-unstaged-changes: true
+      strict: true
+      progress: 'bar'
       skip-success-output: true
       tasks:
         foo: ~ # Use default configuration
@@ -259,6 +279,8 @@ parameters:
       process-async-limit: 60
       stop-on-failure: false
       ignore-unstaged-changes: false
+      strict: false
+      progress: ~
       skip-success-output: false
       tasks:
         foo:

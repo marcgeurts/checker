@@ -49,9 +49,9 @@
                                     Tasks
                                 </a>
                             </li>
-                                                    <li class="">
-                                <a href="https://cknow.github.io/checker/docs/commands.html">
-                                    Commands
+                                                    <li class="active">
+                                <a href="https://cknow.github.io/checker/docs/command-line.html">
+                                    Command-Line
                                 </a>
                             </li>
                                                     <li class="">
@@ -74,6 +74,7 @@
                         <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
                 <h1 id="command-line">Command-Line</h1>
 <h3 id="run">run</h3>
+<p>This command execute the command with name specified.</p>
 <p><em>Parameter:</em></p>
 <table>
 <thead>
@@ -91,27 +92,89 @@
 </tr>
 </tbody>
 </table>
+<p><em>Options:</em></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>process-timeout</td>
+<td>true</td>
+<td>Specify process timeout</td>
+</tr>
+<tr>
+<td>process-async-wait</td>
+<td>true</td>
+<td>Specify process async wait</td>
+</tr>
+<tr>
+<td>process-async-limit</td>
+<td>true</td>
+<td>Specify process async limit</td>
+</tr>
+<tr>
+<td>stop-on-failure</td>
+<td>---</td>
+<td>Stop on failure</td>
+</tr>
+<tr>
+<td>no-stop-on-failure</td>
+<td>---</td>
+<td>Non stop on failure</td>
+</tr>
+<tr>
+<td>ignore-unstaged-changes</td>
+<td>---</td>
+<td>Ignore unstaged changes</td>
+</tr>
+<tr>
+<td>no-ignore-unstaged-changes</td>
+<td>---</td>
+<td>No ignore unstaged changes</td>
+</tr>
+<tr>
+<td>strict</td>
+<td>---</td>
+<td>Enable strict mode</td>
+</tr>
+<tr>
+<td>no-strict</td>
+<td>---</td>
+<td>Disable strict mode</td>
+</tr>
+<tr>
+<td>progress</td>
+<td>true</td>
+<td>Specify process style</td>
+</tr>
+<tr>
+<td>no-progress</td>
+<td>---</td>
+<td>Disable process style</td>
+</tr>
+<tr>
+<td>skip-success-output</td>
+<td>---</td>
+<td>Skip success output</td>
+</tr>
+<tr>
+<td>no-skip-success-output</td>
+<td>---</td>
+<td>No skip success output</td>
+</tr>
+</tbody>
+</table>
 <p>For example:</p>
 <pre><code class="language-bash"># Locally
-php ./vendor/bin/checker run name-of-command
+php ./vendor/bin/checker run name-of-command [--options]
 
 # Globally
-checker run name-of-command</code></pre>
-<p>You can also override these configurations:</p>
-<ul>
-<li>process-timeout</li>
-<li>process-async-wait</li>
-<li>process-async-limit</li>
-<li>stop-on-failure</li>
-<li>ignore-unstaged-changes</li>
-<li>skip-success-output</li>
-</ul>
-<p>For example:</p>
-<pre><code class="language-bash"># Locally
-php ./vendor/bin/checker run name-of-command --process-timeout=30 --process-async-wait=1000 --process-async-limit=30 --stop-on-failure=1 --ignore-unstaged-changes=1 --skip-success-output=1
-
-# Globally
-checker run name-of-command --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --skip-success-output=0</code></pre>
+checker run name-of-command [--options]</code></pre>
 <h3 id="gitinstall">git:install</h3>
 <p>This command install git hooks to Checker.</p>
 <blockquote>
@@ -155,87 +218,297 @@ checker git:install --config=/path/to/checker.yml
 checker git:install -c=/path/to/checker.yml</code></pre>
 <h3 id="gituninstall">git:uninstall</h3>
 <p>This command uninstall git hooks to Checker.</p>
-<blockquote>
-<p><strong>Note:</strong> If you have git hooks stored in backup, they will be restored.</p>
-</blockquote>
 <p>For example:</p>
 <pre><code class="language-bash"># Locally
 php ./vendor/bin/checker git:uninstall
 
 # Globally
 checker git:uninstall</code></pre>
+<blockquote>
+<p><strong>Note:</strong> If you have git hooks stored in backup, they will be restored.</p>
+</blockquote>
 <h3 id="gitcommit-msg">git:commit-msg</h3>
 <p>This command will be triggered by git hooks in commit-msg. However, you can run!</p>
+<p><em>Argument:</em></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>commit-message-file</td>
+<td>false</td>
+<td>If not set, Checker find for you!</td>
+</tr>
+</tbody>
+</table>
+<p><em>Options:</em></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>git-user-name</td>
+<td>false</td>
+<td>If not set, Checker find for you!</td>
+</tr>
+<tr>
+<td>git-user-email</td>
+<td>false</td>
+<td>If not set, Checker find for you!</td>
+</tr>
+<tr>
+<td>process-timeout</td>
+<td>true</td>
+<td>Specify process timeout</td>
+</tr>
+<tr>
+<td>process-async-wait</td>
+<td>true</td>
+<td>Specify process async wait</td>
+</tr>
+<tr>
+<td>process-async-limit</td>
+<td>true</td>
+<td>Specify process async limit</td>
+</tr>
+<tr>
+<td>stop-on-failure</td>
+<td>---</td>
+<td>Stop on failure</td>
+</tr>
+<tr>
+<td>no-stop-on-failure</td>
+<td>---</td>
+<td>Non stop on failure</td>
+</tr>
+<tr>
+<td>ignore-unstaged-changes</td>
+<td>---</td>
+<td>Ignore unstaged changes</td>
+</tr>
+<tr>
+<td>no-ignore-unstaged-changes</td>
+<td>---</td>
+<td>No ignore unstaged changes</td>
+</tr>
+<tr>
+<td>strict</td>
+<td>---</td>
+<td>Enable strict mode</td>
+</tr>
+<tr>
+<td>no-strict</td>
+<td>---</td>
+<td>Disable strict mode</td>
+</tr>
+<tr>
+<td>progress</td>
+<td>true</td>
+<td>Specify process style</td>
+</tr>
+<tr>
+<td>no-progress</td>
+<td>---</td>
+<td>Disable process style</td>
+</tr>
+<tr>
+<td>skip-success-output</td>
+<td>---</td>
+<td>Skip success output</td>
+</tr>
+<tr>
+<td>no-skip-success-output</td>
+<td>---</td>
+<td>No skip success output</td>
+</tr>
+</tbody>
+</table>
 <p>For example:</p>
 <pre><code class="language-bash"># Locally
-php ./vendor/bin/checker git:commit-msg
+php ./vendor/bin/checker git:commit-msg [commit-message-file] [--options]
 
 # Globally
-checker git:commit-msg</code></pre>
-<p>You can also override these configurations:</p>
-<ul>
-<li>commit-message-file <code>If not set, Checker find for you!</code></li>
-<li>git-user-name <code>If not set, Checker find for you!</code></li>
-<li>git-user-email <code>If not set, Checker find for you!</code></li>
-<li>process-timeout</li>
-<li>process-async-wait</li>
-<li>process-async-limit</li>
-<li>stop-on-failure</li>
-<li>ignore-unstaged-changes</li>
-<li>skip-success-output</li>
-</ul>
-<p>For example:</p>
-<pre><code class="language-bash"># Locally
-php ./vendor/bin/checker git:commit-msg commit-message-file --git-user-name=name --git-user-email=email --process-timeout=30 --process-async-wait=1000 --process-async-limit=30 --stop-on-failure=1 --ignore-unstaged-changes=1 --skip-success-output=1
-
-# Globally
-checker git:commit-msg commit-message-file --git-user-name=name --git-user-email=email --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --skip-success-output=0</code></pre>
+checker git:commit-msg [commit-message-file] [--options]</code></pre>
 <h3 id="gitpre-commit">git:pre-commit</h3>
 <p>This command will be triggered by git hooks in pre-commit. However, you can run!</p>
+<p><em>Options:</em></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>process-timeout</td>
+<td>true</td>
+<td>Specify process timeout</td>
+</tr>
+<tr>
+<td>process-async-wait</td>
+<td>true</td>
+<td>Specify process async wait</td>
+</tr>
+<tr>
+<td>process-async-limit</td>
+<td>true</td>
+<td>Specify process async limit</td>
+</tr>
+<tr>
+<td>stop-on-failure</td>
+<td>---</td>
+<td>Stop on failure</td>
+</tr>
+<tr>
+<td>no-stop-on-failure</td>
+<td>---</td>
+<td>Non stop on failure</td>
+</tr>
+<tr>
+<td>ignore-unstaged-changes</td>
+<td>---</td>
+<td>Ignore unstaged changes</td>
+</tr>
+<tr>
+<td>no-ignore-unstaged-changes</td>
+<td>---</td>
+<td>No ignore unstaged changes</td>
+</tr>
+<tr>
+<td>strict</td>
+<td>---</td>
+<td>Enable strict mode</td>
+</tr>
+<tr>
+<td>no-strict</td>
+<td>---</td>
+<td>Disable strict mode</td>
+</tr>
+<tr>
+<td>progress</td>
+<td>true</td>
+<td>Specify process style</td>
+</tr>
+<tr>
+<td>no-progress</td>
+<td>---</td>
+<td>Disable process style</td>
+</tr>
+<tr>
+<td>skip-success-output</td>
+<td>---</td>
+<td>Skip success output</td>
+</tr>
+<tr>
+<td>no-skip-success-output</td>
+<td>---</td>
+<td>No skip success output</td>
+</tr>
+</tbody>
+</table>
 <p>For example:</p>
 <pre><code class="language-bash"># Locally
-php ./vendor/bin/checker git:pre-commit
+php ./vendor/bin/checker git:pre-commit [--options]
 
 # Globally
-checker git:pre-commit</code></pre>
-<p>You can also override these configurations:</p>
-<ul>
-<li>process-timeout</li>
-<li>process-async-wait</li>
-<li>process-async-limit</li>
-<li>stop-on-failure</li>
-<li>ignore-unstaged-changes</li>
-<li>skip-success-output</li>
-</ul>
-<p>For example:</p>
-<pre><code class="language-bash"># Locally
-php ./vendor/bin/checker git:pre-commit --process-timeout=30 --process-async-wait=1000 --process-async-limit=30 --stop-on-failure=1 --ignore-unstaged-changes=1 --skip-success-output=1
-
-# Globally
-checker git:pre-commit --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --skip-success-output=0</code></pre>
+checker git:pre-commit [--options]</code></pre>
 <h3 id="gitpre-push">git:pre-push</h3>
 <p>This command will be triggered by git hooks in pre-push. However, you can run!</p>
+<p><em>Options:</em></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>process-timeout</td>
+<td>true</td>
+<td>Specify process timeout</td>
+</tr>
+<tr>
+<td>process-async-wait</td>
+<td>true</td>
+<td>Specify process async wait</td>
+</tr>
+<tr>
+<td>process-async-limit</td>
+<td>true</td>
+<td>Specify process async limit</td>
+</tr>
+<tr>
+<td>stop-on-failure</td>
+<td>---</td>
+<td>Stop on failure</td>
+</tr>
+<tr>
+<td>no-stop-on-failure</td>
+<td>---</td>
+<td>Non stop on failure</td>
+</tr>
+<tr>
+<td>ignore-unstaged-changes</td>
+<td>---</td>
+<td>Ignore unstaged changes</td>
+</tr>
+<tr>
+<td>no-ignore-unstaged-changes</td>
+<td>---</td>
+<td>No ignore unstaged changes</td>
+</tr>
+<tr>
+<td>strict</td>
+<td>---</td>
+<td>Enable strict mode</td>
+</tr>
+<tr>
+<td>no-strict</td>
+<td>---</td>
+<td>Disable strict mode</td>
+</tr>
+<tr>
+<td>progress</td>
+<td>true</td>
+<td>Specify process style</td>
+</tr>
+<tr>
+<td>no-progress</td>
+<td>---</td>
+<td>Disable process style</td>
+</tr>
+<tr>
+<td>skip-success-output</td>
+<td>---</td>
+<td>Skip success output</td>
+</tr>
+<tr>
+<td>no-skip-success-output</td>
+<td>---</td>
+<td>No skip success output</td>
+</tr>
+</tbody>
+</table>
 <p>For example:</p>
 <pre><code class="language-bash"># Locally
-php ./vendor/bin/checker git:pre-push
+php ./vendor/bin/checker git:pre-push [--options]
 
 # Globally
-checker git:pre-push</code></pre>
-<p>You can also override these configurations:</p>
-<ul>
-<li>process-timeout</li>
-<li>process-async-wait</li>
-<li>process-async-limit</li>
-<li>stop-on-failure</li>
-<li>ignore-unstaged-changes</li>
-<li>skip-success-output</li>
-</ul>
-<p>For example:</p>
-<pre><code class="language-bash"># Locally
-php ./vendor/bin/checker git:pre-push --process-timeout=30 --process-async-wait=1000 --process-async-limit=30 --stop-on-failure=1 --ignore-unstaged-changes=1 --skip-success-output=1
-
-# Globally
-checker git:pre-push --process-timeout=0 --process-async-wait=2000 --process-async-limit=60 --stop-on-failure=0 --ignore-unstaged-changes=0 --skip-success-output=0</code></pre>
+checker git:pre-push [--options]</code></pre>
 <hr />
 <p>See also:</p>
 <ul>
