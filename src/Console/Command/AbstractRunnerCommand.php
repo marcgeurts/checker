@@ -3,6 +3,7 @@
 namespace ClickNow\Checker\Console\Command;
 
 use ClickNow\Checker\IO\ConsoleIO;
+use ClickNow\Checker\Runner\RunnerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -10,6 +11,44 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class AbstractRunnerCommand extends Command
 {
+    /**
+     * @var array
+     */
+    private $optionsConfig = [
+        'process-timeout'            => ['setProcessTimeout', null, InputOption::VALUE_REQUIRED],
+        'process-async-wait'         => ['setProcessAsyncWait', null, InputOption::VALUE_REQUIRED],
+        'process-async-limit'        => ['setProcessAsyncLimit', null, InputOption::VALUE_REQUIRED],
+        'stop-on-failure'            => ['setStopOnFailure', true, InputOption::VALUE_NONE],
+        'no-stop-on-failure'         => ['setStopOnFailure', false, InputOption::VALUE_NONE],
+        'ignore-unstaged-changes'    => ['setIgnoreUnstagedChanges', true, InputOption::VALUE_NONE],
+        'no-ignore-unstaged-changes' => ['setIgnoreUnstagedChanges', false, InputOption::VALUE_NONE],
+        'strict'                     => ['setStrict', true, InputOption::VALUE_NONE],
+        'no-strict'                  => ['setStrict', false, InputOption::VALUE_NONE],
+        'progress'                   => ['setProgress', null, InputOption::VALUE_REQUIRED],
+        'no-progress'                => ['setProgress', null, InputOption::VALUE_NONE],
+        'skip-success-output'        => ['setSkipSuccessOutput', true, InputOption::VALUE_NONE],
+        'no-skip-success-output'     => ['setSkipSuccessOutput', false, InputOption::VALUE_NONE],
+    ];
+
+    /**
+     * @var array
+     */
+    private $optionsDescription = [
+        'process-timeout'            => 'Specify process timeout.',
+        'process-async-wait'         => 'Specify process async wait.',
+        'process-async-limit'        => 'Specify process async limit.',
+        'stop-on-failure'            => 'Stop on failure.',
+        'no-stop-on-failure'         => 'Non stop on failure.',
+        'ignore-unstaged-changes'    => 'Ignore unstaged changes.',
+        'no-ignore-unstaged-changes' => 'No ignore unstaged changes.',
+        'strict'                     => 'Enable strict mode.',
+        'no-strict'                  => 'Disable strict mode.',
+        'progress'                   => 'Specify process style.',
+        'no-progress'                => 'Disable process style.',
+        'skip-success-output'        => 'Skip success output.',
+        'no-skip-success-output'     => 'No skip success output.',
+    ];
+
     /**
      * @var \Symfony\Component\Console\Input\InputInterface
      */
@@ -27,20 +66,9 @@ abstract class AbstractRunnerCommand extends Command
      */
     protected function configure()
     {
-        $this
-            ->addOption('process-timeout', null, InputOption::VALUE_REQUIRED, 'Specify process timeout.')
-            ->addOption('process-async-wait', null, InputOption::VALUE_REQUIRED, 'Specify process async wait.')
-            ->addOption('process-async-limit', null, InputOption::VALUE_REQUIRED, 'Specify process async limit.')
-            ->addOption('stop-on-failure', null, InputOption::VALUE_NONE, 'Stop on failure.')
-            ->addOption('no-stop-on-failure', null, InputOption::VALUE_NONE, 'Non stop on failure.')
-            ->addOption('ignore-unstaged-changes', null, InputOption::VALUE_NONE, 'Ignore unstaged changes.')
-            ->addOption('no-ignore-unstaged-changes', null, InputOption::VALUE_NONE, 'No ignore unstaged changes.')
-            ->addOption('strict', null, InputOption::VALUE_NONE, 'Enable strict mode.')
-            ->addOption('no-strict', null, InputOption::VALUE_NONE, 'Disable strict mode.')
-            ->addOption('progress', null, InputOption::VALUE_REQUIRED, 'Specify process style.')
-            ->addOption('no-progress', null, InputOption::VALUE_NONE, 'Disable process style.')
-            ->addOption('skip-success-output', null, InputOption::VALUE_NONE, 'Skip success output.')
-            ->addOption('no-skip-success-output', null, InputOption::VALUE_NONE, 'No skip success output.');
+        foreach ($this->optionsConfig as $key => $values) {
+            $this->addOption($key, null, $values[2], $this->optionsDescription[$key]);
+        }
     }
 
     /**
@@ -59,61 +87,33 @@ abstract class AbstractRunnerCommand extends Command
         $this->output = $output;
 
         $context = $this->context();
-        $runner = $context->getRunner();
-
-        if ($this->input->getOption('process-timeout')) {
-            $runner->setProcessTimeout($this->input->getOption('process-timeout'));
-        }
-
-        if ($this->input->getOption('process-async-wait')) {
-            $runner->setProcessAsyncWait($this->input->getOption('process-async-wait'));
-        }
-
-        if ($this->input->getOption('process-async-limit')) {
-            $runner->setProcessAsyncLimit($this->input->getOption('process-async-limit'));
-        }
-
-        if ($this->input->getOption('stop-on-failure')) {
-            $runner->setStopOnFailure(true);
-        }
-
-        if ($this->input->getOption('no-stop-on-failure')) {
-            $runner->setStopOnFailure(false);
-        }
-
-        if ($this->input->getOption('ignore-unstaged-changes')) {
-            $runner->setIgnoreUnstagedChanges(true);
-        }
-
-        if ($this->input->getOption('no-ignore-unstaged-changes')) {
-            $runner->setIgnoreUnstagedChanges(false);
-        }
-
-        if ($this->input->getOption('strict')) {
-            $runner->setStrict(true);
-        }
-
-        if ($this->input->getOption('no-strict')) {
-            $runner->setStrict(false);
-        }
-
-        if ($this->input->getOption('progress')) {
-            $runner->setProgress($this->input->getOption('progress'));
-        }
-
-        if ($this->input->getOption('no-progress')) {
-            $runner->setProgress(null);
-        }
-
-        if ($this->input->getOption('skip-success-output')) {
-            $runner->setSkipSuccessOutput(true);
-        }
-
-        if ($this->input->getOption('no-skip-success-output')) {
-            $runner->setSkipSuccessOutput(false);
-        }
+        $this->setOptions($context->getRunner());
 
         return $this->runner()->run($context);
+    }
+
+    /**
+     * Set options.
+     *
+     * @param \ClickNow\Checker\Runner\RunnerInterface $runner
+     *
+     * @return void
+     */
+    private function setOptions(RunnerInterface $runner)
+    {
+        $options = $this->input->getOptions();
+
+        foreach ($options as $key => $value) {
+            if (!array_key_exists($key, $this->optionsConfig) || !$value) {
+                continue;
+            }
+
+            $optionsConfig = $this->optionsConfig[$key];
+            $optionFunction = $optionsConfig[0];
+            $optionValue = ($optionsConfig[2] == InputOption::VALUE_NONE) ? $optionsConfig[1] : $value;
+
+            call_user_func_array([$runner, $optionFunction], [$optionValue]);
+        }
     }
 
     /**
