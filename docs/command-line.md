@@ -8,6 +8,8 @@ currentMenu: command-line
 
 This command execute the command with name specified.
 
+> **Note:** All files registered in repository are verified.
+
 *Parameter:*
 
 | Name        | Required     | Description
@@ -98,6 +100,8 @@ checker git:uninstall
 
 This command will be triggered by git hooks in commit-msg. However, you can run!
 
+> **Note:** Only files changed in repository are verified.
+
 *Argument:*
 
 | Name                              | Required  | Description
@@ -138,6 +142,8 @@ checker git:commit-msg [commit-message-file] [--options]
 
 This command will be triggered by git hooks in pre-commit. However, you can run!
 
+> **Note:** Only files changed in repository are verified.
+
 *Options:*
 
 | Name                              | Required  | Description
@@ -169,6 +175,8 @@ checker git:pre-commit [--options]
 ### git:pre-push
 
 This command will be triggered by git hooks in pre-push. However, you can run!
+
+> **Note:** Only files committed in repository are verified.
 
 *Options:*
 

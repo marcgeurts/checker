@@ -36,6 +36,30 @@ parameters:
   commands: ~
 ```
 
+## Disable on git hooks
+
+Use the `--no-verify` (`-n`) flag in your command git which bypasses git hooks.
+
+For example:
+
+```bash
+git commit --no-verify -m "commmit"
+```
+or
+```bash
+git push --no-verify
+```
+
+> **Note:** This is surely **NOT** recommended!
+
+## Windows limitation
+
+The command prompt has a limit on command line input strings of `8191`.
+
+This one is causing external commands to fail with exit code 1 without any error.
+
+[See for more information](https://support.microsoft.com/en-us/kb/830473)
+
 ***
 See also:
 
