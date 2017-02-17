@@ -75,6 +75,9 @@
                 <h1 id="command-line">Command-Line</h1>
 <h3 id="run">run</h3>
 <p>This command execute the command with name specified.</p>
+<blockquote>
+<p><strong>Note:</strong> All files registered in repository are verified.</p>
+</blockquote>
 <p><em>Parameter:</em></p>
 <table>
 <thead>
@@ -229,6 +232,9 @@ checker git:uninstall</code></pre>
 </blockquote>
 <h3 id="gitcommit-msg">git:commit-msg</h3>
 <p>This command will be triggered by git hooks in commit-msg. However, you can run!</p>
+<blockquote>
+<p><strong>Note:</strong> Only files changed in repository are verified.</p>
+</blockquote>
 <p><em>Argument:</em></p>
 <table>
 <thead>
@@ -341,6 +347,9 @@ php ./vendor/bin/checker git:commit-msg [commit-message-file] [--options]
 checker git:commit-msg [commit-message-file] [--options]</code></pre>
 <h3 id="gitpre-commit">git:pre-commit</h3>
 <p>This command will be triggered by git hooks in pre-commit. However, you can run!</p>
+<blockquote>
+<p><strong>Note:</strong> Only files changed in repository are verified.</p>
+</blockquote>
 <p><em>Options:</em></p>
 <table>
 <thead>
@@ -426,6 +435,9 @@ php ./vendor/bin/checker git:pre-commit [--options]
 checker git:pre-commit [--options]</code></pre>
 <h3 id="gitpre-push">git:pre-push</h3>
 <p>This command will be triggered by git hooks in pre-push. However, you can run!</p>
+<blockquote>
+<p><strong>Note:</strong> Only files committed in repository are verified.</p>
+</blockquote>
 <p><em>Options:</em></p>
 <table>
 <thead>

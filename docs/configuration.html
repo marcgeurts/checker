@@ -101,6 +101,19 @@ parameters:
     pre-commit: ~
     pre-push: ~
   commands: ~</code></pre>
+<h2 id="disable-on-git-hooks">Disable on git hooks</h2>
+<p>Use the <code>--no-verify</code> (<code>-n</code>) flag in your command git which bypasses git hooks.</p>
+<p>For example:</p>
+<pre><code class="language-bash">git commit --no-verify -m "commmit"</code></pre>
+<p>or</p>
+<pre><code class="language-bash">git push --no-verify</code></pre>
+<blockquote>
+<p><strong>Note:</strong> This is surely <strong>NOT</strong> recommended!</p>
+</blockquote>
+<h2 id="windows-limitation">Windows limitation</h2>
+<p>The command prompt has a limit on command line input strings of <code>8191</code>.</p>
+<p>This one is causing external commands to fail with exit code 1 without any error.</p>
+<p><a href="https://support.microsoft.com/en-us/kb/830473">See for more information</a></p>
 <hr />
 <p>See also:</p>
 <ul>
@@ -112,14 +125,6 @@ parameters:
 <li><a href="../contributing.html">Contributing</a></li>
 <li><a href="../license.html">License</a></li>
 </ul>
-<p>Adicione uma linha de pacotes de compositores necessários na documentação da tarefa. Desta forma,
-você pode apenas navegar para a configuração da tarefa e obter feedback completo sobre como implementá-lo.
-(Sim, eu tendem a esquecer de exigir o pacote :))</p>
-<p>Use o sinalizador --no-verify( -n) quando você confirmar que ignora os ganchos pré-commit e commit-msg.</p>
-<p>Ao executar ./vendor/bin/grumphp runtodos os arquivos no repositório são verificados e durante o
-gancho pré-commit depende da tarefa. A maioria das tarefas (afaik) só verifica arquivos phpcpdalterados,
-mas algumas tarefas ( por exemplo) irão analisar todo o projeto, uma vez que não seria útil se não.</p>
-<p>Adicionar informações sobre limitações atuais do Windows </p>
             </section>
         </div>
     </main>
