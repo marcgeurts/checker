@@ -109,16 +109,6 @@ services:
     tags:
       - { name: checker.task, config: npm-script }
 
-  task.php7cc:
-    class: ClickNow\Checker\Task\Php7cc
-    arguments:
-      - '@io'
-      - '@repository.filesystem'
-      - '@process.process-builder'
-      - '@formatter.raw-process'
-    tags:
-      - { name: checker.task, config: php7cc }
-
   task.phpcpd:
     class: ClickNow\Checker\Task\PhpCpd
     arguments:
