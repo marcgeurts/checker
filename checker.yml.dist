@@ -1,0 +1,7 @@
+parameters:
+  commands:
+    tests:
+      process-timeout: ~
+      tasks:
+        phpunit:
+          coverage-clover: build/logs/clover.xml

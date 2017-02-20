@@ -47,11 +47,11 @@ install:
     fi
 
 script:
-  - vendor/bin/phpunit --colors --coverage-clover=build/logs/clover.xml
+  - bin/checker run tests
 
 after_script:
   - |
-    if [[ "${TRAVIS_PHP_VERSION}" == "5.5.9" ]]; then
+    if [[ '${TRAVIS_PHP_VERSION}' == '5.5.9' ]]; then
       travis_retry composer require scrutinizer/ocular --dev
       vendor/bin/ocular code-coverage:upload --format=php-clover build/logs/clover.xml
 
