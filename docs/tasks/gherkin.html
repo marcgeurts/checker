@@ -73,9 +73,13 @@
                 </nav>
                         <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
                 <h1 id="gherkin">Gherkin</h1>
-<p><a href="https://github.com/malukenho/kawaii-gherkin">See oficinal documentation</a></p>
-<p>The Gherkin task will run your Gherkin feature files.
-It lives under the <code>gherkin</code> namespace and has following configurable parameters:</p>
+<p>The Gherkin task will run your Gherkin feature files.</p>
+<p><a href="https://github.com/malukenho/kawaii-gherkin">See more information</a></p>
+<h2 id="installation">Installation</h2>
+<p>Use the following command to install:</p>
+<pre><code class="language-bash">composer require --dev malukenho/kawaii-gherkin</code></pre>
+<h2 id="configuration">Configuration</h2>
+<p>It lives under the <code>gherkin</code> namespace and has following configurable parameters:</p>
 <pre><code class="language-yaml"># checker.yml
 parameters:
   tasks:
@@ -88,6 +92,7 @@ parameters:
       no-ansi: false
       finder:
         extensions: ['feature']</code></pre>
+<h2 id="parameters">Parameters</h2>
 <h3 id="directory">directory</h3>
 <p><em>Default: 'features'</em></p>
 <p>This option specify which will location of your feature files.

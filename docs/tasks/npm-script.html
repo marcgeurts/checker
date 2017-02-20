@@ -73,9 +73,14 @@
                 </nav>
                         <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
                 <h1 id="npm-script">NPM script</h1>
-<p><a href="http://npmjs.com/">See oficinal documentation</a></p>
-<p>The NPM script task will run your configured npm script.
-It lives under the <code>npm-script</code> namespace and has following configurable parameters:</p>
+<p>The NPM script task will run your configured npm script.</p>
+<p><a href="http://npmjs.com/">See more information</a></p>
+<h2 id="installation">Installation</h2>
+<p>Use the following command to install:</p>
+<pre><code class="language-bash">npm install npm@latest -g</code></pre>
+<p><a href="https://docs.npmjs.com/getting-started/installing-node">See more information</a></p>
+<h2 id="configuration">Configuration</h2>
+<p>It lives under the <code>npm-script</code> namespace and has following configurable parameters:</p>
 <pre><code class="language-yaml"># checker.yml
 parameters:
   tasks:
@@ -83,6 +88,7 @@ parameters:
       is-run-task: false
       script: ~
       working-directory: './'</code></pre>
+<h2 id="parameters">Parameters</h2>
 <h3 id="is-run-task">is-run-task</h3>
 <p><em>Default: false</em></p>
 <p>This option specify if will append <code>run</code> to the command to make it possible to run custom scripts.</p>

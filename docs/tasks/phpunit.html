@@ -73,9 +73,13 @@
                 </nav>
                         <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
                 <h1 id="phpunit">PHPUnit</h1>
-<p><a href="http://phpunit.de/">See oficinal documentation</a></p>
-<p>The PhpUnit task will run your unit tests.
-It lives under the <code>phpunit</code> namespace and has following configurable parameters:</p>
+<p>The PhpUnit task will run your unit tests.</p>
+<p><a href="http://phpunit.de/">See more information</a></p>
+<h2 id="installation">Installation</h2>
+<p>Use the following command to install:</p>
+<pre><code class="language-bash">composer require --dev phpunit/phpunit</code></pre>
+<h2 id="configuration">Configuration</h2>
+<p>It lives under the <code>phpunit</code> namespace and has following configurable parameters:</p>
 <pre><code class="language-yaml"># checker.yml
 parameters:
   tasks:
@@ -127,6 +131,7 @@ parameters:
       include-path: ~
       finder:
         extensions: ['php']</code></pre>
+<h2 id="parameters">Parameters</h2>
 <h3 id="coverage-clover">coverage-clover</h3>
 <p><em>Default: null</em></p>
 <p>This option specify which will clover report path of code coverage.</p>
@@ -250,7 +255,7 @@ parameters:
 <h3 id="bootstrap">bootstrap</h3>
 <p><em>Default: null</em></p>
 <p>This option specify which will the path to your bootstrap file.</p>
-<h3 id="configuration">configuration</h3>
+<h3 id="configuration-1">configuration</h3>
 <p><em>Default: null</em></p>
 <p>If your <code>phpunit.xml</code> file is located at an exotic location,
 you can specify your custom config file location with this option.

@@ -73,9 +73,14 @@
                 </nav>
                         <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
                 <h1 id="php-mess-detector-phpmd">PHP Mess Detector (phpmd)</h1>
-<p><a href="http://phpmd.org/">See oficinal documentation</a></p>
-<p>The PhpMd task will sniff your code for bad coding standards.
-It lives under the <code>phpmd</code> namespace and has following configurable parameters:</p>
+<p>The PhpMd task will sniff your code for bad coding standards.</p>
+<p><a href="http://phpmd.org/">See more information</a></p>
+<h2 id="installation">Installation</h2>
+<p>Use the following command to install:</p>
+<pre><code class="language-bash">composer require --dev phpmd/phpmd</code></pre>
+<p><a href="https://phpmd.org/download/index.html">See more information</a></p>
+<h2 id="configuration">Configuration</h2>
+<p>It lives under the <code>phpmd</code> namespace and has following configurable parameters:</p>
 <pre><code class="language-yaml"># checker.yml
 parameters:
   tasks:
@@ -90,6 +95,7 @@ parameters:
       reportfile-xml: ~
       finder:
         extensions: ['php']</code></pre>
+<h2 id="parameters">Parameters</h2>
 <h3 id="ruleset">ruleset</h3>
 <p><em>Default: ['cleancode', 'codesize', 'controversial', 'design', 'naming', 'unusedcode']</em></p>
 <p>This option specify which will rule/rulesets you want to use.

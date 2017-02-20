@@ -73,9 +73,14 @@
                 </nav>
                         <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
                 <h1 id="brunch">Brunch</h1>
-<p><a href="http://brunch.io/">See oficinal documentation</a></p>
-<p>The Brunch task will run your automated workflow tasks.
-It lives under the <code>brunch</code> namespace and has following configurable parameters:</p>
+<p>The Brunch task will run your automated workflow tasks.</p>
+<p><a href="http://brunch.io/">See more information</a></p>
+<h2 id="installation">Installation</h2>
+<p>Use the following command to install:</p>
+<pre><code class="language-bash">npm install -g brunch</code></pre>
+<p><a href="http://brunch.io/docs/getting-started">See more information</a></p>
+<h2 id="configuration">Configuration</h2>
+<p>It lives under the <code>brunch</code> namespace and has following configurable parameters:</p>
 <pre><code class="language-yaml"># checker.yml
 parameters:
   tasks:
@@ -84,6 +89,7 @@ parameters:
       env: null
       jobs: null
       debug: false</code></pre>
+<h2 id="parameters">Parameters</h2>
 <h3 id="task">task</h3>
 <p><em>Default: 'build'</em></p>
 <p>This option specify which will task you want to run.

@@ -73,9 +73,14 @@
                 </nav>
                         <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
                 <h1 id="doctrine-orm">Doctrine ORM</h1>
-<p><a href="http://doctrine-project.org/">See oficinal documentation</a></p>
-<p>The Doctrine ORM task will validate that your mapping files and check if the mapping is in sync with the database.
-It lives under the <code>doctrine</code> namespace and has following configurable parameters:</p>
+<p>The Doctrine ORM task will validate that your mapping files and check if the mapping is in sync with the database.</p>
+<p><a href="http://doctrine-project.org/">See more information</a></p>
+<h2 id="installation">Installation</h2>
+<p>Use the following command to install:</p>
+<pre><code class="language-bash">composer require doctrine/orm</code></pre>
+<p><a href="http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/configuration.html">See more information</a></p>
+<h2 id="configuration">Configuration</h2>
+<p>It lives under the <code>doctrine</code> namespace and has following configurable parameters:</p>
 <pre><code class="language-yaml"># checker.yml
 parameters:
   tasks:
@@ -88,6 +93,7 @@ parameters:
       no-ansi: false
       finder:
         extensions: ['php', 'xml', 'yml']</code></pre>
+<h2 id="parameters">Parameters</h2>
 <h3 id="skip-mapping">skip-mapping</h3>
 <p><em>Default: []</em></p>
 <p>This option specify if will skip the mapping validation check.</p>

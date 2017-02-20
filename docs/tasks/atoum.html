@@ -73,9 +73,14 @@
                 </nav>
                         <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
                 <h1 id="atoum">Atoum</h1>
-<p><a href="http://atoum.org/">See oficinal documentation</a></p>
-<p>The Atoum task will run your unit tests.
-It lives under the <code>atoum</code> namespace and has following configurable parameters:</p>
+<p>The Atoum task will run your unit tests.</p>
+<p><a href="http://atoum.org/">See more information</a></p>
+<h2 id="installation">Installation</h2>
+<p>Use the following command to install:</p>
+<pre><code class="language-bash">composer require --dev atoum/atoum</code></pre>
+<p><a href="http://docs.atoum.org/en/latest/installation.html">See more information</a></p>
+<h2 id="configuration">Configuration</h2>
+<p>It lives under the <code>atoum</code> namespace and has following configurable parameters:</p>
 <pre><code class="language-yaml"># checker.yml
 parameters:
   tasks:
@@ -110,7 +115,8 @@ parameters:
       verbose: false
       finder:
         extensions: ['php']</code></pre>
-<h3 id="configuration">configuration</h3>
+<h2 id="parameters">Parameters</h2>
+<h3 id="configuration-1">configuration</h3>
 <p><em>Default: null</em></p>
 <p>If your <code>.atoum.php</code> file is located at an exotic location,
 you can specify your custom location with this option.

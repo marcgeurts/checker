@@ -73,9 +73,14 @@
                 </nav>
                         <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
                 <h1 id="codeception">Codeception</h1>
-<p><a href="http://http://codeception.com/">See oficinal documentation</a></p>
-<p>The Codeception task will run your full-stack tests.
-It lives under the <code>codeception</code> namespace and has following configurable parameters:</p>
+<p>The Codeception task will run your full-stack tests.</p>
+<p><a href="http://codeception.com/">See more information</a></p>
+<h2 id="installation">Installation</h2>
+<p>Use the following command to install:</p>
+<pre><code class="language-bash">composer require codeception/codeception</code></pre>
+<p><a href="http://codeception.com/install">See more information</a></p>
+<h2 id="configuration">Configuration</h2>
+<p>It lives under the <code>codeception</code> namespace and has following configurable parameters:</p>
 <pre><code class="language-yaml"># checker.yml
 parameters:
   tasks:
@@ -109,6 +114,7 @@ parameters:
       verbose: false
       ansi: true
       no-ansi: false</code></pre>
+<h2 id="parameters">Parameters</h2>
 <h3 id="suite-">suite: ~</h3>
 <p><em>Default: null</em></p>
 <p>This option specify which will suite to be tested.

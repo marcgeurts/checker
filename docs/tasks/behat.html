@@ -73,9 +73,14 @@
                 </nav>
                         <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
                 <h1 id="behat">Behat</h1>
-<p><a href="http://behat.org/">See oficinal documentation</a></p>
-<p>The Behat task will run your Behat tests.
-It lives under the <code>behat</code> namespace and has following configurable parameters:</p>
+<p>The Behat task will run your Behat tests.</p>
+<p><a href="http://behat.org/">See more information</a></p>
+<h2 id="installation">Installation</h2>
+<p>Use the following command to install:</p>
+<pre><code class="language-bash">composer require --dev behat/behat</code></pre>
+<p><a href="http://behat.org/en/latest/quick_start.html#installation">See more information</a></p>
+<h2 id="configuration">Configuration</h2>
+<p>It lives under the <code>behat</code> namespace and has following configurable parameters:</p>
 <pre><code class="language-yaml"># checker.yml
 parameters:
   tasks:
@@ -99,6 +104,7 @@ parameters:
       no-colors: false
       finder:
         extensions: ['php']</code></pre>
+<h2 id="parameters">Parameters</h2>
 <h3 id="suite">suite</h3>
 <p><em>Default: null</em></p>
 <p>This option specify if will run a particular suite only.</p>

@@ -73,11 +73,26 @@
                 </nav>
                         <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
                 <h1 id="installation">Installation</h1>
-<h3 id="locally-composer">Locally (Composer)</h3>
+<h2 id="using-phar">Using Phar</h2>
+<p>Use the following command to download <a href="https://cknow.github.io/checker/checker.phar">checker.phar</a>:</p>
+<pre><code class="language-bash">curl -OS https://cknow.github.io/checker/checker.phar</code></pre>
+<blockquote>
+<p><strong>Note:</strong>
+As Github is using a DDOS protection system, if using CURL fails,
+just manually download the phar file.</p>
+</blockquote>
+<p>If you want to run <code>checker</code> instead of <code>php checker.phar</code>, move it to /usr/local/bin:</p>
+<pre><code class="language-bash">chmod +x checker.phar
+mv checker.phar /usr/local/bin/checker</code></pre>
+<h2 id="via-composer">Via Composer</h2>
+<h3 id="locally">Locally</h3>
 <p>Use the following command to install on your project locally:</p>
 <pre><code class="language-bash">composer require-dev cknow/checker</code></pre>
+<p>or add this to <code>require-dev</code> section in your <code>composer.json</code> file:</p>
+<pre><code>"cknow/checker": "^1.0.0"</code></pre>
+<p>then run <code>composer update</code></p>
 <p>When the package is installed, Checker will attach itself to the git hooks of your project.</p>
-<h3 id="globally-composer">Globally (Composer)</h3>
+<h3 id="globally">Globally</h3>
 <p>Use the following command to install globally:</p>
 <pre><code class="language-bash">composer global require cknow/checker
 composer global update cknow/checker</code></pre>
