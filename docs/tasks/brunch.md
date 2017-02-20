@@ -4,9 +4,22 @@ currentMenu: tasks
 
 # Brunch
 
-[See oficinal documentation](http://brunch.io/)
-
 The Brunch task will run your automated workflow tasks.
+
+[See more information](http://brunch.io/)
+
+## Installation
+
+Use the following command to install:
+
+```bash
+npm install -g brunch
+```
+
+[See more information](http://brunch.io/docs/getting-started)
+
+## Configuration
+
 It lives under the `brunch` namespace and has following configurable parameters:
 
 ```yaml
@@ -19,6 +32,8 @@ parameters:
       jobs: null
       debug: false
 ```
+
+## Parameters
 
 ### task
 

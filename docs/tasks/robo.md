@@ -4,9 +4,20 @@ currentMenu: tasks
 
 # Robo
 
-[See oficinal documentation](http://robo.li/)
-
 The Robo task will run your automated PHP tasks.
+
+[See more information](http://robo.li/)
+
+## Installation
+
+Use the following command to install:
+
+```bash
+composer require --dev consolidation/robo
+```
+
+## Configuration
+
 It lives under the `robo` namespace and has following configurable parameters:
 
 ```yaml
@@ -17,6 +28,8 @@ parameters:
       load-from: ~
       task: ~
 ```
+
+## Parameters
 
 ### load-from
 

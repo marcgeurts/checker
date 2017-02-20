@@ -4,9 +4,22 @@ currentMenu: tasks
 
 # PHP Mess Detector (phpmd)
 
-[See oficinal documentation](http://phpmd.org/)
-
 The PhpMd task will sniff your code for bad coding standards.
+
+[See more information](http://phpmd.org/)
+
+## Installation
+
+Use the following command to install:
+
+```bash
+composer require --dev phpmd/phpmd
+```
+
+[See more information](https://phpmd.org/download/index.html)
+
+## Configuration
+
 It lives under the `phpmd` namespace and has following configurable parameters:
 
 ```yaml
@@ -25,6 +38,8 @@ parameters:
       finder:
         extensions: ['php']
 ```
+
+## Parameters
 
 ### ruleset
 

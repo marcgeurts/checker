@@ -4,9 +4,22 @@ currentMenu: tasks
 
 # Codeception
 
-[See oficinal documentation](http://http://codeception.com/)
-
 The Codeception task will run your full-stack tests.
+
+[See more information](http://codeception.com/)
+
+## Installation
+
+Use the following command to install:
+
+```bash
+composer require codeception/codeception
+```
+
+[See more information](http://codeception.com/install)
+
+## Configuration
+
 It lives under the `codeception` namespace and has following configurable parameters:
 
 ```yaml
@@ -44,6 +57,8 @@ parameters:
       ansi: true
       no-ansi: false
 ```
+
+## Parameters
 
 ### suite: ~
 

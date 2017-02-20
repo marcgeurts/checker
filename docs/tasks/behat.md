@@ -4,9 +4,22 @@ currentMenu: tasks
 
 # Behat
 
-[See oficinal documentation](http://behat.org/)
-
 The Behat task will run your Behat tests.
+
+[See more information](http://behat.org/)
+
+## Installation
+
+Use the following command to install:
+
+```bash
+composer require --dev behat/behat
+```
+
+[See more information](http://behat.org/en/latest/quick_start.html#installation)
+
+## Configuration
+
 It lives under the `behat` namespace and has following configurable parameters:
 
 ```yaml
@@ -34,6 +47,8 @@ parameters:
       finder:
         extensions: ['php']
 ```
+
+## Parameters
 
 ### suite
 

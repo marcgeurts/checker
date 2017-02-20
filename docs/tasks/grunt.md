@@ -4,9 +4,22 @@ currentMenu: tasks
 
 # Grunt
 
-[See oficinal documentation](http://gruntjs.com/)
-
 The Grunt task will run your automated workflow tasks.
+
+[See more information](http://gruntjs.com/)
+
+## Installation
+
+Use the following command to install:
+
+```bash
+npm install -g grunt-cli
+```
+
+[See more information](http://gruntjs.com/getting-started#installing-the-cli)
+
+## Configuration
+
 It lives under the `grunt` namespace and has following configurable parameters:
 
 ```yaml
@@ -17,6 +30,8 @@ parameters:
       gruntfile: ~
       task: ~
 ```
+
+## Parameters
 
 ### gruntfile
 

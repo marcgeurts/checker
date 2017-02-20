@@ -4,9 +4,22 @@ currentMenu: tasks
 
 # Doctrine ORM
 
-[See oficinal documentation](http://doctrine-project.org/)
-
 The Doctrine ORM task will validate that your mapping files and check if the mapping is in sync with the database.
+
+[See more information](http://doctrine-project.org/)
+
+## Installation
+
+Use the following command to install:
+
+```bash
+composer require doctrine/orm
+```
+
+[See more information](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/configuration.html)
+
+## Configuration
+
 It lives under the `doctrine` namespace and has following configurable parameters:
 
 ```yaml
@@ -23,6 +36,8 @@ parameters:
       finder:
         extensions: ['php', 'xml', 'yml']
 ```
+
+## Parameters
 
 ### skip-mapping
 

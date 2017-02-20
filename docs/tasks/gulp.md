@@ -4,9 +4,20 @@ currentMenu: tasks
 
 # Gulp
 
-[See oficinal documentation](http://gulpjs.com/)
-
 The Gulp task will run your automated workflow tasks.
+
+[See more information](http://gulpjs.com/)
+
+## Installation
+
+Use the following command to install:
+
+```bash
+npm install -g gulp-cli
+```
+
+## Configuration
+
 It lives under the `gulp` namespace and has following configurable parameters:
 
 ```yaml
@@ -17,6 +28,8 @@ parameters:
       gulpfile: ~
       task: ~
 ```
+
+## Parameters
 
 ### gulpfile
 

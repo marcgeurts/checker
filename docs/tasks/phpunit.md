@@ -4,9 +4,20 @@ currentMenu: tasks
 
 # PHPUnit
 
-[See oficinal documentation](http://phpunit.de/)
-
 The PhpUnit task will run your unit tests.
+
+[See more information](http://phpunit.de/)
+
+## Installation
+
+Use the following command to install:
+
+```bash
+composer require --dev phpunit/phpunit
+```
+
+## Configuration
+
 It lives under the `phpunit` namespace and has following configurable parameters:
 
 ```yaml
@@ -62,6 +73,8 @@ parameters:
       finder:
         extensions: ['php']
 ```
+
+## Parameters
 
 ### coverage-clover
 

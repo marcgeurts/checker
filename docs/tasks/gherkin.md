@@ -4,9 +4,20 @@ currentMenu: tasks
 
 # Gherkin
 
-[See oficinal documentation](https://github.com/malukenho/kawaii-gherkin)
-
 The Gherkin task will run your Gherkin feature files.
+
+[See more information](https://github.com/malukenho/kawaii-gherkin)
+
+## Installation
+
+Use the following command to install:
+
+```bash
+composer require --dev malukenho/kawaii-gherkin
+```
+
+## Configuration
+
 It lives under the `gherkin` namespace and has following configurable parameters:
 
 ```yaml
@@ -23,6 +34,8 @@ parameters:
       finder:
         extensions: ['feature']
 ```
+
+## Parameters
 
 ### directory
 

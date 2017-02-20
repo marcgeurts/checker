@@ -4,9 +4,22 @@ currentMenu: tasks
 
 # Atoum
 
-[See oficinal documentation](http://atoum.org/)
-
 The Atoum task will run your unit tests.
+
+[See more information](http://atoum.org/)
+
+## Installation
+
+Use the following command to install:
+
+```bash
+composer require --dev atoum/atoum
+```
+
+[See more information](http://docs.atoum.org/en/latest/installation.html)
+
+## Configuration
+
 It lives under the `atoum` namespace and has following configurable parameters:
 
 ```yaml
@@ -45,6 +58,8 @@ parameters:
       finder:
         extensions: ['php']
 ```
+
+## Parameters
 
 ### configuration
 

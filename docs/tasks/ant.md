@@ -4,9 +4,18 @@ currentMenu: tasks
 
 # Apache Ant
 
-[See oficinal documentation](https://ant.apache.org/)
-
 The Ant task will run your automated Ant tasks.
+
+[See more information](https://ant.apache.org/)
+
+## Installation
+
+Make sure you have installed Apache Ant.
+
+[See more information](http://ant.apache.org/manual/install.html)
+
+## Configuration
+
 It lives under the `ant` namespace and has following configurable parameters:
 
 ```yaml
@@ -17,6 +26,8 @@ parameters:
       buildfile: ~
       task: ~
 ```
+
+## Parameters
 
 ### buildfile
 

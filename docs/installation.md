@@ -4,7 +4,28 @@ currentMenu: installation
 
 # Installation
 
-### Locally (Composer)
+## Using Phar
+
+Use the following command to download [checker.phar](https://cknow.github.io/checker/checker.phar):
+
+```bash
+curl -OS https://cknow.github.io/checker/checker.phar
+```
+
+> **Note:**
+As Github is using a DDOS protection system, if using CURL fails,
+just manually download the phar file.
+
+If you want to run `checker` instead of `php checker.phar`, move it to /usr/local/bin:
+
+```bash
+chmod +x checker.phar
+mv checker.phar /usr/local/bin/checker
+```
+
+## Via Composer
+
+### Locally
 
 Use the following command to install on your project locally:
 
@@ -12,9 +33,17 @@ Use the following command to install on your project locally:
 composer require-dev cknow/checker
 ```
 
+or add this to `require-dev` section in your `composer.json` file:
+
+```
+"cknow/checker": "^1.0.0"
+```
+
+then run ```composer update```
+
 When the package is installed, Checker will attach itself to the git hooks of your project.
 
-### Globally (Composer)
+### Globally
 
 Use the following command to install globally:
 
