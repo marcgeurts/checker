@@ -19,6 +19,10 @@ php:
 env:
   global:
     - setup=basic
+    - GIT_NAME: Ricardo Gobbo de Souza
+    - GIT_EMAIL: ricardo@clicknow.com.br
+    - GH_REF: github.com/cknow/checker
+    - secure: DXIQfZ/H/zmiusIyHNI7o0DOCz1Kx/1xL6m4HwyIZlL+3j0mXVsdoACSAIWYjAyl0BjjgS+jniQiUC8UMNmyLuDInrfSeIL1Y1YwYyDiu5SOCXfWkRl5tyC6wN2/PYyQtsHtKRXRkIyAL8cXHG8Ze6bViqB08SiGB4cSlYeFd3OWhbi6VnJa4NB2KvTSKLPkXT4yVtsAf/sEZjSaTRV06+siY/ZJ5HIt60PoN9aiA7CFkPE83gER1bqtuLKEZMEd48wsicQM+DfmLoJvOcQmgNIcrohBbtZfvvIc5PRdqOgUAG7uks8unV7qBi8Wl4TCqvXZXFSMEJ10O06DwsNL7ySd0mJRxnqDn9e/9xqCOplApJPpx5+IpEy6RJkeYIEq1k2bVJpcv6N9hyvHx/t9TbfVshnTg1UtgvPscP+JyEpQtUSaJRZjOneGogWZk+Ub6N/v3Xb/wDXSrBUpmzM4ZpkqgEO1GGQj6xf+M3ONse0ztQVuYcTrWN9mqfT2LeITSeut0JgfBbJz7wSKXFcuWux0CGry2h1c+GONKITEhUhs8szT4nRQg2GdmtzndKSl/3+gbiNtLVsFJ7mkGq//6buCTkbB5pRo9FNxS7WW08CaeJUEz3T19p1QBBMGU1wI8yXV8WbbFmNlpbR0ZnLk3xR/bvVctfnS6sGJgSajgZE=
 
 matrix:
   fast_finish: true
@@ -52,6 +56,9 @@ script:
 after_script:
   - |
     if [[ '${TRAVIS_PHP_VERSION}' == '5.5.9' ]]; then
+      travis_retry composer require couscous/couscous --dev
+      vendor/bin/couscous travis-auto-deploy
+
       travis_retry composer require scrutinizer/ocular --dev
       vendor/bin/ocular code-coverage:upload --format=php-clover build/logs/clover.xml
 
