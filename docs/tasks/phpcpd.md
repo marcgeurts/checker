@@ -4,9 +4,20 @@ currentMenu: tasks
 
 # PHP Copy/Paste Detector (phpcpd)
 
-[See oficinal documentation](https://github.com/sebastianbergmann/phpcpd)
-
 The PhpCpd task will sniff your code for duplicated lines.
+
+[See more information](https://github.com/sebastianbergmann/phpcpd)
+
+## Installation
+
+Use the following command to install:
+
+```bash
+composer require --dev sebastian/phpcpd
+```
+
+## Configuration
+
 It lives under the `phpcpd` namespace and has following configurable parameters:
 
 ```yaml
@@ -27,6 +38,8 @@ parameters:
         name: ['*.php']
         not-path: ['vendor']
 ```
+
+## Parameters
 
 ### paths
 

@@ -10,7 +10,7 @@ The Ant task will run your automated Ant tasks.
 
 ## Installation
 
-Make sure you have installed Apache Ant.
+Make sure you have installed `ant`.
 
 [See more information](http://ant.apache.org/manual/install.html)
 

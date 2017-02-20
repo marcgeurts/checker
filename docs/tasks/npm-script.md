@@ -4,9 +4,22 @@ currentMenu: tasks
 
 # NPM script
 
-[See oficinal documentation](http://npmjs.com/)
-
 The NPM script task will run your configured npm script.
+
+[See more information](http://npmjs.com/)
+
+## Installation
+
+Use the following command to install:
+
+```bash
+npm install npm@latest -g
+```
+
+[See more information](https://docs.npmjs.com/getting-started/installing-node)
+
+## Configuration
+
 It lives under the `npm-script` namespace and has following configurable parameters:
 
 ```yaml
@@ -18,6 +31,8 @@ parameters:
       script: ~
       working-directory: './'
 ```
+
+## Parameters
 
 ### is-run-task
 

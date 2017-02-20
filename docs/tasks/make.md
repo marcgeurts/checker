@@ -5,6 +5,13 @@ currentMenu: tasks
 # Make
 
 The Make task will run your automated make tasks.
+
+## Installation
+
+Make sure you have installed `make`.
+
+## Configuration
+
 It lives under the `make` namespace and has following configurable parameters:
 
 ```yaml
@@ -15,6 +22,8 @@ parameters:
       makefile: ~
       task: ~
 ```
+
+## Parameters
 
 ### makefile
 
