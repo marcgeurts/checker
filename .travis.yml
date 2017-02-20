@@ -51,7 +51,7 @@ install:
     fi
 
 script:
-  - bin/checker run tests
+  - php ./bin/checker run tests
 
 after_script:
   - |

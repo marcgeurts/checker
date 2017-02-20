@@ -42,4 +42,4 @@ before_test:
 
 test_script:
   - cd c:\projects\checker
-  - bin/checker run tests
+  - php ./bin/checker run tests
