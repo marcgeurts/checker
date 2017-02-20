@@ -42,4 +42,4 @@ before_test:
 
 test_script:
   - cd c:\projects\checker
-  - php ./bin/checker run tests
+  - vendor/bin/phpunit --colors
