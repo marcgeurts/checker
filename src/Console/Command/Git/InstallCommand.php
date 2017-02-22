@@ -197,7 +197,7 @@ class InstallCommand extends Command
      */
     private function generateHookCommand($command)
     {
-        $executable = $this->paths()->getBinCommand('checker', true);
+        $executable = $this->getPharCommand() ?: $this->paths()->getBinCommand('checker', true);
 
         $this->processBuilder->setArguments([
             $this->paths()->getRelativeProjectPath($executable),
@@ -210,6 +210,25 @@ class InstallCommand extends Command
         }
 
         return $this->processBuilder->getProcess()->getCommandLine();
+    }
+
+    /**
+     * Get phar command.
+     *
+     * @return bool|string
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
+     * @codeCoverageIgnore
+     */
+    private function getPharCommand()
+    {
+        $token = $_SERVER['argv'][0];
+
+        if (pathinfo($token, PATHINFO_EXTENSION) == 'phar') {
+            return $token;
+        }
+
+        return false;
     }
 
     /**

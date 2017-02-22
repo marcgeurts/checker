@@ -46,6 +46,10 @@ class PathsHelperTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        if (!defined('CHECKER_PATH')) {
+            define('CHECKER_PATH', './');
+        }
+
         $this->checker = m::mock(Checker::class);
         $this->filesystem = m::mock(Filesystem::class);
         $this->executableFinder = m::mock(ExecutableFinder::class);
@@ -76,34 +80,16 @@ class PathsHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testGetProjectPath()
     {
-        $this->filesystem
-            ->shouldReceive('makePathRelative')
-            ->with(realpath(__DIR__.'/../..'), getcwd())
-            ->once()
-            ->andReturn('./');
-
         $this->assertSame('./', $this->pathsHelper->getProjectPath());
     }
 
     public function testGetResourcesPath()
     {
-        $this->filesystem
-            ->shouldReceive('makePathRelative')
-            ->with(realpath(__DIR__.'/../..'), getcwd())
-            ->once()
-            ->andReturn('./');
-
         $this->assertSame('./resources/', $this->pathsHelper->getResourcesPath());
     }
 
     public function testGetAsciiPath()
     {
-        $this->filesystem
-            ->shouldReceive('makePathRelative')
-            ->with(realpath(__DIR__.'/../..'), getcwd())
-            ->once()
-            ->andReturn('./');
-
         $this->assertSame('./resources/ascii/', $this->pathsHelper->getAsciiPath());
     }
 
@@ -120,12 +106,6 @@ class PathsHelperTest extends \PHPUnit_Framework_TestCase
 
         $this->filesystem->shouldReceive('exists')->with('foobar')->once()->andReturn(false);
         $this->filesystem->shouldReceive('exists')->with('./resources/ascii/foobar')->once()->andReturn(false);
-
-        $this->filesystem
-            ->shouldReceive('makePathRelative')
-            ->with(realpath(__DIR__.'/../..'), getcwd())
-            ->twice()
-            ->andReturn('./');
 
         $this->assertNull($this->pathsHelper->getMessage(null));
         $this->assertSame('foo', $this->pathsHelper->getMessage('user'));
@@ -186,25 +166,15 @@ class PathsHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testGetGitHookTemplatesDir()
     {
-        $this->filesystem
-            ->shouldReceive('makePathRelative')
-            ->with(realpath(__DIR__.'/../..'), getcwd())
-            ->once()
-            ->andReturn('./');
-
         $this->assertSame('./resources/hooks/', $this->pathsHelper->getGitHookTemplatesDir());
     }
 
     public function testGetBinDir()
     {
-        $this->checker->shouldReceive('getBinDir')->withNoArgs()->once()->andReturn(__DIR__.'/../../bin');
+        $this->checker->shouldReceive('getBinDir')->withNoArgs()->once()->andReturn('bin');
 
-        $this->filesystem->shouldReceive('exists')->with(__DIR__.'/../../bin')->once()->andReturn(true);
-        $this->filesystem
-            ->shouldReceive('makePathRelative')
-            ->with(realpath(__DIR__.'/../../bin'), getcwd())
-            ->once()
-            ->andReturn('bin');
+        $this->filesystem->shouldReceive('exists')->with('bin')->once()->andReturn(true);
+        $this->filesystem->shouldReceive('makePathRelative')->with(realpath('bin'), getcwd())->once()->andReturn('bin');
 
         $this->assertSame('bin', $this->pathsHelper->getBinDir());
     }
@@ -213,14 +183,13 @@ class PathsHelperTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException(DirectoryNotFoundException::class, sprintf(
             'The configured BIN directory `%s` could not be found.',
-            __DIR__.'/../../bin'
+            'bin'
         ));
 
-        $dir = __DIR__.'/../../bin';
-        $this->checker->shouldReceive('getBinDir')->withNoArgs()->once()->andReturn($dir);
+        $this->checker->shouldReceive('getBinDir')->withNoArgs()->once()->andReturn('bin');
 
-        $this->filesystem->shouldReceive('exists')->with($dir)->once()->andReturn(false);
-        $this->filesystem->shouldReceive('makePathRelative')->with(realpath($dir), getcwd())->never();
+        $this->filesystem->shouldReceive('exists')->with('bin')->once()->andReturn(false);
+        $this->filesystem->shouldReceive('makePathRelative')->with(realpath('bin'), getcwd())->never();
 
         $this->pathsHelper->getBinDir();
     }
@@ -241,14 +210,13 @@ class PathsHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRelativeProjectPath()
     {
-        $path = __DIR__.'/../..';
         $this->checker->shouldReceive('getGitDir')->withNoArgs()->twice()->andReturn('.');
 
         $this->filesystem->shouldReceive('exists')->with('.')->twice()->andReturn(true);
-        $this->filesystem->shouldReceive('makePathRelative')->andReturnValues([__DIR__, $path, __DIR__]);
+        $this->filesystem->shouldReceive('makePathRelative')->andReturnValues([__DIR__, __DIR__.'/..', __DIR__]);
 
-        $this->assertSame(realpath($path), $this->pathsHelper->getRelativeProjectPath($path));
-        $this->assertSame(realpath(__DIR__), $this->pathsHelper->getRelativeProjectPath($path));
+        $this->assertSame(realpath(__DIR__.'/..'), $this->pathsHelper->getRelativeProjectPath(__DIR__.'/..'));
+        $this->assertSame(realpath(__DIR__), $this->pathsHelper->getRelativeProjectPath(__DIR__.'/..'));
     }
 
     public function testGetAbsolutePath()
@@ -266,7 +234,7 @@ class PathsHelperTest extends \PHPUnit_Framework_TestCase
     public function testGetPathWithTrailingSlash()
     {
         $this->assertSame('', $this->pathsHelper->getPathWithTrailingSlash(''));
-        $this->assertSame('foo/', $this->pathsHelper->getPathWithTrailingSlash('foo'));
+        $this->assertSame('foo'.DIRECTORY_SEPARATOR, $this->pathsHelper->getPathWithTrailingSlash('foo'));
     }
 
     public function testGetDefaultConfigPath()

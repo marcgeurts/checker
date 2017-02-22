@@ -1,0 +1,32 @@
+{
+  "chmod": "0755",
+  "directories": [
+    "src",
+    "resources"
+  ],
+  "files": [
+    "LICENSE.md",
+    "README.md"
+  ],
+  "finder": [
+    {
+      "exclude": [
+        "Tests",
+        "tests",
+        "mockery",
+        "phpdocumentor",
+        "phpspec",
+        "phpunit",
+        "sebastian"
+      ],
+      "in": "vendor"
+    }
+  ],
+  "compactors": [
+    "Herrera\\Box\\Compactor\\Php",
+    "Herrera\\Box\\Compactor\\Json"
+  ],
+  "main": "bin/checker",
+  "output": "checker.phar",
+  "stub": true
+}

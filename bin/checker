@@ -37,6 +37,8 @@ if (!defined('CHECKER_COMPOSER_INSTALL')) {
     exit(1);
 }
 
+define('CHECKER_PATH', __DIR__.'/../');
+
 require CHECKER_COMPOSER_INSTALL;
 
 use ClickNow\Checker\Console\Application;

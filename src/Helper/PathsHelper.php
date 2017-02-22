@@ -62,7 +62,7 @@ class PathsHelper extends Helper
      */
     public function getProjectPath()
     {
-        return $this->getRelativePath(__DIR__.'/../../');
+        return CHECKER_PATH;
     }
 
     /**
@@ -275,7 +275,7 @@ class PathsHelper extends Helper
             return $path;
         }
 
-        return rtrim($path, '/').'/';
+        return rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
     }
 
     /**

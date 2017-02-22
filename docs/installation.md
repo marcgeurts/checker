@@ -4,25 +4,6 @@ currentMenu: installation
 
 # Installation
 
-## Using Phar
-
-Use the following command to download [checker.phar](https://cknow.github.io/checker/checker.phar):
-
-```bash
-curl -OS https://cknow.github.io/checker/checker.phar
-```
-
-> **Note:**
-As Github is using a DDOS protection system, if using CURL fails,
-just manually download the phar file.
-
-If you want to run `checker` instead of `php checker.phar`, move it to /usr/local/bin:
-
-```bash
-chmod +x checker.phar
-mv checker.phar /usr/local/bin/checker
-```
-
 ## Via Composer
 
 ### Locally
@@ -67,6 +48,25 @@ run the command `checker git:install` in the project directory.
 > **Note:**
 When you globally installed 3rd party tools like e.g. phpunit,
 those will also be used instead of the composer executables.
+
+## Using Phar
+
+Use the following command to download [checker.phar](https://cknow.github.io/checker/checker.phar):
+
+```bash
+curl -OS https://cknow.github.io/checker/checker.phar
+```
+
+> **Note:**
+As Github is using a DDOS protection system, if using CURL fails,
+just manually download the phar file from the Github [releases](https://github.com/cknow/checker/releases) page.
+
+If you want to run `checker` instead of `php checker.phar`, move it to /usr/local/bin:
+
+```bash
+chmod +x checker.phar
+mv checker.phar /usr/local/bin/checker
+```
 
 ## Installation with an exotic project structure
 

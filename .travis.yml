@@ -56,15 +56,28 @@ script:
 after_script:
   - |
     if [[ '${TRAVIS_PHP_VERSION}' == '5.5.9' ]]; then
-      travis_retry composer require couscous/couscous --dev
-      vendor/bin/couscous travis-auto-deploy
-
-      travis_retry composer require scrutinizer/ocular --dev
+      travis_retry composer require scrutinizer/ocular
       vendor/bin/ocular code-coverage:upload --format=php-clover build/logs/clover.xml
 
-      travis_retry composer require satooshi/php-coveralls --dev
+      travis_retry composer require satooshi/php-coveralls
       vendor/bin/coveralls -v
 
-      travis_retry composer require codeclimate/php-test-reporter --dev
+      travis_retry composer require codeclimate/php-test-reporter
       CODECLIMATE_REPO_TOKEN="96254d6ead07ce8d50ae34d8bcf0996352e0a8910eb824b78387f4c170285568" vendor/bin/test-reporter
     fi
+
+before_deploy:
+  - travis_retry composer install -o --no-dev
+  - travis_retry composer require kherge/box
+  - box build
+  - sha1sum checker.phar > checker.phar.version
+  - cp checker.phar docs/
+  - cp checker.phar.version docs/
+  - vendor/bin/couscous travis-auto-deploy
+
+deploy:
+  provider: releases
+  file: checker.phar
+  skip_cleanup: true
+  on:
+    tags: true
