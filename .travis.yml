@@ -67,7 +67,7 @@ after_script:
     fi
 
 before_deploy:
-  - travis_retry composer install -o --no-dev
+  - travis_retry composer install --no-dev
   - travis_retry composer require kherge/box
   - box build
   - sha1sum checker.phar > checker.phar.version
