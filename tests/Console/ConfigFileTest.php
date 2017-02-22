@@ -7,7 +7,7 @@ use Composer\Package\PackageInterface;
 use Mockery as m;
 
 /**
- * @group console
+ * @group  console
  * @covers \ClickNow\Checker\Console\ConfigFile
  */
 class ConfigFileTest extends \PHPUnit_Framework_TestCase
@@ -41,6 +41,7 @@ class ConfigFileTest extends \PHPUnit_Framework_TestCase
 
     public function testGetDefaultPath()
     {
+        $this->filesystem->shouldReceive('exists')->with('/checker.dist.yml$/')->once()->andReturn(false);
         $this->filesystem->shouldReceive('exists')->with('/checker.yml.dist$/')->once()->andReturn(false);
         $this->filesystem->shouldReceive('isAbsolutePath')->with('/checker.yml$/')->once()->andReturn(true);
 
@@ -51,7 +52,8 @@ class ConfigFileTest extends \PHPUnit_Framework_TestCase
 
     public function testConfigPathFromComposer()
     {
-        $this->filesystem->shouldReceive('exists')->with('foo.dist')->once()->andReturn(false);
+        $this->filesystem->shouldReceive('exists')->with('/foo.dist.yml$/')->once()->andReturn(false);
+        $this->filesystem->shouldReceive('exists')->with('/foo.yml.dist$/')->once()->andReturn(false);
         $this->filesystem->shouldReceive('isAbsolutePath')->with('foo')->once()->andReturn(true);
 
         $this->package->shouldReceive('getExtra')->withNoArgs()->once()->andReturn(['checker' => ['config' => 'foo']]);
@@ -61,7 +63,8 @@ class ConfigFileTest extends \PHPUnit_Framework_TestCase
 
     public function testConfigPathWithoutAbsolutePath()
     {
-        $this->filesystem->shouldReceive('exists')->with('foo.dist')->once()->andReturn(false);
+        $this->filesystem->shouldReceive('exists')->with('/foo.dist.yml$/')->once()->andReturn(false);
+        $this->filesystem->shouldReceive('exists')->with('/foo.yml.dist$/')->once()->andReturn(false);
         $this->filesystem->shouldReceive('isAbsolutePath')->with('foo')->once()->andReturn(false);
 
         $this->package->shouldReceive('getExtra')->withNoArgs()->once()->andReturn(['checker' => ['config' => 'foo']]);
@@ -69,8 +72,20 @@ class ConfigFileTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(getcwd().DIRECTORY_SEPARATOR.'foo', $this->configFile->getDefaultPath());
     }
 
-    public function testConfigPathWithDistSupport()
+    public function testConfigPathWithDistSupportBeforeExtension()
     {
+        $this->filesystem->shouldReceive('exists')->with('/checker.dist.yml$/')->once()->andReturn(true);
+        $this->filesystem->shouldReceive('exists')->with('/checker.yml.dist$/')->never();
+        $this->filesystem->shouldReceive('isAbsolutePath')->with('/checker.dist.yml$/')->once()->andReturn(true);
+
+        $this->package->shouldReceive('getExtra')->withNoArgs()->once()->andReturnNull();
+
+        $this->assertSame(getcwd().DIRECTORY_SEPARATOR.'checker.dist.yml', $this->configFile->getDefaultPath());
+    }
+
+    public function testConfigPathWithDistSupportAfterExtension()
+    {
+        $this->filesystem->shouldReceive('exists')->with('/checker.dist.yml$/')->once()->andReturn(false);
         $this->filesystem->shouldReceive('exists')->with('/checker.yml.dist$/')->once()->andReturn(true);
         $this->filesystem->shouldReceive('isAbsolutePath')->with('/checker.yml.dist$/')->once()->andReturn(true);
 

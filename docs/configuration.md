@@ -4,7 +4,7 @@ currentMenu: configuration
 
 # Configuration
 
-Some things in Checker can be configured in a `checker.yml` or `checker.yml.dist`
+Some things in Checker can be configured in a `checker.yml`, `checker.dist.yml` or `checker.yml.dist`
 file in the root of your project (the directory where you run the `checker` command).
 You can specify a custom config filename and location in `composer.json`
 or in the `--config` option of the console commands.

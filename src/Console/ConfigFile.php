@@ -88,9 +88,14 @@ class ConfigFile
      */
     private function useConfigPathWithDistSupport($defaultPath)
     {
-        $distPath = (substr($defaultPath, -5) !== '.dist') ? $defaultPath.'.dist' : $defaultPath;
-        if ($this->filesystem->exists($distPath)) {
-            return $distPath;
+        $file = pathinfo($defaultPath, PATHINFO_DIRNAME).DIRECTORY_SEPARATOR.pathinfo($defaultPath, PATHINFO_FILENAME);
+
+        if ($this->filesystem->exists($file.'.dist.yml')) {
+            return $file.'.dist.yml';
+        }
+
+        if ($this->filesystem->exists($file.'.yml.dist')) {
+            return $file.'.yml.dist';
         }
 
         return $defaultPath;
