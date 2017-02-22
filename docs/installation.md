@@ -51,10 +51,17 @@ those will also be used instead of the composer executables.
 
 ## Using Phar
 
-Use the following command to download [checker.phar](https://cknow.github.io/checker/checker.phar):
+Use the following command to download
+[checker.phar](https://github.com/cknow/checker/releases/download/1.0.0/checker.phar):
 
 ```bash
-curl -OS https://cknow.github.io/checker/checker.phar
+wget https://github.com/cknow/checker/releases/download/1.0.0/checker.phar
+```
+
+or with curl:
+
+```bash
+curl -L https://github.com/cknow/checker/releases/download/1.0.0/checker.phar
 ```
 
 > **Note:**
