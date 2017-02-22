@@ -4,13 +4,12 @@ template:
 baseUrl: https://cknow.github.io/checker
 
 exclude:
-  - %gitignore%
   - bin
+  - build
   - resources
   - src
   - tests
-  - .editorconfig
-  - .gitattributes
+  - vendor
 
 github:
   user: cknow
