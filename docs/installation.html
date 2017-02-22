@@ -73,17 +73,6 @@
                 </nav>
                         <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
                 <h1 id="installation">Installation</h1>
-<h2 id="using-phar">Using Phar</h2>
-<p>Use the following command to download <a href="https://cknow.github.io/checker/checker.phar">checker.phar</a>:</p>
-<pre><code class="language-bash">curl -OS https://cknow.github.io/checker/checker.phar</code></pre>
-<blockquote>
-<p><strong>Note:</strong>
-As Github is using a DDOS protection system, if using CURL fails,
-just manually download the phar file.</p>
-</blockquote>
-<p>If you want to run <code>checker</code> instead of <code>php checker.phar</code>, move it to /usr/local/bin:</p>
-<pre><code class="language-bash">chmod +x checker.phar
-mv checker.phar /usr/local/bin/checker</code></pre>
 <h2 id="via-composer">Via Composer</h2>
 <h3 id="locally">Locally</h3>
 <p>Use the following command to install on your project locally:</p>
@@ -107,6 +96,20 @@ run the command <code>checker git:install</code> in the project directory.</p>
 When you globally installed 3rd party tools like e.g. phpunit,
 those will also be used instead of the composer executables.</p>
 </blockquote>
+<h2 id="using-phar">Using Phar</h2>
+<p>Use the following command to download
+<a href="https://github.com/cknow/checker/releases/download/1.0.0/checker.phar">checker.phar</a>:</p>
+<pre><code class="language-bash">wget https://github.com/cknow/checker/releases/download/1.0.0/checker.phar</code></pre>
+<p>or with curl:</p>
+<pre><code class="language-bash">curl -L https://github.com/cknow/checker/releases/download/1.0.0/checker.phar</code></pre>
+<blockquote>
+<p><strong>Note:</strong>
+As Github is using a DDOS protection system, if using CURL fails,
+just manually download the phar file from the Github <a href="https://github.com/cknow/checker/releases">releases</a> page.</p>
+</blockquote>
+<p>If you want to run <code>checker</code> instead of <code>php checker.phar</code>, move it to /usr/local/bin:</p>
+<pre><code class="language-bash">chmod +x checker.phar
+mv checker.phar /usr/local/bin/checker</code></pre>
 <h2 id="installation-with-an-exotic-project-structure">Installation with an exotic project structure</h2>
 <p>When your application has a project structure that is not covered by the default configuration settings,
 you will have to create a <code>checker.yml</code> before installing the package and add next config
