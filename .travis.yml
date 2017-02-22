@@ -18,8 +18,8 @@ php:
 
 env:
   global:
-    - setup=basic
-    - GIT_NAME: Ricardo Gobbo de Souza
+    - setup: basic
+    - GIT_NAME: "'Ricardo Gobbo de Souza'"
     - GIT_EMAIL: ricardo@clicknow.com.br
     - GH_REF: github.com/cknow/checker
     - secure: DXIQfZ/H/zmiusIyHNI7o0DOCz1Kx/1xL6m4HwyIZlL+3j0mXVsdoACSAIWYjAyl0BjjgS+jniQiUC8UMNmyLuDInrfSeIL1Y1YwYyDiu5SOCXfWkRl5tyC6wN2/PYyQtsHtKRXRkIyAL8cXHG8Ze6bViqB08SiGB4cSlYeFd3OWhbi6VnJa4NB2KvTSKLPkXT4yVtsAf/sEZjSaTRV06+siY/ZJ5HIt60PoN9aiA7CFkPE83gER1bqtuLKEZMEd48wsicQM+DfmLoJvOcQmgNIcrohBbtZfvvIc5PRdqOgUAG7uks8unV7qBi8Wl4TCqvXZXFSMEJ10O06DwsNL7ySd0mJRxnqDn9e/9xqCOplApJPpx5+IpEy6RJkeYIEq1k2bVJpcv6N9hyvHx/t9TbfVshnTg1UtgvPscP+JyEpQtUSaJRZjOneGogWZk+Ub6N/v3Xb/wDXSrBUpmzM4ZpkqgEO1GGQj6xf+M3ONse0ztQVuYcTrWN9mqfT2LeITSeut0JgfBbJz7wSKXFcuWux0CGry2h1c+GONKITEhUhs8szT4nRQg2GdmtzndKSl/3+gbiNtLVsFJ7mkGq//6buCTkbB5pRo9FNxS7WW08CaeJUEz3T19p1QBBMGU1wI8yXV8WbbFmNlpbR0ZnLk3xR/bvVctfnS6sGJgSajgZE=
@@ -28,9 +28,9 @@ matrix:
   fast_finish: true
   include:
     - php: 5.5.9
-      env: setup=lowest
-    - php: 5.5.9
       env: setup=stable
+    - php: 5.5.9
+      env: setup=lowest
 
 before_install:
   - travis_retry composer self-update
@@ -38,15 +38,15 @@ before_install:
 
 install:
   - |
-    if [[ $setup = 'basic' ]]; then
+    if [[ "$setup" == "basic" ]]; then
       travis_retry composer install --prefer-dist --no-interaction --no-suggest;
     fi
 
-    if [[ $setup = 'stable' ]]; then
+    if [[ "$setup" == "stable" ]]; then
       travis_retry composer update --prefer-dist --no-interaction --prefer-stable --no-suggest;
     fi
 
-    if [[ $setup = 'lowest' ]]; then
+    if [[ "$setup" == "lowest" ]]; then
       travis_retry composer update --prefer-dist --no-interaction --prefer-lowest --prefer-stable --no-suggest;
     fi
 
@@ -55,29 +55,34 @@ script:
 
 after_script:
   - |
-    if [[ '${TRAVIS_PHP_VERSION}' == '5.5.9' ]]; then
-      travis_retry composer require scrutinizer/ocular
+    if [[ "$TRAVIS_PHP_VERSION" == "5.5.9" && "$setup" == "basic" ]]; then
+      travis_retry composer require --dev scrutinizer/ocular
       vendor/bin/ocular code-coverage:upload --format=php-clover build/logs/clover.xml
 
-      travis_retry composer require satooshi/php-coveralls
+      travis_retry composer require --dev satooshi/php-coveralls
       vendor/bin/coveralls -v
 
-      travis_retry composer require codeclimate/php-test-reporter
+      travis_retry composer require --dev codeclimate/php-test-reporter
       CODECLIMATE_REPO_TOKEN="96254d6ead07ce8d50ae34d8bcf0996352e0a8910eb824b78387f4c170285568" vendor/bin/test-reporter
     fi
 
 before_deploy:
-  - travis_retry composer install --no-dev
-  - travis_retry composer require kherge/box
-  - box build
+  - travis_retry composer install -o --no-dev
+  - curl -LSs https://box-project.github.io/box2/installer.php | php
+  - php box.phar build
   - sha1sum checker.phar > checker.phar.version
   - cp checker.phar docs/
   - cp checker.phar.version docs/
+  - echo $TRAVIS_BRANCH
+  - travis_retry composer require --dev couscous/couscous
   - vendor/bin/couscous travis-auto-deploy
 
 deploy:
   provider: releases
+  api_key:
+    secure: OJ4n7mgojWu9cyP0LKr4x2su32TBSotJbENEhhlyORBC2v7nzOAB5+EP0pdiYacW/w0deCcrb6W+KjA/qURBpnPFKMv3uke3GsB1YSE6uFvH5Q3HIskZfRC7MRi6QtUoDfJBj/Ru0v+xgvMcMS/aK5AwI8/neH69ESy/1CLbngntmi6xbEtptJuXWJMhA2soBXCSHgiQn2VCXBxWInYsdX4pqvCLMhDQ5hjRO+gStLANNoPiXLHMIL0AIIWw2OfM9wiNUx90x3pfc0o3TE+sEYeKNCT4tiSenZcMQn00fItiuxXaAqBl3M1b+8I9GwoMeX2J67UgolWUy6AwSnVMlZJwGJ7JftQ1UL5+VvFLYsHBTPJwu4lkALXhhPo+uYINwrrQo3BsFd6K2CpDWasYvy+aPKp6E9teoPcGxXoU7O2LlTLA6hs1O6Xkg8usRntwsRfDkQmLJvvUrPjRGDjtffaiI7GMST9Q4nqmD3iIFlRJFLJSTjZdUTdgCyGpuJF9kUyExzhExrW7koKOoPnSNQye73/5tH5mKYXeTKApx8GjKz57j+yEo5AvMWhpkILN6/n8cqqwzZAwnGBd7KmIalLWeTvbhPdJqKr5aTc8SYvEDqa4G3z1yDvrWA1R7RQRUPRgsnSryCUIyCYslkmJBX8QR//QrDuOevNLbbvuRO8=
   file: checker.phar
   skip_cleanup: true
   on:
     tags: true
+    condition: '"$TRAVIS_PHP_VERSION" == "5.5.9" && "$setup" == "basic"'
