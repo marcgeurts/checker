@@ -56,6 +56,9 @@ script:
 after_script:
   - |
     if [[ "$TRAVIS_PHP_VERSION" == "5.5.9" && "$setup" == "basic" ]]; then
+      travis_retry composer require --dev couscous/couscous
+      vendor/bin/couscous travis-auto-deploy
+
       travis_retry composer require --dev scrutinizer/ocular
       vendor/bin/ocular code-coverage:upload --format=php-clover build/logs/clover.xml
 
@@ -69,13 +72,7 @@ after_script:
 before_deploy:
   - travis_retry composer install -o --no-dev
   - curl -LSs https://box-project.github.io/box2/installer.php | php
-  - php box.phar build
-  - sha1sum checker.phar > checker.phar.version
-  - cp checker.phar docs/
-  - cp checker.phar.version docs/
-  - echo $TRAVIS_BRANCH
-  - travis_retry composer require --dev couscous/couscous
-  - vendor/bin/couscous travis-auto-deploy
+  - php -d phar.readonly=false box.phar build
 
 deploy:
   provider: releases
@@ -84,5 +81,7 @@ deploy:
   file: checker.phar
   skip_cleanup: true
   on:
+    repo: cknow/checker
+    php: 5.5.9
     tags: true
-    condition: '"$TRAVIS_PHP_VERSION" == "5.5.9" && "$setup" == "basic"'
+    condition: "$setup = basic"
