@@ -69,6 +69,11 @@
   "config": {
     "sort-packages": true
   },
+  "scripts": {
+    "post-install-cmd": [
+      "php ./bin/checker git:install"
+    ]
+  },
   "extra": {
     "class": "ClickNow\\Checker\\Composer\\CheckerPlugin"
   },
