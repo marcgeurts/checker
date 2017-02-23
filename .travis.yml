@@ -58,7 +58,7 @@ after_script:
     if [[ "$TRAVIS_PHP_VERSION" == "5.5.9" && "$setup" == "basic" ]]; then
       if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_PULL_REQUEST" == "false" ]]; then
         travis_retry composer require --dev couscous/couscous
-        vendor/bin/couscous travis-auto-deploy
+        vendor/bin/couscous travis-auto-deploy --php-version=5.5.9
       fi
 
       travis_retry composer require --dev scrutinizer/ocular
