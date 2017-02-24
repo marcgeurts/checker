@@ -70,7 +70,13 @@
     "sort-packages": true
   },
   "scripts": {
+    "post-create-project-cmd": [
+      "php ./bin/checker git:install"
+    ],
     "post-install-cmd": [
+      "php ./bin/checker git:install"
+    ],
+    "post-update-cmd": [
       "php ./bin/checker git:install"
     ]
   },
