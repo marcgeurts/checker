@@ -35,7 +35,7 @@ class ExecutableFinderTest extends \PHPUnit_Framework_TestCase
 
     public function testFindExecutable()
     {
-        $this->finder->shouldReceive('find')->with('bar', null, ['foo', 'bin'])->twice()->andReturn('foo/bar');
+        $this->finder->shouldReceive('find')->with('bar', null, ['foo', './bin'])->twice()->andReturn('foo/bar');
 
         $this->assertSame('foo/bar', $this->executableFinder->find('bar'));
         $this->assertSame('foo/bar', $this->executableFinder->find('bar', true));
@@ -45,7 +45,7 @@ class ExecutableFinderTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException(ExecutableNotFoundException::class, 'Executable `bar` was not found.');
 
-        $this->finder->shouldReceive('find')->with('bar', null, ['foo', 'bin'])->once()->andReturn(false);
+        $this->finder->shouldReceive('find')->with('bar', null, ['foo', './bin'])->once()->andReturn(false);
         $this->assertSame('foo/bar', $this->executableFinder->find('bar'));
     }
 }
