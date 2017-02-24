@@ -41,8 +41,7 @@ class ExecutableFinder
      */
     public function find($command, $forceUnix = false)
     {
-        $bin = rtrim(getcwd(), '/\\') . DIRECTORY_SEPARATOR . 'bin';
-        $executable = $this->executableFinder->find($command, null, [$this->binDir, $bin]);
+        $executable = $this->executableFinder->find($command, null, [$this->binDir]);
 
         if (!$executable) {
             throw new ExecutableNotFoundException($command);
