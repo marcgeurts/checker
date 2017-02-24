@@ -74,10 +74,10 @@
       "php ./bin/checker git:install"
     ],
     "post-install-cmd": [
-      "php ./bin/checker git:install"
+      "ClickNow\\Checker\\Composer\\CheckerPlugin::postInstall"
     ],
     "post-update-cmd": [
-      "php ./bin/checker git:install"
+      "ClickNow\\Checker\\Composer\\CheckerPlugin::postUpdate"
     ]
   },
   "extra": {
