@@ -15,7 +15,8 @@ if (!ini_get('date.timezone')) {
 }
 
 $autoloads = [
-    __DIR__.'/vendor/autoload.php',
+    getcwd().'/vendor/autoload.php',
+    getcwd().'/../../autoload.php',
     __DIR__.'/../vendor/autoload.php',
     __DIR__.'/../../../autoload.php',
 ];
