@@ -104,7 +104,7 @@ class InstallCommand extends Command
      */
     private function getGitHooksDir()
     {
-        $gitHooksDir = $this->paths()->getGitHooksDir();
+        $gitHooksDir = $this->getPathsHelper()->getGitHooksDir();
 
         if (!$this->filesystem->exists($gitHooksDir)) {
             $this->filesystem->mkdir($gitHooksDir);
@@ -125,9 +125,9 @@ class InstallCommand extends Command
      */
     private function getHookTemplate($name)
     {
-        $resourcePath = $this->paths()->getGitHookTemplatesDir().$this->checker->getHooksPreset();
-        $customPath = $this->paths()->getPathWithTrailingSlash($this->checker->getHooksDir());
-        $template = $this->paths()->getPathWithTrailingSlash($resourcePath).$name;
+        $resourcePath = $this->getPathsHelper()->getGitHookTemplatesDir().$this->checker->getHooksPreset();
+        $customPath = $this->getPathsHelper()->getPathWithTrailingSlash($this->checker->getHooksDir());
+        $template = $this->getPathsHelper()->getPathWithTrailingSlash($resourcePath).$name;
 
         if ($customPath && $this->filesystem->exists($customPath.$name)) {
             $template = $customPath.$name;
@@ -179,7 +179,7 @@ class InstallCommand extends Command
         $content = $this->filesystem->readFromFileInfo($template);
         $replacements = [
             '$(GENERATED_MESSAGE)' => self::GENERATED_MESSAGE,
-            '${HOOK_EXEC_PATH}'    => $this->paths()->getGitHookExecutionPath(),
+            '${HOOK_EXEC_PATH}'    => $this->getPathsHelper()->getGitHookExecutionPath(),
             '$(HOOK_COMMAND)'      => $this->generateHookCommand('git:'.$name),
         ];
 
@@ -197,10 +197,10 @@ class InstallCommand extends Command
      */
     private function generateHookCommand($command)
     {
-        $executable = $this->getPharCommand() ?: $this->paths()->getBinCommand('checker', true);
+        $executable = $this->getPharCommand() ?: $this->getPathsHelper()->getBinCommand('checker', true);
 
         $this->processBuilder->setArguments([
-            $this->paths()->getRelativeProjectPath($executable),
+            $this->getPathsHelper()->getRelativeProjectPath($executable),
             $command,
         ]);
 
@@ -239,9 +239,9 @@ class InstallCommand extends Command
     private function useExoticConfigPath()
     {
         try {
-            $configPath = $this->paths()->getAbsolutePath($this->input->getOption('config'));
-            if ($configPath != $this->paths()->getDefaultConfigPath()) {
-                return $this->paths()->getRelativeProjectPath($configPath);
+            $configPath = $this->getPathsHelper()->getAbsolutePath($this->input->getOption('config'));
+            if ($configPath != $this->getPathsHelper()->getDefaultConfigPath()) {
+                return $this->getPathsHelper()->getRelativeProjectPath($configPath);
             }
         } catch (FileNotFoundException $e) {
             // no config path
@@ -251,11 +251,11 @@ class InstallCommand extends Command
     }
 
     /**
-     * Paths helper.
+     * Get paths helper.
      *
      * @return \ClickNow\Checker\Helper\PathsHelper
      */
-    private function paths()
+    private function getPathsHelper()
     {
         return $this->getHelperSet()->get('paths');
     }
