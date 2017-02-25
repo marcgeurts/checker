@@ -54,7 +54,7 @@ class UninstallCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->io->title('Checker are uninstalling in git hooks!');
-        $gitHooksDir = $this->paths()->getGitHooksDir();
+        $gitHooksDir = $this->getPathsHelper()->getGitHooksDir();
 
         foreach ($this->gitHooks as $gitHook) {
             $gitHookPath = $gitHooksDir.$gitHook;
@@ -101,11 +101,11 @@ class UninstallCommand extends Command
     }
 
     /**
-     * Paths helper.
+     * Get paths helper.
      *
      * @return \ClickNow\Checker\Helper\PathsHelper
      */
-    private function paths()
+    private function getPathsHelper()
     {
         return $this->getHelperSet()->get('paths');
     }

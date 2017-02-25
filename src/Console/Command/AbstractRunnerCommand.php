@@ -89,7 +89,7 @@ abstract class AbstractRunnerCommand extends Command
         $context = $this->context();
         $this->setOptions($context->getRunner());
 
-        return $this->runner()->run($context);
+        return $this->getRunnerHelper()->run($context);
     }
 
     /**
@@ -134,11 +134,11 @@ abstract class AbstractRunnerCommand extends Command
     }
 
     /**
-     * Runner helper.
+     * Get runner helper.
      *
      * @return \ClickNow\Checker\Helper\RunnerHelper
      */
-    protected function runner()
+    protected function getRunnerHelper()
     {
         return $this->getHelperSet()->get('runner');
     }
