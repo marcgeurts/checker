@@ -41,7 +41,7 @@ class ExecutableFinder
      */
     public function find($command, $forceUnix = false)
     {
-        $executable = $this->executableFinder->find($command, null, [$this->binDir]);
+        $executable = $this->executableFinder->find($command, null, [$this->binDir, './bin']);
 
         if (!$executable) {
             throw new ExecutableNotFoundException($command);
