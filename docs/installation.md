@@ -11,7 +11,7 @@ currentMenu: installation
 Use the following command to install on your project locally:
 
 ```bash
-composer require-dev cknow/checker
+composer require --dev cknow/checker
 ```
 
 or add this to `require-dev` section in your `composer.json` file:
