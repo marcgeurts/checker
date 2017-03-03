@@ -21,6 +21,9 @@ currentMenu: home
 [![Build Status](https://scrutinizer-ci.com/g/cknow/checker/badges/build.png?b=master)](https://scrutinizer-ci.com/g/cknow/checker/build-status/master)
 [![Code Coverage](https://scrutinizer-ci.com/g/cknow/checker/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/cknow/checker/?branch=master)
 
+[![Dependency Status](https://dependencyci.com/github/cknow/checker/badge)](https://dependencyci.com/github/cknow/checker)
+[![Gitter](https://badges.gitter.im/cknow/checker.svg)](https://gitter.im/cknow/checker?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/638e3fd2-c8bd-4e58-aeb1-76b999abea07/big.png)](https://insight.sensiolabs.com/projects/638e3fd2-c8bd-4e58-aeb1-76b999abea07)
 
 > **Note:** This project is inspired in [GrumPHP](https://github.com./phpro/grumphp)!!!
