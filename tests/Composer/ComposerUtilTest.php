@@ -7,7 +7,7 @@ use Exception;
 use Mockery as m;
 
 /**
- * @group  composer2
+ * @group  composer
  * @covers \ClickNow\Checker\Composer\ComposerUtil
  * @runTestsInSeparateProcesses
  */
