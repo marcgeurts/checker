@@ -17,6 +17,12 @@ services:
       - '@runner.commands-collection'
       - '@repository.git'
 
+  console.command.self-update:
+    class: ClickNow\Checker\Console\Command\SelfUpdateCommand
+    arguments:
+      - '@io'
+      - '@phar.updater'
+
   console.command.git.install:
     class: ClickNow\Checker\Console\Command\Git\InstallCommand
     arguments:
