@@ -2,6 +2,7 @@
 
 namespace ClickNow\Checker\Composer;
 
+use ClickNow\Checker\Console\Application;
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Installer\PackageEvent;
@@ -16,8 +17,6 @@ use Symfony\Component\Process\ProcessBuilder;
 
 class CheckerPlugin implements PluginInterface, EventSubscriberInterface
 {
-    const PACKAGE_NAME = 'cknow/checker';
-
     /**
      * @var \Composer\Composer
      */
@@ -144,7 +143,7 @@ class CheckerPlugin implements PluginInterface, EventSubscriberInterface
      */
     private function isThisPackage(PackageInterface $package)
     {
-        return $package->getName() == self::PACKAGE_NAME;
+        return $package->getName() == Application::PACKAGE_NAME;
     }
 
     /**

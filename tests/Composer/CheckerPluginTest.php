@@ -2,6 +2,7 @@
 
 namespace ClickNow\Checker\Composer;
 
+use ClickNow\Checker\Console\Application;
 use Composer\Composer;
 use Composer\Config;
 use Composer\DependencyResolver\Operation\InstallOperation;
@@ -193,7 +194,7 @@ class CheckerPluginTest extends \PHPUnit_Framework_TestCase
     protected function mockPackage()
     {
         $package = m::mock(PackageInterface::class);
-        $package->shouldReceive('getName')->withNoArgs()->once()->andReturn(CheckerPlugin::PACKAGE_NAME)->byDefault();
+        $package->shouldReceive('getName')->withNoArgs()->once()->andReturn(Application::PACKAGE_NAME)->byDefault();
 
         return $package;
     }
