@@ -215,7 +215,7 @@ class InstallCommand extends Command
     /**
      * Get phar command.
      *
-     * @return bool|string
+     * @return string
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      * @codeCoverageIgnore
@@ -228,7 +228,7 @@ class InstallCommand extends Command
             return $token;
         }
 
-        return false;
+        return '';
     }
 
     /**

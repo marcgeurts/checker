@@ -60,9 +60,11 @@ class SelfUpdateCommand extends Command
         try {
             if ($this->updater->update()) {
                 $this->io->success('PHAR file updated successfully!');
-            } else {
-                $this->io->note('No need to update.');
+
+                return 0;
             }
+
+            $this->io->note('No need to update.');
 
             return 0;
         } catch (Exception $e) {
