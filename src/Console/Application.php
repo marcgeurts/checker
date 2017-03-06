@@ -17,6 +17,7 @@ class Application extends SymfonyConsole
 {
     const APP_NAME = 'Checker';
     const APP_VERSION = '1.0.0';
+    const PACKAGE_NAME = 'cknow/checker';
 
     /**
      * @var \ClickNow\Checker\Console\ConfigFile
@@ -67,6 +68,7 @@ class Application extends SymfonyConsole
     {
         $commands = parent::getDefaultCommands();
         array_push($commands, $this->container->get('console.command.run'));
+        array_push($commands, $this->container->get('console.command.self-update'));
         array_push($commands, $this->container->get('console.command.git.install'));
         array_push($commands, $this->container->get('console.command.git.uninstall'));
 

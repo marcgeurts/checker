@@ -10,6 +10,7 @@
   ],
   "finder": [
     {
+      "name": "*.php",
       "exclude": [
         "Tests",
         "tests",
@@ -26,6 +27,7 @@
     "Herrera\\Box\\Compactor\\Php",
     "Herrera\\Box\\Compactor\\Json"
   ],
+  "git-version": "package_version",
   "main": "bin/checker",
   "output": "checker.phar",
   "stub": true
