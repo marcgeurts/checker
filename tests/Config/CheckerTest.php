@@ -110,6 +110,12 @@ class CheckerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->checker->isSkipSuccessOutput());
     }
 
+    public function testIsSkipCircumventionOutput()
+    {
+        $this->container->shouldReceive('getParameter')->with('skip-circumvention-output')->once()->andReturn(true);
+        $this->assertTrue($this->checker->isSkipCircumventionOutput());
+    }
+
     public function testGetMessage()
     {
         $this->container->shouldReceive('getParameter')->with('message')->once()->andReturnNull();

@@ -152,6 +152,16 @@ class Checker
     }
 
     /**
+     * Is skip circumvention output?
+     *
+     * @return bool
+     */
+    public function isSkipCircumventionOutput()
+    {
+        return (bool) $this->container->getParameter('skip-circumvention-output');
+    }
+
+    /**
      * Get message.
      *
      * @param string $resource

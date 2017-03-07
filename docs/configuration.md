@@ -25,6 +25,7 @@ parameters:
   progress: 'list'
   skip-empty-output: false
   skip-success-output: false
+  skip-circumvention-output: false
   message:
     successfully: 'successfully.txt'
     failed: 'failed.txt'

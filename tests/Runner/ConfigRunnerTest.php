@@ -164,6 +164,18 @@ class ConfigRunnerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->configRunner->isSkipSuccessOutput());
     }
 
+    public function testSkipCircumventionOutput()
+    {
+        $this->checker->shouldReceive('isSkipCircumventionOutput')->withNoArgs()->once()->andReturn(true);
+        $this->assertTrue($this->configRunner->isSkipCircumventionOutput());
+
+        $this->configRunner->setSkipCircumventionOutput(null);
+        $this->assertFalse($this->configRunner->isSkipCircumventionOutput());
+
+        $this->configRunner->setSkipCircumventionOutput(true);
+        $this->assertTrue($this->configRunner->isSkipCircumventionOutput());
+    }
+
     public function testMessage()
     {
         $this->checker->shouldReceive('getMessage')->with('foo')->once()->andReturnNull();

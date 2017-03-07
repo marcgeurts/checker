@@ -35,6 +35,8 @@ This command execute the command with name specified.
 | no-skip-empty-output              | ---       | No skip empty output
 | skip-success-output               | ---       | Skip success output
 | no-skip-success-output            | ---       | No skip success output
+| skip-circumvention-output         | ---       | Skip circumvention output
+| no-skip-circumvention-output      | ---       | No skip circumvention output
 
 For example:
 
@@ -131,6 +133,8 @@ This command will be triggered by git hooks in commit-msg. However, you can run!
 | no-skip-empty-output              | ---       | No skip empty output
 | skip-success-output               | ---       | Skip success output
 | no-skip-success-output            | ---       | No skip success output
+| skip-circumvention-output         | ---       | Skip circumvention output
+| no-skip-circumvention-output      | ---       | No skip circumvention output
 
 For example:
 
@@ -167,6 +171,8 @@ This command will be triggered by git hooks in pre-commit. However, you can run!
 | no-skip-empty-output              | ---       | No skip empty output
 | skip-success-output               | ---       | Skip success output
 | no-skip-success-output            | ---       | No skip success output
+| skip-circumvention-output         | ---       | Skip circumvention output
+| no-skip-circumvention-output      | ---       | No skip circumvention output
 
 For example:
 
@@ -203,6 +209,8 @@ This command will be triggered by git hooks in pre-push. However, you can run!
 | no-skip-empty-output              | ---       | No skip empty output
 | skip-success-output               | ---       | Skip success output
 | no-skip-success-output            | ---       | No skip success output
+| skip-circumvention-output         | ---       | Skip circumvention output
+| no-skip-circumvention-output      | ---       | No skip circumvention output
 
 For example:
 

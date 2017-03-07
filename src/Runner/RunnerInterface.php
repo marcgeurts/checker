@@ -151,6 +151,22 @@ interface RunnerInterface extends ActionInterface
     public function setSkipSuccessOutput($skipSuccessOutput);
 
     /**
+     * Is skip circumvention output?
+     *
+     * @return bool
+     */
+    public function isSkipCircumventionOutput();
+
+    /**
+     * Set skip circumvention output.
+     *
+     * @param bool $skipCircumventionOutput
+     *
+     * @return void
+     */
+    public function setSkipCircumventionOutput($skipCircumventionOutput);
+
+    /**
      * Get message.
      *
      * @param string $resource

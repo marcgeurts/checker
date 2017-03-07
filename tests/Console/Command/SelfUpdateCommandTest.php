@@ -35,10 +35,10 @@ class SelfUpdateCommandTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->io = m::mock(IOInterface::class);
-        $this->io->shouldReceive('title')->once()->withAnyArgs()->andReturnNull();
+        $this->io->shouldReceive('title')->withAnyArgs()->once()->andReturnNull();
 
         $this->updater = m::mock(Updater::class);
-        $this->updater->shouldReceive('getStrategy')->once()->withNoArgs()->andReturn(m::spy(GithubStrategy::class));
+        $this->updater->shouldReceive('getStrategy')->withNoArgs()->once()->andReturn(m::spy(GithubStrategy::class));
 
         $application = new Application();
         $application->add(new SelfUpdateCommand($this->io, $this->updater));
@@ -53,11 +53,11 @@ class SelfUpdateCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdateSuccessfully()
     {
-        $this->io->shouldReceive('success')->once()->withAnyArgs()->andReturnNull();
+        $this->io->shouldReceive('success')->withAnyArgs()->once()->andReturnNull();
         $this->io->shouldReceive('note')->never();
         $this->io->shouldReceive('error')->never();
 
-        $this->updater->shouldReceive('update')->once()->withNoArgs()->andReturn(true);
+        $this->updater->shouldReceive('update')->withNoArgs()->once()->andReturn(true);
 
         $this->commandTester->execute([]);
 
@@ -67,10 +67,10 @@ class SelfUpdateCommandTest extends \PHPUnit_Framework_TestCase
     public function testUpdateNoNeed()
     {
         $this->io->shouldReceive('success')->never();
-        $this->io->shouldReceive('note')->once()->withAnyArgs()->andReturnNull();
+        $this->io->shouldReceive('note')->withAnyArgs()->once()->andReturnNull();
         $this->io->shouldReceive('error')->never();
 
-        $this->updater->shouldReceive('update')->once()->withNoArgs()->andReturn(false);
+        $this->updater->shouldReceive('update')->withNoArgs()->once()->andReturn(false);
 
         $this->commandTester->execute([]);
 
@@ -81,9 +81,9 @@ class SelfUpdateCommandTest extends \PHPUnit_Framework_TestCase
     {
         $this->io->shouldReceive('success')->never();
         $this->io->shouldReceive('note')->never();
-        $this->io->shouldReceive('error')->once()->with('ERROR')->andReturnNull();
+        $this->io->shouldReceive('error')->with('ERROR')->once()->andReturnNull();
 
-        $this->updater->shouldReceive('update')->once()->withNoArgs()->andThrow(Exception::class, 'ERROR');
+        $this->updater->shouldReceive('update')->withNoArgs()->once()->andThrow(Exception::class, 'ERROR');
 
         $this->commandTester->execute([]);
 

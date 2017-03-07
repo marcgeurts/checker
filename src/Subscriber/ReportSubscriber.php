@@ -79,6 +79,10 @@ class ReportSubscriber implements EventSubscriberInterface
         if ($results->isFailed($runner->isStrict())) {
             $this->reportError($runner, $results->filterByError(), $warning);
 
+            if (!$runner->isSkipCircumventionOutput()) {
+                $this->io->note('To skip commit checks add `-n` or `--no-verify` flag to commit command.');
+            }
+
             return;
         }
 

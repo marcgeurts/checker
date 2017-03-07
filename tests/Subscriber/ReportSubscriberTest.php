@@ -175,6 +175,7 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
         $runner->shouldReceive('isSkipSuccessOutput')->withNoArgs()->never();
         $runner->shouldReceive('isStrict')->withNoArgs()->once()->andReturn(false);
         $runner->shouldReceive('getMessage')->with('failed')->once()->andReturn('failed');
+        $runner->shouldReceive('isSkipCircumventionOutput')->withNoArgs()->once()->andReturn(true);
 
         $action1 = m::mock(ActionInterface::class);
         $action2 = m::mock(ActionInterface::class);
@@ -203,6 +204,7 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
         $runner->shouldReceive('isSkipSuccessOutput')->withNoArgs()->never();
         $runner->shouldReceive('isStrict')->withNoArgs()->once()->andReturn(false);
         $runner->shouldReceive('getMessage')->with('failed')->once()->andReturnNull();
+        $runner->shouldReceive('isSkipCircumventionOutput')->withNoArgs()->once()->andReturn(true);
 
         $action1 = m::mock(ActionInterface::class);
         $action2 = m::mock(ActionInterface::class);
@@ -231,6 +233,7 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
         $runner->shouldReceive('isSkipSuccessOutput')->withNoArgs()->never();
         $runner->shouldReceive('isStrict')->withNoArgs()->once()->andReturn(false);
         $runner->shouldReceive('getMessage')->with('failed')->once()->andReturnNull();
+        $runner->shouldReceive('isSkipCircumventionOutput')->withNoArgs()->once()->andReturn(true);
 
         $action1 = m::mock(ActionInterface::class);
         $action2 = m::mock(ActionInterface::class);
@@ -264,6 +267,7 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
         $runner->shouldReceive('isSkipSuccessOutput')->withNoArgs()->never();
         $runner->shouldReceive('isStrict')->withNoArgs()->once()->andReturn(true);
         $runner->shouldReceive('getMessage')->with('failed')->once()->andReturn('failed');
+        $runner->shouldReceive('isSkipCircumventionOutput')->withNoArgs()->once()->andReturn(true);
 
         $action1 = m::mock(ActionInterface::class);
         $action1->shouldReceive('getName')->withNoArgs()->once()->andReturn('ACTION1');
@@ -277,6 +281,28 @@ class ReportSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->io->shouldReceive('errorText')->with('failed')->once()->andReturnNull();
         $this->io->shouldReceive('warning')->with('ACTION1')->once()->andReturnNull();
         $this->io->shouldReceive('warningText')->with('WARNING1')->once()->andReturnNull();
+
+        $this->reportSubscriber->onReport($this->mockEvent($runner, $results));
+    }
+
+    public function testOnReportErrorWithSkippedCircumvention()
+    {
+        $runner = m::mock(RunnerInterface::class);
+        $runner->shouldReceive('isStrict')->withNoArgs()->once()->andReturn(false);
+        $runner->shouldReceive('getMessage')->with('failed')->once()->andReturnNull();
+        $runner->shouldReceive('isSkipCircumventionOutput')->withNoArgs()->once()->andReturn(false);
+
+        $action = m::mock(ActionInterface::class);
+        $action->shouldReceive('getName')->withNoArgs()->once()->andReturn('ACTION');
+
+        $results = new ResultsCollection();
+        $results->add($this->mockResult(ResultInterface::ERROR, $action, 'ERROR'));
+
+        $this->paths->shouldReceive('getMessage')->with(null)->once()->andReturnNull();
+
+        $this->io->shouldReceive('error')->with('ACTION')->once()->andReturnNull();
+        $this->io->shouldReceive('errorText')->with('ERROR')->once()->andReturnNull();
+        $this->io->shouldReceive('note')->with('/--no-verify/')->once()->andReturnNull();
 
         $this->reportSubscriber->onReport($this->mockEvent($runner, $results));
     }
