@@ -119,6 +119,22 @@ interface RunnerInterface extends ActionInterface
     public function setProgress($progress);
 
     /**
+     * Is skip empty output?
+     *
+     * @return bool
+     */
+    public function isSkipEmptyOutput();
+
+    /**
+     * Set skip empty output.
+     *
+     * @param bool $skipEmptyOutput
+     *
+     * @return void
+     */
+    public function setSkipEmptyOutput($skipEmptyOutput);
+
+    /**
      * Is skip success output?
      *
      * @return bool

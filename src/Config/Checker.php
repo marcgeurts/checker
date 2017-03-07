@@ -132,6 +132,16 @@ class Checker
     }
 
     /**
+     * Is skip empty output?
+     *
+     * @return bool
+     */
+    public function isSkipEmptyOutput()
+    {
+        return (bool) $this->container->getParameter('skip-empty-output');
+    }
+
+    /**
      * Is skip success output?
      *
      * @return bool
