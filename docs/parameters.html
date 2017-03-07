@@ -139,6 +139,10 @@ By default will strict mode is disabled.</p>
 <p>This parameter will tell which progress st to use while are running your actions.
 Currently, exists two types <code>list</code> and <code>bar</code>.
 By default will progress is <code>list</code>.</p>
+<h3 id="skip-empty-output">skip-empty-output</h3>
+<p><em>Default: false</em></p>
+<p>This parameter will tell to skip empty output.
+By default will continue show empty output.</p>
 <h3 id="skip-success-output">skip-success-output</h3>
 <p><em>Default: false</em></p>
 <p>This parameter will tell to skip success output.
@@ -209,6 +213,7 @@ Below is the list available of git hooks:</p>
 <li>ignore-unstaged-changes</li>
 <li>strict</li>
 <li>progress</li>
+<li>skip-empty-output</li>
 <li>skip-success-output</li>
 </ul>
 <p>For example:</p>
@@ -223,6 +228,7 @@ parameters:
       ignore-unstaged-changes: true
       strict: true
       progress: 'bar'
+      skip-empty-output: true
       skip-success-output: true
       tasks:
         foo: ~ # Use default configuration
@@ -234,6 +240,7 @@ parameters:
       ignore-unstaged-changes: false
       strict: false
       progress: ~
+      skip-empty-output: false
       skip-success-output: false
       tasks:
         foo:
@@ -256,6 +263,7 @@ You can create as many commands as you want with custom names.</p>
 <li>ignore-unstaged-changes</li>
 <li>strict</li>
 <li>progress</li>
+<li>skip-empty-output</li>
 <li>skip-success-output</li>
 </ul>
 <p>For example:</p>
@@ -270,6 +278,7 @@ parameters:
       ignore-unstaged-changes: true
       strict: true
       progress: 'bar'
+      skip-empty-output: true
       skip-success-output: true
       tasks:
         foo: ~ # Use default configuration
@@ -281,6 +290,7 @@ parameters:
       ignore-unstaged-changes: false
       strict: false
       progress: ~
+      skip-empty-output: false
       skip-success-output: false
       tasks:
         foo:
