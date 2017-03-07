@@ -43,7 +43,9 @@ class CommitMsgCommand extends AbstractRunnerCommand
 
         parent::__construct('git:commit-msg');
 
+        $this->setAliases(['git:commitmsg', 'git:cm']);
         $this->setDescription('Git hook commit-msg.');
+
         $this->addArgument('commit-message-file', InputArgument::OPTIONAL, 'The configured commit message file.');
         $this->addOption('git-user-name', null, InputOption::VALUE_REQUIRED, 'The configured git user name.');
         $this->addOption('git-user-email', null, InputOption::VALUE_REQUIRED, 'The configured git use email.');
