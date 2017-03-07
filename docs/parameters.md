@@ -105,6 +105,13 @@ This parameter will tell which progress st to use while are running your actions
 Currently, exists two types `list` and `bar`.
 By default will progress is `list`.
 
+### skip-empty-output
+
+*Default: false*
+
+This parameter will tell to skip empty output.
+By default will continue show empty output.
+
 ### skip-success-output
 
 *Default: false*
@@ -206,6 +213,7 @@ You can also override these configurations:
 - ignore-unstaged-changes
 - strict
 - progress
+- skip-empty-output
 - skip-success-output
 
 For example:
@@ -222,6 +230,7 @@ parameters:
       ignore-unstaged-changes: true
       strict: true
       progress: 'bar'
+      skip-empty-output: true
       skip-success-output: true
       tasks:
         foo: ~ # Use default configuration
@@ -233,6 +242,7 @@ parameters:
       ignore-unstaged-changes: false
       strict: false
       progress: ~
+      skip-empty-output: false
       skip-success-output: false
       tasks:
         foo:
@@ -259,6 +269,7 @@ You can also override these configurations:
 - ignore-unstaged-changes
 - strict
 - progress
+- skip-empty-output
 - skip-success-output
 
 For example:
@@ -275,6 +286,7 @@ parameters:
       ignore-unstaged-changes: true
       strict: true
       progress: 'bar'
+      skip-empty-output: true
       skip-success-output: true
       tasks:
         foo: ~ # Use default configuration
@@ -286,6 +298,7 @@ parameters:
       ignore-unstaged-changes: false
       strict: false
       progress: ~
+      skip-empty-output: false
       skip-success-output: false
       tasks:
         foo:
