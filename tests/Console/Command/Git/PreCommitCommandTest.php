@@ -104,23 +104,27 @@ class PreCommitCommandTest extends \PHPUnit_Framework_TestCase
         $this->runner->shouldReceive('setSkipEmptyOutput')->with(false)->once()->andReturnNull();
         $this->runner->shouldReceive('setSkipSuccessOutput')->with(true)->once()->andReturnNull();
         $this->runner->shouldReceive('setSkipSuccessOutput')->with(false)->once()->andReturnNull();
+        $this->runner->shouldReceive('setSkipCircumventionOutput')->with(true)->once()->andReturnNull();
+        $this->runner->shouldReceive('setSkipCircumventionOutput')->with(false)->once()->andReturnNull();
 
         $this->commandTester->execute([
-            '--process-timeout'            => 60,
-            '--process-async-wait'         => 1000,
-            '--process-async-limit'        => 10,
-            '--stop-on-failure'            => true,
-            '--no-stop-on-failure'         => true,
-            '--ignore-unstaged-changes'    => true,
-            '--no-ignore-unstaged-changes' => true,
-            '--strict'                     => true,
-            '--no-strict'                  => true,
-            '--progress'                   => 'bar',
-            '--no-progress'                => true,
-            '--skip-empty-output'          => true,
-            '--no-skip-empty-output'       => true,
-            '--skip-success-output'        => true,
-            '--no-skip-success-output'     => true,
+            '--process-timeout'              => 60,
+            '--process-async-wait'           => 1000,
+            '--process-async-limit'          => 10,
+            '--stop-on-failure'              => true,
+            '--no-stop-on-failure'           => true,
+            '--ignore-unstaged-changes'      => true,
+            '--no-ignore-unstaged-changes'   => true,
+            '--strict'                       => true,
+            '--no-strict'                    => true,
+            '--progress'                     => 'bar',
+            '--no-progress'                  => true,
+            '--skip-empty-output'            => true,
+            '--no-skip-empty-output'         => true,
+            '--skip-success-output'          => true,
+            '--no-skip-success-output'       => true,
+            '--skip-circumvention-output'    => true,
+            '--no-skip-circumvention-output' => true,
         ]);
 
         $this->assertSame(0, $this->commandTester->getStatusCode());

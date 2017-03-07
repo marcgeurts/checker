@@ -11,17 +11,18 @@ trait ConfigRunner
      * @var array
      */
     public static $configs = [
-        'process-timeout'         => 'setProcessTimeout',
-        'process-async-wait'      => 'setProcessAsyncWait',
-        'process-async-limit'     => 'setProcessAsyncLimit',
-        'stop-on-failure'         => 'setStopOnFailure',
-        'ignore-unstaged-changes' => 'setIgnoreUnstagedChanges',
-        'strict'                  => 'setStrict',
-        'progress'                => 'setProgress',
-        'skip-empty-output'       => 'setSkipEmptyOutput',
-        'skip-success-output'     => 'setSkipSuccessOutput',
-        'message'                 => 'setMessage',
-        'can-run-in'              => 'setCanRunIn',
+        'process-timeout'           => 'setProcessTimeout',
+        'process-async-wait'        => 'setProcessAsyncWait',
+        'process-async-limit'       => 'setProcessAsyncLimit',
+        'stop-on-failure'           => 'setStopOnFailure',
+        'ignore-unstaged-changes'   => 'setIgnoreUnstagedChanges',
+        'strict'                    => 'setStrict',
+        'progress'                  => 'setProgress',
+        'skip-empty-output'         => 'setSkipEmptyOutput',
+        'skip-success-output'       => 'setSkipSuccessOutput',
+        'skip-circumvention-output' => 'setSkipCircumventionOutput',
+        'message'                   => 'setMessage',
+        'can-run-in'                => 'setCanRunIn',
     ];
 
     /**
@@ -78,6 +79,11 @@ trait ConfigRunner
      * @var bool
      */
     private $skipSuccessOutput;
+
+    /**
+     * @var bool
+     */
+    private $skipCircumventionOutput;
 
     /**
      * @var array
@@ -357,6 +363,32 @@ trait ConfigRunner
     public function setSkipSuccessOutput($skipSuccessOutput)
     {
         $this->skipSuccessOutput = (bool) $skipSuccessOutput;
+    }
+
+    /**
+     * Is skip circumvention output?
+     *
+     * @return bool
+     */
+    public function isSkipCircumventionOutput()
+    {
+        if (!isset($this->skipCircumventionOutput)) {
+            $this->setSkipCircumventionOutput($this->checker->isSkipCircumventionOutput());
+        }
+
+        return (bool) $this->skipCircumventionOutput;
+    }
+
+    /**
+     * Set skip circumvention output.
+     *
+     * @param bool $skipCircumventionOutput
+     *
+     * @return void
+     */
+    public function setSkipCircumventionOutput($skipCircumventionOutput)
+    {
+        $this->skipCircumventionOutput = (bool) $skipCircumventionOutput;
     }
 
     /**

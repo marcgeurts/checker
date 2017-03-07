@@ -119,6 +119,13 @@ By default will continue show empty output.
 This parameter will tell to skip success output.
 By default will continue show success output.
 
+### skip-circumvention-output
+
+*Default: false*
+
+This parameter will tell to skip circumvention output.
+By default will continue show circumvention output.
+
 ### message
 
 *Default: {successfully: 'successfully.txt', failed: 'failed.txt'}*
@@ -215,6 +222,7 @@ You can also override these configurations:
 - progress
 - skip-empty-output
 - skip-success-output
+- skip-circumvention-output
 
 For example:
 
@@ -232,6 +240,7 @@ parameters:
       progress: 'bar'
       skip-empty-output: true
       skip-success-output: true
+      skip-circumvention-output: true
       tasks:
         foo: ~ # Use default configuration
     pre-push:
@@ -244,6 +253,7 @@ parameters:
       progress: ~
       skip-empty-output: false
       skip-success-output: false
+      skip-circumvention-output: false
       tasks:
         foo:
           bar: value # Custom configuration
@@ -271,6 +281,7 @@ You can also override these configurations:
 - progress
 - skip-empty-output
 - skip-success-output
+- skip-circumvention-output
 
 For example:
 
@@ -288,6 +299,7 @@ parameters:
       progress: 'bar'
       skip-empty-output: true
       skip-success-output: true
+      skip-circumvention-output: true
       tasks:
         foo: ~ # Use default configuration
     name-of-command2:
@@ -300,6 +312,7 @@ parameters:
       progress: ~
       skip-empty-output: false
       skip-success-output: false
+      skip-circumvention-output: false
       tasks:
         foo:
           bar: value # Custom configuration
