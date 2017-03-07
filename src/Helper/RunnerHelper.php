@@ -51,13 +51,12 @@ class RunnerHelper extends Helper
     {
         $runner = $context->getRunner();
         $actions = $runner->getActionsToRun($context);
-        $empty = $actions->isEmpty();
 
-        if (!$empty || ($empty && !$runner->isSkipEmptyOutput())) {
+        if (!$actions->isEmpty() || ($actions->isEmpty() && !$runner->isSkipEmptyOutput())) {
             $this->io->title(sprintf('Checker is analyzing your code by `%s`!', $runner->getName()));
         }
 
-        if (!$empty) {
+        if (!$actions->isEmpty()) {
             return $this->doRun($context, $actions);
         }
 

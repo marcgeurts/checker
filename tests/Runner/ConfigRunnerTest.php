@@ -140,6 +140,18 @@ class ConfigRunnerTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($this->configRunner->getProgress());
     }
 
+    public function testSkipEmptyOutput()
+    {
+        $this->checker->shouldReceive('isSkipEmptyOutput')->withNoArgs()->once()->andReturn(true);
+        $this->assertTrue($this->configRunner->isSkipEmptyOutput());
+
+        $this->configRunner->setSkipEmptyOutput(null);
+        $this->assertFalse($this->configRunner->isSkipEmptyOutput());
+
+        $this->configRunner->setSkipEmptyOutput(true);
+        $this->assertTrue($this->configRunner->isSkipEmptyOutput());
+    }
+
     public function testSkipSuccessOutput()
     {
         $this->checker->shouldReceive('isSkipSuccessOutput')->withNoArgs()->once()->andReturn(true);

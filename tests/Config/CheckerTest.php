@@ -98,6 +98,12 @@ class CheckerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('list', $this->checker->getProgress());
     }
 
+    public function testIsSkipEmptyOutput()
+    {
+        $this->container->shouldReceive('getParameter')->with('skip-empty-output')->once()->andReturn(true);
+        $this->assertTrue($this->checker->isSkipEmptyOutput());
+    }
+
     public function testIsSkipSuccessOutput()
     {
         $this->container->shouldReceive('getParameter')->with('skip-success-output')->once()->andReturn(true);

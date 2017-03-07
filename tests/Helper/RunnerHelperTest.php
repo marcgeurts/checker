@@ -85,6 +85,8 @@ class RunnerHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testRunWithoutActions()
     {
+        $this->runner->shouldReceive('isSkipEmptyOutput')->twice()->withNoArgs()->andReturn(false);
+
         $this->io->shouldReceive('title')->with('/`foo`/')->atMost()->once()->andReturnNull();
         $this->io->shouldReceive('note')->with('No actions available.')->once()->andReturnNull();
 
