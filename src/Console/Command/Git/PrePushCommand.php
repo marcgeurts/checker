@@ -32,6 +32,7 @@ class PrePushCommand extends AbstractRunnerCommand
 
         parent::__construct('git:pre-push');
 
+        $this->setAliases(['git:prepush', 'git:pp']);
         $this->setDescription('Git hook pre-push.');
     }
 

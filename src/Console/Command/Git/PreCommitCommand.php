@@ -32,6 +32,7 @@ class PreCommitCommand extends AbstractRunnerCommand
 
         parent::__construct('git:pre-commit');
 
+        $this->setAliases(['git:pre-commit', 'git:pc']);
         $this->setDescription('Git hook pre-commit.');
     }
 
