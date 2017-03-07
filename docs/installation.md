@@ -17,7 +17,7 @@ composer require --dev cknow/checker
 or add this to `require-dev` section in your `composer.json` file:
 
 ```
-"cknow/checker": "^1.0.0"
+"cknow/checker": "^[version]"
 ```
 
 then run ```composer update```
@@ -52,16 +52,16 @@ those will also be used instead of the composer executables.
 ## Using Phar
 
 Use the following command to download
-[checker.phar](https://github.com/cknow/checker/releases/download/1.0.0/checker.phar):
+[checker.phar](https://github.com/cknow/checker/releases/download/[version]/checker.phar):
 
 ```
-wget https://github.com/cknow/checker/releases/download/1.0.0/checker.phar
+wget https://github.com/cknow/checker/releases/download/[version]/checker.phar
 ```
 
 or with curl:
 
 ```
-curl -L https://github.com/cknow/checker/releases/download/1.0.0/checker.phar
+curl -L https://github.com/cknow/checker/releases/download/[version]/checker.phar
 ```
 
 > **Note:**
@@ -119,3 +119,5 @@ See also:
 - [Events](events.md)
 - [Contributing](../CONTRIBUTING.md)
 - [License](../LICENSE.md)
+
+[version]: 1.1.0
