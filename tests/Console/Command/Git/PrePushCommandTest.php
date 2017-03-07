@@ -100,6 +100,8 @@ class PrePushCommandTest extends \PHPUnit_Framework_TestCase
         $this->runner->shouldReceive('setStrict')->with(false)->once()->andReturnNull();
         $this->runner->shouldReceive('setProgress')->with('bar')->once()->andReturnNull();
         $this->runner->shouldReceive('setProgress')->with(null)->once()->andReturnNull();
+        $this->runner->shouldReceive('setSkipEmptyOutput')->with(true)->once()->andReturnNull();
+        $this->runner->shouldReceive('setSkipEmptyOutput')->with(false)->once()->andReturnNull();
         $this->runner->shouldReceive('setSkipSuccessOutput')->with(true)->once()->andReturnNull();
         $this->runner->shouldReceive('setSkipSuccessOutput')->with(false)->once()->andReturnNull();
 
@@ -115,6 +117,8 @@ class PrePushCommandTest extends \PHPUnit_Framework_TestCase
             '--no-strict'                  => true,
             '--progress'                   => 'bar',
             '--no-progress'                => true,
+            '--skip-empty-output'          => true,
+            '--no-skip-empty-output'       => true,
             '--skip-success-output'        => true,
             '--no-skip-success-output'     => true,
         ]);

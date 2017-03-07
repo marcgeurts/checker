@@ -23,6 +23,7 @@ parameters:
   ignore-unstaged-changes: false
   strict: false
   progress: 'list'
+  skip-empty-output: false
   skip-success-output: false
   message:
     successfully: 'successfully.txt'

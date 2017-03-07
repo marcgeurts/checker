@@ -18,6 +18,7 @@ trait ConfigRunner
         'ignore-unstaged-changes' => 'setIgnoreUnstagedChanges',
         'strict'                  => 'setStrict',
         'progress'                => 'setProgress',
+        'skip-empty-output'       => 'setSkipEmptyOutput',
         'skip-success-output'     => 'setSkipSuccessOutput',
         'message'                 => 'setMessage',
         'can-run-in'              => 'setCanRunIn',
@@ -67,6 +68,11 @@ trait ConfigRunner
      * @var null|string
      */
     private $progress;
+
+    /**
+     * @var bool
+     */
+    private $skipEmptyOutput;
 
     /**
      * @var bool
@@ -299,6 +305,32 @@ trait ConfigRunner
     public function setProgress($progress)
     {
         $this->progress = (string) $progress;
+    }
+
+    /**
+     * Is skip empty output?
+     *
+     * @return bool
+     */
+    public function isSkipEmptyOutput()
+    {
+        if (!isset($this->skipEmptyOutput)) {
+            $this->setSkipEmptyOutput($this->checker->isSkipEmptyOutput());
+        }
+
+        return (bool) $this->skipEmptyOutput;
+    }
+
+    /**
+     * Set skip empty output.
+     *
+     * @param bool $skipEmptyOutput
+     *
+     * @return void
+     */
+    public function setSkipEmptyOutput($skipEmptyOutput)
+    {
+        $this->skipEmptyOutput = (bool) $skipEmptyOutput;
     }
 
     /**

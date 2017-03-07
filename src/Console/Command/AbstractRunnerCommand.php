@@ -26,6 +26,8 @@ abstract class AbstractRunnerCommand extends Command
         'no-strict'                  => ['setStrict', false, InputOption::VALUE_NONE],
         'progress'                   => ['setProgress', null, InputOption::VALUE_REQUIRED],
         'no-progress'                => ['setProgress', null, InputOption::VALUE_NONE],
+        'skip-empty-output'          => ['setSkipEmptyOutput', true, InputOption::VALUE_NONE],
+        'no-skip-empty-output'       => ['setSkipEmptyOutput', false, InputOption::VALUE_NONE],
         'skip-success-output'        => ['setSkipSuccessOutput', true, InputOption::VALUE_NONE],
         'no-skip-success-output'     => ['setSkipSuccessOutput', false, InputOption::VALUE_NONE],
     ];
@@ -45,6 +47,8 @@ abstract class AbstractRunnerCommand extends Command
         'no-strict'                  => 'Disable strict mode.',
         'progress'                   => 'Specify process style.',
         'no-progress'                => 'Disable process style.',
+        'skip-empty-output'          => 'Skip empty output.',
+        'no-skip-empty-output'       => 'No skip empty output.',
         'skip-success-output'        => 'Skip success output.',
         'no-skip-success-output'     => 'No skip success output.',
     ];
