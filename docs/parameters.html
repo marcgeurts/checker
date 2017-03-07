@@ -147,6 +147,10 @@ By default will continue show empty output.</p>
 <p><em>Default: false</em></p>
 <p>This parameter will tell to skip success output.
 By default will continue show success output.</p>
+<h3 id="skip-circumvention-output">skip-circumvention-output</h3>
+<p><em>Default: false</em></p>
+<p>This parameter will tell to skip circumvention output.
+By default will continue show circumvention output.</p>
 <h3 id="message">message</h3>
 <p><em>Default: {successfully: 'successfully.txt', failed: 'failed.txt'}</em></p>
 <p>This parameter will tell where can locate ascii images or display simple text.
@@ -215,6 +219,7 @@ Below is the list available of git hooks:</p>
 <li>progress</li>
 <li>skip-empty-output</li>
 <li>skip-success-output</li>
+<li>skip-circumvention-output</li>
 </ul>
 <p>For example:</p>
 <pre><code class="language-yaml"># checker.yml
@@ -230,6 +235,7 @@ parameters:
       progress: 'bar'
       skip-empty-output: true
       skip-success-output: true
+      skip-circumvention-output: true
       tasks:
         foo: ~ # Use default configuration
     pre-push:
@@ -242,6 +248,7 @@ parameters:
       progress: ~
       skip-empty-output: false
       skip-success-output: false
+      skip-circumvention-output: false
       tasks:
         foo:
           bar: value # Custom configuration
@@ -265,6 +272,7 @@ You can create as many commands as you want with custom names.</p>
 <li>progress</li>
 <li>skip-empty-output</li>
 <li>skip-success-output</li>
+<li>skip-circumvention-output</li>
 </ul>
 <p>For example:</p>
 <pre><code class="language-yaml"># checker.yml
@@ -280,6 +288,7 @@ parameters:
       progress: 'bar'
       skip-empty-output: true
       skip-success-output: true
+      skip-circumvention-output: true
       tasks:
         foo: ~ # Use default configuration
     name-of-command2:
@@ -292,6 +301,7 @@ parameters:
       progress: ~
       skip-empty-output: false
       skip-success-output: false
+      skip-circumvention-output: false
       tasks:
         foo:
           bar: value # Custom configuration
