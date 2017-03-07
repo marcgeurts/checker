@@ -12,7 +12,7 @@ The NPM script task will run your configured npm script.
 
 Use the following command to install:
 
-```bash
+```
 npm install npm@latest -g
 ```
 

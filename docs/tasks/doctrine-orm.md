@@ -12,7 +12,7 @@ The Doctrine ORM task will validate that your mapping files and check if the map
 
 Use the following command to install:
 
-```bash
+```
 composer require doctrine/orm
 ```
 

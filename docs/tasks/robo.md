@@ -12,7 +12,7 @@ The Robo task will run your automated PHP tasks.
 
 Use the following command to install:
 
-```bash
+```
 composer require --dev consolidation/robo
 ```
 

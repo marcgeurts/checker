@@ -12,7 +12,7 @@ The Gherkin task will run your Gherkin feature files.
 
 Use the following command to install:
 
-```bash
+```
 composer require --dev malukenho/kawaii-gherkin
 ```
 

@@ -12,7 +12,7 @@ The Gulp task will run your automated workflow tasks.
 
 Use the following command to install:
 
-```bash
+```
 npm install -g gulp-cli
 ```
 

@@ -12,7 +12,7 @@ The PhpCpd task will sniff your code for duplicated lines.
 
 Use the following command to install:
 
-```bash
+```
 composer require --dev sebastian/phpcpd
 ```
 

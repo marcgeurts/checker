@@ -10,7 +10,7 @@ currentMenu: installation
 
 Use the following command to install on your project locally:
 
-```bash
+```
 composer require --dev cknow/checker
 ```
 
@@ -28,14 +28,14 @@ When the package is installed, Checker will attach itself to the git hooks of yo
 
 Use the following command to install globally:
 
-```bash
+```
 composer global require cknow/checker
 composer global update cknow/checker
 ```
 
 Then make sure you have `~/.composer/vendor/bin` in your `PATH` and you're good to go:
 
-```bash
+```
 $ export PATH="$PATH:$HOME/.composer/vendor/bin"
 ```
 
@@ -54,13 +54,13 @@ those will also be used instead of the composer executables.
 Use the following command to download
 [checker.phar](https://github.com/cknow/checker/releases/download/1.0.0/checker.phar):
 
-```bash
+```
 wget https://github.com/cknow/checker/releases/download/1.0.0/checker.phar
 ```
 
 or with curl:
 
-```bash
+```
 curl -L https://github.com/cknow/checker/releases/download/1.0.0/checker.phar
 ```
 
@@ -70,9 +70,15 @@ just manually download the phar file from the Github [releases](https://github.c
 
 If you want to run `checker` instead of `php checker.phar`, move it to /usr/local/bin:
 
-```bash
+```
 chmod +x checker.phar
 mv checker.phar /usr/local/bin/checker
+```
+
+Use the following command to upgrade:
+
+```
+checker self-update
 ```
 
 ## Installation with an exotic project structure
@@ -95,7 +101,7 @@ into your application's `composer.json`:
 You can also change the configuration after installation.
 The only downfall is that you will have to initialize the git hooks manually:
 
-```bash
+```
 # Locally
 php ./vendor/bin/checker git:install --config=path/to/checker.yml
 

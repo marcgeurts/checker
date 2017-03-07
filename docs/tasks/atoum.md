@@ -12,7 +12,7 @@ The Atoum task will run your unit tests.
 
 Use the following command to install:
 
-```bash
+```
 composer require --dev atoum/atoum
 ```
 

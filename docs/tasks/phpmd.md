@@ -12,7 +12,7 @@ The PhpMd task will sniff your code for bad coding standards.
 
 Use the following command to install:
 
-```bash
+```
 composer require --dev phpmd/phpmd
 ```
 

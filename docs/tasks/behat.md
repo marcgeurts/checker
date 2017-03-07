@@ -12,7 +12,7 @@ The Behat task will run your Behat tests.
 
 Use the following command to install:
 
-```bash
+```
 composer require --dev behat/behat
 ```
 

@@ -43,11 +43,11 @@ Use the `--no-verify` (`-n`) flag in your command git which bypasses git hooks.
 
 For example:
 
-```bash
+```
 git commit --no-verify -m "commmit"
 ```
 or
-```bash
+```
 git push --no-verify
 ```
 

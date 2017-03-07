@@ -38,7 +38,7 @@ This command execute the command with name specified.
 
 For example:
 
-```bash
+```
 # Locally
 php ./vendor/bin/checker run name-of-command [--options]
 
@@ -54,7 +54,7 @@ This command install git hooks to Checker.
 
 For example:
 
-```bash
+```
 # Locally
 php ./vendor/bin/checker git:install
 
@@ -72,7 +72,7 @@ checker git:install
 
 For example:
 
-```bash
+```
 # Locally
 php ./vendor/bin/checker git:install --config=/path/to/checker.yml
 php ./vendor/bin/checker git:install -c=/path/to/checker.yml
@@ -88,7 +88,7 @@ This command uninstall git hooks to Checker.
 
 For example:
 
-```bash
+```
 # Locally
 php ./vendor/bin/checker git:uninstall
 
@@ -134,7 +134,7 @@ This command will be triggered by git hooks in commit-msg. However, you can run!
 
 For example:
 
-```bash
+```
 # Locally
 php ./vendor/bin/checker git:commit-msg [commit-message-file] [--options]
 
@@ -170,7 +170,7 @@ This command will be triggered by git hooks in pre-commit. However, you can run!
 
 For example:
 
-```bash
+```
 # Locally
 php ./vendor/bin/checker git:pre-commit [--options]
 
@@ -206,7 +206,7 @@ This command will be triggered by git hooks in pre-push. However, you can run!
 
 For example:
 
-```bash
+```
 # Locally
 php ./vendor/bin/checker git:pre-push [--options]
 
