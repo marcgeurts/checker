@@ -76,17 +76,17 @@
 <h2 id="via-composer">Via Composer</h2>
 <h3 id="locally">Locally</h3>
 <p>Use the following command to install on your project locally:</p>
-<pre><code class="language-bash">composer require --dev cknow/checker</code></pre>
+<pre><code>composer require --dev cknow/checker</code></pre>
 <p>or add this to <code>require-dev</code> section in your <code>composer.json</code> file:</p>
 <pre><code>"cknow/checker": "^1.0.0"</code></pre>
 <p>then run <code>composer update</code></p>
 <p>When the package is installed, Checker will attach itself to the git hooks of your project.</p>
 <h3 id="globally">Globally</h3>
 <p>Use the following command to install globally:</p>
-<pre><code class="language-bash">composer global require cknow/checker
+<pre><code>composer global require cknow/checker
 composer global update cknow/checker</code></pre>
 <p>Then make sure you have <code>~/.composer/vendor/bin</code> in your <code>PATH</code> and you're good to go:</p>
-<pre><code class="language-bash">$ export PATH="$PATH:$HOME/.composer/vendor/bin"</code></pre>
+<pre><code>$ export PATH="$PATH:$HOME/.composer/vendor/bin"</code></pre>
 <p>That's all! The <code>checker</code> command will be available on your CLI and will be used by default.</p>
 <blockquote>
 <p><strong>Important:</strong>
@@ -99,17 +99,19 @@ those will also be used instead of the composer executables.</p>
 <h2 id="using-phar">Using Phar</h2>
 <p>Use the following command to download
 <a href="https://github.com/cknow/checker/releases/download/1.0.0/checker.phar">checker.phar</a>:</p>
-<pre><code class="language-bash">wget https://github.com/cknow/checker/releases/download/1.0.0/checker.phar</code></pre>
+<pre><code>wget https://github.com/cknow/checker/releases/download/1.0.0/checker.phar</code></pre>
 <p>or with curl:</p>
-<pre><code class="language-bash">curl -L https://github.com/cknow/checker/releases/download/1.0.0/checker.phar</code></pre>
+<pre><code>curl -L https://github.com/cknow/checker/releases/download/1.0.0/checker.phar</code></pre>
 <blockquote>
 <p><strong>Note:</strong>
 As Github is using a DDOS protection system, if using CURL fails,
 just manually download the phar file from the Github <a href="https://github.com/cknow/checker/releases">releases</a> page.</p>
 </blockquote>
 <p>If you want to run <code>checker</code> instead of <code>php checker.phar</code>, move it to /usr/local/bin:</p>
-<pre><code class="language-bash">chmod +x checker.phar
+<pre><code>chmod +x checker.phar
 mv checker.phar /usr/local/bin/checker</code></pre>
+<p>Use the following command to upgrade:</p>
+<pre><code>checker self-update</code></pre>
 <h2 id="installation-with-an-exotic-project-structure">Installation with an exotic project structure</h2>
 <p>When your application has a project structure that is not covered by the default configuration settings,
 you will have to create a <code>checker.yml</code> before installing the package and add next config
@@ -124,7 +126,7 @@ into your application's <code>composer.json</code>:</p>
 }</code></pre>
 <p>You can also change the configuration after installation.
 The only downfall is that you will have to initialize the git hooks manually:</p>
-<pre><code class="language-bash"># Locally
+<pre><code># Locally
 php ./vendor/bin/checker git:install --config=path/to/checker.yml
 
 # Globally
