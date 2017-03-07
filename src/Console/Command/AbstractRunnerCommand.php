@@ -138,7 +138,7 @@ abstract class AbstractRunnerCommand extends Command
     /**
      * Get runner helper.
      *
-     * @return \ClickNow\Checker\Helper\RunnerHelper
+     * @return \ClickNow\Checker\Helper\RunnerHelper|\Symfony\Component\Console\Helper\HelperInterface
      */
     protected function getRunnerHelper()
     {
