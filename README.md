@@ -22,6 +22,8 @@ currentMenu: home
 [![Code Coverage](https://scrutinizer-ci.com/g/cknow/checker/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/cknow/checker/?branch=master)
 
 [![Dependency Status](https://dependencyci.com/github/cknow/checker/badge)](https://dependencyci.com/github/cknow/checker)
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/cknow/checker.svg)](http://isitmaintained.com/project/cknow/checker)
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/cknow/checker.svg)](http://isitmaintained.com/project/cknow/checker)
 [![Gitter](https://badges.gitter.im/cknow/checker.svg)](https://gitter.im/cknow/checker?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/638e3fd2-c8bd-4e58-aeb1-76b999abea07/big.png)](https://insight.sensiolabs.com/projects/638e3fd2-c8bd-4e58-aeb1-76b999abea07)
