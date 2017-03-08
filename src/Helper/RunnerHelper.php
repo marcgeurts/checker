@@ -9,6 +9,7 @@ use ClickNow\Checker\IO\IOInterface;
 use ClickNow\Checker\Result\ResultsCollection;
 use ClickNow\Checker\Runner\ActionInterface;
 use ClickNow\Checker\Runner\ActionsCollection;
+use ClickNow\Checker\Runner\RunnerInterface;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -52,19 +53,46 @@ class RunnerHelper extends Helper
         $runner = $context->getRunner();
         $actions = $runner->getActionsToRun($context);
 
-        if (!$actions->isEmpty() || ($actions->isEmpty() && !$runner->isSkipEmptyOutput())) {
-            $this->io->title(sprintf('Checker is analyzing your code by `%s`!', $runner->getName()));
-        }
+        $this->displayTitle($runner, $actions);
 
         if (!$actions->isEmpty()) {
             return $this->doRun($context, $actions);
         }
 
+        $this->displayEmptyOutput($runner);
+
+        return self::CODE_SUCCESS;
+    }
+
+    /**
+     * Display title.
+     *
+     * @param \ClickNow\Checker\Runner\RunnerInterface   $runner
+     * @param \ClickNow\Checker\Runner\ActionsCollection $actions
+     *
+     * @return void
+     */
+    private function displayTitle(RunnerInterface $runner, ActionsCollection $actions)
+    {
+        $actionsIsEmpty = $actions->isEmpty();
+
+        if (!$actionsIsEmpty || ($actionsIsEmpty && !$runner->isSkipEmptyOutput())) {
+            $this->io->title(sprintf('Checker is analyzing your code by `%s`!', $runner->getName()));
+        }
+    }
+
+    /**
+     * Display empty output.
+     *
+     * @param \ClickNow\Checker\Runner\RunnerInterface $runner
+     *
+     * @return void
+     */
+    private function displayEmptyOutput(RunnerInterface $runner)
+    {
         if (!$runner->isSkipEmptyOutput()) {
             $this->io->note('No actions available.');
         }
-
-        return self::CODE_SUCCESS;
     }
 
     /**

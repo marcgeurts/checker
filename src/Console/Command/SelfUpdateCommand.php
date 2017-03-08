@@ -58,13 +58,7 @@ class SelfUpdateCommand extends Command
         $strategy->setCurrentLocalVersion(Application::APP_VERSION);
 
         try {
-            if ($this->updater->update()) {
-                $this->io->success('PHAR file updated successfully!');
-
-                return 0;
-            }
-
-            $this->io->note('No need to update.');
+            $this->displayResult($this->updater->update());
 
             return 0;
         } catch (Exception $e) {
@@ -72,5 +66,23 @@ class SelfUpdateCommand extends Command
 
             return 1;
         }
+    }
+
+    /**
+     * Display result.
+     *
+     * @param bool $updated
+     *
+     * @return void
+     */
+    private function displayResult($updated)
+    {
+        if ($updated) {
+            $this->io->success('PHAR file updated successfully!');
+
+            return;
+        }
+
+        $this->io->note('No need to update.');
     }
 }

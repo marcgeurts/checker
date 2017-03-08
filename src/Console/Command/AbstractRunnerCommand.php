@@ -114,12 +114,22 @@ abstract class AbstractRunnerCommand extends Command
                 continue;
             }
 
-            $optionsConfig = $this->optionsConfig[$key];
-            $optionFunction = $optionsConfig[0];
-            $optionValue = ($optionsConfig[2] == InputOption::VALUE_NONE) ? $optionsConfig[1] : $value;
-
-            call_user_func_array([$runner, $optionFunction], [$optionValue]);
+            $this->setOption($runner, $this->optionsConfig[$key], $value);
         }
+    }
+
+    /**
+     * Set option.
+     *
+     * @param \ClickNow\Checker\Runner\RunnerInterface $runner
+     * @param array                                    $config
+     * @param mixed                                    $value
+     *
+     * @return void
+     */
+    private function setOption(RunnerInterface $runner, array $config, $value)
+    {
+        call_user_func_array([$runner, $config[0]], [($config[2] == InputOption::VALUE_NONE) ? $config[1] : $value]);
     }
 
     /**
@@ -142,7 +152,7 @@ abstract class AbstractRunnerCommand extends Command
     /**
      * Get runner helper.
      *
-     * @return \ClickNow\Checker\Helper\RunnerHelper|\Symfony\Component\Console\Helper\HelperInterface
+     * @return \ClickNow\Checker\Helper\RunnerHelper
      */
     protected function getRunnerHelper()
     {

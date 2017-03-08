@@ -79,10 +79,6 @@ class ReportSubscriber implements EventSubscriberInterface
         if ($results->isFailed($runner->isStrict())) {
             $this->reportError($runner, $results->filterByError(), $warning);
 
-            if (!$runner->isSkipCircumventionOutput()) {
-                $this->io->note('To skip commit checks add `-n` or `--no-verify` flag to commit command.');
-            }
-
             return;
         }
 
@@ -151,6 +147,22 @@ class ReportSubscriber implements EventSubscriberInterface
             /* @var \ClickNow\Checker\Result\ResultInterface $error */
             $this->io->error($error->getAction()->getName());
             $this->io->errorText($error->getMessage());
+        }
+
+        $this->displayCircumventionOutput($runner);
+    }
+
+    /**
+     * Display circumvention output
+     *
+     * @param \ClickNow\Checker\Runner\RunnerInterface $runner
+     *
+     * @return void
+     */
+    private function displayCircumventionOutput(RunnerInterface $runner)
+    {
+        if (!$runner->isSkipCircumventionOutput()) {
+            $this->io->note('To skip commit checks add `-n` or `--no-verify` flag to commit command.');
         }
     }
 }

@@ -253,7 +253,7 @@ class InstallCommand extends Command
     /**
      * Get paths helper.
      *
-     * @return \ClickNow\Checker\Helper\PathsHelper|\Symfony\Component\Console\Helper\HelperInterface
+     * @return \ClickNow\Checker\Helper\PathsHelper
      */
     private function getPathsHelper()
     {
