@@ -4,7 +4,6 @@ namespace ClickNow\Checker\Task;
 
 use ClickNow\Checker\Repository\FilesCollection;
 use ClickNow\Checker\Runner\RunnerInterface;
-use Symfony\Component\Process\Process;
 
 class PhpLint extends AbstractExternalTask
 {
