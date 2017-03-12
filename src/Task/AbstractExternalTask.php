@@ -10,6 +10,7 @@ use ClickNow\Checker\Repository\FilesCollection;
 use ClickNow\Checker\Repository\Filesystem;
 use ClickNow\Checker\Result\Result;
 use ClickNow\Checker\Runner\RunnerInterface;
+use Symfony\Component\Process\Process;
 
 abstract class AbstractExternalTask extends AbstractTask
 {
@@ -82,7 +83,7 @@ abstract class AbstractExternalTask extends AbstractTask
         $process = $this->buildProcess($config, $files, $runner);
         $process->run();
 
-        if (!$process->isSuccessful()) {
+        if (!$this->isSuccessful($process)) {
             return Result::error($runner, $context, $this, $this->processFormatter->format($process));
         }
 
@@ -103,5 +104,17 @@ abstract class AbstractExternalTask extends AbstractTask
         $arguments = $this->createArguments($config, $files);
 
         return $this->processBuilder->buildProcess($arguments, $runner);
+    }
+
+    /**
+     * Is successful?
+     *
+     * @param \Symfony\Component\Process\Process $process
+     *
+     * @return bool
+     */
+    protected function isSuccessful(Process $process)
+    {
+        return $process->isSuccessful();
     }
 }

@@ -4,6 +4,7 @@ namespace ClickNow\Checker\Task;
 
 use ClickNow\Checker\Repository\FilesCollection;
 use ClickNow\Checker\Runner\RunnerInterface;
+use Symfony\Component\Process\Process;
 
 class Php7cc extends AbstractExternalTask
 {
@@ -72,5 +73,17 @@ class Php7cc extends AbstractExternalTask
         $arguments->addFiles($files);
 
         return $arguments;
+    }
+
+    /**
+     * Is successful?
+     *
+     * @param \Symfony\Component\Process\Process $process
+     *
+     * @return bool
+     */
+    protected function isSuccessful(Process $process)
+    {
+        return !(preg_match('/^File: /m', $process->getOutput()) === 1);
     }
 }
