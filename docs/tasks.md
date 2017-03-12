@@ -21,6 +21,7 @@ parameters:
     gulp: ~
     make: ~
     npm-script: ~
+    php7cc: ~
     phpcpd: ~
     phpmd: ~
     phpunit: ~
@@ -41,6 +42,7 @@ It is possible to overwrite the parameters per task.
 - [Gulp](tasks/gulp.md)
 - [Make](tasks/make.md)
 - [NPM script](tasks/npm-script.md)
+- [PHP 7 Compatibility Checker(php7cc)](tasks/php7cc.md)
 - [PHP Copy/Paste Detector (phpcpd)](tasks/phpcpd.md)
 - [PHP Mess Detector (phpmd)](tasks/phpmd.md)
 - [PHPUnit](tasks/phpunit.md)
