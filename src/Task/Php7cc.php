@@ -84,6 +84,6 @@ class Php7cc extends AbstractExternalTask
      */
     protected function isSuccessful(Process $process)
     {
-        return !(preg_match('/^File: /m', $process->getOutput()) === 1);
+        return $process->isSuccessful() && !(preg_match('/^File: /m', $process->getOutput()) === 1);
     }
 }
