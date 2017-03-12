@@ -23,6 +23,7 @@ parameters:
     npm-script: ~
     php7cc: ~
     phpcpd: ~
+    phplint: ~
     phpmd: ~
     phpunit: ~
     robo: ~
@@ -44,6 +45,7 @@ It is possible to overwrite the parameters per task.
 - [NPM script](tasks/npm-script.md)
 - [PHP 7 Compatibility Checker(php7cc)](tasks/php7cc.md)
 - [PHP Copy/Paste Detector (phpcpd)](tasks/phpcpd.md)
+- [PHPLint](tasks/phplint.md)
 - [PHP Mess Detector (phpmd)](tasks/phpmd.md)
 - [PHPUnit](tasks/phpunit.md)
 - [Robo](tasks/robo.md)

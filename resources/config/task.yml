@@ -129,6 +129,16 @@ services:
     tags:
       - { name: checker.task, config: phpcpd }
 
+  task.phplint:
+    class: ClickNow\Checker\Task\PhpLint
+    arguments:
+      - '@io'
+      - '@repository.filesystem'
+      - '@process.process-builder'
+      - '@formatter.raw-process'
+    tags:
+      - { name: checker.task, config: phplint }
+
   task.phpmd:
     class: ClickNow\Checker\Task\PhpMd
     arguments:
