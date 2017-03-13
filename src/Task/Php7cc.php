@@ -49,7 +49,7 @@ class Php7cc extends AbstractExternalTask
         $resolver->addAllowedTypes('no-ansi', ['bool']);
         $resolver->addAllowedValues('level', [null, 'info', 'warning', 'error']);
 
-         return $resolver;
+        return $resolver;
     }
 
     /**
