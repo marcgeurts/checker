@@ -29,33 +29,33 @@ class TsLint extends AbstractExternalTask
         $resolver = parent::getConfigOptions($runner);
 
         $resolver->setDefaults([
-            'config' => null,
-            'exclude' => null,
-            'fix' => null,
-            'force' => null,
-            'init' => null,
-            'out' => null,
-            'project' => null,
-            'rules-dir' => null,
+            'config'         => null,
+            'exclude'        => [],
+            'fix'            => false,
+            'force'          => false,
+            'init'           => false,
+            'out'            => null,
+            'project'        => null,
+            'rules-dir'      => null,
             'formatters-dir' => null,
-            'format' => null,
-            'test' => null,
-            'type-check' => null,
-            'finder' => ['extensions' => ['ts']],
+            'format'         => null,
+            'test'           => false,
+            'type-check'     => false,
+            'finder'         => ['extensions' => ['ts']],
         ]);
 
-        $resolver->addAllowedTypes('config', ['null']);
-        $resolver->addAllowedTypes('exclude', ['null']);
-        $resolver->addAllowedTypes('fix', ['null']);
-        $resolver->addAllowedTypes('force', ['null']);
-        $resolver->addAllowedTypes('init', ['null']);
-        $resolver->addAllowedTypes('out', ['null']);
-        $resolver->addAllowedTypes('project', ['null']);
-        $resolver->addAllowedTypes('rules-dir', ['null']);
-        $resolver->addAllowedTypes('formatters-dir', ['null']);
-        $resolver->addAllowedTypes('format', ['null']);
-        $resolver->addAllowedTypes('test', ['null']);
-        $resolver->addAllowedTypes('type-check', ['null']);
+        $resolver->addAllowedTypes('config', ['null', 'string']);
+        $resolver->addAllowedTypes('exclude', ['array']);
+        $resolver->addAllowedTypes('fix', ['bool']);
+        $resolver->addAllowedTypes('force', ['bool']);
+        $resolver->addAllowedTypes('init', ['bool']);
+        $resolver->addAllowedTypes('out', ['null', 'string']);
+        $resolver->addAllowedTypes('project', ['null', 'string']);
+        $resolver->addAllowedTypes('rules-dir', ['null', 'string']);
+        $resolver->addAllowedTypes('formatters-dir', ['null', 'string']);
+        $resolver->addAllowedTypes('format', ['null', 'string']);
+        $resolver->addAllowedTypes('test', ['bool']);
+        $resolver->addAllowedTypes('type-check', ['bool']);
 
         return $resolver;
     }
@@ -71,6 +71,19 @@ class TsLint extends AbstractExternalTask
     protected function createArguments(array $config, FilesCollection $files)
     {
         $arguments = $this->processBuilder->createArgumentsForCommand('tslint');
+        $arguments->addOptionalArgumentWithSeparatedValue('--config', $config['config']);
+        $arguments->addArgumentArrayWithSeparatedValue('--exclude', $config['exclude']);
+        $arguments->addOptionalArgument('--fix', $config['fix']);
+        $arguments->addOptionalArgument('--force', $config['force']);
+        $arguments->addOptionalArgument('--init', $config['init']);
+        $arguments->addOptionalArgumentWithSeparatedValue('--out', $config['out']);
+        $arguments->addOptionalArgumentWithSeparatedValue('--project', $config['project']);
+        $arguments->addOptionalArgumentWithSeparatedValue('--rules-dir', $config['rules-dir']);
+        $arguments->addOptionalArgumentWithSeparatedValue('--formatters-dir', $config['formatters-dir']);
+        $arguments->addOptionalArgumentWithSeparatedValue('--format', $config['format']);
+        $arguments->addOptionalArgument('--test', $config['test']);
+        $arguments->addOptionalArgument('--type-check', $config['type-check']);
+        $arguments->addFiles($files);
 
         return $arguments;
     }
