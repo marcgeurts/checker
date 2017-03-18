@@ -27,6 +27,7 @@ parameters:
     phpmd: ~
     phpunit: ~
     robo: ~
+    tslint: ~
 ```
 
 Every task has it's own default configuration.
@@ -49,6 +50,7 @@ It is possible to overwrite the parameters per task.
 - [PHP Mess Detector (phpmd)](tasks/phpmd.md)
 - [PHPUnit](tasks/phpunit.md)
 - [Robo](tasks/robo.md)
+- [TSLint](tasks/tslint.md)
 
 > **Note:** Some options of the tasks related to files and/or directory 
 do not exist because the `finder` option abstracts the majority.
