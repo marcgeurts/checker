@@ -72,111 +72,83 @@
                                             </ul>
                 </nav>
                         <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
-                <h1 id="tasks">Tasks</h1>
-<p>To activate a task, it is sufficient to add an empty task configuration:</p>
-<pre><code class="language-yaml"># checker.yml
-parameters:
-  tasks: # Merged in default task configuration
-    ant: ~
-    atoum: ~
-    behat: ~
-    brunch: ~
-    codeception: ~
-    doctrine-orm: ~
-    gherkin: ~
-    grunt: ~
-    gulp: ~
-    make: ~
-    npm-script: ~
-    php7cc: ~
-    phpcpd: ~
-    phplint: ~
-    phpmd: ~
-    phpunit: ~
-    robo: ~
-    tslint: ~</code></pre>
-<p>Every task has it's own default configuration.
-It is possible to overwrite the parameters per task.</p>
-<ul>
-<li><a href="tasks/ant.html">Apache Ant</a></li>
-<li><a href="tasks/atoum.html">Atoum</a></li>
-<li><a href="tasks/behat.html">Behat</a></li>
-<li><a href="tasks/brunch.html">Brunch</a></li>
-<li><a href="tasks/codeception.html">Codeception</a></li>
-<li><a href="tasks/doctrine-orm.html">Doctrine ORM</a></li>
-<li><a href="tasks/gherkin.html">Gherkin</a></li>
-<li><a href="tasks/grunt.html">Grunt</a></li>
-<li><a href="tasks/gulp.html">Gulp</a></li>
-<li><a href="tasks/make.html">Make</a></li>
-<li><a href="tasks/npm-script.html">NPM script</a></li>
-<li><a href="tasks/php7cc.html">PHP 7 Compatibility Checker(php7cc)</a></li>
-<li><a href="tasks/phpcpd.html">PHP Copy/Paste Detector (phpcpd)</a></li>
-<li><a href="tasks/phplint.html">PHPLint</a></li>
-<li><a href="tasks/phpmd.html">PHP Mess Detector (phpmd)</a></li>
-<li><a href="tasks/phpunit.html">PHPUnit</a></li>
-<li><a href="tasks/robo.html">Robo</a></li>
-<li><a href="tasks/tslint.html">TSLint</a></li>
-</ul>
-<blockquote>
-<p><strong>Note:</strong> Some options of the tasks related to files and/or directory
-do not exist because the <code>finder</code> option abstracts the majority.</p>
-</blockquote>
-<p>The above tasks also have the following configuration options:</p>
-<h3 id="can-run-in">can-run-in</h3>
-<p><em>Default: true</em></p>
-<p>This option allows you to run such a task in a particular context or command.
-You can also specify an array with the names of contexts or commands to can run in.</p>
-<h3 id="always-execute">always-execute</h3>
-<p><em>Default: false</em></p>
-<p>This option always run the whole task, even if no files were found.</p>
-<h3 id="finder">finder</h3>
-<p><em>Default: []</em></p>
-<p>This option to allow finder specify files and directories to be found.
-Options available: <code>name</code>, <code>not-name</code>, <code>path</code>, <code>not-path</code>, <code>extensions</code>.
-All options accepts only <code>array</code>.</p>
-<p>For example:</p>
+                <h1 id="tslint">TSLint</h1>
+<p>The TsLint task checks your TypeScript code for readability, maintainability, and functionality errors.</p>
+<p><a href="https://palantir.github.io/tslint/">See more information</a></p>
+<h2 id="installation">Installation</h2>
+<p>Use the following command to install:</p>
+<pre><code>npm install --save-dev tslint typescript</code></pre>
+<p><a href="https://palantir.github.io/tslint/usage/cli/">See more information</a></p>
+<h2 id="configuration">Configuration</h2>
+<p>It lives under the <code>tslint</code> namespace and has following configurable parameters:</p>
 <pre><code class="language-yaml"># checker.yml
 parameters:
   tasks:
-    name_of_task:
+    tslint:
+      config: ~
+      exclude: []
+      fix: false
+      force: false
+      init: false
+      out: ~
+      project: ~
+      rules-dir: ~
+      formatters-dir: ~
+      format: ~
+      test: false
+      type-check: false
       finder:
-        name: ['name1']
-        not-name: ['name2', 'name3']
-        path: ['path1', 'path2']
-        not-path: ['path3']
-        extensions: ['php', 'phtml']</code></pre>
-<h2 id="creating-a-custom-task">Creating a custom task</h2>
-<p>It is very easy to configure your own project specific task.
-You just have to create a class that implements the <code>ClickNow\Checker\Task\TaskInterface</code>.
-Next register it to the service manager and add your task configuration.</p>
-<p>For example:</p>
-<pre><code class="language-yaml"># checker.yml
-parameters:
-  tasks:
-    myConfigKey:
-      config1: config-value
-
-services:
-  task.myCustomTask:
-    class: My\Custom\Task # Must implement `ClickNow\Checker\Task\TaskInterface`
-    tags:
-      - { name: checker.task, config: myConfigKey }</code></pre>
-<blockquote>
-<p><strong>Note:</strong>
-You do NOT have to add the main and task configuration.
-This example just shows you how to do it.</p>
-</blockquote>
-<hr />
-<p>See also:</p>
-<ul>
-<li><a href="installation.html">Installation</a></li>
-<li><a href="configuration.html">Configuration</a></li>
-<li><a href="parameters.html">Parameters</a></li>
-<li><a href="command-line.html">Command-Line</a></li>
-<li><a href="events.html">Events</a></li>
-<li><a href="../contributing.html">Contributing</a></li>
-<li><a href="../license.html">License</a></li>
-</ul>
+        extensions: ['ts']</code></pre>
+<h2 id="parameters">Parameters</h2>
+<h3 id="config">config</h3>
+<p><em>Default: null</em></p>
+<p>If your <code>tslint.json</code> file is located at an exotic location,
+you can specify your custom location with this option.
+This option is set to <code>null</code> by default.
+This means that <code>tslint.json</code> is automatically loaded
+if the file exists in the current directory.</p>
+<h3 id="exclude">exclude</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will filenames or glob to excluded.</p>
+<h3 id="fix">fix</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will fixes linting errors for select rules. </p>
+<h3 id="force">force</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will return status code 0 even
+if there are any lint errors.</p>
+<h3 id="init">init</h3>
+<p><em>Default: false</em></p>
+<p>This options specify if will generates a <code>tslint.json</code>
+config file in the current working directory.</p>
+<h3 id="out">out</h3>
+<p><em>Default: null</em></p>
+<p>This option specify a filename to output result.
+This option is set to <code>null</code> by default.
+This means that  <code>tslint</code> outputs to stdout,
+which is usually the console where you're running it from.</p>
+<h3 id="project">project</h3>
+<p><em>Default: null</em></p>
+<p>This option specify wich will the location of a <code>tsconfig.json</code>
+file that will be used to determine which files will be linted.</p>
+<h3 id="rules-dir">rules-dir</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which wil an additional rules directory.</p>
+<h3 id="formatters-dir">formatters-dir</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which wil an additional formatters directory.</p>
+<h3 id="format">format</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will the formatter to use to format the results.</p>
+<h3 id="test">test</h3>
+<p><em>Default: false</em></p>
+<p>This optiosn specify if will test that <code>tslint</code> produces the correct output.</p>
+<h3 id="type-check">type-check</h3>
+<p><em>Default: false</em></p>
+<p>This options specify if will enables the type checker when running.</p>
+<h3 id="finder">finder</h3>
+<p><em>Default: {extensions: ['ts']}</em></p>
+<p><a href="../tasks.html#finder">See documentation</a></p>
             </section>
         </div>
     </main>
