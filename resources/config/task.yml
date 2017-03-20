@@ -179,6 +179,16 @@ services:
     tags:
       - { name: checker.task, config: robo }
 
+  task.sasslint:
+    class: ClickNow\Checker\Task\SassLint
+    arguments:
+      - '@io'
+      - '@repository.filesystem'
+      - '@process.process-builder'
+      - '@formatter.raw-process'
+    tags:
+      - { name: checker.task, config: sasslint }
+
   task.tslint:
     class: ClickNow\Checker\Task\TsLint
     arguments:

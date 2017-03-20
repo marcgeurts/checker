@@ -73,6 +73,19 @@ class ArgumentsCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(['--item=1|2'], $this->argumentsCollection->getValues());
     }
 
+    public function testAddOptionalCommaSeparatedArgumentWithSeparatedValue()
+    {
+        $this->argumentsCollection->addOptionalCommaSeparatedArgumentWithSeparatedValue('--item', []);
+        $this->assertSame([], $this->argumentsCollection->getValues());
+
+        $this->argumentsCollection->addOptionalCommaSeparatedArgumentWithSeparatedValue('--item', [1, 2]);
+        $this->assertSame(['--item', '1,2'], $this->argumentsCollection->getValues());
+
+        $this->argumentsCollection->clear();
+        $this->argumentsCollection->addOptionalCommaSeparatedArgumentWithSeparatedValue('--item', [1, 2], '|');
+        $this->assertSame(['--item', '1|2'], $this->argumentsCollection->getValues());
+    }
+
     public function testAddArgumentArray()
     {
         $this->argumentsCollection->addArgumentArray('--item=%s', [1, 2]);

@@ -28,6 +28,7 @@ parameters:
     phpmd: ~
     phpunit: ~
     robo: ~
+    sasslint: ~
     tslint: ~
 ```
 
@@ -52,6 +53,7 @@ It is possible to overwrite the parameters per task.
 - [PHP Mess Detector (phpmd)](tasks/phpmd.md)
 - [PHPUnit](tasks/phpunit.md)
 - [Robo](tasks/robo.md)
+- [SassLint](tasks/sasslint.md)
 - [TSLint](tasks/tslint.md)
 
 > **Note:** Some options of the tasks related to files and/or directory 

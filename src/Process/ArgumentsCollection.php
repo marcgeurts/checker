@@ -74,6 +74,25 @@ class ArgumentsCollection extends ArrayCollection
     }
 
     /**
+     * Add optional comma separated argument with separated value.
+     *
+     * @param string $argument
+     * @param array  $values
+     * @param string $delimiter
+     *
+     * @return void
+     */
+    public function addOptionalCommaSeparatedArgumentWithSeparatedValue($argument, array $values, $delimiter = ',')
+    {
+        if (!count($values)) {
+            return;
+        }
+
+        $this->add($argument);
+        $this->add(implode($delimiter, $values));
+    }
+
+    /**
      * Add argument array.
      *
      * @param string $argument
