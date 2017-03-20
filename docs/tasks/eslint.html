@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Checker</title>
+    <link rel="stylesheet" href="https://cknow.github.io/checker/css/bootstrap-3.3.7.min.css">
+    <link rel="stylesheet" href="https://cknow.github.io/checker/css/main.css">
+    <link rel="stylesheet" href="https://cknow.github.io/checker/css/prism.css">
+</head>
+<body>
+    <header class="navbar navbar-default navbar-fixed-top">
+        <a class="navbar-brand" href="https://cknow.github.io/checker/">
+            Checker
+            <small class="hidden-xs hidden-sm">
+                A PHP code quality tool with git hooks and custom commands.
+            </small>
+        </a>
+                    <a href="https://github.com/cknow/checker">
+                <img style="position: absolute;top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+            </a>
+            </header>
+    <main class="container-fluid">
+        <div class="row">
+                            <nav id="sidebar" class="col-sm-3 col-lg-2" role="navigation">
+                    <ul class="nav nav-pills nav-stacked">
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/">
+                                    Home
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/installation.html">
+                                    Installation
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/configuration.html">
+                                    Configuration
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/parameters.html">
+                                    Parameters
+                                </a>
+                            </li>
+                                                    <li class="active">
+                                <a href="https://cknow.github.io/checker/docs/tasks.html">
+                                    Tasks
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/command-line.html">
+                                    Command-Line
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/docs/events.html">
+                                    Events
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/contributing.html">
+                                    Contributing
+                                </a>
+                            </li>
+                                                    <li class="">
+                                <a href="https://cknow.github.io/checker/license.html">
+                                    License
+                                </a>
+                            </li>
+                                            </ul>
+                </nav>
+                        <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
+                <h1 id="eslint">ESLint</h1>
+<p>The EsLint task has goal to provide a pluggable linting utility for JavaScript.</p>
+<p><a href="http://eslint.org/">See more information</a></p>
+<h2 id="installation">Installation</h2>
+<p>Use the following command to install:</p>
+<pre><code>npm install --save-dev eslint</code></pre>
+<p><a href="http://eslint.org/docs/user-guide/command-line-interface">See more information</a></p>
+<h2 id="configuration">Configuration</h2>
+<p>It lives under the <code>eslint</code> namespace and has following configurable parameters:</p>
+<pre><code class="language-yaml"># checker.yml
+parameters:
+  tasks:
+    eslint:
+      config: ~
+      no-eslintrc: false
+      env: []
+      global: []
+      parser: ~
+      parser-options: []
+      cache: false
+      cache-location: ~
+      rulesdir: []
+      plugin: []
+      rule: []
+      ignore-path: ~
+      no-ignore: false
+      ignore-pattern: []
+      stdin: false
+      stdin-filename: ~
+      quiet: false
+      max-warnings: ~
+      output-file: ~
+      format: ~
+      color: true
+      no-color: false
+      init: false
+      fix: false
+      debug: false
+      no-inline-config: false
+      print-config: false
+      finder:
+        extensions: ['js']</code></pre>
+<h2 id="parameters">Parameters</h2>
+<h3 id="config">config</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will an additional configuration file.</p>
+<h3 id="no-eslintrc">no-eslintrc</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will disable use of configuration
+from <code>.eslintrc</code> and <code>package.json</code> files.</p>
+<h3 id="env">env</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will environments.</p>
+<h3 id="global">global</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will global variables so that they
+will not be flagged as undefined by the <code>no-undef</code> rule.</p>
+<h3 id="parser">parser</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will a parser to be used.
+This option is set to <code>null</code> by default.
+This means that <code>espree</code> will be used.</p>
+<h3 id="parser-options">parser-options</h3>
+<p><em>Default: []</em></p>
+<p>This option specify parser options to be used.</p>
+<h3 id="cache">cache</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will store the info about processed
+files in order to only operate on the changed ones.</p>
+<h3 id="cache-location">cache-location</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will path to the cache location.
+This option is set to <code>null</code> by default.
+This means that <code>.eslintcache</code> is used and that case,
+the file will be created in the directory where the <code>eslint</code> command is executed.</p>
+<h3 id="rulesdir">rulesdir</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will another directory from which to load rules files.</p>
+<h3 id="plugin">plugin</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will plugins to load.</p>
+<h3 id="rule">rule</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will rules to be used.</p>
+<h3 id="ignore-path">ignore-path</h3>
+<p><em>Default: null</em></p>
+<p>If your <code>.eslintignore</code> file is located at an exotic location,
+you can specify your custom location with this option.
+This option is set to <code>null</code> by default.
+This means that <code>.eslintignore</code> is automatically loaded
+if the file exists in the current directory.</p>
+<h3 id="no-ignore">no-ignore</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will disable excluding files
+from <code>.eslintignore</code>, <code>--ignore-path</code> and <code>--ignore-pattern</code>.</p>
+<h3 id="ignore-pattern">ignore-pattern</h3>
+<p><em>Default: []</em></p>
+<p>This option specify which will patterns of files to ignore
+(in addition to those in <code>.eslintignore</code>). </p>
+<h3 id="stdin">stdin</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will read and lint source code
+from STDIN instead of from files.</p>
+<h3 id="stdin-filename">stdin-filename</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will filename to process STDIN.</p>
+<h3 id="quiet">quiet</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will quiet mode.</p>
+<h3 id="max-warnings">max-warnings</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will warning threshold.</p>
+<h3 id="output-file">output-file</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will report output file.</p>
+<h3 id="format">format</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will output format.</p>
+<h3 id="color">color</h3>
+<p><em>Default: true</em></p>
+<p>This option specify if will color.</p>
+<h3 id="no-color">no-color</h3>
+<p><em>Default: false</em></p>
+<p>This option specify will to don't color.</p>
+<h3 id="init">init</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will start config initialization wizard.</p>
+<h3 id="fix">fix</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will to try to fix as many issues as possible.</p>
+<h3 id="debug">debug</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will enable debug mode.</p>
+<h3 id="no-inline-config">no-inline-config</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will prevents inline comments like
+<code>/*eslint-disable*/</code> or <code>/*global foo*/</code> from having any effect.</p>
+<h3 id="print-config">print-config</h3>
+<p><em>Default: false</em></p>
+<p>This option specify if will outputs the configuration to be used for the file passed.</p>
+<h3 id="finder">finder</h3>
+<p><em>Default: {extensions: ['js']}</em></p>
+<p><a href="../tasks.html#finder">See documentation</a></p>
+            </section>
+        </div>
+    </main>
+    <script src="https://cknow.github.io/checker/js/jquery-3.1.1.min.js"></script>
+    <script src="https://cknow.github.io/checker/js/bootstrap-3.3.7.min.js"></script>
+    <script src="https://cknow.github.io/checker/js/prism.js"></script>
+    <script>
+        $(function(){
+            $("table").addClass("table");
+        });
+
+            </script>
+</body>
+</html>
