@@ -59,6 +59,16 @@ services:
     tags:
       - { name: checker.task, config: doctrine-orm }
 
+  task.eslint:
+    class: ClickNow\Checker\Task\EsLint
+    arguments:
+      - '@io'
+      - '@repository.filesystem'
+      - '@process.process-builder'
+      - '@formatter.raw-process'
+    tags:
+      - { name: checker.task, config: eslint }
+
   task.gherkin:
     class: ClickNow\Checker\Task\Gherkin
     arguments:

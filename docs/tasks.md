@@ -16,6 +16,7 @@ parameters:
     brunch: ~
     codeception: ~
     doctrine-orm: ~
+    eslint: ~
     gherkin: ~
     grunt: ~
     gulp: ~
@@ -39,6 +40,7 @@ It is possible to overwrite the parameters per task.
 - [Brunch](tasks/brunch.md)
 - [Codeception](tasks/codeception.md)
 - [Doctrine ORM](tasks/doctrine-orm.md)
+- [ESLint](tasks/eslint.md)
 - [Gherkin](tasks/gherkin.md)
 - [Grunt](tasks/grunt.md)
 - [Gulp](tasks/gulp.md)
