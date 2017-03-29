@@ -20,7 +20,7 @@ composer require doctrine/orm
 
 ## Configuration
 
-It lives under the `doctrine` namespace and has following configurable parameters:
+It lives under the `doctrine-orm` namespace and has following configurable parameters:
 
 ```yaml
 # checker.yml

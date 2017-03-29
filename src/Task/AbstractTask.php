@@ -59,7 +59,7 @@ abstract class AbstractTask implements TaskInterface
     {
         $config = $this->getConfig($runner);
         $config['finder'] = $this->getFinder(isset($config['finder']) ? (array) $config['finder'] : []);
-        $files = $this->finderFiles($context->getFiles(), $config['finder']);
+        $files = $this->finderFiles($context->getFiles(), $config);
 
         if ($this->isSkipped($files, $config)) {
             return Result::skipped($runner, $context, $this);
@@ -139,12 +139,14 @@ abstract class AbstractTask implements TaskInterface
      * Finder files.
      *
      * @param \ClickNow\Checker\Repository\FilesCollection $files
-     * @param array                                        $finder
+     * @param array                                        $config
      *
      * @return \ClickNow\Checker\Repository\FilesCollection
      */
-    protected function finderFiles(FilesCollection $files, array $finder)
+    protected function finderFiles(FilesCollection $files, array $config)
     {
+        $finder = $config['finder'];
+
         return $files
             ->filterByName($finder['name'])
             ->filterByNotName($finder['not-name'])

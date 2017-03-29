@@ -189,6 +189,16 @@ services:
     tags:
       - { name: checker.task, config: sasslint }
 
+  task.security-checker:
+    class: ClickNow\Checker\Task\SecurityChecker
+    arguments:
+      - '@io'
+      - '@repository.filesystem'
+      - '@process.process-builder'
+      - '@formatter.raw-process'
+    tags:
+      - { name: checker.task, config: security-checker }
+
   task.stylelint:
     class: ClickNow\Checker\Task\StyleLint
     arguments:

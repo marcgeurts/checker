@@ -29,6 +29,7 @@ parameters:
     phpunit: ~
     robo: ~
     sasslint: ~
+    security-checker: ~
     stylelint: ~
     tslint: ~
 ```
@@ -55,6 +56,7 @@ It is possible to overwrite the parameters per task.
 - [PHPUnit](tasks/phpunit.md)
 - [Robo](tasks/robo.md)
 - [SassLint](tasks/sasslint.md)
+- [Security Checker](tasks/security-checker.md)
 - [StyleLint](tasks/stylelint.md)
 - [TSLint](tasks/tslint.md)
 
