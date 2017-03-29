@@ -72,119 +72,38 @@
                                             </ul>
                 </nav>
                         <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
-                <h1 id="tasks">Tasks</h1>
-<p>To activate a task, it is sufficient to add an empty task configuration:</p>
-<pre><code class="language-yaml"># checker.yml
-parameters:
-  tasks: # Merged in default task configuration
-    ant: ~
-    atoum: ~
-    behat: ~
-    brunch: ~
-    codeception: ~
-    doctrine-orm: ~
-    eslint: ~
-    gherkin: ~
-    grunt: ~
-    gulp: ~
-    make: ~
-    npm-script: ~
-    php7cc: ~
-    phpcpd: ~
-    phplint: ~
-    phpmd: ~
-    phpunit: ~
-    robo: ~
-    sasslint: ~
-    security-checker: ~
-    stylelint: ~
-    tslint: ~</code></pre>
-<p>Every task has it's own default configuration.
-It is possible to overwrite the parameters per task.</p>
-<ul>
-<li><a href="tasks/ant.html">Apache Ant</a></li>
-<li><a href="tasks/atoum.html">Atoum</a></li>
-<li><a href="tasks/behat.html">Behat</a></li>
-<li><a href="tasks/brunch.html">Brunch</a></li>
-<li><a href="tasks/codeception.html">Codeception</a></li>
-<li><a href="tasks/doctrine-orm.html">Doctrine ORM</a></li>
-<li><a href="tasks/eslint.html">ESLint</a></li>
-<li><a href="tasks/gherkin.html">Gherkin</a></li>
-<li><a href="tasks/grunt.html">Grunt</a></li>
-<li><a href="tasks/gulp.html">Gulp</a></li>
-<li><a href="tasks/make.html">Make</a></li>
-<li><a href="tasks/npm-script.html">NPM script</a></li>
-<li><a href="tasks/php7cc.html">PHP 7 Compatibility Checker(php7cc)</a></li>
-<li><a href="tasks/phpcpd.html">PHP Copy/Paste Detector (phpcpd)</a></li>
-<li><a href="tasks/phplint.html">PHPLint</a></li>
-<li><a href="tasks/phpmd.html">PHP Mess Detector (phpmd)</a></li>
-<li><a href="tasks/phpunit.html">PHPUnit</a></li>
-<li><a href="tasks/robo.html">Robo</a></li>
-<li><a href="tasks/sasslint.html">SassLint</a></li>
-<li><a href="tasks/security-checker.html">Security Checker</a></li>
-<li><a href="tasks/stylelint.html">StyleLint</a></li>
-<li><a href="tasks/tslint.html">TSLint</a></li>
-</ul>
-<blockquote>
-<p><strong>Note:</strong> Some options of the tasks related to files and/or directory
-do not exist because the <code>finder</code> option abstracts the majority.</p>
-</blockquote>
-<p>The above tasks also have the following configuration options:</p>
-<h3 id="can-run-in">can-run-in</h3>
-<p><em>Default: true</em></p>
-<p>This option allows you to run such a task in a particular context or command.
-You can also specify an array with the names of contexts or commands to can run in.</p>
-<h3 id="always-execute">always-execute</h3>
-<p><em>Default: false</em></p>
-<p>This option always run the whole task, even if no files were found.</p>
-<h3 id="finder">finder</h3>
-<p><em>Default: []</em></p>
-<p>This option to allow finder specify files and directories to be found.
-Options available: <code>name</code>, <code>not-name</code>, <code>path</code>, <code>not-path</code>, <code>extensions</code>.
-All options accepts only <code>array</code>.</p>
-<p>For example:</p>
+                <h1 id="security-checker">Security Checker</h1>
+<p>The Security Checker task checks if your application uses
+dependencies with known security vulnerabilities.</p>
+<p><a href="https://security.sensiolabs.org/">See more information</a></p>
+<h2 id="installation">Installation</h2>
+<p>Use the following command to install:</p>
+<pre><code>composer require --dev sensiolabs/security-checker</code></pre>
+<h2 id="configuration">Configuration</h2>
+<p>It lives under the <code>security-checker</code> namespace and has following configurable parameters:</p>
 <pre><code class="language-yaml"># checker.yml
 parameters:
   tasks:
-    name_of_task:
-      finder:
-        name: ['name1']
-        not-name: ['name2', 'name3']
-        path: ['path1', 'path2']
-        not-path: ['path3']
-        extensions: ['php', 'phtml']</code></pre>
-<h2 id="creating-a-custom-task">Creating a custom task</h2>
-<p>It is very easy to configure your own project specific task.
-You just have to create a class that implements the <code>ClickNow\Checker\Task\TaskInterface</code>.
-Next register it to the service manager and add your task configuration.</p>
-<p>For example:</p>
-<pre><code class="language-yaml"># checker.yml
-parameters:
-  tasks:
-    myConfigKey:
-      config1: config-value
-
-services:
-  task.myCustomTask:
-    class: My\Custom\Task # Must implement `ClickNow\Checker\Task\TaskInterface`
-    tags:
-      - { name: checker.task, config: myConfigKey }</code></pre>
-<blockquote>
-<p><strong>Note:</strong>
-You do NOT have to add the main and task configuration.
-This example just shows you how to do it.</p>
-</blockquote>
-<hr />
-<p>See also:</p>
-<ul>
-<li><a href="installation.html">Installation</a></li>
-<li><a href="configuration.html">Configuration</a></li>
-<li><a href="parameters.html">Parameters</a></li>
-<li><a href="command-line.html">Command-Line</a></li>
-<li><a href="events.html">Events</a></li>
-<li><a href="../contributing.html">Contributing</a></li>
-<li><a href="../license.html">License</a></li>
-</ul>
+    security-checker:
+      lockfile: './composer.lock'
+      format: ~
+      end-point: ~
+      timeout: ~</code></pre>
+<h2 id="parameters">Parameters</h2>
+<h3 id="lockfile">lockfile</h3>
+<p><em>Default: './composer.lock'</em></p>
+<p>If your <code>composer.lock</code> file is located at an exotic location,
+you can specify your custom location with this option.</p>
+<h3 id="format">format</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will output format.
+The available options are <code>text</code>, <code>json</code> and <code>simple</code>.</p>
+<h3 id="end-point">end-point</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will security checker server.</p>
+<h3 id="timeout">timeout</h3>
+<p><em>Default: null</em></p>
+<p>This option specify which will timeout in seconds.</p>
             </section>
         </div>
     </main>
